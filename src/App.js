@@ -7,6 +7,7 @@ import useIPFS from './hooks/useIPFS';
 import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
 import {LoadingRightBlock} from './LoadingRightBlock';
+import {useLocalStorage} from './hooks/useLocalStorage';
 
 function App() {
   const windowSize = useWindowSize();
@@ -15,6 +16,12 @@ function App() {
   const sharedFS = useRef({});
   const [ready, setReady] = useState(false);
   const [directoryContents, setDirectoryContents] = useState([]);
+  const [instanceAddress, setInstanceAddress] = useLocalStorage(
+    'instanceAddress',
+    null,
+  );
+
+  console.log('instance', instanceAddress)
 
   const styles = {
     container: {
@@ -27,7 +34,15 @@ function App() {
   const connectOrbit = async (ipfs) => {
     const orbitdb = await OrbitDB.createInstance(ipfs);
     const sailplane = await Sailplane.create(orbitdb, {});
-    const address = await sailplane.determineAddress('superdrive', {});
+
+    let address;
+    if (instanceAddress) {
+      address = instanceAddress;
+    } else {
+      address = await sailplane.determineAddress('superdrive');
+      setInstanceAddress(address.toString());
+    }
+
     sharedFS.current = await sailplane.mount(address, {});
     sharedFS.current.events.on('updated', () => {
       rootLS(true);
