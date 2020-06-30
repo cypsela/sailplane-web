@@ -4,6 +4,7 @@ import {DropZone} from './DropZone';
 import React from 'react';
 import {primary, primary2, primary4, primary5} from './colors';
 import {FiFolderPlus} from 'react-icons/fi';
+import {ToolItem} from './components/ToolItem';
 
 const styles = {
   container: {
@@ -31,6 +32,9 @@ const styles = {
   tools: {
     textAlign: 'right',
   },
+  icon: {
+    cursor: 'pointer',
+  },
 };
 
 export function FileBlock({sharedFs, directoryContents}) {
@@ -39,17 +43,15 @@ export function FileBlock({sharedFs, directoryContents}) {
       <Breadcrumb />
 
       <div style={styles.tools}>
-        <FiFolderPlus
-          color={primary4}
+        <ToolItem
+          iconComponent={FiFolderPlus}
           size={18}
-          style={styles.icon}
+          changeColor={primary}
           onClick={async () => {
-            await sharedFs.current.mkdir(
-              '/r',
-              'dir1' + Date.now(),
-            );
+            await sharedFs.current.mkdir('/r', 'dir1' + Date.now());
           }}
         />
+
       </div>
       <div style={styles.files}>
         <div style={styles.fileHeader}>
@@ -58,7 +60,9 @@ export function FileBlock({sharedFs, directoryContents}) {
         </div>
       </div>
       {!directoryContents.length ? <DropZone /> : null}
-      {directoryContents.map(fileItem=><FileItem key={fileItem.path} data={fileItem} sharedFs={sharedFs}/>)}
+      {directoryContents.map((fileItem) => (
+        <FileItem key={fileItem.path} data={fileItem} sharedFs={sharedFs} />
+      ))}
     </div>
   );
 }

@@ -2,9 +2,13 @@ import React from 'react';
 import {errorColor, primary4} from '../colors';
 import useHover from '../hooks/useHover';
 
-export function ToolItem({iconComponent, onClick}) {
+export function ToolItem({iconComponent, onClick, size, changeColor}) {
   const [hoverRef, isHovered] = useHover();
   const IconComponent = iconComponent;
+
+  if (!changeColor) {
+    changeColor = errorColor;
+  }
 
   const styles = {
     container: {
@@ -16,8 +20,8 @@ export function ToolItem({iconComponent, onClick}) {
   return (
     <div style={styles.container} ref={hoverRef} onClick={onClick}>
       <IconComponent
-        color={isHovered ? errorColor : primary4}
-        size={16}
+        color={isHovered ? changeColor : primary4}
+        size={size ? size : 16}
         style={styles.icon}
       />
     </div>
