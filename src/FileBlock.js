@@ -58,7 +58,7 @@ export function FileBlock({sharedFs, directoryContents}) {
         </div>
       </div>
       {!directoryContents.length ? <DropZone /> : null}
-      {directoryContents.map(fileItem=><FileItem data={fileItem} sharedFs={sharedFs}/>)}
+      {directoryContents.map(fileItem=><FileItem key={fileItem.path} data={fileItem} sharedFs={sharedFs}/>)}
     </div>
   );
 }

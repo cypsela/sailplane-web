@@ -9,6 +9,7 @@ export function ToolItem({iconComponent, onClick}) {
   const styles = {
     container: {
       display: 'inline-block',
+      cursor: 'pointer',
     },
   };
 
