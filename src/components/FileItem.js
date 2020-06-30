@@ -37,7 +37,15 @@ export function FileItem({data, sharedFs}) {
   };
 
   return (
-    <div style={styles.container} ref={hoverRef}>
+    <div
+      style={styles.container}
+      ref={hoverRef}
+      onClick={() => {
+        if (type === 'dir') {
+          console.log('clock');
+        } else {
+        }
+      }}>
       <div style={styles.nameContainer}>
         <FaFolder color={primary4} size={16} style={styles.icon} />
         {name}
@@ -45,7 +53,9 @@ export function FileItem({data, sharedFs}) {
       <div style={styles.tools}>
         <ToolItem
           iconComponent={FaTrash}
-          onClick={async () => {
+          onClick={async (event) => {
+            event.stopPropagation();
+
             await sharedFs.current.remove(path);
           }}
         />

@@ -51,7 +51,6 @@ export function FileBlock({sharedFs, directoryContents}) {
             await sharedFs.current.mkdir('/r', 'dir1' + Date.now());
           }}
         />
-
       </div>
       <div style={styles.files}>
         <div style={styles.fileHeader}>

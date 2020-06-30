@@ -16,12 +16,13 @@ function App() {
   const sharedFS = useRef({});
   const [ready, setReady] = useState(false);
   const [directoryContents, setDirectoryContents] = useState([]);
+  const [currentDirectory, setCurrentDirectory] = useState('/r');
   const [instanceAddress, setInstanceAddress] = useLocalStorage(
     'instanceAddress',
     null,
   );
 
-  console.log('instance', instanceAddress)
+  console.log('instance', instanceAddress);
 
   const styles = {
     container: {
@@ -42,13 +43,11 @@ function App() {
       address = await sailplane.determineAddress('superdrive');
       setInstanceAddress(address.toString());
     }
-
     sharedFS.current = await sailplane.mount(address, {});
     sharedFS.current.events.on('updated', () => {
       rootLS(true);
     });
     // console.log('adds', await ipfs.config.get('Addresses'));
-
     setReady(true);
   };
 
@@ -60,9 +59,13 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipfsObj.ipfs, ipfsObj.isIpfsReady]);
 
-  const rootLS = async (force) => {
+  const rootLS = async (force, path) => {
+    if (!path) {
+      path = '/r';
+    }
+
     if (ready || force) {
-      const res = await sharedFS.current.fs.ls('/r');
+      const res = await sharedFS.current.fs.ls(currentDirectory);
 
       let contents = [];
 
@@ -83,14 +86,14 @@ function App() {
   useEffect(() => {
     rootLS();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready]);
+  }, [ready, currentDirectory]);
 
   return (
     <div style={styles.container}>
       {windowWidth > 600 ? <LeftPanel /> : null}
 
       {ready ? (
-        <FileBlock sharedFs={sharedFS} directoryContents={directoryContents} />
+        <FileBlock sharedFs={sharedFS} directoryContents={directoryContents}/>
       ) : (
         <LoadingRightBlock />
       )}
