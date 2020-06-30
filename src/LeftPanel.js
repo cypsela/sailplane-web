@@ -1,6 +1,6 @@
 import React from 'react';
 import {primary4} from './colors';
-import {FaCog} from 'react-icons/fa';
+import {FaTrash, FaCog} from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
 
 const styles = {
@@ -30,13 +30,17 @@ export function LeftPanel() {
     <div style={styles.container}>
       <div style={styles.logo}>Sailplane</div>
       <PanelItem title={'Files'} selected={true} />
-      <PanelItem title={'Trash'} selected={false} />
+      <PanelItem
+        title={'Trash'}
+        icon={<FaTrash color={'#FFF'} size={12} style={styles.icon} />}
+        selected={false}
+      />
 
       <div style={styles.settingsBlock}>
-        <div style={styles.panelItem}>
-          <FaCog color={'#FFF'} size={15} style={styles.icon} />
-          Settings
-        </div>
+        <PanelItem
+          title={'Settings'}
+          icon={<FaCog color={'#FFF'} size={15} style={styles.icon} />}
+        />
       </div>
     </div>
   );
