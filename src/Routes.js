@@ -1,13 +1,22 @@
-import React from "react";
-import {BrowserRouter as Router, Route} from "react-router-dom";
-import App from "./App";
+import React from 'react';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import App from './App';
+
+const styles = {
+  container: {
+    maxWidth: 900,
+    margin: '0 auto',
+    backgroundColor: '#FFF',
+    padding: 10,
+  },
+};
 
 export default function Routes() {
   return (
     <Router>
-      <div>
-        <Route exact path="/" component={App}/>
+      <div style={styles.container}>
+        <Route exact path="/" component={App} />
       </div>
     </Router>
-  )
+  );
 }
