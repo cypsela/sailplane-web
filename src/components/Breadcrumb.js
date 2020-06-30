@@ -1,5 +1,5 @@
 import React from 'react';
-import {FaChevronRight} from 'react-icons/fa';
+import {FaChevronRight, FaFolder} from 'react-icons/fa';
 import {primary4} from '../colors';
 
 const styles = {
@@ -21,6 +21,8 @@ const styles = {
 export function Breadcrumb() {
   return (
     <div style={styles.container}>
+      {/*<FaFolder color={primary4} size={16} style={styles.icon} />*/}
+
       <FaChevronRight color={primary4} size={16} style={styles.icon} /> /
     </div>
   );

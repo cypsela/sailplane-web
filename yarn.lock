@@ -1711,6 +1711,16 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
+"@cypsela/sailplane-node@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@cypsela/sailplane-node/-/sailplane-node-1.0.3.tgz#30fef0d853e510ab4778f60a0b85423f267da5a1"
+  integrity sha512-2uSW1OAJJg0lwQ5DHNY/dl/7CGSWhX7EGzgxm5eIQqWcSl02ixFu9i/2gWuEiioGJyaz2fceyic8wLoYHnPNkw==
+  dependencies:
+    "@tabcat/orbit-db-fsstore" "^1.0.0"
+    it-all "^1.0.2"
+    it-last "^1.0.2"
+    p-queue "^6.4.0"
+
 "@hapi/accept@^3.2.4":
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/@hapi/accept/-/accept-3.2.4.tgz#687510529493fe1d7d47954c31aff360d9364bd1"
@@ -2413,6 +2423,13 @@
   integrity sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==
   dependencies:
     defer-to-connect "^1.0.1"
+
+"@tabcat/orbit-db-fsstore@^1.0.0":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@tabcat/orbit-db-fsstore/-/orbit-db-fsstore-1.1.2.tgz#83a2ce8c4a14a0edef7b42b7ff4f53eb075916ec"
+  integrity sha512-1MxCt9tM8AUknPaXbarKPtx9cY+1lmSLQZG4yIOTtyjo6g2bv/l83/fRkbp4SbzyWxEWFFXc+2j3UaKKwr1snQ==
+  dependencies:
+    orbit-db-store "^3.2.0"
 
 "@testing-library/dom@*":
   version "7.19.0"
@@ -8986,7 +9003,7 @@ it-handshake@^1.0.0, it-handshake@^1.0.1:
     it-reader "^2.0.0"
     p-defer "^3.0.0"
 
-it-last@^1.0.1:
+it-last@^1.0.1, it-last@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/it-last/-/it-last-1.0.2.tgz#4f4a38274d3e7acc185455d64b2494dfa0943573"
   integrity sha512-zjWiVvkDXKxGA+u2ZNzq321RWnj52RLucsIX0Bve3NUX3X/b1RjtUufvUdjtkFtQLKG1yCf5+hxbdeIYiRT1rQ==
@@ -12103,7 +12120,7 @@ orbit-db-storage-adapter@~0.5.3:
     level "^5.0.1"
     mkdirp "^0.5.1"
 
-orbit-db-store@~3.3.0:
+orbit-db-store@^3.2.0, orbit-db-store@~3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/orbit-db-store/-/orbit-db-store-3.3.0.tgz#6e42a18404eade3a62cf3679dbdf7dc0829e619a"
   integrity sha512-3+f/GtzeLyxJ/2CJb/0gyOFS9UvDBBAS+/vKyJR9ZvE3AfPI4ffraMBkedp5MZjsb4Hqr0q5wdkB7vu1hxWunw==
@@ -12334,7 +12351,7 @@ p-map@~1.1.1:
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-1.1.1.tgz#05f5e4ae97a068371bc2a5cc86bfbdbc19c4ae7a"
   integrity sha1-BfXkrpegaDcbwqXMhr+9vBnErno=
 
-p-queue@^6.0.0, p-queue@^6.1.0, p-queue@^6.2.1, p-queue@^6.3.0:
+p-queue@^6.0.0, p-queue@^6.1.0, p-queue@^6.2.1, p-queue@^6.3.0, p-queue@^6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-6.4.0.tgz#5050b379393ea1814d6f9613a654f687d92c0466"
   integrity sha512-X7ddxxiQ+bLR/CUt3/BVKrGcJDNxBr0pEEFKHHB6vTPWNUhgDv36GpIH18RmGM3YGPpBT+JWGjDDqsVGuF0ERw==

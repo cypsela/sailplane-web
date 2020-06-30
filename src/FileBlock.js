@@ -2,7 +2,8 @@ import {Breadcrumb} from './components/Breadcrumb';
 import {FileItem} from './components/FileItem';
 import {DropZone} from './DropZone';
 import React from 'react';
-import {primary, primary2} from './colors';
+import {primary, primary2, primary4} from './colors';
+import {FiFolderPlus} from 'react-icons/fi';
 
 const styles = {
   container: {
@@ -25,6 +26,9 @@ const styles = {
     color: primary,
     fontSize: 14,
   },
+  tools: {
+    textAlign: 'right',
+  }
 };
 
 export function FileBlock() {
@@ -32,6 +36,10 @@ export function FileBlock() {
     <div style={styles.container}>
       <Breadcrumb />
 
+      <div style={styles.tools}>
+        <FiFolderPlus color={primary4} size={16} style={styles.icon} />
+
+      </div>
       <div style={styles.files}>
         <div style={styles.fileHeader}>
           <div style={styles.fileHeaderItem}>Name</div>
