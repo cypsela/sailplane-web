@@ -5,9 +5,7 @@ import {primary6} from './colors';
 export function DropZone() {
   const styles = {
     container: {
-      // border: '1px solid #DDD',
       padding: 10,
-      borderRadius: 4,
       textAlign: 'center',
       color: primary6,
       fontSize: 16,

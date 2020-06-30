@@ -1,5 +1,6 @@
 import React from 'react';
 import {FaChevronRight} from 'react-icons/fa';
+import {primary4} from './colors';
 
 const styles = {
   container: {
@@ -8,8 +9,9 @@ const styles = {
     alignItems: 'center',
     fontSize: 16,
     marginBottom: 10,
-    fontWeight: 400,
-    color: '#666',
+    color: primary4,
+    fontFamily: 'MuseoModerno',
+    fontWeight: 600,
   },
   icon: {
     marginRight: 4,
@@ -19,7 +21,7 @@ const styles = {
 export function Breadcrumb() {
   return (
     <div style={styles.container}>
-      <FaChevronRight color={'#666'} size={16} style={styles.icon} /> /
+      <FaChevronRight color={primary4} size={16} style={styles.icon} /> /
     </div>
   );
 }
