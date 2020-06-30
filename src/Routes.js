@@ -4,10 +4,9 @@ import App from './App';
 
 const styles = {
   container: {
-    maxWidth: 900,
-    margin: '0 auto',
-    backgroundColor: '#FFF',
-    padding: 10,
+    // maxWidth: 900,
+    // margin: '0 auto',
+    // backgroundColor: '#FFF',
   },
 };
 
