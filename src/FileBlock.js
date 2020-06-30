@@ -1,5 +1,5 @@
-import {Breadcrumb} from './Breadcrumb';
-import {FileItem} from './FileItem';
+import {Breadcrumb} from './components/Breadcrumb';
+import {FileItem} from './components/FileItem';
 import {DropZone} from './DropZone';
 import React from 'react';
 import {primary, primary2} from './colors';

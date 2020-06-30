@@ -1,6 +1,6 @@
 import React from 'react';
 import {FaChevronRight} from 'react-icons/fa';
-import {primary4} from './colors';
+import {primary4} from '../colors';
 
 const styles = {
   container: {
