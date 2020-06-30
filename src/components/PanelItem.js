@@ -12,8 +12,9 @@ export function PanelItem({selected, onClick, title, icon}) {
       cursor: 'pointer',
       // fontWeight: selected ? '600' : '400',
       letterSpacing: 1.5,
-      padding: 4,
+      padding: 8,
       borderRadius: 4,
+      marginBottom: 8,
     },
     title: {
       color: selected ? primary4 : '#FFF',

@@ -53,7 +53,7 @@ export function FileBlock({sharedFs, directoryContents}) {
       </div>
       <div style={styles.files}>
         <div style={styles.fileHeader}>
-          <div style={styles.fileHeaderItem}>Name</div>
+          <div style={{...styles.fileHeaderItem, marginLeft: 8}}>Name</div>
           <div style={styles.fileHeaderItem}>Modified</div>
         </div>
       </div>

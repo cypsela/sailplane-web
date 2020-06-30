@@ -21,7 +21,6 @@ const styles = {
   settingsBlock: {
     position: 'absolute',
     bottom: 0,
-    marginBottom: 8,
   },
   icon: {
     marginRight: 6,
