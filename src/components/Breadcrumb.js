@@ -1,5 +1,5 @@
 import React from 'react';
-import {FaChevronRight, FaFolder} from 'react-icons/fa';
+import {FaChevronRight} from 'react-icons/fa';
 import {primary4} from '../colors';
 
 const styles = {

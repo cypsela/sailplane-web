@@ -10,6 +10,7 @@ const styles = {
     padding: 10,
     backgroundColor: '#FFF',
     width: '100%',
+    overflowY: 'scroll',
   },
   files: {
     marginTop: 20,
@@ -20,6 +21,7 @@ const styles = {
     justifyContent: 'space-between',
     borderBottom: `1px solid ${primary2}`,
     paddingBottom: 10,
+    marginBottom: 4,
   },
   fileHeaderItem: {
     width: '100%',
@@ -28,26 +30,35 @@ const styles = {
   },
   tools: {
     textAlign: 'right',
-  }
+  },
 };
 
-export function FileBlock() {
+export function FileBlock({sharedFs, directoryContents}) {
   return (
     <div style={styles.container}>
       <Breadcrumb />
 
       <div style={styles.tools}>
-        <FiFolderPlus color={primary4} size={16} style={styles.icon} />
-
+        <FiFolderPlus
+          color={primary4}
+          size={18}
+          style={styles.icon}
+          onClick={async () => {
+            await sharedFs.current.mkdir(
+              '/r',
+              'dir1' + Date.now(),
+            );
+          }}
+        />
       </div>
       <div style={styles.files}>
         <div style={styles.fileHeader}>
           <div style={styles.fileHeaderItem}>Name</div>
           <div style={styles.fileHeaderItem}>Modified</div>
         </div>
-        <FileItem />
       </div>
-      <DropZone />
+      {!directoryContents.length ? <DropZone /> : null}
+      {directoryContents.map(fileItem=><FileItem data={fileItem}/>)}
     </div>
   );
 }

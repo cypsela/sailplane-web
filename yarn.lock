@@ -1711,12 +1711,11 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@cypsela/sailplane-node@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@cypsela/sailplane-node/-/sailplane-node-1.0.3.tgz#30fef0d853e510ab4778f60a0b85423f267da5a1"
-  integrity sha512-2uSW1OAJJg0lwQ5DHNY/dl/7CGSWhX7EGzgxm5eIQqWcSl02ixFu9i/2gWuEiioGJyaz2fceyic8wLoYHnPNkw==
+"@cypsela/sailplane-node@https://github.com/cypsela/sailplane-node":
+  version "1.1.0"
+  resolved "https://github.com/cypsela/sailplane-node#9bea0aea50eafe53261bd7fc61a1c381544ead73"
   dependencies:
-    "@tabcat/orbit-db-fsstore" "^1.0.0"
+    "@tabcat/orbit-db-fsstore" "^1.1.2"
     it-all "^1.0.2"
     it-last "^1.0.2"
     p-queue "^6.4.0"
@@ -2424,7 +2423,7 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@tabcat/orbit-db-fsstore@^1.0.0":
+"@tabcat/orbit-db-fsstore@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tabcat/orbit-db-fsstore/-/orbit-db-fsstore-1.1.2.tgz#83a2ce8c4a14a0edef7b42b7ff4f53eb075916ec"
   integrity sha512-1MxCt9tM8AUknPaXbarKPtx9cY+1lmSLQZG4yIOTtyjo6g2bv/l83/fRkbp4SbzyWxEWFFXc+2j3UaKKwr1snQ==

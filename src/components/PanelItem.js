@@ -1,17 +1,22 @@
 import React from 'react';
+import {primary, primary3, primary4} from '../colors';
 
 export function PanelItem({selected, onClick, title, icon}) {
   const styles = {
     container: {
+      backgroundColor: selected ? '#FFF' : null,
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
       fontSize: 14,
       cursor: 'pointer',
-      fontWeight: selected ? '600' : '400',
+      // fontWeight: selected ? '600' : '400',
       letterSpacing: 1.5,
+      padding: 4,
+      borderRadius: 4,
     },
     title: {
+      color: selected ? primary4 : '#FFF',
       marginRight: 4,
     },
   };

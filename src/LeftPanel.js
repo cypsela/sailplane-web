@@ -5,6 +5,7 @@ import {PanelItem} from './components/PanelItem';
 
 const styles = {
   container: {
+    position: 'relative',
     backgroundColor: primary4,
     color: '#FFF',
     padding: 10,
@@ -18,7 +19,9 @@ const styles = {
     marginBottom: 10,
   },
   settingsBlock: {
-    marginTop: 200,
+    position: 'absolute',
+    bottom: 0,
+    marginBottom: 8,
   },
   icon: {
     marginRight: 6,
