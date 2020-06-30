@@ -5,7 +5,9 @@ import {PanelItem} from './components/PanelItem';
 
 const styles = {
   container: {
-    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     backgroundColor: primary4,
     color: '#FFF',
     padding: 10,
@@ -19,8 +21,8 @@ const styles = {
     marginBottom: 10,
   },
   settingsBlock: {
-    position: 'absolute',
     bottom: 0,
+    width: '100%',
   },
   icon: {
     marginRight: 6,
@@ -30,13 +32,15 @@ const styles = {
 export function LeftPanel() {
   return (
     <div style={styles.container}>
-      <div style={styles.logo}>Sailplane</div>
-      <PanelItem title={'Files'} selected={true} />
-      <PanelItem
-        title={'Trash'}
-        icon={<FaTrash color={'#FFF'} size={12} style={styles.icon} />}
-        selected={false}
-      />
+      <div>
+        <div style={styles.logo}>Sailplane</div>
+        <PanelItem title={'Files'} selected={true} />
+        <PanelItem
+          title={'Trash'}
+          icon={<FaTrash color={'#FFF'} size={12} style={styles.icon} />}
+          selected={false}
+        />
+      </div>
 
       <div style={styles.settingsBlock}>
         <PanelItem

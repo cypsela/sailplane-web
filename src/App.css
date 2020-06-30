@@ -2,3 +2,7 @@ body {
     background-color: #eee;
     height: 100%;
 }
+
+.toolItem:hover {
+    text-decoration: underline;
+}

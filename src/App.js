@@ -28,11 +28,11 @@ function App() {
     const orbitdb = await OrbitDB.createInstance(ipfs);
     const sailplane = await Sailplane.create(orbitdb, {});
     const address = await sailplane.determineAddress('superdrive', {});
-
     sharedFS.current = await sailplane.mount(address, {});
     sharedFS.current.events.on('updated', () => {
       rootLS(true);
     });
+    // console.log('adds', await ipfs.config.get('Addresses'));
 
     setReady(true);
   };

@@ -1,9 +1,10 @@
 import React from 'react';
-import {primary, primary4} from '../colors';
-import {FaFolder} from 'react-icons/fa';
+import {errorColor, primary, primary4} from '../colors';
+import {FaFolder, FaTrash} from 'react-icons/fa';
 import useHover from '../hooks/useHover';
+import {ToolItem} from './ToolItem';
 
-export function FileItem({data}) {
+export function FileItem({data, sharedFs}) {
   const {path, type} = data;
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
@@ -11,12 +12,15 @@ export function FileItem({data}) {
 
   const styles = {
     container: {
-      border: isHovered?`1px solid ${primary4}`:'1px solid #FFF',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      border: isHovered ? `1px solid ${primary4}` : '1px solid #FFF',
       borderRadius: 4,
       color: primary,
       fontSize: 14,
       padding: 7,
-      // paddingLeft: 0,
+      cursor: 'pointer',
     },
     nameContainer: {
       display: 'flex',
@@ -26,6 +30,10 @@ export function FileItem({data}) {
     icon: {
       marginRight: 4,
     },
+    tools: {
+      opacity: isHovered ? 1 : 0,
+      fontSize: 14,
+    },
   };
 
   return (
@@ -33,6 +41,14 @@ export function FileItem({data}) {
       <div style={styles.nameContainer}>
         <FaFolder color={primary4} size={16} style={styles.icon} />
         {name}
+      </div>
+      <div style={styles.tools}>
+        <ToolItem
+          iconComponent={FaTrash}
+          onClick={async () => {
+            await sharedFs.current.remove(path);
+          }}
+        />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import {Breadcrumb} from './components/Breadcrumb';
 import {FileItem} from './components/FileItem';
 import {DropZone} from './DropZone';
 import React from 'react';
-import {primary, primary2, primary4} from './colors';
+import {primary, primary2, primary4, primary5} from './colors';
 import {FiFolderPlus} from 'react-icons/fi';
 
 const styles = {
@@ -25,7 +25,7 @@ const styles = {
   },
   fileHeaderItem: {
     width: '100%',
-    color: primary,
+    color: primary5,
     fontSize: 14,
   },
   tools: {
@@ -58,7 +58,7 @@ export function FileBlock({sharedFs, directoryContents}) {
         </div>
       </div>
       {!directoryContents.length ? <DropZone /> : null}
-      {directoryContents.map(fileItem=><FileItem data={fileItem}/>)}
+      {directoryContents.map(fileItem=><FileItem data={fileItem} sharedFs={sharedFs}/>)}
     </div>
   );
 }
