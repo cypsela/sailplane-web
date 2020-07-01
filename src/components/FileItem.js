@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {errorColor, primary, primary2, primary3, primary4} from '../colors';
-import {FaFolder, FaTrash, FaEdit} from 'react-icons/fa';
+import {FaFolder, FaTrash, FaEdit, FaFileAlt} from 'react-icons/fa';
+import {FiFile} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 
@@ -56,7 +57,9 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
     <div
       style={styles.container}
       ref={hoverRef}
-      onClick={() => {
+      onClick={(event) => {
+        event.stopPropagation();
+
         if (editMode) {
           return;
         }
@@ -67,7 +70,11 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
         }
       }}>
       <div style={styles.nameContainer}>
-        <FaFolder color={primary4} size={16} style={styles.icon} />
+        {type === 'dir' ? (
+          <FaFolder color={primary4} size={16} style={styles.icon} />
+        ) : (
+          <FiFile color={primary4} size={16} style={styles.icon} />
+        )}
         {editMode ? (
           <>
             <input
@@ -80,10 +87,9 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
               title={'Save'}
               onClick={async () => {
                 if (type === 'dir') {
-                  console.log('fs', sharedFs.current)
+                  console.log('fs', sharedFs.current);
                   // await sharedFs.current.fs.mvdir(path, parentPath, editNameValue);
                 } else {
-
                 }
               }}
             />

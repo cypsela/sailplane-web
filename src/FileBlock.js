@@ -58,15 +58,23 @@ export function FileBlock({
           <div style={styles.fileHeaderItem}>Modified</div>
         </div>
       </div>
-      {!directoryContents.length ? <DropZone /> : null}
-      {sortedContents.map((fileItem) => (
-        <FileItem
-          key={fileItem.path}
-          data={fileItem}
-          sharedFs={sharedFs}
-          setCurrentDirectory={setCurrentDirectory}
-        />
-      ))}
+      <DropZone sharedFs={sharedFs} currentDirectory={currentDirectory}>
+        <div>
+          {!directoryContents ? (
+            <p>Drag 'n' drop some files here, or click to select files</p>
+          ) : (
+            sortedContents.map((fileItem) => (
+              <FileItem
+                key={fileItem.path}
+                data={fileItem}
+                sharedFs={sharedFs}
+                setCurrentDirectory={setCurrentDirectory}
+              />
+            ))
+          )}
+        </div>
+
+      </DropZone>
     </div>
   );
 }

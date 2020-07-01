@@ -6,3 +6,7 @@ body {
 .toolItem:hover {
     text-decoration: underline;
 }
+
+input:focus, textarea:focus, select:focus{
+    outline: none;
+}

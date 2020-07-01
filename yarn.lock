@@ -2370,6 +2370,13 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@tabcat/file-list-source@https://github.com/tabcat/file-list-source":
+  version "1.0.0"
+  resolved "https://github.com/tabcat/file-list-source#06cd494bfb45ba711e93f33b0b266c20bd0b703f"
+  dependencies:
+    dlv "^1.1.3"
+    err-code "^2.0.0"
+
 "@tabcat/orbit-db-fsstore@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tabcat/orbit-db-fsstore/-/orbit-db-fsstore-1.1.2.tgz#83a2ce8c4a14a0edef7b42b7ff4f53eb075916ec"
