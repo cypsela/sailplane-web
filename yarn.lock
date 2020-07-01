@@ -1711,9 +1711,18 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@cypsela/sailplane-node@https://github.com/cypsela/sailplane-node":
+"@cypsela/sailplane-node@https://github.com/cypsela/sailplane-node#22683c31b77a68db8ac9717b9811f4da867aec6b":
   version "1.1.0"
-  resolved "https://github.com/cypsela/sailplane-node#9bea0aea50eafe53261bd7fc61a1c381544ead73"
+  resolved "https://github.com/cypsela/sailplane-node#22683c31b77a68db8ac9717b9811f4da867aec6b"
+  dependencies:
+    "@tabcat/orbit-db-fsstore" "^1.1.2"
+    it-all "^1.0.2"
+    it-last "^1.0.2"
+    p-queue "^6.4.0"
+
+"@cypsela/sailplane-node@https://github.com/cypsela/sailplane-node#344f4abc8bd58b6f7a0327df6fa4acfe804cdefc":
+  version "1.1.0"
+  resolved "https://github.com/cypsela/sailplane-node#344f4abc8bd58b6f7a0327df6fa4acfe804cdefc"
   dependencies:
     "@tabcat/orbit-db-fsstore" "^1.1.2"
     it-all "^1.0.2"

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {errorColor, primary, primary2, primary3, primary4} from '../colors';
 import {FaFolder, FaTrash, FaEdit, FaFileAlt} from 'react-icons/fa';
 import {FiFile} from 'react-icons/fi';
@@ -11,10 +11,15 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
   const [hoverRef, isHovered] = useHover();
   const [editMode, setEditMode] = useState(false);
   const name = pathSplit[pathSplit.length - 1];
-
+  const editInputRef = useRef(null);
   const [editNameValue, setEditNameValue] = useState(name);
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
-  console.log('parent', parentPath);
+
+  useEffect(()=> {
+    if (editMode) {
+      editInputRef.current.focus();
+    }
+  }, [editMode])
 
   const styles = {
     container: {
@@ -78,6 +83,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
         {editMode ? (
           <>
             <input
+              ref={editInputRef}
               type={'text'}
               style={styles.editInput}
               value={editNameValue}
@@ -86,10 +92,10 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
             <ToolItem
               title={'Save'}
               onClick={async () => {
-                if (type === 'dir') {
-                  console.log('fs', sharedFs.current);
-                  // await sharedFs.current.fs.mvdir(path, parentPath, editNameValue);
-                } else {
+                try {
+                  await sharedFs.current.move(path, parentPath, editNameValue);
+                } catch (e) {
+                  console.log('Error moving!', e);
                 }
               }}
             />
