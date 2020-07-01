@@ -1,4 +1,5 @@
 import React from 'react';
+import {primary4} from "./colors";
 
 const styles = {
   container: {
@@ -10,6 +11,7 @@ const styles = {
     fontSize: 20,
     fontFamily: 'MuseoModerno',
     fontWeight: '300',
+    color: primary4,
   },
 };
 
