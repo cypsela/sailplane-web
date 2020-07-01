@@ -63,7 +63,7 @@ export function FileBlock({
       </div>
       <DropZone sharedFs={sharedFs} currentDirectory={currentDirectory}>
         <div>
-          {!directoryContents ? (
+          {!directoryContents.length ? (
             <p>Drag 'n' drop some files here, or click to select files</p>
           ) : (
             fullFileList.map((fileItem) => (

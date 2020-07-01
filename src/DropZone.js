@@ -37,27 +37,6 @@ export function DropZone({children, sharedFs, currentDirectory}) {
     async (acceptedFiles) => {
       const listSource = fileListSource(acceptedFiles);
       await sharedFs.current.upload(currentDirectory, listSource);
-      // console.log(acceptedFiles);
-      //
-      // for (let file of acceptedFiles) {
-      //   const reader = await readFileAsync(file);
-      //
-      //   console.log(reader)
-      // }
-
-      // acceptedFiles.forEach((file) => {
-      //   const reader = new FileReader()
-      //   reader.readAsBinaryString(file);
-      //
-      //   console.log('res', reader)
-      // })
-
-      // const files = [
-      //   {
-      //     path: 'image.png',
-      //     content: ipfs.types.Buffer.from(btoa(fr.result), 'base64'),
-      //   },
-      // ];
     },
     [currentDirectory],
   );

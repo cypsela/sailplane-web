@@ -18,6 +18,9 @@ export default function useIpfsFactory() {
         try {
           console.time('IPFS Started');
           ipfs = await Ipfs.create({
+            EXPERIMENTAL: {
+              pubsub: true
+            },
             config: {
               Addresses: {
                 Swarm: [

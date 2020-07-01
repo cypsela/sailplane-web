@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {errorColor, primary, primary2, primary3, primary4} from '../colors';
-import {FaFolder, FaTrash, FaEdit, FaFileAlt} from 'react-icons/fa';
-import {FiFile} from 'react-icons/fi';
+import {primary, primary2, primary3, primary4} from '../colors';
+import {FaFolder} from 'react-icons/fa';
+import {FiFile, FiTrash, FiEdit} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 
@@ -15,11 +15,11 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
   const [editNameValue, setEditNameValue] = useState(name);
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
 
-  useEffect(()=> {
+  useEffect(() => {
     if (editMode) {
       editInputRef.current.focus();
     }
-  }, [editMode])
+  }, [editMode]);
 
   const styles = {
     container: {
@@ -51,6 +51,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
       color: primary,
       fontSize: 14,
       padding: 4,
+      flexGrow: 2,
     },
     editNameAction: {
       fontSize: 13,
@@ -107,7 +108,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
       </div>
       <div style={styles.tools}>
         <ToolItem
-          iconComponent={FaEdit}
+          iconComponent={FiEdit}
           changeColor={primary}
           tooltip={'Edit'}
           onClick={async (event) => {
@@ -118,7 +119,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
         />
 
         <ToolItem
-          iconComponent={FaTrash}
+          iconComponent={FiTrash}
           tooltip={'Remove'}
           onClick={async (event) => {
             event.stopPropagation();
