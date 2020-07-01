@@ -4,8 +4,11 @@ import {FaFolder} from 'react-icons/fa';
 import {FiFile, FiTrash, FiEdit} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
+import {saveAs} from 'file-saver';
 
-export function FileItem({data, sharedFs, setCurrentDirectory}) {
+const first = require('it-first');
+
+export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
   const {path, type} = data;
   const pathSplit = path.split('/');
   const [hoverRef, isHovered] = useHover();
@@ -63,7 +66,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
     <div
       style={styles.container}
       ref={hoverRef}
-      onClick={(event) => {
+      onClick={async (event) => {
         event.stopPropagation();
 
         if (editMode) {
@@ -73,6 +76,14 @@ export function FileItem({data, sharedFs, setCurrentDirectory}) {
         if (type === 'dir') {
           setCurrentDirectory(path);
         } else {
+          const cid = await sharedFs.current.read(path);
+
+          const file = await first(ipfs.get(cid));
+          const fileContent = await first(file.content);
+          console.log('file', file);
+          console.log('fileContent', fileContent);
+          const blob = new Blob([fileContent]);
+          saveAs(blob, name);
         }
       }}>
       <div style={styles.nameContainer}>

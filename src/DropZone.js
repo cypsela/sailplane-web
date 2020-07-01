@@ -13,7 +13,7 @@ function readFileAsync(file) {
 
     reader.onerror = reject;
 
-    reader.readAsBinaryString(file);
+    reader.readAsArrayBuffer(file);
   });
 }
 

@@ -32,6 +32,7 @@ const styles = {
 
 export function FileBlock({
   sharedFs,
+  ipfs,
   directoryContents,
   setCurrentDirectory,
   currentDirectory,
@@ -71,6 +72,7 @@ export function FileBlock({
                 key={fileItem.path}
                 data={fileItem}
                 sharedFs={sharedFs}
+                ipfs={ipfs}
                 setCurrentDirectory={setCurrentDirectory}
               />
             ))

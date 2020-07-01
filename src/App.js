@@ -106,6 +106,7 @@ function App() {
       {ready ? (
         <FileBlock
           sharedFs={sharedFS}
+          ipfs={ipfsObj.ipfs}
           directoryContents={directoryContents}
           setCurrentDirectory={setCurrentDirectory}
           currentDirectory={currentDirectory}

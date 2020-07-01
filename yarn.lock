@@ -1711,15 +1711,6 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@cypsela/sailplane-node@https://github.com/cypsela/sailplane-node#22683c31b77a68db8ac9717b9811f4da867aec6b":
-  version "1.1.0"
-  resolved "https://github.com/cypsela/sailplane-node#22683c31b77a68db8ac9717b9811f4da867aec6b"
-  dependencies:
-    "@tabcat/orbit-db-fsstore" "^1.1.2"
-    it-all "^1.0.2"
-    it-last "^1.0.2"
-    p-queue "^6.4.0"
-
 "@cypsela/sailplane-node@https://github.com/cypsela/sailplane-node#344f4abc8bd58b6f7a0327df6fa4acfe804cdefc":
   version "1.1.0"
   resolved "https://github.com/cypsela/sailplane-node#344f4abc8bd58b6f7a0327df6fa4acfe804cdefc"
@@ -6663,6 +6654,11 @@ file-loader@4.3.0:
     loader-utils "^1.2.3"
     schema-utils "^2.5.0"
 
+file-saver@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.2.tgz#06d6e728a9ea2df2cce2f8d9e84dfcdc338ec17a"
+  integrity sha512-Wz3c3XQ5xroCxd1G8b7yL0Ehkf0TC9oYC6buPFkNnU9EnaPlifeAFCyCh+iewXTyFRcg0a6j3J7FmJsIhlhBdw==
+
 file-selector@^0.1.12:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-0.1.12.tgz#fe726547be219a787a9dcc640575a04a032b1fd0"
@@ -8942,7 +8938,7 @@ it-drain@^1.0.1:
   resolved "https://registry.yarnpkg.com/it-drain/-/it-drain-1.0.1.tgz#ef5d3de24cae4b004fa4df20796f90f589ccb573"
   integrity sha512-4aX8AsJWjRh0inNXGLa90fvxuB7vQY70WFasvskUMtpXXz8+MUH8R7PODBtn4yXCJ25ud2iRwWwa1g8DRDbrlA==
 
-it-first@^1.0.1:
+it-first@^1.0.1, it-first@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/it-first/-/it-first-1.0.2.tgz#82adddc1ca0108a791dac0e120485b4fc59e86a0"
   integrity sha512-hU5ObR14987PR7l0J7dfWAgKYiWoKbXcoXKqhQDGgHSZML6UPmHSS9ILBGucZkoA2B152kEqEOllS4tVQq11fg==
