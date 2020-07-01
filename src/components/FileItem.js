@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {primary, primary2, primary3, primary4} from '../colors';
 import {FaFolder} from 'react-icons/fa';
-import {FiEdit, FiFile, FiTrash} from 'react-icons/fi';
+import {FiEdit, FiFile, FiTrash, FiDownload} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
-
-const first = require('it-first');
+import {getBlobFromPath} from '../utils/Utils';
+import { saveAs } from 'file-saver';
 
 export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
   const {path, type} = data;
@@ -27,7 +27,8 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
 
   const styles = {
     outer: {
-      border: isHovered || fileBlob ? `1px solid ${primary2}` : '1px solid #FFF',
+      border:
+        isHovered || fileBlob ? `1px solid ${primary2}` : '1px solid #FFF',
       borderRadius: 4,
       color: primary,
       fontSize: 14,
@@ -82,10 +83,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
             setCurrentDirectory(path);
           } else {
             if (!fileBlob) {
-              const cid = await sharedFs.current.read(path);
-              const file = await first(ipfs.get(cid));
-              const fileContent = await first(file.content);
-              const blob = new Blob([fileContent]);
+              const blob = await getBlobFromPath(sharedFs, path, ipfs);
               setFileBlob(blob);
             } else {
               setFileBlob(null);
@@ -129,6 +127,18 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
           )}
         </div>
         <div style={styles.tools}>
+          <ToolItem
+            iconComponent={FiDownload}
+            changeColor={primary}
+            tooltip={'Download'}
+            onClick={async (event) => {
+              event.stopPropagation();
+
+              const blob = await getBlobFromPath(sharedFs, path, ipfs);
+              saveAs(blob, name);
+            }}
+          />
+
           <ToolItem
             iconComponent={FiEdit}
             changeColor={primary}
