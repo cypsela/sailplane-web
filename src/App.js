@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './App.css';
 import {LeftPanel} from './LeftPanel';
 import {FileBlock} from './FileBlock';
@@ -32,6 +32,11 @@ function App() {
     },
   };
 
+  const handleUpdateFired = useCallback(() => {
+    rootLS();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentDirectory, ready]);
+
   const connectOrbit = async (ipfs) => {
     const orbitdb = await OrbitDB.createInstance(ipfs);
     const sailplane = await Sailplane.create(orbitdb, {});
@@ -44,10 +49,9 @@ function App() {
       setInstanceAddress(address.toString());
     }
     sharedFS.current = await sailplane.mount(address, {});
-    sharedFS.current.events.on('updated', () => {
-      rootLS(true);
-    });
-    // console.log('adds', await ipfs.config.get('Addresses'));
+    sharedFS.current.events.on('updated', handleUpdateFired);
+
+    console.log('adds', await ipfs.config.get('Addresses'));
     setReady(true);
   };
 
@@ -57,13 +61,9 @@ function App() {
       connectOrbit(ipfsObj.ipfs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady]);
+  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, instanceAddress, currentDirectory]);
 
-  const rootLS = async (force, path) => {
-    if (!path) {
-      path = '/r';
-    }
-
+  const rootLS = async (force) => {
     if (ready || force) {
       const res = await sharedFS.current.fs.ls(currentDirectory);
 
@@ -79,7 +79,6 @@ function App() {
       }
 
       setDirectoryContents(contents);
-      console.log(contents);
     }
   };
 

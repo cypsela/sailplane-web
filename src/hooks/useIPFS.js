@@ -24,7 +24,7 @@ export default function useIpfsFactory() {
                   '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
                   '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
                   '/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/',
-                  '/dns4/libp2p-rdv.vps.revolunet.com/tcp/443/wss/p2p-webrtc-star'
+                  '/dns4/libp2p-rdv.vps.revolunet.com/tcp/443/wss/p2p-webrtc-star/',
                 ],
               },
             },
@@ -41,7 +41,7 @@ export default function useIpfsFactory() {
     }
 
     startIpfs();
-    return function cleanup() {
+    return () => {
       if (ipfs && ipfs.stop) {
         console.log('Stopping IPFS');
         ipfs.stop().catch((err) => console.error(err));
