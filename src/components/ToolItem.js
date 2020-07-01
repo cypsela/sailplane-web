@@ -29,13 +29,14 @@ export function ToolItem({
     },
     popover: {
       position: 'absolute',
-      top: -36,
+      top: -40,
       backgroundColor: primary4,
       color: '#FFF',
       padding: 8,
       borderRadius: 4,
       left: -(tooltipDimenstions.width / 2) + 8,
       fontSize: 14,
+      fontWeight: 400,
     },
     title: {
       textDecoration: isHovered ? 'underline' : 'none',
