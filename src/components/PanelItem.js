@@ -1,5 +1,5 @@
 import React from 'react';
-import {primary3, primary4} from '../colors';
+import {primary4} from '../colors';
 import useHover from "../hooks/useHover";
 
 export function PanelItem({selected, onClick, title, icon}) {
@@ -7,7 +7,7 @@ export function PanelItem({selected, onClick, title, icon}) {
 
   const styles = {
     container: {
-      backgroundColor: selected ? '#FFF' : isHovered?primary3:null,
+      backgroundColor: selected ? '#FFF' : isHovered ? primary4 : null,
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'flex-end',
