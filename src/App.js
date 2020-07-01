@@ -78,9 +78,12 @@ function App() {
 
         for (let lsItem of res) {
           const type = sharedFS.current.fs.content(lsItem);
+          const pathSplit = lsItem.split('/');
+          const name = pathSplit[pathSplit.length - 1];
 
           contents.push({
             type,
+            name,
             path: lsItem,
           });
         }

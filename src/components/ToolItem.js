@@ -25,6 +25,7 @@ export function ToolItem({
       display: 'inline-block',
       cursor: 'pointer',
       padding: 4,
+      fontSize: 14,
     },
     popover: {
       position: 'absolute',
@@ -38,6 +39,8 @@ export function ToolItem({
     },
     title: {
       textDecoration: isHovered ? 'underline' : 'none',
+      fontSize: 13,
+      color: primary,
     },
   };
 
