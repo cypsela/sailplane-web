@@ -13,6 +13,7 @@ const styles = {
     padding: 10,
     width: 150,
     fontFamily: 'MuseoModerno',
+    paddingBottom: 0,
   },
   logo: {
     color: '#FFF',
