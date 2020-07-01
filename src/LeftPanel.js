@@ -20,6 +20,7 @@ const styles = {
     fontSize: 16,
     fontWeight: 600,
     marginBottom: 10,
+    textAlign: 'center',
   },
   settingsBlock: {
     bottom: 0,
