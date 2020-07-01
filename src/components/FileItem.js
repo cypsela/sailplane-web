@@ -22,6 +22,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
   useEffect(() => {
     if (editMode) {
       editInputRef.current.focus();
+      editInputRef.current.select();
     }
   }, [editMode]);
 
@@ -46,6 +47,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
+      fontFamily: 'Open Sans',
     },
     icon: {
       marginRight: 4,
