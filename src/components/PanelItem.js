@@ -14,14 +14,13 @@ export function PanelItem({selected, onClick, title, icon}) {
       alignItems: 'center',
       fontSize: 14,
       cursor: 'pointer',
-      letterSpacing: 1.5,
       padding: 8,
       borderRadius: 4,
       marginBottom: 8,
     },
     title: {
       color: selected ? primary4 : '#FFF',
-      marginRight: 4,
+      // marginRight: 4,
     },
   };
   return (

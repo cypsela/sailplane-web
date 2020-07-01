@@ -12,10 +12,11 @@ const styles = {
     color: '#FFF',
     padding: 10,
     width: 150,
-    fontFamily: 'MuseoModerno',
+    fontFamily: 'Open Sans',
     paddingBottom: 0,
   },
   logo: {
+    fontFamily: 'MuseoModerno',
     color: '#FFF',
     fontSize: 16,
     fontWeight: 600,
@@ -27,7 +28,7 @@ const styles = {
     width: '100%',
   },
   icon: {
-    marginRight: 6,
+    marginRight: 4,
   },
 };
 
