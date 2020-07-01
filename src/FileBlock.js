@@ -44,6 +44,9 @@ export function FileBlock({
     }
   });
 
+  const directories = sortedContents.filter((item) => item.type === 'dir');
+  const files = sortedContents.filter((item) => item.type !== 'dir');
+  const fullFileList = directories.concat(files);
   return (
     <div style={styles.container}>
       <Breadcrumb
@@ -63,7 +66,7 @@ export function FileBlock({
           {!directoryContents ? (
             <p>Drag 'n' drop some files here, or click to select files</p>
           ) : (
-            sortedContents.map((fileItem) => (
+            fullFileList.map((fileItem) => (
               <FileItem
                 key={fileItem.path}
                 data={fileItem}
@@ -73,7 +76,6 @@ export function FileBlock({
             ))
           )}
         </div>
-
       </DropZone>
     </div>
   );
