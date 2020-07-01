@@ -4,7 +4,7 @@ import {FaFolder, FaTrash} from 'react-icons/fa';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 
-export function FileItem({data, sharedFs}) {
+export function FileItem({data, sharedFs, setCurrentDirectory}) {
   const {path, type} = data;
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
@@ -42,7 +42,7 @@ export function FileItem({data, sharedFs}) {
       ref={hoverRef}
       onClick={() => {
         if (type === 'dir') {
-          console.log('clock');
+          setCurrentDirectory(path);
         } else {
         }
       }}>

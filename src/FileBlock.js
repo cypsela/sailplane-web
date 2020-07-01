@@ -37,10 +37,18 @@ const styles = {
   },
 };
 
-export function FileBlock({sharedFs, directoryContents}) {
+export function FileBlock({
+  sharedFs,
+  directoryContents,
+  setCurrentDirectory,
+  currentDirectory,
+}) {
   return (
     <div style={styles.container}>
-      <Breadcrumb />
+      <Breadcrumb
+        currentDirectory={currentDirectory}
+        setCurrentDirectory={setCurrentDirectory}
+      />
 
       <div style={styles.tools}>
         <ToolItem
@@ -48,7 +56,7 @@ export function FileBlock({sharedFs, directoryContents}) {
           size={18}
           changeColor={primary}
           onClick={async () => {
-            await sharedFs.current.mkdir('/r', 'dir1' + Date.now());
+            await sharedFs.current.mkdir(currentDirectory, 'dir1' + Date.now());
           }}
         />
       </div>
@@ -60,7 +68,12 @@ export function FileBlock({sharedFs, directoryContents}) {
       </div>
       {!directoryContents.length ? <DropZone /> : null}
       {directoryContents.map((fileItem) => (
-        <FileItem key={fileItem.path} data={fileItem} sharedFs={sharedFs} />
+        <FileItem
+          key={fileItem.path}
+          data={fileItem}
+          sharedFs={sharedFs}
+          setCurrentDirectory={setCurrentDirectory}
+        />
       ))}
     </div>
   );

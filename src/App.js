@@ -92,7 +92,12 @@ function App() {
       {windowWidth > 600 ? <LeftPanel /> : null}
 
       {ready ? (
-        <FileBlock sharedFs={sharedFS} directoryContents={directoryContents}/>
+        <FileBlock
+          sharedFs={sharedFS}
+          directoryContents={directoryContents}
+          setCurrentDirectory={setCurrentDirectory}
+          currentDirectory={currentDirectory}
+        />
       ) : (
         <LoadingRightBlock />
       )}

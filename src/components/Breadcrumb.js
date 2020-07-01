@@ -12,18 +12,53 @@ const styles = {
     color: primary4,
     fontFamily: 'MuseoModerno',
     fontWeight: 600,
+    userSelect: 'none',
   },
   icon: {
     marginRight: 4,
+    cursor: 'pointer',
+  },
+  folderIcon: {
+    marginLeft: 4,
+    marginRight: 4,
+  },
+  folderName: {
+    fontWeight: 400,
+    cursor: 'pointer',
   },
 };
 
-export function Breadcrumb() {
+export function Breadcrumb({currentDirectory, setCurrentDirectory}) {
+  const pathArr = currentDirectory.split('/').slice(2);
+
   return (
     <div style={styles.container}>
-      {/*<FaFolder color={primary4} size={16} style={styles.icon} />*/}
+      <FaChevronRight
+        color={primary4}
+        size={16}
+        style={styles.icon}
+        onClick={() => setCurrentDirectory('/r')}
+      />{' '}
+      /
+      {pathArr.map((pathItem, index) => {
+        let path = '/r';
+        for (let i = 0; i <= index; i++) {
+          path += `/${pathArr[i]}`;
+        }
 
-      <FaChevronRight color={primary4} size={16} style={styles.icon} /> /
+        return (
+          <span key={pathItem}>
+            <span
+              style={styles.folderName}
+              onClick={() => {
+                setCurrentDirectory(path);
+              }}>
+              {pathItem}
+            </span>
+            /
+          </span>
+        );
+      })}
     </div>
   );
 }
