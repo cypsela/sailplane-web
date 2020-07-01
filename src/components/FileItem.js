@@ -33,6 +33,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
       color: primary,
       fontSize: 14,
       padding: 7,
+      marginBottom: 8,
     },
     container: {
       display: 'flex',
@@ -50,7 +51,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
       marginRight: 4,
     },
     tools: {
-      opacity: isHovered ? 1 : 0,
+      opacity: isHovered || fileBlob ? 1 : 0,
       fontSize: 14,
     },
     editInput: {

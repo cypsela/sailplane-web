@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.1.2",
     "file-saver": "^2.0.2",
     "ipfs": "^0.46.0",
+    "it-all": "^1.0.2",
     "it-first": "^1.0.2",
     "orbit-db": "^0.24.2",
     "react": "^16.13.1",
