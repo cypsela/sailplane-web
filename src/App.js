@@ -22,8 +22,6 @@ function App() {
     null,
   );
 
-  console.log('instance', instanceAddress);
-
   const styles = {
     container: {
       display: 'flex',
