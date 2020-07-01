@@ -35,7 +35,7 @@ function App() {
   const handleUpdateFired = useCallback(() => {
     rootLS();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentDirectory, ready]);
+  }, [currentDirectory, ready, sharedFS]);
 
   const connectOrbit = async (ipfs) => {
     const orbitdb = await OrbitDB.createInstance(ipfs);
@@ -61,26 +61,35 @@ function App() {
       connectOrbit(ipfsObj.ipfs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, instanceAddress, currentDirectory]);
+  }, [
+    ipfsObj.ipfs,
+    ipfsObj.isIpfsReady,
+    instanceAddress,
+    currentDirectory,
+    ready,
+  ]);
 
-  const rootLS = async (force) => {
-    if (ready || force) {
-      const res = await sharedFS.current.fs.ls(currentDirectory);
+  const rootLS = useCallback(
+    async (force) => {
+      if (ready || force) {
+        const res = await sharedFS.current.fs.ls(currentDirectory);
 
-      let contents = [];
+        let contents = [];
 
-      for (let lsItem of res) {
-        const type = sharedFS.current.fs.content(lsItem);
+        for (let lsItem of res) {
+          const type = sharedFS.current.fs.content(lsItem);
 
-        contents.push({
-          type,
-          path: lsItem,
-        });
+          contents.push({
+            type,
+            path: lsItem,
+          });
+        }
+
+        setDirectoryContents(contents);
       }
-
-      setDirectoryContents(contents);
-    }
-  };
+    },
+    [ready, currentDirectory, sharedFS],
+  );
 
   useEffect(() => {
     rootLS();
