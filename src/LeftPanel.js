@@ -1,6 +1,7 @@
 import React from 'react';
 import {primary, primary4, primary45, primary5} from './colors';
-import {FaTrash, FaCog} from 'react-icons/fa';
+import {FaFolderOpen, FaCog, FaDatabase} from 'react-icons/fa';
+import {FiDatabase} from 'react-icons/fi';
 import {PanelItem} from './components/PanelItem';
 
 const styles = {
@@ -27,9 +28,6 @@ const styles = {
     bottom: 0,
     width: '100%',
   },
-  icon: {
-    marginRight: 4,
-  },
 };
 
 export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
@@ -38,14 +36,16 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
       <div>
         <div style={styles.logo}>Sailplane</div>
         <PanelItem
-          title={'Files'}
-          selected={currentRightPanel === 'files'}
-          onClick={() => setCurrentRightPanel('files')}
+          title={'Instances'}
+          iconComponent={FaDatabase}
+          selected={currentRightPanel === 'instances'}
+          onClick={() => setCurrentRightPanel('instances')}
         />
         <PanelItem
-          title={'Trash'}
-          icon={<FaTrash color={'#FFF'} size={12} style={styles.icon} />}
-          selected={false}
+          title={'Files'}
+          iconComponent={FaFolderOpen}
+          selected={currentRightPanel === 'files'}
+          onClick={() => setCurrentRightPanel('files')}
         />
       </div>
 
@@ -54,7 +54,7 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
           title={'Settings'}
           selected={currentRightPanel === 'settings'}
           onClick={() => setCurrentRightPanel('settings')}
-          icon={<FaCog color={'#FFF'} size={15} style={styles.icon} />}
+          iconComponent={FaCog}
         />
       </div>
     </div>

@@ -1,9 +1,11 @@
 import React from 'react';
-import {primary4} from '../colors';
+import {primary4, primary45} from '../colors';
 import useHover from '../hooks/useHover';
+import {FaFolderOpen} from 'react-icons/fa';
 
-export function PanelItem({selected, onClick, title, icon}) {
+export function PanelItem({selected, onClick, title, iconComponent}) {
   const [hoverRef, isHovered] = useHover();
+  const IconComponent = iconComponent;
 
   const styles = {
     container: {
@@ -22,10 +24,15 @@ export function PanelItem({selected, onClick, title, icon}) {
       color: selected ? primary4 : '#FFF',
       // marginRight: 4,
     },
+    icon: {
+      marginRight: 4,
+    },
   };
   return (
     <div style={styles.container} onClick={onClick} ref={hoverRef}>
-      {icon}
+      {iconComponent ? (
+        <IconComponent color={selected?primary45:'#FFF'} size={12} style={styles.icon} />
+      ) : null}
       <span style={styles.title}>{title}</span>
     </div>
   );

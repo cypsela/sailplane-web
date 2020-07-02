@@ -10,6 +10,7 @@ import {LoadingRightBlock} from './LoadingRightBlock';
 import {useLocalStorage} from './hooks/useLocalStorage';
 import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
+import {Instances} from './Instances';
 
 function App() {
   const windowSize = useWindowSize();
@@ -109,6 +110,8 @@ function App() {
       );
     } else if (currentRightPanel === 'settings') {
       return <Settings />;
+    } else if (currentRightPanel === 'instances') {
+      return <Instances />;
     }
   };
 
