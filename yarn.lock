@@ -1786,9 +1786,9 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@tabcat/file-list-source@https://github.com/tabcat/file-list-source":
-  version "1.0.0"
-  resolved "https://github.com/tabcat/file-list-source#06cd494bfb45ba711e93f33b0b266c20bd0b703f"
+"@tabcat/file-list-source@https://github.com/tabcat/file-list-source#858ad4e09e0f17b9bd53185618d68739f0f3409b":
+  version "1.0.1"
+  resolved "https://github.com/tabcat/file-list-source#858ad4e09e0f17b9bd53185618d68739f0f3409b"
   dependencies:
     dlv "^1.1.3"
     err-code "^2.0.0"

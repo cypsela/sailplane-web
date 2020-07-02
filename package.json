@@ -5,7 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#f1b2c9794f2bd19e48c3d349343c9f64371688a7",
-    "@tabcat/file-list-source": "https://github.com/tabcat/file-list-source",
+    "@tabcat/file-list-source": "https://github.com/tabcat/file-list-source#858ad4e09e0f17b9bd53185618d68739f0f3409b",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
