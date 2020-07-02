@@ -12,6 +12,7 @@ import {
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import {Draggable} from 'react-beautiful-dnd';
+import useTextInput from "../hooks/useTextInput";
 
 export function FileItem({
   data,
@@ -27,17 +28,19 @@ export function FileItem({
   const [editMode, setEditMode] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const name = pathSplit[pathSplit.length - 1];
-  const editInputRef = useRef(null);
-  const [editNameValue, setEditNameValue] = useState(name);
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
 
-  useEffect(() => {
-    if (editMode) {
-      editInputRef.current.focus();
-      editInputRef.current.select();
+  const InputComponent = useTextInput(
+    editMode,
+    (editNameValue) => rename(editNameValue),
+    () => setEditMode(false),
+    name,
+    {
+      placeholder: '',
+      actionTitle: 'Rename',
     }
-  }, [editMode]);
+  );
 
   const styles = {
     outer: {
@@ -69,21 +72,10 @@ export function FileItem({
       opacity: (isHovered || fileBlob) && !isParent ? 1 : 0,
       fontSize: 14,
     },
-    editInput: {
-      border: `1px solid ${primary3}`,
-      borderRadius: 4,
-      color: primary,
-      fontSize: 14,
-      padding: 4,
-      flexGrow: 2,
-    },
-    editNameAction: {
-      fontSize: 13,
-      padding: 4,
-    },
+
   };
 
-  const rename = async () => {
+  const rename = async (editNameValue) => {
     try {
       await sharedFs.current.move(path, parentPath, editNameValue);
     } catch (e) {
@@ -154,25 +146,7 @@ export function FileItem({
                   )}
                   {editMode ? (
                     <>
-                      <input
-                        ref={editInputRef}
-                        type={'text'}
-                        style={styles.editInput}
-                        value={editNameValue}
-                        onChange={(event) =>
-                          setEditNameValue(event.target.value)
-                        }
-                        onKeyPress={(event) => {
-                          if (event.key === 'Enter') {
-                            rename();
-                          }
-                        }}
-                      />
-                      <ToolItem title={'Save'} onClick={rename} />
-                      <ToolItem
-                        title={'Cancel'}
-                        onClick={() => setEditMode(false)}
-                      />
+                      {InputComponent}
                     </>
                   ) : isParent ? (
                     '. . /'

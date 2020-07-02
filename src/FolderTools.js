@@ -28,6 +28,10 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory}) {
     (newFolderName) => createFolder(newFolderName),
     () => setAddFolderMode(false),
     '',
+    {
+      placeholder: 'new folder',
+      actionTitle: 'Create',
+    }
   );
 
   const createFolder = async (newFolderName) => {

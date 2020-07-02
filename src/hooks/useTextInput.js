@@ -2,12 +2,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import {ToolItem} from '../components/ToolItem';
 import {primary, primary3} from '../colors';
 
-export default function useTextInput(visible, handleDone, handleCancel, initialValue) {
+export default function useTextInput(visible, handleDone, handleCancel, initialValue, {placeholder, actionTitle}) {
   const [inputString, setInputString] = useState(initialValue);
   const inputRef = useRef(null);
 
   const styles = {
-    editInput: {
+    input: {
       border: `1px solid ${primary3}`,
       borderRadius: 4,
       color: primary,
@@ -20,6 +20,7 @@ export default function useTextInput(visible, handleDone, handleCancel, initialV
   useEffect(() => {
     if (visible) {
       inputRef.current.focus();
+      inputRef.current.select();
     } else {
       setInputString(initialValue);
     }
@@ -30,8 +31,8 @@ export default function useTextInput(visible, handleDone, handleCancel, initialV
       <input
         ref={inputRef}
         type={'text'}
-        placeholder={'new folder'}
-        style={styles.editInput}
+        placeholder={placeholder}
+        style={styles.input}
         value={inputString}
         onChange={(event) => setInputString(event.target.value)}
         onKeyPress={(event) => {
@@ -40,7 +41,7 @@ export default function useTextInput(visible, handleDone, handleCancel, initialV
           }
         }}
       />
-      <ToolItem title={'Create'} onClick={() => handleDone(inputString)} />
+      <ToolItem title={actionTitle} onClick={() => handleDone(inputString)} />
       <ToolItem
         title={'Cancel'}
         onClick={() => {
