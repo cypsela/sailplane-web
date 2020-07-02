@@ -53,9 +53,9 @@ function App() {
     }
   };
 
-  useEffect( () => {
+  useEffect(() => {
     rootLS();
-  }, [ready, currentDirectory, sharedFS, lastUpdateTime]);
+  }, [ready, currentDirectory, lastUpdateTime]);
 
   const connectOrbit = useCallback(
     async (ipfs) => {
@@ -71,13 +71,15 @@ function App() {
       }
       sharedFS.current = await sailplane.mount(address, {});
 
-      sharedFS.current.events.on('updated', ()=> {
+      sharedFS.current.events.on('updated', () => {
         setLastUpdateTime(Date.now());
       });
-      console.log('adds', await ipfs.config.get('Addresses'));
+
+      // console.log('adds', await ipfs.config.get('Addresses'));
+
       setReady(true);
     },
-    [instanceAddress, setInstanceAddress, currentDirectory, rootLS],
+    [instanceAddress, setInstanceAddress],
   );
 
   // Connect orbit todo: refactor hook
