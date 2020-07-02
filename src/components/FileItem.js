@@ -19,6 +19,7 @@ export function FileItem({
   setCurrentDirectory,
   ipfs,
   fileIndex,
+  isParent,
 }) {
   const {path, type} = data;
   const pathSplit = path.split('/');
@@ -47,6 +48,7 @@ export function FileItem({
       fontSize: 14,
       padding: 7,
       marginBottom: 8,
+      fontFamily: 'Open Sans',
     },
     container: {
       display: 'flex',
@@ -59,13 +61,12 @@ export function FileItem({
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      fontFamily: 'Open Sans',
     },
     icon: {
       marginRight: 4,
     },
     tools: {
-      opacity: isHovered || fileBlob ? 1 : 0,
+      opacity: (isHovered || fileBlob) && !isParent ? 1 : 0,
       fontSize: 14,
     },
     editInput: {
@@ -156,6 +157,8 @@ export function FileItem({
                         onClick={() => setEditMode(false)}
                       />
                     </>
+                  ) : isParent ? (
+                    '. . /'
                   ) : (
                     name
                   )}

@@ -53,14 +53,16 @@ export function FileBlock({
   const directories = sortedContents.filter((item) => item.type === 'dir');
   const files = sortedContents.filter((item) => item.type !== 'dir');
   const fullFileList = directories.concat(files);
+
+  const pathSplit = currentDirectory.split('/');
+  const parentSplit = pathSplit.slice(0, pathSplit.length - 1);
+  const parentPath = parentSplit.join('/');
+
   return (
     <div style={styles.container}>
-      <Breadcrumb
-        currentDirectory={currentDirectory}
-        setCurrentDirectory={setCurrentDirectory}
-      />
 
-      <FolderTools currentDirectory={currentDirectory} sharedFs={sharedFs} />
+
+      <FolderTools currentDirectory={currentDirectory} sharedFs={sharedFs} setCurrentDirectory={setCurrentDirectory}/>
       <div style={styles.fileHeader}>
         <div style={{...styles.fileHeaderItem, marginLeft: 8}}>Name</div>
         <div style={styles.fileHeaderItem}>Modified</div>
@@ -96,16 +98,29 @@ export function FileBlock({
                   {!directoryContents.length ? (
                     <p>drag or click to upload</p>
                   ) : (
-                    fullFileList.map((fileItem, index) => (
-                      <FileItem
-                        fileIndex={index}
-                        key={fileItem.path}
-                        data={fileItem}
-                        sharedFs={sharedFs}
-                        ipfs={ipfs}
-                        setCurrentDirectory={setCurrentDirectory}
-                      />
-                    ))
+                    <>
+                      {currentDirectory !== '/r' ? (
+                        <FileItem
+                          fileIndex={1000}
+                          isParent={true}
+                          key={parentPath}
+                          data={{path: parentPath, type: 'dir'}}
+                          sharedFs={sharedFs}
+                          ipfs={ipfs}
+                          setCurrentDirectory={setCurrentDirectory}
+                        />
+                      ) : null}
+                      {fullFileList.map((fileItem, index) => (
+                        <FileItem
+                          fileIndex={index}
+                          key={fileItem.path}
+                          data={fileItem}
+                          sharedFs={sharedFs}
+                          ipfs={ipfs}
+                          setCurrentDirectory={setCurrentDirectory}
+                        />
+                      ))}
+                    </>
                   )}
                 </div>
               )}
