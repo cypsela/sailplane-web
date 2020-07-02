@@ -34,7 +34,7 @@ export function ToolItem({
       color: '#FFF',
       padding: 8,
       borderRadius: 4,
-      left: -(tooltipDimenstions.width / 2) + 8,
+      left: -(tooltipDimenstions?tooltipDimenstions.width:0 / 2) + 8,
       fontSize: 14,
       fontWeight: 400,
     },
