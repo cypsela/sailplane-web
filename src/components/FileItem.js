@@ -145,7 +145,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
           <ToolItem
             iconComponent={FiEdit}
             changeColor={primary}
-            tooltip={'Edit'}
+            tooltip={'Rename'}
             onClick={async (event) => {
               event.stopPropagation();
 
@@ -155,7 +155,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
 
           <ToolItem
             iconComponent={FiTrash}
-            tooltip={'Remove'}
+            tooltip={'Delete'}
             onClick={async (event) => {
               event.stopPropagation();
 
