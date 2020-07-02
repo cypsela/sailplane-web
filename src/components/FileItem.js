@@ -6,7 +6,7 @@ import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
 import {getBlobFromPath} from '../utils/Utils';
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
 
 export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
   const {path, type} = data;
@@ -72,11 +72,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
 
   const rename = async () => {
     try {
-      await sharedFs.current.move(
-        path,
-        parentPath,
-        editNameValue,
-      );
+      await sharedFs.current.move(path, parentPath, editNameValue);
     } catch (e) {
       console.log('Error moving!', e);
     }
@@ -120,16 +116,13 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
                 style={styles.editInput}
                 value={editNameValue}
                 onChange={(event) => setEditNameValue(event.target.value)}
-                onKeyPress={event=>{
+                onKeyPress={(event) => {
                   if (event.key === 'Enter') {
                     rename();
                   }
                 }}
               />
-              <ToolItem
-                title={'Save'}
-                onClick={rename}
-              />
+              <ToolItem title={'Save'} onClick={rename} />
               <ToolItem title={'Cancel'} onClick={() => setEditMode(false)} />
             </>
           ) : (
