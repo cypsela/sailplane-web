@@ -96,6 +96,17 @@ export function FileBlock({
               isCombineEnabled={true}>
               {(provided, snapshot) => (
                 <div style={styles.filesContainer}>
+                  {currentDirectory !== '/r' ? (
+                    <FileItem
+                      fileIndex={0}
+                      isParent={true}
+                      key={parentPath}
+                      data={{path: parentPath, type: 'dir'}}
+                      sharedFs={sharedFs}
+                      ipfs={ipfs}
+                      setCurrentDirectory={setCurrentDirectory}
+                    />
+                  ) : null}
                   <div
                     ref={provided.innerRef}
                     style={
@@ -108,17 +119,7 @@ export function FileBlock({
                       <p>drag or click to upload</p>
                     ) : (
                       <div style={styles.files}>
-                        {currentDirectory !== '/r' ? (
-                          <FileItem
-                            fileIndex={0}
-                            isParent={true}
-                            key={parentPath}
-                            data={{path: parentPath, type: 'dir'}}
-                            sharedFs={sharedFs}
-                            ipfs={ipfs}
-                            setCurrentDirectory={setCurrentDirectory}
-                          />
-                        ) : null}
+
                         {fullFileList.map((fileItem, index) => (
                           <FileItem
                             fileIndex={index + 1}

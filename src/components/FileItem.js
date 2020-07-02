@@ -12,7 +12,7 @@ import {
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import {Draggable} from 'react-beautiful-dnd';
-import useTextInput from "../hooks/useTextInput";
+import useTextInput from '../hooks/useTextInput';
 
 export function FileItem({
   data,
@@ -72,7 +72,6 @@ export function FileItem({
       opacity: (isHovered || fileBlob) && !isParent ? 1 : 0,
       fontSize: 14,
     },
-
   };
 
   const rename = async (editNameValue) => {
@@ -92,109 +91,108 @@ export function FileItem({
     return {
       ...style,
       // cannot be 0, but make it super tiny
-      transitionDuration: `0.001s`
+      transitionDuration: `0.001s`,
     };
   }
 
+  const getContent = (snapshot) => {
+    if (!snapshot) {
+      snapshot = {};
+    }
+
+    return (
+      <div
+        style={{
+          ...styles.outer,
+          backgroundColor:
+            snapshot.combineTargetFor && type === 'dir' ? primary2 : '#FFF',
+        }}>
+        <div
+          style={styles.container}
+          ref={hoverRef}
+          onClick={async (event) => {
+            event.stopPropagation();
+
+            if (editMode) {
+              return;
+            }
+
+            if (type === 'dir') {
+              setCurrentDirectory(path);
+            } else {
+              if (
+                !fileBlob &&
+                supportedPreviewExtensions.includes(fileExtension)
+              ) {
+                const blob = await getBlobFromPath(sharedFs, path, ipfs);
+                setFileBlob(blob);
+              } else {
+                setFileBlob(null);
+              }
+            }
+          }}>
+          <div style={styles.nameContainer}>
+            {type === 'dir' ? (
+              <FaFolder color={primary45} size={16} style={styles.icon} />
+            ) : (
+              <FiFile color={primary45} size={16} style={styles.icon} />
+            )}
+            {editMode ? <>{InputComponent}</> : isParent ? '. . /' : name}
+          </div>
+          <div style={styles.tools}>
+            <ToolItem
+              iconComponent={FiDownload}
+              changeColor={primary}
+              tooltip={'Download'}
+              onClick={async (event) => {
+                event.stopPropagation();
+
+                const blob = await getBlobFromPath(sharedFs, path, ipfs);
+                saveAs(blob, name);
+              }}
+            />
+
+            <ToolItem
+              iconComponent={FiEdit}
+              changeColor={primary}
+              tooltip={'Rename'}
+              onClick={async (event) => {
+                event.stopPropagation();
+
+                setEditMode(true);
+              }}
+            />
+
+            <ToolItem
+              iconComponent={FiTrash}
+              tooltip={'Delete'}
+              onClick={async (event) => {
+                event.stopPropagation();
+
+                await sharedFs.current.remove(path);
+              }}
+            />
+          </div>
+        </div>
+        {fileBlob ? (
+          <div style={styles.preview}>
+            <FilePreview blob={fileBlob} filename={name} />
+          </div>
+        ) : null}
+      </div>
+    );
+  };
+
   return (
     <Draggable draggableId={path} index={fileIndex}>
-      {({ innerRef, draggableProps, dragHandleProps }, snapshot) => {
+      {({innerRef, draggableProps, dragHandleProps}, snapshot) => {
         return (
           <div
             ref={innerRef}
             {...draggableProps}
             {...dragHandleProps}
-            style={getStyle(draggableProps.style, snapshot)}
-          >
-            <div
-              style={{
-                ...styles.outer,
-                backgroundColor:
-                  snapshot.combineTargetFor && type === 'dir'
-                    ? primary2
-                    : '#FFF',
-              }}>
-              <div
-                style={styles.container}
-                ref={hoverRef}
-                onClick={async (event) => {
-                  event.stopPropagation();
-
-                  if (editMode) {
-                    return;
-                  }
-
-                  if (type === 'dir') {
-                    setCurrentDirectory(path);
-                  } else {
-                    if (
-                      !fileBlob &&
-                      supportedPreviewExtensions.includes(fileExtension)
-                    ) {
-                      const blob = await getBlobFromPath(sharedFs, path, ipfs);
-                      setFileBlob(blob);
-                    } else {
-                      setFileBlob(null);
-                    }
-                  }
-                }}>
-                <div style={styles.nameContainer}>
-                  {type === 'dir' ? (
-                    <FaFolder color={primary45} size={16} style={styles.icon} />
-                  ) : (
-                    <FiFile color={primary45} size={16} style={styles.icon} />
-                  )}
-                  {editMode ? (
-                    <>
-                      {InputComponent}
-                    </>
-                  ) : isParent ? (
-                    '. . /'
-                  ) : (
-                    name
-                  )}
-                </div>
-                <div style={styles.tools}>
-                  <ToolItem
-                    iconComponent={FiDownload}
-                    changeColor={primary}
-                    tooltip={'Download'}
-                    onClick={async (event) => {
-                      event.stopPropagation();
-
-                      const blob = await getBlobFromPath(sharedFs, path, ipfs);
-                      saveAs(blob, name);
-                    }}
-                  />
-
-                  <ToolItem
-                    iconComponent={FiEdit}
-                    changeColor={primary}
-                    tooltip={'Rename'}
-                    onClick={async (event) => {
-                      event.stopPropagation();
-
-                      setEditMode(true);
-                    }}
-                  />
-
-                  <ToolItem
-                    iconComponent={FiTrash}
-                    tooltip={'Delete'}
-                    onClick={async (event) => {
-                      event.stopPropagation();
-
-                      await sharedFs.current.remove(path);
-                    }}
-                  />
-                </div>
-              </div>
-              {fileBlob ? (
-                <div style={styles.preview}>
-                  <FilePreview blob={fileBlob} filename={name} />
-                </div>
-              ) : null}
-            </div>
+            style={getStyle(draggableProps.style, snapshot)}>
+            {getContent(snapshot)}
           </div>
         );
       }}
