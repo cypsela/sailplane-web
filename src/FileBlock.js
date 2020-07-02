@@ -1,7 +1,7 @@
 import {FileItem} from './components/FileItem';
 import {DropZone} from './DropZone';
 import React from 'react';
-import {primary2, primary5} from './colors';
+import {primary2, primary35} from './colors';
 import {FolderTools} from './FolderTools';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 
@@ -13,6 +13,7 @@ const styles = {
     overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
+    fontFamily: 'Open Sans',
   },
   fileHeader: {
     marginTop: 20,
@@ -22,12 +23,12 @@ const styles = {
     borderBottom: `1px solid ${primary2}`,
     paddingBottom: 10,
     marginBottom: 4,
-    fontFamily: 'Open Sans',
   },
   fileHeaderItem: {
     width: '100%',
-    color: primary5,
-    fontSize: 14,
+    color: primary35,
+    fontSize: 12,
+    letterSpacing: 1.08,
   },
   files: {
     backgroundColor: '#FFF',
@@ -119,7 +120,6 @@ export function FileBlock({
                       <p>drag or click to upload</p>
                     ) : (
                       <div style={styles.files}>
-
                         {fullFileList.map((fileItem, index) => (
                           <FileItem
                             fileIndex={index + 1}

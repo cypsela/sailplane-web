@@ -1,6 +1,6 @@
 import React from 'react';
 import {FaChevronRight} from 'react-icons/fa';
-import {primary4, primary45} from '../colors';
+import {primary45} from '../colors';
 
 const styles = {
   container: {
@@ -36,7 +36,7 @@ export function Breadcrumb({currentDirectory, setCurrentDirectory}) {
   return (
     <div style={styles.container}>
       <FaChevronRight
-        color={primary4}
+        color={primary45}
         size={16}
         style={styles.icon}
         onClick={() => setCurrentDirectory('/r')}

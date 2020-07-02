@@ -1,14 +1,6 @@
 import React from 'react';
-import {
-  primary,
-  primary3,
-  primary4,
-  primary45,
-  primary5,
-  primary6,
-} from './colors';
+import {primary45} from './colors';
 import {FaFolderOpen, FaCog, FaDatabase} from 'react-icons/fa';
-import {FiDatabase} from 'react-icons/fi';
 import {PanelItem} from './components/PanelItem';
 
 const styles = {
@@ -18,7 +10,7 @@ const styles = {
     justifyContent: 'space-between',
     backgroundColor: primary45,
     color: '#FFF',
-    padding: "20px 40px",
+    padding: '20px 40px',
     width: 150,
     fontFamily: 'Open Sans',
     paddingBottom: 0,
@@ -26,8 +18,8 @@ const styles = {
   logo: {
     fontFamily: 'MuseoModerno',
     color: '#FFF',
-    fontSize: 18,
-    fontWeight: 600,
+    fontSize: 24,
+    fontWeight: 500,
     marginBottom: 10,
     textAlign: 'center',
   },

@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {primary, primary2, primary3, primary4, primary45} from '../colors';
+import React, {useState} from 'react';
+import {primary, primary2, primary45, primary5} from '../colors';
 import {FaFolder} from 'react-icons/fa';
 import {FiDownload, FiEdit, FiFile, FiTrash} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
@@ -47,7 +47,7 @@ export function FileItem({
       border:
         isHovered || fileBlob ? `1px solid ${primary2}` : '1px solid #FFF',
       borderRadius: 4,
-      color: primary,
+      color: primary5,
       fontSize: 14,
       padding: 7,
       marginBottom: 8,
