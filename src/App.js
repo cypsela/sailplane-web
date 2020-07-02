@@ -9,6 +9,7 @@ import Sailplane from '@cypsela/sailplane-node';
 import {LoadingRightBlock} from './LoadingRightBlock';
 import {useLocalStorage} from './hooks/useLocalStorage';
 import {hot} from 'react-hot-loader';
+import {Settings} from "./Settings";
 
 function App() {
   const windowSize = useWindowSize();
@@ -19,9 +20,14 @@ function App() {
   const [directoryContents, setDirectoryContents] = useState([]);
   const [currentDirectory, setCurrentDirectory] = useState('/r');
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
-  const [instanceAddress, setInstanceAddress] = useLocalStorage(
-    'instanceAddress',
-    null,
+  const [currentRightPanel, setCurrentRightPanel] = useState('files');
+  const [instanceAddresses, setInstanceAddresses] = useLocalStorage(
+    'instanceAddresses',
+    [],
+  );
+  const [instanceAddressIndex, setInstanceAddressIndex] = useLocalStorage(
+    'instanceAddressIndex',
+    0,
   );
 
   const styles = {
@@ -64,11 +70,11 @@ function App() {
 
       const sailplane = await Sailplane.create(orbitdb, {});
       let address;
-      if (instanceAddress) {
-        address = instanceAddress;
+      if (instanceAddresses.length) {
+        address = instanceAddresses[instanceAddressIndex].address;
       } else {
         address = await sailplane.determineAddress('superdrive');
-        setInstanceAddress(address.toString());
+        setInstanceAddresses([{address: address.toString(), name: 'main'}]);
       }
       sharedFS.current = await sailplane.mount(address, {});
 
@@ -80,7 +86,7 @@ function App() {
 
       setReady(true);
     },
-    [instanceAddress, setInstanceAddress],
+    [instanceAddresses, setInstanceAddresses],
   );
 
   // Connect orbit todo: refactor hook
@@ -90,18 +96,32 @@ function App() {
     }
   }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, connectOrbit]);
 
+  const getRightPanel = () => {
+    if (currentRightPanel==='files') {
+      return <FileBlock
+        sharedFs={sharedFS}
+        ipfs={ipfsObj.ipfs}
+        directoryContents={directoryContents}
+        setCurrentDirectory={setCurrentDirectory}
+        currentDirectory={currentDirectory}
+      />
+    } else if(currentRightPanel ==='settings') {
+      return <Settings
+
+      />
+    }
+
+
+  };
+
   return (
     <div style={styles.container}>
-      {windowWidth > 600 ? <LeftPanel /> : null}
+      {windowWidth > 600 ? (
+        <LeftPanel setCurrentRightPanel={setCurrentRightPanel} currentRightPanel={currentRightPanel} />
+      ) : null}
 
       {ready ? (
-        <FileBlock
-          sharedFs={sharedFS}
-          ipfs={ipfsObj.ipfs}
-          directoryContents={directoryContents}
-          setCurrentDirectory={setCurrentDirectory}
-          currentDirectory={currentDirectory}
-        />
+        getRightPanel()
       ) : (
         <LoadingRightBlock />
       )}

@@ -32,12 +32,16 @@ const styles = {
   },
 };
 
-export function LeftPanel() {
+export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
   return (
     <div style={styles.container}>
       <div>
         <div style={styles.logo}>Sailplane</div>
-        <PanelItem title={'Files'} selected={true} />
+        <PanelItem
+          title={'Files'}
+          selected={currentRightPanel === 'files'}
+          onClick={() => setCurrentRightPanel('files')}
+        />
         <PanelItem
           title={'Trash'}
           icon={<FaTrash color={'#FFF'} size={12} style={styles.icon} />}
@@ -48,6 +52,8 @@ export function LeftPanel() {
       <div style={styles.settingsBlock}>
         <PanelItem
           title={'Settings'}
+          selected={currentRightPanel === 'settings'}
+          onClick={() => setCurrentRightPanel('settings')}
           icon={<FaCog color={'#FFF'} size={15} style={styles.icon} />}
         />
       </div>

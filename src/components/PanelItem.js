@@ -1,6 +1,6 @@
 import React from 'react';
 import {primary4} from '../colors';
-import useHover from "../hooks/useHover";
+import useHover from '../hooks/useHover';
 
 export function PanelItem({selected, onClick, title, icon}) {
   const [hoverRef, isHovered] = useHover();
