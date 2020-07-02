@@ -14,6 +14,7 @@ export function ToolItem({
   const [hoverRef, isHovered] = useHover();
   const [tooltipRef, tooltipDimenstions] = useDimensions();
   const IconComponent = iconComponent;
+  const tooltipWidth = tooltipDimenstions.width ? tooltipDimenstions.width : 0;
 
   if (!changeColor) {
     changeColor = errorColor;
@@ -34,7 +35,7 @@ export function ToolItem({
       color: '#FFF',
       padding: 8,
       borderRadius: 4,
-      left: -(tooltipDimenstions?tooltipDimenstions.width:0 / 2) + 8,
+      left: -(tooltipWidth / 2) + 8,
       fontSize: 14,
       fontWeight: 400,
     },

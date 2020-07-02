@@ -17,6 +17,7 @@ function App() {
   const [ready, setReady] = useState(false);
   const [directoryContents, setDirectoryContents] = useState([]);
   const [currentDirectory, setCurrentDirectory] = useState('/r');
+  const [lastUpdateTime, setLastUpdateTime] = useState(null);
   const [instanceAddress, setInstanceAddress] = useLocalStorage(
     'instanceAddress',
     null,
@@ -30,72 +31,61 @@ function App() {
     },
   };
 
-  const handleUpdateFired = useCallback(() => {
-    rootLS();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentDirectory, ready, sharedFS]);
+  const rootLS = async () => {
+    if (ready) {
+      const res = await sharedFS.current.fs.ls(currentDirectory);
 
-  const connectOrbit = async (ipfs) => {
-    const orbitdb = await OrbitDB.createInstance(ipfs);
-    const sailplane = await Sailplane.create(orbitdb, {});
+      let contents = [];
 
-    let address;
-    if (instanceAddress) {
-      address = instanceAddress;
-    } else {
-      address = await sailplane.determineAddress('superdrive');
-      setInstanceAddress(address.toString());
+      for (let lsItem of res) {
+        const type = sharedFS.current.fs.content(lsItem);
+        const pathSplit = lsItem.split('/');
+        const name = pathSplit[pathSplit.length - 1];
+
+        contents.push({
+          type,
+          name,
+          path: lsItem,
+        });
+      }
+
+      setDirectoryContents(contents);
     }
-    sharedFS.current = await sailplane.mount(address, {});
-    sharedFS.current.events.on('updated', handleUpdateFired);
-
-    console.log('adds', await ipfs.config.get('Addresses'));
-    setReady(true);
   };
 
-  // Connect orbit todo: make hook
-  useEffect(() => {
-    if (ipfsObj.isIpfsReady) {
-      connectOrbit(ipfsObj.ipfs);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    ipfsObj.ipfs,
-    ipfsObj.isIpfsReady,
-    instanceAddress,
-    currentDirectory,
-    ready,
-  ]);
+  useEffect( () => {
+    rootLS();
+  }, [ready, currentDirectory, sharedFS, lastUpdateTime]);
 
-  const rootLS = useCallback(
-    async (force) => {
-      if (ready || force) {
-        const res = await sharedFS.current.fs.ls(currentDirectory);
+  const connectOrbit = useCallback(
+    async (ipfs) => {
+      const orbitdb = await OrbitDB.createInstance(ipfs);
 
-        let contents = [];
-
-        for (let lsItem of res) {
-          const type = sharedFS.current.fs.content(lsItem);
-          const pathSplit = lsItem.split('/');
-          const name = pathSplit[pathSplit.length - 1];
-
-          contents.push({
-            type,
-            name,
-            path: lsItem,
-          });
-        }
-
-        setDirectoryContents(contents);
+      const sailplane = await Sailplane.create(orbitdb, {});
+      let address;
+      if (instanceAddress) {
+        address = instanceAddress;
+      } else {
+        address = await sailplane.determineAddress('superdrive');
+        setInstanceAddress(address.toString());
       }
+      sharedFS.current = await sailplane.mount(address, {});
+
+      sharedFS.current.events.on('updated', ()=> {
+        setLastUpdateTime(Date.now());
+      });
+      console.log('adds', await ipfs.config.get('Addresses'));
+      setReady(true);
     },
-    [ready, currentDirectory, sharedFS],
+    [instanceAddress, setInstanceAddress, currentDirectory, rootLS],
   );
 
+  // Connect orbit todo: refactor hook
   useEffect(() => {
-    rootLS();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, currentDirectory]);
+    if (ipfsObj.isIpfsReady && !ready) {
+      connectOrbit(ipfsObj.ipfs);
+    }
+  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, connectOrbit]);
 
   return (
     <div style={styles.container}>
