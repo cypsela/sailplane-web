@@ -6,6 +6,7 @@ export const primary2 = '#ecf4f9';
 export const primary3 = '#9fc7e0';
 export const primary4 = '#609bb8';
 export const primary45 = 'hsla(205, 49%, 66%, 1)';
+export const primary46 = '#67a1cb';
 
 export const primary5 = '#3881ad';
 export const primary6 = '#132b3a';

@@ -8,7 +8,7 @@ export function Instance({data, selected}) {
   const styles = {
     container: {
       padding: 10,
-      backgroundColor: isHovered ? primary3 : selected ? primary45 : '#FFF',
+      backgroundColor: selected ? primary45 : '#FFF',
       color: isHovered || selected ? '#FFF' : primary4,
       border: `1px solid ${primary3}`,
       borderRadius: 4,
