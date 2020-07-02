@@ -110,7 +110,7 @@ export function FileBlock({
                       <div style={styles.files}>
                         {currentDirectory !== '/r' ? (
                           <FileItem
-                            fileIndex={1000}
+                            fileIndex={0}
                             isParent={true}
                             key={parentPath}
                             data={{path: parentPath, type: 'dir'}}
@@ -121,7 +121,7 @@ export function FileBlock({
                         ) : null}
                         {fullFileList.map((fileItem, index) => (
                           <FileItem
-                            fileIndex={index}
+                            fileIndex={index+1}
                             key={fileItem.path}
                             data={fileItem}
                             sharedFs={sharedFs}
