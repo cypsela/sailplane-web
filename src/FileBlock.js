@@ -1,4 +1,3 @@
-import {Breadcrumb} from './components/Breadcrumb';
 import {FileItem} from './components/FileItem';
 import {DropZone} from './DropZone';
 import React from 'react';
@@ -28,10 +27,8 @@ const styles = {
     color: primary5,
     fontSize: 14,
   },
-  files: {
-    overflowY: 'auto',
+  filesContainer: {
     height: '100%',
-    boxSizing: 'content-box',
   },
 };
 
@@ -65,9 +62,9 @@ export function FileBlock({
       <FolderTools currentDirectory={currentDirectory} sharedFs={sharedFs} setCurrentDirectory={setCurrentDirectory}/>
       <div style={styles.fileHeader}>
         <div style={{...styles.fileHeaderItem, marginLeft: 8}}>Name</div>
-        <div style={styles.fileHeaderItem}>Modified</div>
+        {/*<div style={styles.fileHeaderItem}>Modified</div>*/}
       </div>
-      <div style={styles.files}>
+      <div style={styles.filesContainer}>
         <DropZone sharedFs={sharedFs} currentDirectory={currentDirectory}>
           <DragDropContext
             onDragEnd={async (draggable) => {
@@ -98,7 +95,7 @@ export function FileBlock({
                   {!directoryContents.length ? (
                     <p>drag or click to upload</p>
                   ) : (
-                    <>
+                    <div style={styles.files}>
                       {currentDirectory !== '/r' ? (
                         <FileItem
                           fileIndex={1000}
@@ -120,7 +117,7 @@ export function FileBlock({
                           setCurrentDirectory={setCurrentDirectory}
                         />
                       ))}
-                    </>
+                    </div>
                   )}
                 </div>
               )}

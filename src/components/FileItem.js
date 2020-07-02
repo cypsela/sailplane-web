@@ -103,7 +103,9 @@ export function FileItem({
               style={{
                 ...styles.outer,
                 backgroundColor:
-                  snapshot.combineTargetFor && type === 'dir' ? primary2 : null,
+                  snapshot.combineTargetFor && type === 'dir'
+                    ? primary2
+                    : '#FFF',
               }}>
               <div
                 style={styles.container}
