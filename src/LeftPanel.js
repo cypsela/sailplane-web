@@ -1,5 +1,12 @@
 import React from 'react';
-import {primary, primary4, primary45, primary5} from './colors';
+import {
+  primary,
+  primary3,
+  primary4,
+  primary45,
+  primary5,
+  primary6,
+} from './colors';
 import {FaFolderOpen, FaCog, FaDatabase} from 'react-icons/fa';
 import {FiDatabase} from 'react-icons/fi';
 import {PanelItem} from './components/PanelItem';
@@ -19,7 +26,7 @@ const styles = {
   logo: {
     fontFamily: 'MuseoModerno',
     color: '#FFF',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 600,
     marginBottom: 10,
     textAlign: 'center',

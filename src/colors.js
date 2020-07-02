@@ -1,3 +1,6 @@
+
+
+
 export const primary = '#2b6284';
 export const primary2 = '#ecf4f9';
 export const primary3 = '#9fc7e0';

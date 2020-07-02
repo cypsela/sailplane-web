@@ -75,7 +75,7 @@ function App() {
         address = instanceAddresses[instanceAddressIndex].address;
       } else {
         address = await sailplane.determineAddress('superdrive');
-        setInstanceAddresses([{address: address.toString(), name: 'main'}]);
+        setInstanceAddresses([{address: address.toString(), name: 'Main'}]);
       }
       sharedFS.current = await sailplane.mount(address, {});
 
@@ -111,7 +111,13 @@ function App() {
     } else if (currentRightPanel === 'settings') {
       return <Settings />;
     } else if (currentRightPanel === 'instances') {
-      return <Instances />;
+      return (
+        <Instances
+          instanceAddresses={instanceAddresses}
+          instanceAddressIndex={instanceAddressIndex}
+          setInstanceAddressIndex={setInstanceAddressIndex}
+        />
+      );
     }
   };
 
