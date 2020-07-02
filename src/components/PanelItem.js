@@ -13,7 +13,7 @@ export function PanelItem({selected, onClick, title, iconComponent}) {
       flexDirection: 'row',
       justifyContent: 'flex-end',
       alignItems: 'center',
-      fontSize: 14,
+      fontSize: 16,
       cursor: 'pointer',
       padding: 8,
       borderRadius: 4,
@@ -32,7 +32,7 @@ export function PanelItem({selected, onClick, title, iconComponent}) {
       {iconComponent ? (
         <IconComponent
           color={selected ? primary45 : '#FFF'}
-          size={12}
+          size={16}
           style={styles.icon}
         />
       ) : null}
