@@ -10,7 +10,7 @@ const styles = {
     fontSize: 16,
     marginBottom: 10,
     color: primary4,
-    fontFamily: 'MuseoModerno',
+    fontFamily: 'Open Sans',
     fontWeight: 600,
     userSelect: 'none',
   },
@@ -25,6 +25,8 @@ const styles = {
   folderName: {
     fontWeight: 400,
     cursor: 'pointer',
+    marginLeft: 2,
+    marginRight: 2,
   },
 };
 
@@ -50,6 +52,7 @@ export function Breadcrumb({currentDirectory, setCurrentDirectory}) {
           <span key={pathItem}>
             <span
               style={styles.folderName}
+              className={'folderName'}
               onClick={() => {
                 setCurrentDirectory(path);
               }}>

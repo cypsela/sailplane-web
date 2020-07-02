@@ -11,7 +11,6 @@ const styles = {
 };
 
 export function FilePreview({blob, filename}) {
-  console.log('blo', blob, filename);
   const fileParts = filename.split('.');
   const ext = fileParts[fileParts.length - 1];
   const objURL = window.URL.createObjectURL(blob);

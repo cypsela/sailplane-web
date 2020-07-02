@@ -3,7 +3,7 @@ body {
     height: 100%;
 }
 
-.toolItem:hover {
+.toolItem:hover, .folderName:hover {
     text-decoration: underline;
 }
 
