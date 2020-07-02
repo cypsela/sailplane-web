@@ -8,6 +8,7 @@ import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
 import {LoadingRightBlock} from './LoadingRightBlock';
 import {useLocalStorage} from './hooks/useLocalStorage';
+import {hot} from 'react-hot-loader';
 
 function App() {
   const windowSize = useWindowSize();
@@ -108,4 +109,4 @@ function App() {
   );
 }
 
-export default App;
+export default hot(module)(App);

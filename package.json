@@ -25,8 +25,8 @@
     "react-use-dimensions": "^1.2.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -46,7 +46,11 @@
     ]
   },
   "devDependencies": {
+    "@hot-loader/react-dom": "^16.13.0",
     "@react-native-community/eslint-config": "^2.0.0",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "react-app-rewire-hot-loader": "^2.0.1",
+    "react-app-rewired": "^2.1.6",
+    "react-hot-loader": "^4.12.21"
   }
 }
