@@ -7,7 +7,6 @@ export function DropZone({children, sharedFs, currentDirectory}) {
   const styles = {
     container: {
       cursor: 'pointer',
-      padding: 10,
       textAlign: 'center',
       color: primary6,
       fontSize: 16,
@@ -15,7 +14,6 @@ export function DropZone({children, sharedFs, currentDirectory}) {
       fontFamily: 'MuseoModerno',
       outline: 0,
       userSelect: 'none',
-      height: '100%',
     },
   };
 
@@ -26,7 +24,11 @@ export function DropZone({children, sharedFs, currentDirectory}) {
     },
     [currentDirectory],
   );
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop, noClick: true});
+
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+    onDrop,
+    noClick: true,
+  });
 
   return (
     <div {...getRootProps()} style={styles.container}>
