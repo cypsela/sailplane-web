@@ -1,5 +1,9 @@
-body {
+body, html {
     background-color: #eee;
+    height: 100%;
+}
+
+#root {
     height: 100%;
 }
 

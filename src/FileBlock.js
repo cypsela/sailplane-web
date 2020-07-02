@@ -29,8 +29,8 @@ const styles = {
     color: primary5,
     fontSize: 14,
   },
-  filesContainer: {
-    height: '100%',
+  files: {
+    backgroundColor: '#FFF',
   },
   dropContainer: {
     display: 'flex',

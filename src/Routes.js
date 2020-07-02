@@ -13,9 +13,7 @@ const styles = {
 export default function Routes() {
   return (
     <Router>
-      <div style={styles.container}>
-        <Route exact path="/" component={App} />
-      </div>
+      <Route exact path="/" component={App} />
     </Router>
   );
 }

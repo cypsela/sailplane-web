@@ -9,7 +9,7 @@ import Sailplane from '@cypsela/sailplane-node';
 import {LoadingRightBlock} from './LoadingRightBlock';
 import {useLocalStorage} from './hooks/useLocalStorage';
 import {hot} from 'react-hot-loader';
-import {Settings} from "./Settings";
+import {Settings} from './Settings';
 
 function App() {
   const windowSize = useWindowSize();
@@ -34,7 +34,7 @@ function App() {
     container: {
       display: 'flex',
       flexDirection: 'row',
-      height: windowSize.height,
+      height: '100%',
     },
   };
 
@@ -97,34 +97,31 @@ function App() {
   }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, connectOrbit]);
 
   const getRightPanel = () => {
-    if (currentRightPanel==='files') {
-      return <FileBlock
-        sharedFs={sharedFS}
-        ipfs={ipfsObj.ipfs}
-        directoryContents={directoryContents}
-        setCurrentDirectory={setCurrentDirectory}
-        currentDirectory={currentDirectory}
-      />
-    } else if(currentRightPanel ==='settings') {
-      return <Settings
-
-      />
+    if (currentRightPanel === 'files') {
+      return (
+        <FileBlock
+          sharedFs={sharedFS}
+          ipfs={ipfsObj.ipfs}
+          directoryContents={directoryContents}
+          setCurrentDirectory={setCurrentDirectory}
+          currentDirectory={currentDirectory}
+        />
+      );
+    } else if (currentRightPanel === 'settings') {
+      return <Settings />;
     }
-
-
   };
 
   return (
     <div style={styles.container}>
       {windowWidth > 600 ? (
-        <LeftPanel setCurrentRightPanel={setCurrentRightPanel} currentRightPanel={currentRightPanel} />
+        <LeftPanel
+          setCurrentRightPanel={setCurrentRightPanel}
+          currentRightPanel={currentRightPanel}
+        />
       ) : null}
 
-      {ready ? (
-        getRightPanel()
-      ) : (
-        <LoadingRightBlock />
-      )}
+      {ready ? getRightPanel() : <LoadingRightBlock />}
     </div>
   );
 }
