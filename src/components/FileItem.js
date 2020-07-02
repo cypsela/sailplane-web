@@ -39,7 +39,7 @@ export function FileItem({
     {
       placeholder: '',
       actionTitle: 'Rename',
-    }
+    },
   );
 
   const styles = {

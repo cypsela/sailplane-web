@@ -3,6 +3,14 @@ body, html {
     height: 100%;
 }
 
+.addInstance{
+    cursor: pointer;
+}
+
+.addInstance:hover {
+    text-decoration: underline;
+}
+
 #root {
     height: 100%;
 }

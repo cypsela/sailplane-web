@@ -16,11 +16,13 @@ export function Instance({data, selected}) {
       cursor: 'pointer',
       display: 'flex',
       justifyContent: 'space-between',
+      alignItems: 'center',
       fontFamily: 'Open Sans',
     },
     address: {
       marginLeft: 10,
       fontSize: 14,
+      overflow: 'hidden',
     }
   };
 
