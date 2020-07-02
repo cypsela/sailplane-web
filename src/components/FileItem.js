@@ -91,14 +91,29 @@ export function FileItem({
     }
   };
 
+  function getStyle(style, snapshot) {
+    if (!snapshot.isDragging) return {};
+    if (!snapshot.isDropAnimating) {
+      return style;
+    }
+
+    return {
+      ...style,
+      // cannot be 0, but make it super tiny
+      transitionDuration: `0.001s`
+    };
+  }
+
   return (
     <Draggable draggableId={path} index={fileIndex}>
-      {(provided, snapshot) => {
+      {({ innerRef, draggableProps, dragHandleProps }, snapshot) => {
         return (
           <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}>
+            ref={innerRef}
+            {...draggableProps}
+            {...dragHandleProps}
+            style={getStyle(draggableProps.style, snapshot)}
+          >
             <div
               style={{
                 ...styles.outer,

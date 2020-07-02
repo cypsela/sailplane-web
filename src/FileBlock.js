@@ -38,7 +38,7 @@ const styles = {
     alignItems: 'stretch',
     flexGrow: 2,
     opacity: 1,
-  }
+  },
 };
 
 export function FileBlock({
@@ -121,7 +121,7 @@ export function FileBlock({
                         ) : null}
                         {fullFileList.map((fileItem, index) => (
                           <FileItem
-                            fileIndex={index+1}
+                            fileIndex={index + 1}
                             key={fileItem.path}
                             data={fileItem}
                             sharedFs={sharedFs}
@@ -131,7 +131,12 @@ export function FileBlock({
                         ))}
                       </div>
                     )}
-                    {provided.placeholder}
+                    <span
+                      style={{
+                        display: 'none',
+                      }}>
+                      {provided.placeholder}
+                    </span>
                   </div>
                 </div>
               )}
