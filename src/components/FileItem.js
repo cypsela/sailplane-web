@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {primary, primary2, primary3, primary4} from '../colors';
+import {primary, primary2, primary3, primary4, primary45} from '../colors';
 import {FaFolder} from 'react-icons/fa';
 import {FiDownload, FiEdit, FiFile, FiTrash} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
@@ -148,9 +148,9 @@ export function FileItem({
                 }}>
                 <div style={styles.nameContainer}>
                   {type === 'dir' ? (
-                    <FaFolder color={primary4} size={16} style={styles.icon} />
+                    <FaFolder color={primary45} size={16} style={styles.icon} />
                   ) : (
-                    <FiFile color={primary4} size={16} style={styles.icon} />
+                    <FiFile color={primary45} size={16} style={styles.icon} />
                   )}
                   {editMode ? (
                     <>

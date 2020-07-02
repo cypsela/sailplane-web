@@ -1,5 +1,5 @@
 import React from 'react';
-import {primary, primary4, primary5} from './colors';
+import {primary, primary4, primary45, primary5} from './colors';
 import {FaTrash, FaCog} from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
 
@@ -8,7 +8,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    backgroundColor: primary5,
+    backgroundColor: primary45,
     color: '#FFF',
     padding: 10,
     width: 150,

@@ -1,6 +1,6 @@
 import React from 'react';
 import {FaChevronRight} from 'react-icons/fa';
-import {primary4} from '../colors';
+import {primary4, primary45} from '../colors';
 
 const styles = {
   container: {
@@ -9,7 +9,7 @@ const styles = {
     alignItems: 'center',
     fontSize: 16,
     marginBottom: 10,
-    color: primary4,
+    color: primary45,
     fontFamily: 'Open Sans',
     fontWeight: 600,
     userSelect: 'none',
