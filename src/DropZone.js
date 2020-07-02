@@ -15,7 +15,6 @@ export function DropZone({children, sharedFs, currentDirectory}) {
       outline: 0,
       userSelect: 'none',
       height: '100%',
-      overflowY: 'auto',
     },
   };
 

@@ -10,7 +10,9 @@ const styles = {
     padding: 10,
     backgroundColor: '#FFF',
     width: '100%',
-    overflowY: 'hidden',
+    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
   },
   fileHeader: {
     marginTop: 20,
@@ -30,6 +32,13 @@ const styles = {
   filesContainer: {
     height: '100%',
   },
+  dropContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    flexGrow: 2,
+    opacity: 1,
+  }
 };
 
 export function FileBlock({
@@ -57,14 +66,16 @@ export function FileBlock({
 
   return (
     <div style={styles.container}>
-
-
-      <FolderTools currentDirectory={currentDirectory} sharedFs={sharedFs} setCurrentDirectory={setCurrentDirectory}/>
+      <FolderTools
+        currentDirectory={currentDirectory}
+        sharedFs={sharedFs}
+        setCurrentDirectory={setCurrentDirectory}
+      />
       <div style={styles.fileHeader}>
         <div style={{...styles.fileHeaderItem, marginLeft: 8}}>Name</div>
         {/*<div style={styles.fileHeaderItem}>Modified</div>*/}
       </div>
-      <div style={styles.filesContainer}>
+      <div style={styles.dropContainer}>
         <DropZone sharedFs={sharedFs} currentDirectory={currentDirectory}>
           <DragDropContext
             onDragEnd={async (draggable) => {
@@ -84,41 +95,44 @@ export function FileBlock({
               type="fileblock"
               isCombineEnabled={true}>
               {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  style={
-                    {
-                      // backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey',
+                <div style={styles.filesContainer}>
+                  <div
+                    ref={provided.innerRef}
+                    style={
+                      {
+                        // backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey',
+                      }
                     }
-                  }
-                  {...provided.droppableProps}>
-                  {!directoryContents.length ? (
-                    <p>drag or click to upload</p>
-                  ) : (
-                    <div style={styles.files}>
-                      {currentDirectory !== '/r' ? (
-                        <FileItem
-                          fileIndex={1000}
-                          isParent={true}
-                          key={parentPath}
-                          data={{path: parentPath, type: 'dir'}}
-                          sharedFs={sharedFs}
-                          ipfs={ipfs}
-                          setCurrentDirectory={setCurrentDirectory}
-                        />
-                      ) : null}
-                      {fullFileList.map((fileItem, index) => (
-                        <FileItem
-                          fileIndex={index}
-                          key={fileItem.path}
-                          data={fileItem}
-                          sharedFs={sharedFs}
-                          ipfs={ipfs}
-                          setCurrentDirectory={setCurrentDirectory}
-                        />
-                      ))}
-                    </div>
-                  )}
+                    {...provided.droppableProps}>
+                    {!directoryContents.length ? (
+                      <p>drag or click to upload</p>
+                    ) : (
+                      <div style={styles.files}>
+                        {currentDirectory !== '/r' ? (
+                          <FileItem
+                            fileIndex={1000}
+                            isParent={true}
+                            key={parentPath}
+                            data={{path: parentPath, type: 'dir'}}
+                            sharedFs={sharedFs}
+                            ipfs={ipfs}
+                            setCurrentDirectory={setCurrentDirectory}
+                          />
+                        ) : null}
+                        {fullFileList.map((fileItem, index) => (
+                          <FileItem
+                            fileIndex={index}
+                            key={fileItem.path}
+                            data={fileItem}
+                            sharedFs={sharedFs}
+                            ipfs={ipfs}
+                            setCurrentDirectory={setCurrentDirectory}
+                          />
+                        ))}
+                      </div>
+                    )}
+                    {provided.placeholder}
+                  </div>
                 </div>
               )}
             </Droppable>
