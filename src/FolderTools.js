@@ -1,8 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {ToolItem} from './components/ToolItem';
 import {FiFolderPlus} from 'react-icons/fi';
-import {primary, primary3} from './colors';
-import {Breadcrumb} from "./components/Breadcrumb";
+import {primary} from './colors';
+import {Breadcrumb} from './components/Breadcrumb';
+import useTextInput from './hooks/useTextInput';
 
 const styles = {
   tools: {
@@ -11,7 +12,6 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     fontFamily: 'Open Sans',
-
   },
   rightTools: {
     display: 'flex',
@@ -19,32 +19,21 @@ const styles = {
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  editInput: {
-    border: `1px solid ${primary3}`,
-    borderRadius: 4,
-    color: primary,
-    fontSize: 14,
-    fontWeight: 200,
-    padding: 4,
-  },
 };
 
 export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory}) {
   const [addFolderMode, setAddFolderMode] = useState(false);
-  const [newFolderName, setNewFolderName] = useState('');
-  const folderInputRef = useRef(null);
+  const InputComponent = useTextInput(
+    addFolderMode,
+    (newFolderName) => createFolder(newFolderName),
+    () => setAddFolderMode(false),
+    '',
+  );
 
-  useEffect(() => {
-    if (addFolderMode) {
-      folderInputRef.current.focus();
-    }
-  }, [addFolderMode]);
-
-  const createFolder = async () => {
+  const createFolder = async (newFolderName) => {
     try {
       await sharedFs.current.mkdir(currentDirectory, newFolderName);
       setAddFolderMode(false);
-      setNewFolderName('');
     } catch (e) {
       console.log('Mkdir error', e);
       // Todo: handle error
@@ -62,28 +51,7 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory}) {
         </div>
         <div style={styles.rightTools}>
           {addFolderMode ? (
-            <>
-              <input
-                ref={folderInputRef}
-                type={'text'}
-                placeholder={'new folder'}
-                style={styles.editInput}
-                value={newFolderName}
-                onChange={(event) => setNewFolderName(event.target.value)}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    createFolder();
-                  }
-                }}
-              />
-              <ToolItem title={'Create'} onClick={createFolder} />
-              <ToolItem
-                title={'Cancel'}
-                onClick={() => {
-                  setAddFolderMode(false);
-                }}
-              />
-            </>
+            <>{InputComponent}</>
           ) : (
             <ToolItem
               iconComponent={FiFolderPlus}
