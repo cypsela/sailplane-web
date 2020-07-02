@@ -4,6 +4,7 @@ import {DropZone} from './DropZone';
 import React from 'react';
 import {primary2, primary5} from './colors';
 import {FolderTools} from './FolderTools';
+import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 
 const styles = {
   container: {
@@ -64,21 +65,50 @@ export function FileBlock({
         </div>
       </div>
       <DropZone sharedFs={sharedFs} currentDirectory={currentDirectory}>
-        <div>
-          {!directoryContents.length ? (
-            <p>drag or click to upload</p>
-          ) : (
-            fullFileList.map((fileItem) => (
-              <FileItem
-                key={fileItem.path}
-                data={fileItem}
-                sharedFs={sharedFs}
-                ipfs={ipfs}
-                setCurrentDirectory={setCurrentDirectory}
-              />
-            ))
-          )}
-        </div>
+        <DragDropContext
+          onDragEnd={async (draggable) => {
+            if (draggable.combine) {
+              const filePathSplit = draggable.draggableId.split('/');
+              const fileName = filePathSplit[filePathSplit.length - 1];
+
+              await sharedFs.current.move(
+                draggable.draggableId,
+                draggable.combine.draggableId,
+                fileName,
+              );
+            }
+          }}>
+          <Droppable
+            droppableId="droppable-1"
+            type="fileblock"
+            isCombineEnabled={true}>
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                style={
+                  {
+                    // backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey',
+                  }
+                }
+                {...provided.droppableProps}>
+                {!directoryContents.length ? (
+                  <p>drag or click to upload</p>
+                ) : (
+                  fullFileList.map((fileItem, index) => (
+                    <FileItem
+                      fileIndex={index}
+                      key={fileItem.path}
+                      data={fileItem}
+                      sharedFs={sharedFs}
+                      ipfs={ipfs}
+                      setCurrentDirectory={setCurrentDirectory}
+                    />
+                  ))
+                )}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </DropZone>
     </div>
   );

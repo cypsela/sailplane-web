@@ -26,7 +26,7 @@ export function DropZone({children, sharedFs, currentDirectory}) {
     },
     [currentDirectory],
   );
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop, noClick: true});
 
   return (
     <div {...getRootProps()} style={styles.container}>

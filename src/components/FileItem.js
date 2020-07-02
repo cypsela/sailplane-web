@@ -1,14 +1,25 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {primary, primary2, primary3, primary4} from '../colors';
 import {FaFolder} from 'react-icons/fa';
-import {FiEdit, FiFile, FiTrash, FiDownload} from 'react-icons/fi';
+import {FiDownload, FiEdit, FiFile, FiTrash} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
-import {getBlobFromPath} from '../utils/Utils';
+import {
+  getBlobFromPath,
+  getFileExtensionFromFilename,
+  supportedPreviewExtensions,
+} from '../utils/Utils';
 import {saveAs} from 'file-saver';
+import {Draggable} from 'react-beautiful-dnd';
 
-export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
+export function FileItem({
+  data,
+  sharedFs,
+  setCurrentDirectory,
+  ipfs,
+  fileIndex,
+}) {
   const {path, type} = data;
   const pathSplit = path.split('/');
   const [hoverRef, isHovered] = useHover();
@@ -18,6 +29,7 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
   const editInputRef = useRef(null);
   const [editNameValue, setEditNameValue] = useState(name);
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
+  const fileExtension = getFileExtensionFromFilename(name);
 
   useEffect(() => {
     if (editMode) {
@@ -79,96 +91,119 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
   };
 
   return (
-    <div style={styles.outer}>
-      <div
-        style={styles.container}
-        ref={hoverRef}
-        onClick={async (event) => {
-          event.stopPropagation();
+    <Draggable draggableId={path} index={fileIndex}>
+      {(provided, snapshot) => {
+        return (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}>
+            <div
+              style={{
+                ...styles.outer,
+                backgroundColor:
+                  snapshot.combineTargetFor && type === 'dir' ? primary2 : null,
+              }}>
+              <div
+                style={styles.container}
+                ref={hoverRef}
+                onClick={async (event) => {
+                  event.stopPropagation();
 
-          if (editMode) {
-            return;
-          }
-
-          if (type === 'dir') {
-            setCurrentDirectory(path);
-          } else {
-            if (!fileBlob) {
-              const blob = await getBlobFromPath(sharedFs, path, ipfs);
-              setFileBlob(blob);
-            } else {
-              setFileBlob(null);
-            }
-            // saveAs(blob, name);
-          }
-        }}>
-        <div style={styles.nameContainer}>
-          {type === 'dir' ? (
-            <FaFolder color={primary4} size={16} style={styles.icon} />
-          ) : (
-            <FiFile color={primary4} size={16} style={styles.icon} />
-          )}
-          {editMode ? (
-            <>
-              <input
-                ref={editInputRef}
-                type={'text'}
-                style={styles.editInput}
-                value={editNameValue}
-                onChange={(event) => setEditNameValue(event.target.value)}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    rename();
+                  if (editMode) {
+                    return;
                   }
-                }}
-              />
-              <ToolItem title={'Save'} onClick={rename} />
-              <ToolItem title={'Cancel'} onClick={() => setEditMode(false)} />
-            </>
-          ) : (
-            name
-          )}
-        </div>
-        <div style={styles.tools}>
-          <ToolItem
-            iconComponent={FiDownload}
-            changeColor={primary}
-            tooltip={'Download'}
-            onClick={async (event) => {
-              event.stopPropagation();
 
-              const blob = await getBlobFromPath(sharedFs, path, ipfs);
-              saveAs(blob, name);
-            }}
-          />
+                  if (type === 'dir') {
+                    setCurrentDirectory(path);
+                  } else {
+                    if (
+                      !fileBlob &&
+                      supportedPreviewExtensions.includes(fileExtension)
+                    ) {
+                      const blob = await getBlobFromPath(sharedFs, path, ipfs);
+                      setFileBlob(blob);
+                    } else {
+                      setFileBlob(null);
+                    }
+                  }
+                }}>
+                <div style={styles.nameContainer}>
+                  {type === 'dir' ? (
+                    <FaFolder color={primary4} size={16} style={styles.icon} />
+                  ) : (
+                    <FiFile color={primary4} size={16} style={styles.icon} />
+                  )}
+                  {editMode ? (
+                    <>
+                      <input
+                        ref={editInputRef}
+                        type={'text'}
+                        style={styles.editInput}
+                        value={editNameValue}
+                        onChange={(event) =>
+                          setEditNameValue(event.target.value)
+                        }
+                        onKeyPress={(event) => {
+                          if (event.key === 'Enter') {
+                            rename();
+                          }
+                        }}
+                      />
+                      <ToolItem title={'Save'} onClick={rename} />
+                      <ToolItem
+                        title={'Cancel'}
+                        onClick={() => setEditMode(false)}
+                      />
+                    </>
+                  ) : (
+                    name
+                  )}
+                </div>
+                <div style={styles.tools}>
+                  <ToolItem
+                    iconComponent={FiDownload}
+                    changeColor={primary}
+                    tooltip={'Download'}
+                    onClick={async (event) => {
+                      event.stopPropagation();
 
-          <ToolItem
-            iconComponent={FiEdit}
-            changeColor={primary}
-            tooltip={'Rename'}
-            onClick={async (event) => {
-              event.stopPropagation();
+                      const blob = await getBlobFromPath(sharedFs, path, ipfs);
+                      saveAs(blob, name);
+                    }}
+                  />
 
-              setEditMode(true);
-            }}
-          />
+                  <ToolItem
+                    iconComponent={FiEdit}
+                    changeColor={primary}
+                    tooltip={'Rename'}
+                    onClick={async (event) => {
+                      event.stopPropagation();
 
-          <ToolItem
-            iconComponent={FiTrash}
-            tooltip={'Delete'}
-            onClick={async (event) => {
-              event.stopPropagation();
+                      setEditMode(true);
+                    }}
+                  />
 
-              await sharedFs.current.remove(path);
-            }}
-          />
-        </div>
-      </div>
-      {fileBlob ? (
-        <div style={styles.preview}>
-          <FilePreview blob={fileBlob} filename={name} />
-        </div>
-      ) : null}
-    </div>
+                  <ToolItem
+                    iconComponent={FiTrash}
+                    tooltip={'Delete'}
+                    onClick={async (event) => {
+                      event.stopPropagation();
+
+                      await sharedFs.current.remove(path);
+                    }}
+                  />
+                </div>
+              </div>
+              {fileBlob ? (
+                <div style={styles.preview}>
+                  <FilePreview blob={fileBlob} filename={name} />
+                </div>
+              ) : null}
+            </div>
+          </div>
+        );
+      }}
+    </Draggable>
   );
 }

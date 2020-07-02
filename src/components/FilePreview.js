@@ -1,4 +1,5 @@
 import React from 'react';
+import {getFileExtensionFromFilename} from '../utils/Utils';
 
 const styles = {
   image: {
@@ -7,12 +8,11 @@ const styles = {
   audio: {
     userSelect: 'none',
     outline: 0,
-  }
+  },
 };
 
 export function FilePreview({blob, filename}) {
-  const fileParts = filename.split('.');
-  const ext = fileParts[fileParts.length - 1];
+  const ext = getFileExtensionFromFilename(filename);
   const objURL = window.URL.createObjectURL(blob);
 
   return (
@@ -25,7 +25,7 @@ export function FilePreview({blob, filename}) {
       {['mp3', 'wav', 'ogg', 'flac'].includes(ext) ? (
         <div>
           <audio controls>
-            <source src={objURL} style={styles.audio}/>
+            <source src={objURL} style={styles.audio} />
           </audio>
         </div>
       ) : null}

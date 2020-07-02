@@ -33,3 +33,18 @@ export async function getBlobFromPath(sharedFs, path, ipfs) {
     ? dirToBlob(path, struct)
     : fileToBlob(struct[0]);
 }
+
+export function getFileExtensionFromFilename(filename) {
+  const fileParts = filename.split('.');
+  return fileParts[fileParts.length - 1];
+}
+
+export const supportedPreviewExtensions = [
+  'jpg',
+  'png',
+  'gif',
+  'mp3',
+  'ogg',
+  'flac',
+  'jpeg',
+];
