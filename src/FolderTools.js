@@ -30,6 +30,17 @@ export function FolderTools({currentDirectory, sharedFs}) {
     }
   }, [addFolderMode]);
 
+  const createFolder = async () => {
+    try {
+      await sharedFs.current.mkdir(currentDirectory, newFolderName);
+      setAddFolderMode(false);
+      setNewFolderName('');
+    } catch (e) {
+      console.log('Mkdir error', e);
+      // Todo: handle error
+    }
+  };
+
   return (
     <div>
       <div style={styles.tools}>
@@ -42,19 +53,15 @@ export function FolderTools({currentDirectory, sharedFs}) {
               style={styles.editInput}
               value={newFolderName}
               onChange={(event) => setNewFolderName(event.target.value)}
+              onKeyPress={event=>{
+                if (event.key === 'Enter') {
+                  createFolder();
+                }
+              }}
             />
             <ToolItem
               title={'Create'}
-              onClick={async () => {
-                try {
-                  await sharedFs.current.mkdir(currentDirectory, newFolderName);
-                  setAddFolderMode(false);
-                  setNewFolderName('');
-                } catch (e) {
-                  console.log('Mkdir error', e);
-                  // Todo: handle error
-                }
-              }}
+              onClick={createFolder}
             />
             <ToolItem
               title={'Cancel'}

@@ -70,6 +70,18 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
     },
   };
 
+  const rename = async () => {
+    try {
+      await sharedFs.current.move(
+        path,
+        parentPath,
+        editNameValue,
+      );
+    } catch (e) {
+      console.log('Error moving!', e);
+    }
+  };
+
   return (
     <div style={styles.outer}>
       <div
@@ -108,20 +120,15 @@ export function FileItem({data, sharedFs, setCurrentDirectory, ipfs}) {
                 style={styles.editInput}
                 value={editNameValue}
                 onChange={(event) => setEditNameValue(event.target.value)}
+                onKeyPress={event=>{
+                  if (event.key === 'Enter') {
+                    rename();
+                  }
+                }}
               />
               <ToolItem
                 title={'Save'}
-                onClick={async () => {
-                  try {
-                    await sharedFs.current.move(
-                      path,
-                      parentPath,
-                      editNameValue,
-                    );
-                  } catch (e) {
-                    console.log('Error moving!', e);
-                  }
-                }}
+                onClick={rename}
               />
               <ToolItem title={'Cancel'} onClick={() => setEditMode(false)} />
             </>
