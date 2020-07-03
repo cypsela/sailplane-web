@@ -42,7 +42,11 @@ export function InstanceSelector({}) {
     <span
       style={styles.container}
       ref={hoverRef}
-      onClick={() => setMenuEnabled(!menuEnabled)}>
+      onClick={() => {
+        if (filteredInstances.length) {
+          setMenuEnabled(!menuEnabled);
+        }
+      }}>
       {currentInstance.name}
       {menuEnabled ? (
         <div style={styles.menu}>

@@ -63,14 +63,14 @@ export function Instance({data, selected, onClick, onDelete, onRename}) {
       </div>
       <div style={styles.tools}>
         <ToolItem
-          defaultColor={primary2}
+          defaultColor={selected ? primary2 : null}
           iconComponent={FiTrash}
           size={18}
           changeColor={errorColor}
           onClick={() => onDelete()}
         />
         <ToolItem
-          defaultColor={primary2}
+          defaultColor={selected ? primary2 : null}
           iconComponent={FiEdit}
           size={18}
           changeColor={primary4}
