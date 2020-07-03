@@ -35,16 +35,16 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
       <div>
         <div style={styles.logo}>Sailplane</div>
         <PanelItem
-          title={'Instances'}
-          iconComponent={FaDatabase}
-          selected={currentRightPanel === 'instances'}
-          onClick={() => setCurrentRightPanel('instances')}
-        />
-        <PanelItem
           title={'Files'}
           iconComponent={FaFolderOpen}
           selected={currentRightPanel === 'files'}
           onClick={() => setCurrentRightPanel('files')}
+        />
+        <PanelItem
+          title={'Instances'}
+          iconComponent={FaDatabase}
+          selected={currentRightPanel === 'instances'}
+          onClick={() => setCurrentRightPanel('instances')}
         />
       </div>
 

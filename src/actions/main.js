@@ -20,11 +20,3 @@ export function removeInstance(index) {
     index,
   };
 }
-
-export function renameInstance(index, name) {
-  return {
-    type: main.RENAME_INSTANCE,
-    index,
-    name
-  };
-}

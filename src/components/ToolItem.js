@@ -53,7 +53,13 @@ export function ToolItem({
   };
 
   return (
-    <div style={styles.container} ref={hoverRef} onClick={onClick}>
+    <div
+      style={styles.container}
+      ref={hoverRef}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick();
+      }}>
       {iconComponent ? (
         <IconComponent
           color={isHovered ? changeColor : defaultColor}

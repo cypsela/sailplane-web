@@ -27,13 +27,15 @@ export default function main(state = initialState, action) {
         draftState.instances = state.instances.filter(
           (instance, i) => index !== i,
         );
-      });
-    }
-    case mainTypes.RENAME_INSTANCE: {
-      const {index, name} = action;
-      return produce(state, (draftState) => {
-        if (!name) return;
-        draftState.instances[index].name = name;
+
+        console.log('state', draftState.instances[draftState.instanceIndex])
+        if (!draftState.instances[draftState.instanceIndex]) {
+          console.log('inner ran')
+          draftState.instanceIndex = 0;
+        }
+
+        console.log('afterState', draftState.instances[draftState.instanceIndex])
+
       });
     }
   }
