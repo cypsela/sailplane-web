@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {primary3, primary4} from './colors';
 import {Instance} from './components/Instance';
 import {FiPlusCircle} from 'react-icons/fi';
@@ -44,11 +44,25 @@ const styles = {
 export function Instances({
   instanceAddresses,
   setInstanceAddressIndex,
+  setInstanceAddresses,
   instanceAddressIndex,
+  sailplane,
 }) {
   const [addInstanceMode, setAddInstanceMode] = useState(false);
 
-  const createInstance = async (name) => {};
+  const createInstance = async (name) => {
+    const address = await sailplane.determineAddress(`superdrive_${name}`);
+
+    setInstanceAddresses([
+      ...instanceAddresses,
+      {
+        name,
+        address: address.toString(),
+      },
+    ]);
+
+    setAddInstanceMode(false);
+  };
 
   const CreateInstanceInput = useTextInput(
     addInstanceMode,
@@ -71,11 +85,7 @@ export function Instances({
               style={styles.tools}
               className={'addInstance'}
               onClick={() => setAddInstanceMode(true)}>
-              <FiPlusCircle
-                color={primary4}
-                size={18}
-                style={styles.icon}
-              />
+              <FiPlusCircle color={primary4} size={18} style={styles.icon} />
               Add instance
             </div>
           ) : (
@@ -85,11 +95,16 @@ export function Instances({
       </div>
 
       <div>
-        {instanceAddresses.map((instance) => (
+        {instanceAddresses.map((instance, index) => (
           <Instance
             key={instance.name}
             data={instance}
             selected={instance === instanceAddresses[instanceAddressIndex]}
+            onClick={() => {
+              setInstanceAddressIndex(index);
+              document.location.reload();
+
+            }}
           />
         ))}
       </div>

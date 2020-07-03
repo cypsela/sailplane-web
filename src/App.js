@@ -17,6 +17,7 @@ function App() {
   const windowWidth = windowSize.width;
   const ipfsObj = useIPFS();
   const sharedFS = useRef({});
+  const sailplaneRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [directoryContents, setDirectoryContents] = useState([]);
   const [currentDirectory, setCurrentDirectory] = useState('/r');
@@ -83,6 +84,7 @@ function App() {
         setLastUpdateTime(Date.now());
       });
 
+      sailplaneRef.current = sailplane;
       // console.log('adds', await ipfs.config.get('Addresses'));
 
       setReady(true);
@@ -114,8 +116,10 @@ function App() {
       return (
         <Instances
           instanceAddresses={instanceAddresses}
+          setInstanceAddresses={setInstanceAddresses}
           instanceAddressIndex={instanceAddressIndex}
           setInstanceAddressIndex={setInstanceAddressIndex}
+          sailplane={sailplaneRef.current}
         />
       );
     }
