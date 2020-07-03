@@ -71,6 +71,7 @@ export function FileItem({
     tools: {
       opacity: (isHovered || fileBlob) && !isParent ? 1 : 0,
       fontSize: 14,
+      width: 80,
     },
   };
 

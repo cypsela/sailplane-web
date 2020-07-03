@@ -20,14 +20,14 @@ const styles = {
     color: primary4,
     fontSize: 20,
     fontWeight: 600,
-    paddingBottom: 6,
-    marginBottom: 10,
+    marginBottom: 16,
   },
   header: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
+    marginTop: 10,
   },
   icon: {
     cursor: 'pointer',
