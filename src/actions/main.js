@@ -1,8 +1,16 @@
 import {main} from './actionTypes';
 
-// export function setToken(token) {
-//   return {
-//     type: main.SET_TOKEN,
-//     token,
-//   };
-// }
+export function addInstance(name, address) {
+  return {
+    type: main.ADD_INSTANCE,
+    name,
+    address
+  };
+}
+
+export function setInstanceIndex(index) {
+  return {
+    type: main.SET_INSTANCE_INDEX,
+    index,
+  };
+}

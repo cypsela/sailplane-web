@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {primary3, primary4} from './colors';
+import React, {useState} from 'react';
+import {primary4} from './colors';
 import {Instance} from './components/Instance';
 import {FiPlusCircle} from 'react-icons/fi';
 import useTextInput from './hooks/useTextInput';
+import {useDispatch, useSelector} from 'react-redux';
+import {addInstance, setInstanceIndex} from './actions/main';
 
 const styles = {
   container: {
@@ -18,7 +20,6 @@ const styles = {
     color: primary4,
     fontSize: 20,
     fontWeight: 600,
-    // borderBottom: `2px solid ${primary3}`,
     paddingBottom: 6,
     marginBottom: 10,
   },
@@ -41,26 +42,17 @@ const styles = {
   },
 };
 
-export function Instances({
-  instanceAddresses,
-  setInstanceAddressIndex,
-  setInstanceAddresses,
-  instanceAddressIndex,
-  sailplane,
-}) {
+export function Instances({sailplane}) {
   const [addInstanceMode, setAddInstanceMode] = useState(false);
+  const dispatch = useDispatch();
+  const main = useSelector((state) => state.main);
+  const {instances, instanceIndex} = main;
+  const currentInstance = instances[instanceIndex];
 
   const createInstance = async (name) => {
     const address = await sailplane.determineAddress(`superdrive_${name}`);
 
-    setInstanceAddresses([
-      ...instanceAddresses,
-      {
-        name,
-        address: address.toString(),
-      },
-    ]);
-
+    dispatch(addInstance(name, address.toString()));
     setAddInstanceMode(false);
   };
 
@@ -95,13 +87,13 @@ export function Instances({
       </div>
 
       <div>
-        {instanceAddresses.map((instance, index) => (
+        {instances.map((instance, index) => (
           <Instance
             key={instance.name}
             data={instance}
-            selected={instance === instanceAddresses[instanceAddressIndex]}
+            selected={instance === instances[instanceIndex]}
             onClick={() => {
-              setInstanceAddressIndex(index);
+              dispatch(setInstanceIndex(index));
             }}
           />
         ))}

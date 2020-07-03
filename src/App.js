@@ -7,10 +7,11 @@ import useIPFS from './hooks/useIPFS';
 import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
 import {LoadingRightBlock} from './LoadingRightBlock';
-import {useLocalStorage} from './hooks/useLocalStorage';
 import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
 import {Instances} from './Instances';
+import {useSelector, useDispatch} from 'react-redux';
+import {addInstance} from "./actions/main";
 
 function App() {
   const windowSize = useWindowSize();
@@ -23,14 +24,11 @@ function App() {
   const [currentDirectory, setCurrentDirectory] = useState('/r');
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
-  const [instanceAddresses, setInstanceAddresses] = useLocalStorage(
-    'instanceAddresses',
-    [],
-  );
-  const [instanceAddressIndex, setInstanceAddressIndex] = useLocalStorage(
-    'instanceAddressIndex',
-    0,
-  );
+
+  const dispatch = useDispatch();
+  const main = useSelector((state) => state.main);
+  const {instances, instanceIndex} = main;
+  const currentInstance = instances[instanceIndex];
 
   const styles = {
     container: {
@@ -72,11 +70,11 @@ function App() {
 
       const sailplane = await Sailplane.create(orbitdb, {});
       let address;
-      if (instanceAddresses.length) {
-        address = instanceAddresses[instanceAddressIndex].address;
+      if (instances.length) {
+        address = currentInstance.address;
       } else {
         address = await sailplane.determineAddress('superdrive');
-        setInstanceAddresses([{address: address.toString(), name: 'Main'}]);
+        dispatch(addInstance('Main', address.toString()));
       }
       sharedFS.current = await sailplane.mount(address, {});
 
@@ -94,7 +92,7 @@ function App() {
         setReady(true);
       }
     },
-    [instanceAddresses, setInstanceAddresses, instanceAddressIndex],
+    [instances, instanceIndex],
   );
 
   // Connect orbit todo: refactor hook
@@ -102,18 +100,13 @@ function App() {
     if (ipfsObj.isIpfsReady && !ready) {
       connectOrbit(ipfsObj.ipfs);
     }
-  }, [
-    ipfsObj.ipfs,
-    ipfsObj.isIpfsReady,
-    ready,
-    connectOrbit,
-  ]);
+  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, connectOrbit]);
 
   useEffect(() => {
     if (ipfsObj.isIpfsReady && ready) {
       connectOrbit(ipfsObj.ipfs, true);
     }
-  }, [instanceAddressIndex, ready]);
+  }, [instanceIndex, ready]);
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
@@ -131,10 +124,6 @@ function App() {
     } else if (currentRightPanel === 'instances') {
       return (
         <Instances
-          instanceAddresses={instanceAddresses}
-          setInstanceAddresses={setInstanceAddresses}
-          instanceAddressIndex={instanceAddressIndex}
-          setInstanceAddressIndex={setInstanceAddressIndex}
           sailplane={sailplaneRef.current}
         />
       );

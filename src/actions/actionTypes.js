@@ -2,7 +2,8 @@
 
 // main actions
 export const main = {
-  // SET_TOKEN: 'SET_TOKEN',
+  ADD_INSTANCE: 'ADD_INSTANCE',
+  SET_INSTANCE_INDEX: 'SET_INSTANCE_INDEX',
 };
 
 // tempData actions
