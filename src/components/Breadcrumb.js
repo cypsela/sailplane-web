@@ -1,6 +1,7 @@
 import React from 'react';
 import {FaChevronRight} from 'react-icons/fa';
 import {primary45} from '../colors';
+import {useSelector} from 'react-redux';
 
 const styles = {
   container: {
@@ -16,7 +17,13 @@ const styles = {
   },
   icon: {
     marginRight: 4,
+  },
+  root: {
     cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    fontWeight: 400,
   },
   folderIcon: {
     marginLeft: 4,
@@ -28,20 +35,23 @@ const styles = {
     marginLeft: 2,
     marginRight: 2,
   },
+  instanceName: {
+    marginRight: 2,
+  }
 };
 
 export function Breadcrumb({currentDirectory, setCurrentDirectory}) {
   const pathArr = currentDirectory.split('/').slice(2);
+  const main = useSelector((state) => state.main);
+  const {instances, instanceIndex} = main;
+  const currentInstance = instances[instanceIndex];
 
   return (
     <div style={styles.container}>
-      <FaChevronRight
-        color={primary45}
-        size={16}
-        style={styles.icon}
-        onClick={() => setCurrentDirectory('/r')}
-      />{' '}
-      /
+      <div onClick={() => setCurrentDirectory('/r')} style={styles.root}>
+        <FaChevronRight color={primary45} size={16} style={styles.icon} />
+        <span className={'folderName'} style={styles.instanceName}>{currentInstance.name}</span>{' '}/
+      </div>
       {pathArr.map((pathItem, index) => {
         let path = '/r';
         for (let i = 0; i <= index; i++) {

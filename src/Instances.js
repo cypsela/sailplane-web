@@ -47,7 +47,6 @@ export function Instances({sailplane}) {
   const dispatch = useDispatch();
   const main = useSelector((state) => state.main);
   const {instances, instanceIndex} = main;
-  const currentInstance = instances[instanceIndex];
 
   const createInstance = async (name) => {
     const address = await sailplane.determineAddress(`superdrive_${name}`);
