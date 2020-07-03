@@ -10,6 +10,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "file-saver": "^2.0.2",
+    "immer": "^7.0.5",
     "ipfs": "^0.46.0",
     "it-all": "^1.0.2",
     "it-first": "^1.0.2",
@@ -20,9 +21,12 @@
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.1",
     "react-icons": "^3.10.0",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "react-use-dimensions": "^1.2.1"
+    "react-use-dimensions": "^1.2.1",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
