@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {primary4} from './colors';
 import {Instance} from './components/Instance';
-import {FiPlusCircle} from 'react-icons/fi';
+import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {addInstance, setInstanceIndex} from './actions/main';
@@ -44,6 +44,7 @@ const styles = {
 
 export function Instances({sailplane}) {
   const [addInstanceMode, setAddInstanceMode] = useState(false);
+  const [importInstanceMode, setImportInstanceMode] = useState(false);
   const dispatch = useDispatch();
   const main = useSelector((state) => state.main);
   const {instances, instanceIndex} = main;
@@ -53,6 +54,10 @@ export function Instances({sailplane}) {
 
     dispatch(addInstance(name, address.toString()));
     setAddInstanceMode(false);
+  };
+  const importInstance = async (address) => {
+    dispatch(addInstance('Imported #' + (instances.length + 1), address));
+    setImportInstanceMode(false);
   };
 
   const CreateInstanceInput = useTextInput(
@@ -66,22 +71,43 @@ export function Instances({sailplane}) {
     },
   );
 
+  const ImportInstanceInput = useTextInput(
+    importInstanceMode,
+    (instanceAddress) => importInstance(instanceAddress),
+    () => setImportInstanceMode(false),
+    '',
+    {
+      placeholder: 'instance address',
+      actionTitle: 'Import',
+    },
+  );
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
         <div style={styles.title}>Instances</div>
         <div style={styles.tools}>
-          {!addInstanceMode ? (
-            <div
-              style={styles.tools}
-              className={'addInstance'}
-              onClick={() => setAddInstanceMode(true)}>
-              <FiPlusCircle color={primary4} size={18} style={styles.icon} />
-              Add instance
-            </div>
-          ) : (
-            CreateInstanceInput
-          )}
+          {!importInstanceMode && !addInstanceMode ? (
+            <>
+              <div
+                style={styles.tools}
+                className={'addInstance'}
+                onClick={() => setAddInstanceMode(true)}>
+                <FiPlusCircle color={primary4} size={18} style={styles.icon} />
+                <span style={{marginRight: 6}}>Add instance</span>
+              </div>
+              <div
+                style={styles.tools}
+                className={'addInstance'}
+                onClick={() => setImportInstanceMode(true)}>
+                <FiUpload color={primary4} size={18} style={styles.icon} />
+                <span style={styles.toolTitle}>Import instance</span>
+              </div>
+            </>
+          ) : null}
+
+          {importInstanceMode ? ImportInstanceInput : null}
+          {addInstanceMode ? CreateInstanceInput : null}
         </div>
       </div>
 

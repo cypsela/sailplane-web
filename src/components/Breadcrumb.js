@@ -2,6 +2,8 @@ import React from 'react';
 import {FaChevronRight} from 'react-icons/fa';
 import {primary45} from '../colors';
 import {useSelector} from 'react-redux';
+import * as PropTypes from 'prop-types';
+import {InstanceSelector} from './InstanceSelector';
 
 const styles = {
   container: {
@@ -35,22 +37,18 @@ const styles = {
     marginLeft: 2,
     marginRight: 2,
   },
-  instanceName: {
-    marginRight: 2,
-  }
 };
+
+InstanceSelector.propTypes = {currentInstance: PropTypes.any};
 
 export function Breadcrumb({currentDirectory, setCurrentDirectory}) {
   const pathArr = currentDirectory.split('/').slice(2);
-  const main = useSelector((state) => state.main);
-  const {instances, instanceIndex} = main;
-  const currentInstance = instances[instanceIndex];
 
   return (
     <div style={styles.container}>
       <div onClick={() => setCurrentDirectory('/r')} style={styles.root}>
         <FaChevronRight color={primary45} size={16} style={styles.icon} />
-        <span className={'folderName'} style={styles.instanceName}>{currentInstance.name}</span>{' '}/
+        <InstanceSelector /> /
       </div>
       {pathArr.map((pathItem, index) => {
         let path = '/r';
