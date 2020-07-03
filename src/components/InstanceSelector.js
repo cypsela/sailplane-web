@@ -10,7 +10,7 @@ export function InstanceSelector({}) {
   const dispatch = useDispatch();
   const {instances, instanceIndex} = main;
   const currentInstance = instances[instanceIndex];
-  const [menuEnabled, setMenuEnabled] = useState(true);
+  const [menuEnabled, setMenuEnabled] = useState(false);
   const [hoverRef, isHovered] = useHover();
 
   const filteredInstances = instances.filter(

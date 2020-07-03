@@ -4,7 +4,7 @@ import {Instance} from './components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
-import {addInstance, setInstanceIndex} from './actions/main';
+import {addInstance, removeInstance, renameInstance, setInstanceIndex} from './actions/main';
 
 const styles = {
   container: {
@@ -119,6 +119,12 @@ export function Instances({sailplane}) {
             selected={instance === instances[instanceIndex]}
             onClick={() => {
               dispatch(setInstanceIndex(index));
+            }}
+            onDelete={() => {
+              dispatch(removeInstance(index));
+            }}
+            onRename={(name)=> {
+              dispatch(renameInstance(index, name));
             }}
           />
         ))}

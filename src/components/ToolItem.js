@@ -10,11 +10,16 @@ export function ToolItem({
   changeColor,
   tooltip,
   title,
+  defaultColor,
 }) {
   const [hoverRef, isHovered] = useHover();
   const [tooltipRef, tooltipDimenstions] = useDimensions();
   const IconComponent = iconComponent;
   const tooltipWidth = tooltipDimenstions.width ? tooltipDimenstions.width : 0;
+
+  if (!defaultColor) {
+    defaultColor = primary4;
+  }
 
   if (!changeColor) {
     changeColor = errorColor;
@@ -51,7 +56,7 @@ export function ToolItem({
     <div style={styles.container} ref={hoverRef} onClick={onClick}>
       {iconComponent ? (
         <IconComponent
-          color={isHovered ? changeColor : primary4}
+          color={isHovered ? changeColor : defaultColor}
           size={size ? size : 16}
           style={styles.icon}
         />

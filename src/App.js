@@ -106,7 +106,7 @@ function App() {
     if (ipfsObj.isIpfsReady && ready) {
       connectOrbit(ipfsObj.ipfs, true);
     }
-  }, [instanceIndex, ready]);
+  }, [instanceIndex, ready, instances]);
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {

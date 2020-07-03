@@ -21,6 +21,21 @@ export default function main(state = initialState, action) {
         draftState.instanceIndex = index;
       });
     }
+    case mainTypes.REMOVE_INSTANCE: {
+      const {index} = action;
+      return produce(state, (draftState) => {
+        draftState.instances = state.instances.filter(
+          (instance, i) => index !== i,
+        );
+      });
+    }
+    case mainTypes.RENAME_INSTANCE: {
+      const {index, name} = action;
+      return produce(state, (draftState) => {
+        if (!name) return;
+        draftState.instances[index].name = name;
+      });
+    }
   }
 
   return state;
