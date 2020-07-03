@@ -144,9 +144,7 @@ export function FileItem({
               iconComponent={FiDownload}
               changeColor={primary}
               tooltip={'Download'}
-              onClick={async (event) => {
-                event.stopPropagation();
-
+              onClick={async () => {
                 const blob = await getBlobFromPath(sharedFs, path, ipfs);
                 saveAs(blob, name);
               }}
@@ -156,9 +154,7 @@ export function FileItem({
               iconComponent={FiEdit}
               changeColor={primary}
               tooltip={'Rename'}
-              onClick={async (event) => {
-                event.stopPropagation();
-
+              onClick={async () => {
                 setEditMode(true);
               }}
             />
@@ -166,9 +162,7 @@ export function FileItem({
             <ToolItem
               iconComponent={FiTrash}
               tooltip={'Delete'}
-              onClick={async (event) => {
-                event.stopPropagation();
-
+              onClick={async () => {
                 await sharedFs.current.remove(path);
               }}
             />
