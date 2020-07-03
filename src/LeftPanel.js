@@ -10,7 +10,7 @@ const styles = {
     justifyContent: 'space-between',
     backgroundColor: primary45,
     color: '#FFF',
-    padding: '20px 20px',
+    padding: '20px 10px',
     width: 200,
     fontFamily: 'Open Sans',
     paddingBottom: 0,
