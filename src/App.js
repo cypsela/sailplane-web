@@ -67,7 +67,7 @@ function App() {
   }, [ready, currentDirectory, lastUpdateTime]);
 
   const connectOrbit = useCallback(
-    async (ipfs) => {
+    async (ipfs, doLS) => {
       const orbitdb = await OrbitDB.createInstance(ipfs);
 
       const sailplane = await Sailplane.create(orbitdb, {});
@@ -87,9 +87,14 @@ function App() {
       sailplaneRef.current = sailplane;
       // console.log('adds', await ipfs.config.get('Addresses'));
 
-      setReady(true);
+      if (doLS) {
+        setCurrentDirectory('/r');
+        setLastUpdateTime(Date.now());
+      } else {
+        setReady(true);
+      }
     },
-    [instanceAddresses, setInstanceAddresses],
+    [instanceAddresses, setInstanceAddresses, instanceAddressIndex],
   );
 
   // Connect orbit todo: refactor hook
@@ -97,7 +102,18 @@ function App() {
     if (ipfsObj.isIpfsReady && !ready) {
       connectOrbit(ipfsObj.ipfs);
     }
-  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, connectOrbit]);
+  }, [
+    ipfsObj.ipfs,
+    ipfsObj.isIpfsReady,
+    ready,
+    connectOrbit,
+  ]);
+
+  useEffect(() => {
+    if (ipfsObj.isIpfsReady && ready) {
+      connectOrbit(ipfsObj.ipfs, true);
+    }
+  }, [instanceAddressIndex, ready]);
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {

@@ -102,8 +102,6 @@ export function Instances({
             selected={instance === instanceAddresses[instanceAddressIndex]}
             onClick={() => {
               setInstanceAddressIndex(index);
-              document.location.reload();
-
             }}
           />
         ))}
