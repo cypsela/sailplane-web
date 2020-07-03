@@ -94,7 +94,7 @@ export function Instances({sailplane}) {
                 className={'addInstance'}
                 onClick={() => setAddInstanceMode(true)}>
                 <FiPlusCircle color={primary4} size={18} style={styles.icon} />
-                <span style={{marginRight: 6}}>Add instance</span>
+                <span style={{marginRight: 6}}>Create instance</span>
               </div>
               <div
                 style={styles.tools}

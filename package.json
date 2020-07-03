@@ -11,7 +11,7 @@
     "@testing-library/user-event": "^7.1.2",
     "file-saver": "^2.0.2",
     "immer": "^7.0.5",
-    "ipfs": "^0.46.0",
+    "ipfs": "0.47",
     "it-all": "^1.0.2",
     "it-first": "^1.0.2",
     "jszip": "^3.5.0",
@@ -56,5 +56,8 @@
     "react-app-rewire-hot-loader": "^2.0.1",
     "react-app-rewired": "^2.1.6",
     "react-hot-loader": "^4.12.21"
+  },
+  "resolutions": {
+    "libp2p-interfaces": "0.3.1"
   }
 }
