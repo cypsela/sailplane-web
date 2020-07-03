@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  errorColor,
-  primary2,
-  primary3,
-  primary4,
-} from '../colors';
+import {errorColor, primary2, primary3, primary4} from '../colors';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FiTrash} from 'react-icons/fi';
@@ -39,15 +34,20 @@ export function Instance({data, selected, onClick, onDelete}) {
       justifyContent: 'flex-end',
       marginTop: 10,
     },
+    name: {
+      fontSize: 20,
+    },
   };
 
   return (
-    <div style={styles.outer}  onClick={(event)=>{
-      event.stopPropagation();
-      onClick();
-    }}>
+    <div
+      style={styles.outer}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick();
+      }}>
       <div ref={hoverRef} style={styles.container}>
-        <div>{name}</div>
+        <div style={styles.name}>{name}</div>
         <div style={styles.address}>{address}</div>
       </div>
       <div style={styles.tools}>
