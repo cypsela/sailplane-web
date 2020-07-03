@@ -40,6 +40,8 @@ export default function useIpfsFactory() {
         }
       }
 
+      window.ipfs = ipfs
+
       setIpfsReady(Boolean(ipfs));
     }
 
