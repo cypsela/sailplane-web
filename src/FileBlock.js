@@ -117,7 +117,7 @@ export function FileBlock({
                     }
                     {...provided.droppableProps}>
                     {!directoryContents.length ? (
-                      <p>drag or click to upload</p>
+                      <p>drag files to upload</p>
                     ) : (
                       <div style={styles.files}>
                         {fullFileList.map((fileItem, index) => (
