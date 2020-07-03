@@ -4,14 +4,10 @@ import {
   primary2,
   primary3,
   primary4,
-  primary45,
-  primary6,
 } from '../colors';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FiEdit, FiTrash} from 'react-icons/fi';
-import {FaTrash} from 'react-icons/all';
-import {useDispatch} from 'react-redux';
 import useTextInput from '../hooks/useTextInput';
 
 export function Instance({data, selected, onClick, onDelete, onRename}) {
@@ -51,6 +47,8 @@ export function Instance({data, selected, onClick, onDelete, onRename}) {
       overflow: 'hidden',
     },
     tools: {
+      display: 'flex',
+      justifyContent: 'flex-end',
       marginTop: 10,
     },
   };
@@ -65,14 +63,14 @@ export function Instance({data, selected, onClick, onDelete, onRename}) {
         <ToolItem
           defaultColor={selected ? primary2 : null}
           iconComponent={FiTrash}
-          size={18}
+          size={16}
           changeColor={errorColor}
           onClick={() => onDelete()}
         />
         <ToolItem
           defaultColor={selected ? primary2 : null}
           iconComponent={FiEdit}
-          size={18}
+          size={16}
           changeColor={primary4}
           onClick={() => setEditMode(true)}
         />
