@@ -2,11 +2,23 @@ import all from 'it-all';
 import first from 'it-first';
 import JSZip from 'jszip';
 
-async function fileToBlob({content}) {
-  return new Blob(await all(content));
+async function fileToBlob(file, handleUpdate) {
+  const {content, size} = file;
+  let chunks = [];
+  let i = 0;
+  const totalCount = Math.round(size / 250000);
+
+  for await (const chunk of content) {
+    if (handleUpdate) {
+      handleUpdate(i, totalCount);
+    }
+    chunks.push(chunk);
+    i++;
+  }
+  return new Blob(chunks);
 }
 
-async function dirToBlob(path, struct) {
+async function dirToBlob(path, struct, handleUpdate) {
   const zip = new JSZip();
   const root = path.split('/')[path.split('/').length - 1];
 
@@ -17,7 +29,7 @@ async function dirToBlob(path, struct) {
       const splitPath = item.path.split('/');
       splitPath[0] = root;
       const path = splitPath.join('/');
-      const blob = isDir ? undefined : await fileToBlob(item);
+      const blob = isDir ? undefined : await fileToBlob(item, handleUpdate);
 
       zip.file(path, blob, {dir: isDir});
     }),
@@ -39,12 +51,12 @@ export async function getBlobFromPath(sharedFs, path, ipfs) {
     : fileToBlob(struct[0]);
 }
 
-export async function getBlobFromPathCID(cid, path, ipfs) {
+export async function getBlobFromPathCID(cid, path, ipfs, handleUpdate) {
   const struct = await all(ipfs.get(cid));
 
   return struct[0].type === 'dir'
-    ? dirToBlob(path, struct)
-    : fileToBlob(struct[0]);
+    ? dirToBlob(path, struct, handleUpdate)
+    : fileToBlob(struct[0], handleUpdate);
 }
 
 export function getFileExtensionFromFilename(filename) {

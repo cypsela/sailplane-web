@@ -42,7 +42,16 @@ function Download({match}) {
 
   const getDownload = async () => {
     dispatch(setStatus({message: 'Fetching file'}));
-    const blob = await getBlobFromPathCID(cleanCID, cleanPath, ipfsObj.ipfs);
+    const blob = await getBlobFromPathCID(
+      cleanCID,
+      cleanPath,
+      ipfsObj.ipfs,
+      (currentIndex, totalCount) => {
+        dispatch(
+          setStatus({message: `[${currentIndex}/${totalCount}] Downloading`}),
+        );
+      },
+    );
     dispatch(setStatus({}));
 
     const pathSplit = cleanPath.split('/');
