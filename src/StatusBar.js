@@ -9,6 +9,8 @@ export function StatusBar() {
 
   const styles = {
     container: {
+      position: 'fixed',
+      bottom: 10,
       backgroundColor: primary3,
       padding: 8,
       borderRadius: 4,

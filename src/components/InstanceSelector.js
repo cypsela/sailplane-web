@@ -49,8 +49,9 @@ export function InstanceSelector({}) {
       {currentInstance.name}
       {menuEnabled ? (
         <div style={styles.menu}>
-          {filteredInstances.map((instance) => (
+          {filteredInstances.map((instance, index) => (
             <SmallInstanceItem
+              key={index}
               name={instance.name}
               onClick={() => {
                 const instanceIndexToUse = instances.findIndex(

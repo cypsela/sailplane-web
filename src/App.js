@@ -12,6 +12,7 @@ import {Settings} from './Settings';
 import {Instances} from './Instances';
 import {useSelector, useDispatch} from 'react-redux';
 import {addInstance} from './actions/main';
+import {setStatus} from "./actions/tempData";
 
 function App() {
   const windowSize = useWindowSize();
@@ -66,6 +67,7 @@ function App() {
 
   const connectOrbit = useCallback(
     async (ipfs, doLS) => {
+      dispatch(setStatus({message: 'Initializing'}));
       const orbitdb = await OrbitDB.createInstance(ipfs);
 
       const sailplane = await Sailplane.create(orbitdb, {});
@@ -94,6 +96,7 @@ function App() {
       } else {
         setReady(true);
       }
+      dispatch(setStatus({}));
     },
     [instances, instanceIndex],
   );
