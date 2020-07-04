@@ -14,6 +14,8 @@ export function SmallInstanceItem({name, onClick}) {
       backgroundColor: isHovered ? primary45 : '#FFF',
       color: isHovered ? '#FFF' : primary45,
       padding: '6px 10px',
+      display: 'block',
+      minWidth: name.length * 7.5,
     },
   };
   return (
