@@ -1,6 +1,6 @@
 import React from 'react';
 import {primary45} from './colors';
-import {FaFolderOpen, FaCog, FaDatabase} from 'react-icons/fa';
+import {FaFolderOpen, FaCog, FaDatabase, FaPaperPlane} from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
 
 const styles = {
@@ -22,18 +22,27 @@ const styles = {
     fontWeight: 500,
     marginBottom: 10,
     textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   settingsBlock: {
     bottom: 0,
     width: '100%',
   },
+  icon: {
+    marginRight: 6,
+  }
 };
 
 export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
   return (
     <div style={styles.container}>
       <div>
-        <div style={styles.logo}>Sailplane</div>
+        <div style={styles.logo}>
+          <FaPaperPlane color={'#FFF'} size={18} style={styles.icon} />
+          Sailplane
+        </div>
         <PanelItem
           title={'Files'}
           iconComponent={FaFolderOpen}
