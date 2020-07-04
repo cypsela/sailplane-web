@@ -57,6 +57,8 @@ export function FileItem({
   const setDecryptPassword = async (password) => {
     let doesNotMatchHash = await doesPasswordFailHashCheck(password);
     if (!doesNotMatchHash) {
+      setEnterPasswordMode(false);
+
       let blob = await getBlob();
 
       dispatch(setStatus({message: 'Decrypting file'}));
@@ -77,8 +79,6 @@ export function FileItem({
       }
 
       saveAs(blob, decryptedFilename);
-
-      setEnterPasswordMode(false);
     }
   };
 
@@ -262,7 +262,13 @@ export function FileItem({
                   iconComponent={FiTrash}
                   tooltip={'Delete'}
                   onClick={async () => {
-                    dispatch(setStatus({message: 'Deleting file'}));
+                    dispatch(
+                      setStatus({
+                        message: `Deleting ${
+                          type === 'dir' ? 'folder' : 'file'
+                        }`,
+                      }),
+                    );
                     await sharedFs.current.remove(path);
                     dispatch(setStatus({}));
                   }}
