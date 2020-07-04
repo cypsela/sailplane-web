@@ -42,11 +42,12 @@ export function Instance({data, selected, onClick, onDelete}) {
   return (
     <div
       style={styles.outer}
+      ref={hoverRef}
       onClick={(event) => {
         event.stopPropagation();
         onClick();
       }}>
-      <div ref={hoverRef} style={styles.container}>
+      <div style={styles.container}>
         <div style={styles.name}>{name}</div>
         <div style={styles.address}>{address}</div>
       </div>
