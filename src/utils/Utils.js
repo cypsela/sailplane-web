@@ -48,3 +48,7 @@ export const supportedPreviewExtensions = [
   'flac',
   'jpeg',
 ];
+
+export function isFileExtensionSupported(fileExtension) {
+  return supportedPreviewExtensions.includes(fileExtension.toLowerCase());
+}

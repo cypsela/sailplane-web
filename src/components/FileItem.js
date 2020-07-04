@@ -8,7 +8,7 @@ import {FilePreview} from './FilePreview';
 import {
   getBlobFromPath,
   getFileExtensionFromFilename,
-  supportedPreviewExtensions,
+  isFileExtensionSupported,
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import {Draggable} from 'react-beautiful-dnd';
@@ -124,10 +124,7 @@ export function FileItem({
             if (type === 'dir') {
               setCurrentDirectory(path);
             } else {
-              if (
-                !fileBlob &&
-                supportedPreviewExtensions.includes(fileExtension)
-              ) {
+              if (!fileBlob && isFileExtensionSupported(fileExtension)) {
                 dispatch(setStatus({message: 'Fetching preview'}));
                 const blob = await getBlobFromPath(sharedFs, path, ipfs);
                 dispatch(setStatus({}));
