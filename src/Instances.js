@@ -50,7 +50,7 @@ export function Instances({sailplane}) {
   const {instances, instanceIndex} = main;
 
   const createInstance = async (name) => {
-    const address = await sailplane.determineAddress(`superdrive_${name}`);
+    const address = await sailplane.determineAddress('superdrive', { meta: { name }});
 
     dispatch(addInstance(name, address.toString()));
     setAddInstanceMode(false);

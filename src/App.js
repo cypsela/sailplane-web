@@ -73,8 +73,9 @@ function App() {
       if (instances.length) {
         address = currentInstance.address;
       } else {
-        address = await sailplane.determineAddress('superdrive');
-        dispatch(addInstance('Main', address.toString()));
+        const name = 'main'
+        address = await sailplane.determineAddress('superdrive', { meta: { name } });
+        dispatch(addInstance(name, address.toString()));
       }
       sharedFS.current = await sailplane.mount(address, {});
 
