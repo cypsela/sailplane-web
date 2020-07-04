@@ -156,7 +156,7 @@ export function FileItem({
   const getCID = async () => {
     const cid = await sharedFs.current.read(path);
     const fileInfo = await getFileInfoFromCID(cid, ipfs);
-    // console.log('fileinfo', fileInfo)
+    console.log('fileinfo', fileInfo)
     setFileInfo(fileInfo);
     setCID(cid);
   };

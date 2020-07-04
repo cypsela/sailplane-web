@@ -12,7 +12,7 @@ import {Settings} from './Settings';
 import {Instances} from './Instances';
 import {useSelector, useDispatch} from 'react-redux';
 import {addInstance} from './actions/main';
-import {setStatus} from "./actions/tempData";
+import {setStatus} from './actions/tempData';
 
 function App() {
   const windowSize = useWindowSize();
@@ -41,7 +41,9 @@ function App() {
 
   const rootLS = async () => {
     if (ready) {
+      dispatch(setStatus({message: 'Getting folder'}));
       const res = await sharedFS.current.fs.ls(currentDirectory);
+      dispatch(setStatus({}));
 
       let contents = [];
 
