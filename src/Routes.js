@@ -15,7 +15,7 @@ export default function Routes() {
   return (
     <Router>
       <Route exact path="/" component={App} />
-      <Route exact path="/download/:address/:path" component={Download} />
+      <Route exact path="/download/:cid/:path" component={Download} />
     </Router>
   );
 }

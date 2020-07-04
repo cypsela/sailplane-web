@@ -34,6 +34,14 @@ export async function getBlobFromPath(sharedFs, path, ipfs) {
     : fileToBlob(struct[0]);
 }
 
+export async function getBlobFromPathCID(cid, path, ipfs) {
+  const struct = await all(ipfs.get(cid));
+
+  return struct[0].type === 'dir'
+    ? dirToBlob(path, struct)
+    : fileToBlob(struct[0]);
+}
+
 export function getFileExtensionFromFilename(filename) {
   const fileParts = filename.split('.');
   return fileParts[fileParts.length - 1];

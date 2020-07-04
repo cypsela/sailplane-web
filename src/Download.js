@@ -9,7 +9,7 @@ import {LoadingRightBlock} from './LoadingRightBlock';
 import {hot} from 'react-hot-loader';
 import {useDispatch} from 'react-redux';
 import {setStatus} from './actions/tempData';
-import {getBlobFromPath} from './utils/Utils';
+import {getBlobFromPathCID} from './utils/Utils';
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
 
@@ -17,15 +17,13 @@ function Download({match}) {
   const windowSize = useWindowSize();
   const windowWidth = windowSize.width;
   const ipfsObj = useIPFS();
-  const sharedFS = useRef({});
-  const sailplaneRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [downloadComplete, setDownloadComplete] = useState(false);
 
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
-  const {address, path} = match.params;
-  const cleanAddress = decodeURIComponent(address);
+  const {cid, path} = match.params;
   const cleanPath = decodeURIComponent(path);
+  const cleanCID = decodeURIComponent(cid);
   const dispatch = useDispatch();
 
   const styles = {
@@ -36,30 +34,15 @@ function Download({match}) {
     },
   };
 
-  const connectOrbit = useCallback(async (ipfs, doLS) => {
-    dispatch(setStatus({message: 'Initializing'}));
-    const orbitdb = await OrbitDB.createInstance(ipfs);
-
-    const sailplane = await Sailplane.create(orbitdb, {});
-
-    sharedFS.current = await sailplane.mount(cleanAddress, {});
-
-    sailplaneRef.current = sailplane;
-
-    setReady(true);
-    dispatch(setStatus({}));
-  }, []);
-
-  // Connect orbit todo: refactor hook
   useEffect(() => {
     if (ipfsObj.isIpfsReady && !ready) {
-      connectOrbit(ipfsObj.ipfs);
+      setReady(true);
     }
-  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, connectOrbit]);
+  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready]);
 
   const getDownload = async () => {
     dispatch(setStatus({message: 'Fetching file'}));
-    const blob = await getBlobFromPath(sharedFS, cleanPath, ipfs);
+    const blob = await getBlobFromPathCID(cleanCID, cleanPath, ipfsObj.ipfs);
     dispatch(setStatus({}));
 
     const pathSplit = cleanPath.split('/');

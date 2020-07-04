@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {primary, primary2, primary45, primary5} from '../colors';
 import {FaFile, FaFolder, FaLock} from 'react-icons/fa';
 import {FiFile, FiLock} from 'react-icons/fi';
@@ -32,6 +32,7 @@ export function FileItem({
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
   const [hoverRef, isHovered] = useHover();
+  const [CID, setCID] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const [enterPasswordMode, setEnterPasswordMode] = useState(false);
@@ -149,6 +150,15 @@ export function FileItem({
     iconComponent = FiLock;
   }
 
+  const getCID = async () => {
+    const cid = await sharedFs.current.read(path);
+    setCID(cid);
+  };
+
+  useEffect(() => {
+    getCID();
+  }, [path]);
+
   const IconComponent = iconComponent;
 
   const rename = async (editNameValue) => {
@@ -239,7 +249,7 @@ export function FileItem({
               <div>
                 <Link
                   to={`/download/${encodeURIComponent(
-                    currentInstance.address,
+                    CID,
                   )}/${encodeURIComponent(path)}`}
                   target={'_blank'}>
                   <ToolItem
