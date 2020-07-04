@@ -67,7 +67,6 @@ export function Instances({sailplane}) {
     '',
     {
       placeholder: 'instance name',
-      actionTitle: 'Create',
     },
   );
 
@@ -78,7 +77,6 @@ export function Instances({sailplane}) {
     '',
     {
       placeholder: 'instance address',
-      actionTitle: 'Import',
     },
   );
 

@@ -2,7 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import {ToolItem} from '../components/ToolItem';
 import {primary, primary3} from '../colors';
 
-export default function useTextInput(visible, handleDone, handleCancel, initialValue, {placeholder, actionTitle}) {
+export default function useTextInput(
+  visible,
+  handleDone,
+  handleCancel,
+  initialValue,
+  {placeholder},
+) {
   const [inputString, setInputString] = useState(initialValue);
   const inputRef = useRef(null);
 

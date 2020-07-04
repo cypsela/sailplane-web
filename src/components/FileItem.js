@@ -41,7 +41,6 @@ export function FileItem({
     name,
     {
       placeholder: '',
-      actionTitle: 'Rename',
     },
   );
 
