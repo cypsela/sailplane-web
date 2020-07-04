@@ -1,20 +1,35 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {ToolItem} from '../components/ToolItem';
-import {primary, primary3} from '../colors';
+import {errorColor, goodColor, primary, primary3} from '../colors';
 
 export default function useTextInput(
   visible,
   handleDone,
   handleCancel,
   initialValue,
-  {placeholder, isPassword},
+  {placeholder, isPassword, isError},
 ) {
   const [inputString, setInputString] = useState(initialValue);
+  const [showRedBorder, setShowRedBorder] = useState(false);
+
   const inputRef = useRef(null);
+
+  const checkIfError = async () => {
+    const tmpIsError = await isError(inputString);
+    setShowRedBorder(tmpIsError);
+  };
+
+  useEffect(() => {
+    if (isError) {
+      checkIfError();
+    }
+  }, [inputString]);
 
   const styles = {
     input: {
-      border: `1px solid ${primary3}`,
+      border: `1px solid ${
+        showRedBorder ? errorColor : isError ? goodColor : primary3
+      }`,
       borderRadius: 4,
       color: primary,
       fontSize: 14,

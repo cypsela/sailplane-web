@@ -10,6 +10,7 @@ import {
   getBlobFromPath,
   getFileExtensionFromFilename,
   isFileExtensionSupported,
+  sha256,
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import {Draggable} from 'react-beautiful-dnd';
@@ -31,10 +32,15 @@ export function FileItem({
   const [hoverRef, isHovered] = useHover();
   const [editMode, setEditMode] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
+  const [enterPasswordMode, setEnterPasswordMode] = useState(false);
   const name = pathSplit[pathSplit.length - 1];
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
-  const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(name);
+  const {
+    isEncrypted,
+    decryptedFilename,
+    passHash,
+  } = getEncryptionInfoFromFilename(name);
 
   const dispatch = useDispatch();
 
@@ -45,6 +51,54 @@ export function FileItem({
     name,
     {
       placeholder: '',
+    },
+  );
+
+  const setDecryptPassword = async (password) => {
+    let doesNotMatchHash = await doesPasswordFailHashCheck(password);
+    if (!doesNotMatchHash) {
+      let blob = await getBlob();
+
+      dispatch(setStatus({message: 'Decrypting file'}));
+
+      blob = await decryptFile(blob, password);
+      dispatch(setStatus({}));
+
+      if (!blob) {
+        dispatch(
+          setStatus({
+            message: 'Error decrypting file: Incorrect password!',
+            isError: true,
+          }),
+        );
+        setTimeout(() => {
+          dispatch(setStatus({}));
+        }, 3000);
+      }
+
+      saveAs(blob, decryptedFilename);
+
+      setEnterPasswordMode(false);
+    }
+  };
+
+  const doesPasswordFailHashCheck = async (text) => {
+    const hash = await sha256(text);
+    const smallHash = hash.substr(0, 10);
+    if (smallHash !== passHash) {
+      return true;
+    }
+  };
+
+  const PasswordInputComponent = useTextInput(
+    enterPasswordMode,
+    (password) => setDecryptPassword(password),
+    () => setEnterPasswordMode(false),
+    '',
+    {
+      placeholder: 'password',
+      isPassword: true,
+      isError: doesPasswordFailHashCheck,
     },
   );
 
@@ -75,9 +129,10 @@ export function FileItem({
       marginRight: 4,
     },
     tools: {
-      opacity: (isHovered || fileBlob) && !isParent ? 1 : 0,
+      opacity:
+        (isHovered || fileBlob || enterPasswordMode) && !isParent ? 1 : 0,
       fontSize: 14,
-      width: 80,
+      // width: 80,
     },
   };
 
@@ -114,6 +169,19 @@ export function FileItem({
       // cannot be 0, but make it super tiny
       transitionDuration: `0.001s`,
     };
+  }
+
+  async function getBlob() {
+    let blob;
+
+    if (!fileBlob) {
+      dispatch(setStatus({message: 'Fetching download'}));
+      blob = await getBlobFromPath(sharedFs, path, ipfs);
+      dispatch(setStatus({}));
+    } else {
+      blob = fileBlob;
+    }
+    return blob;
   }
 
   const getContent = (snapshot) => {
@@ -164,64 +232,45 @@ export function FileItem({
             )}
           </div>
           <div style={styles.tools}>
-            <ToolItem
-              iconComponent={FiDownload}
-              changeColor={primary}
-              tooltip={'Download'}
-              onClick={async () => {
-                let blob;
+            {!enterPasswordMode ? (
+              <div>
+                <ToolItem
+                  iconComponent={FiDownload}
+                  changeColor={primary}
+                  tooltip={'Download'}
+                  onClick={async () => {
+                    if (isEncrypted) {
+                      setEnterPasswordMode(true);
+                      return;
+                    }
 
-                if (!fileBlob) {
-                  dispatch(setStatus({message: 'Fetching download'}));
-                  blob = await getBlobFromPath(sharedFs, path, ipfs);
-                  dispatch(setStatus({}));
-                } else {
-                  blob = fileBlob;
-                }
+                    const blob = await getBlob();
+                    saveAs(blob, name);
+                  }}
+                />
 
-                if (isEncrypted) {
-                  dispatch(setStatus({message: 'Decrypting file'}));
+                <ToolItem
+                  iconComponent={FiEdit}
+                  changeColor={primary}
+                  tooltip={'Rename'}
+                  onClick={async () => {
+                    setEditMode(true);
+                  }}
+                />
 
-                  // todo: password
-                  blob = await decryptFile(blob, 'password');
-                  dispatch(setStatus({}));
-
-                  if (!blob) {
-                    dispatch(
-                      setStatus({
-                        message: 'Error decrypting file: Incorrect password!',
-                        isError: true,
-                      }),
-                    );
-                    setTimeout(() => {
-                      dispatch(setStatus({}));
-                    }, 3000);
-                    return;
-                  }
-                }
-
-                saveAs(blob, isEncrypted ? decryptedFilename : name);
-              }}
-            />
-
-            <ToolItem
-              iconComponent={FiEdit}
-              changeColor={primary}
-              tooltip={'Rename'}
-              onClick={async () => {
-                setEditMode(true);
-              }}
-            />
-
-            <ToolItem
-              iconComponent={FiTrash}
-              tooltip={'Delete'}
-              onClick={async () => {
-                dispatch(setStatus({message: 'Deleting file'}));
-                await sharedFs.current.remove(path);
-                dispatch(setStatus({}));
-              }}
-            />
+                <ToolItem
+                  iconComponent={FiTrash}
+                  tooltip={'Delete'}
+                  onClick={async () => {
+                    dispatch(setStatus({message: 'Deleting file'}));
+                    await sharedFs.current.remove(path);
+                    dispatch(setStatus({}));
+                  }}
+                />
+              </div>
+            ) : (
+              <>{PasswordInputComponent}</>
+            )}
           </div>
         </div>
         {fileBlob ? (
