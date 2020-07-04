@@ -41,7 +41,7 @@ export default function useTextInput(visible, handleDone, handleCancel, initialV
           }
         }}
       />
-      <ToolItem title={actionTitle} onClick={() => handleDone(inputString)} />
+      {/*<ToolItem title={actionTitle} onClick={() => handleDone(inputString)} />*/}
       <ToolItem
         title={'Cancel'}
         onClick={() => {
