@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {primary, primary2, primary45, primary5} from '../colors';
-import {FaFolder} from 'react-icons/fa';
-import {FiDownload, FiEdit, FiFile, FiTrash} from 'react-icons/fi';
+import {FaFile, FaFolder, FaLock} from 'react-icons/fa';
+import {FiFile, FiLock} from 'react-icons/fi';
+import {FiDownload, FiEdit, FiTrash} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
@@ -15,6 +16,7 @@ import {Draggable} from 'react-beautiful-dnd';
 import useTextInput from '../hooks/useTextInput';
 import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
+import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
 
 export function FileItem({
   data,
@@ -32,6 +34,8 @@ export function FileItem({
   const name = pathSplit[pathSplit.length - 1];
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
+  const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(name);
+
   const dispatch = useDispatch();
 
   const InputComponent = useTextInput(
@@ -77,9 +81,23 @@ export function FileItem({
     },
   };
 
+  let iconComponent = FiFile;
+
+  if (type === 'dir') {
+    iconComponent = FaFolder;
+  }
+
+  if (isEncrypted) {
+    iconComponent = FiLock;
+  }
+
+  const IconComponent = iconComponent;
+
   const rename = async (editNameValue) => {
     try {
+      dispatch(setStatus({message: 'Renaming file'}));
       await sharedFs.current.move(path, parentPath, editNameValue);
+      dispatch(setStatus({}));
     } catch (e) {
       console.log('Error moving!', e);
     }
@@ -134,12 +152,16 @@ export function FileItem({
             }
           }}>
           <div style={styles.nameContainer}>
-            {type === 'dir' ? (
-              <FaFolder color={primary45} size={16} style={styles.icon} />
+            <IconComponent color={primary45} size={16} style={styles.icon} />
+            {editMode ? (
+              <>{InputComponent}</>
+            ) : isParent ? (
+              '. . /'
+            ) : isEncrypted ? (
+              decryptedFilename
             ) : (
-              <FiFile color={primary45} size={16} style={styles.icon} />
+              name
             )}
-            {editMode ? <>{InputComponent}</> : isParent ? '. . /' : name}
           </div>
           <div style={styles.tools}>
             <ToolItem
@@ -147,15 +169,38 @@ export function FileItem({
               changeColor={primary}
               tooltip={'Download'}
               onClick={async () => {
+                let blob;
+
                 if (!fileBlob) {
                   dispatch(setStatus({message: 'Fetching download'}));
-                  const blob = await getBlobFromPath(sharedFs, path, ipfs);
+                  blob = await getBlobFromPath(sharedFs, path, ipfs);
+                  dispatch(setStatus({}));
+                } else {
+                  blob = fileBlob;
+                }
+
+                if (isEncrypted) {
+                  dispatch(setStatus({message: 'Decrypting file'}));
+
+                  // todo: password
+                  blob = await decryptFile(blob, 'password');
                   dispatch(setStatus({}));
 
-                  saveAs(blob, name);
-                } else {
-                  saveAs(fileBlob, name);
+                  if (!blob) {
+                    dispatch(
+                      setStatus({
+                        message: 'Error decrypting file: Incorrect password!',
+                        isError: true,
+                      }),
+                    );
+                    setTimeout(() => {
+                      dispatch(setStatus({}));
+                    }, 3000);
+                    return;
+                  }
                 }
+
+                saveAs(blob, isEncrypted ? decryptedFilename : name);
               }}
             />
 
@@ -172,7 +217,9 @@ export function FileItem({
               iconComponent={FiTrash}
               tooltip={'Delete'}
               onClick={async () => {
+                dispatch(setStatus({message: 'Deleting file'}));
                 await sharedFs.current.remove(path);
+                dispatch(setStatus({}));
               }}
             />
           </div>

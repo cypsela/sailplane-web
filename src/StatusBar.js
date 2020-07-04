@@ -1,11 +1,11 @@
 import React from 'react';
-import {primary3} from './colors';
-import {FiLoader} from 'react-icons/fi';
+import {errorColor, primary3} from './colors';
+import {FiLoader, FiAlertTriangle} from 'react-icons/fi';
 import {useSelector} from 'react-redux';
 
 export function StatusBar() {
   const status = useSelector((state) => state.tempData.status);
-  const {message} = status;
+  const {message, isError} = status;
 
   const styles = {
     container: {
@@ -15,7 +15,7 @@ export function StatusBar() {
       padding: 8,
       borderRadius: 4,
       fontFamily: 'Open Sans',
-      color: '#FFF',
+      color: isError ? errorColor : '#FFF',
       fontSize: 14,
       display: 'flex',
       alignItems: 'center',
@@ -27,13 +27,21 @@ export function StatusBar() {
     },
   };
 
+  let iconComponent = FiLoader;
+
+  if (isError) {
+    iconComponent = FiAlertTriangle;
+  }
+
+  const IconComponent = iconComponent;
+
   return (
     <div style={styles.container}>
-      <FiLoader
-        color={'#FFF'}
+      <IconComponent
+        color={isError ? errorColor : '#FFF'}
         size={16}
         style={styles.icon}
-        className={'rotating'}
+        className={!isError ? 'rotating' : ''}
       />
 
       <span style={styles.message}>{message}</span>

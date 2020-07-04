@@ -27,6 +27,7 @@ export function DropZone({children, sharedFs, currentDirectory}) {
   const onDrop = useCallback(
     async (acceptedFiles) => {
       if (encryptionKey) {
+        console.log('encrypting')
         let encryptedFiles = [];
 
         for (let file of acceptedFiles) {
@@ -44,7 +45,7 @@ export function DropZone({children, sharedFs, currentDirectory}) {
       await sharedFs.current.upload(currentDirectory, listSource);
       dispatch(setStatus({}));
     },
-    [currentDirectory],
+    [currentDirectory, encryptionKey],
   );
 
   const {getRootProps, getInputProps, isDragActive} = useDropzone({
