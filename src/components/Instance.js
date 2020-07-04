@@ -14,6 +14,7 @@ export function Instance({data, selected, onClick, onDelete}) {
     outer: {
       padding: 8,
       backgroundColor: backgroundColor,
+      border: `1px solid ${isHovered?primary3:backgroundColor}`,
       color: selected ? '#FFF' : primary45,
       borderRadius: 4,
       marginBottom: 4,
