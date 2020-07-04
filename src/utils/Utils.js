@@ -1,4 +1,5 @@
 import all from 'it-all';
+import first from 'it-first';
 import JSZip from 'jszip';
 
 async function fileToBlob({content}) {
@@ -23,6 +24,10 @@ async function dirToBlob(path, struct) {
   );
   const data = await zip.generateAsync({type: 'blob'});
   return data;
+}
+
+export async function getFileInfoFromCID(cid, ipfs) {
+  return await first(ipfs.get(cid));
 }
 
 export async function getBlobFromPath(sharedFs, path, ipfs) {
@@ -62,6 +67,36 @@ export function isFileExtensionSupported(fileExtension) {
 }
 
 export async function sha256(str) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder("utf-8").encode(str));
-  return Array.prototype.map.call(new Uint8Array(buf), x=>(('00'+x.toString(16)).slice(-2))).join('');
+  const buf = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder('utf-8').encode(str),
+  );
+  return Array.prototype.map
+    .call(new Uint8Array(buf), (x) => ('00' + x.toString(16)).slice(-2))
+    .join('');
+}
+
+
+export function humanFileSize(bytes, si = true, dp = 1) {
+  const thresh = si ? 1000 : 1024;
+
+  if (Math.abs(bytes) < thresh) {
+    return bytes + ' B';
+  }
+
+  const units = si
+    ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+  let u = -1;
+  const r = 10 ** dp;
+
+  do {
+    bytes /= thresh;
+    ++u;
+  } while (
+    Math.round(Math.abs(bytes) * r) / r >= thresh &&
+    u < units.length - 1
+  );
+
+  return bytes.toFixed(dp) + ' ' + units[u];
 }

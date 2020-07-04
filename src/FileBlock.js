@@ -31,6 +31,7 @@ const styles = {
     color: primary35,
     fontSize: 12,
     letterSpacing: 1.08,
+    textAlign: 'left',
   },
   files: {
     backgroundColor: '#FFF',
@@ -75,8 +76,9 @@ export function FileBlock({
         setCurrentDirectory={setCurrentDirectory}
       />
       <div style={styles.fileHeader}>
-        <div style={{...styles.fileHeaderItem, marginLeft: 8}}>Name</div>
-        {/*<div style={styles.fileHeaderItem}>Modified</div>*/}
+        <div style={{...styles.fileHeaderItem}}>Name</div>
+        <div style={styles.fileHeaderItem}>Size</div>
+        <div style={styles.fileHeaderItem}></div>
       </div>
       <div style={styles.dropContainer}>
         <DropZone sharedFs={sharedFs} currentDirectory={currentDirectory}>

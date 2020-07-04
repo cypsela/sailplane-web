@@ -9,7 +9,7 @@ import {FilePreview} from './FilePreview';
 import {Link} from 'react-router-dom';
 import {
   getBlobFromPath,
-  getFileExtensionFromFilename,
+  getFileExtensionFromFilename, getFileInfoFromCID, humanFileSize,
   isFileExtensionSupported,
   sha256,
 } from '../utils/Utils';
@@ -33,12 +33,10 @@ export function FileItem({
   const name = pathSplit[pathSplit.length - 1];
   const [hoverRef, isHovered] = useHover();
   const [CID, setCID] = useState(false);
+  const [fileInfo, setFileInfo] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const [enterPasswordMode, setEnterPasswordMode] = useState(false);
-  const main = useSelector((state) => state.main);
-  const {instances, instanceIndex} = main;
-  const currentInstance = instances[instanceIndex];
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
   const {
@@ -125,14 +123,19 @@ export function FileItem({
       cursor: 'pointer',
     },
     nameContainer: {
+      width: '100%',
       display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'flex-start',
       alignItems: 'center',
     },
     icon: {
       marginRight: 4,
     },
     tools: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      width: '100%',
       opacity:
         (isHovered || fileBlob || enterPasswordMode) && !isParent ? 1 : 0,
       fontSize: 14,
@@ -152,6 +155,9 @@ export function FileItem({
 
   const getCID = async () => {
     const cid = await sharedFs.current.read(path);
+    const fileInfo = await getFileInfoFromCID(cid, ipfs);
+    // console.log('fileinfo', fileInfo)
+    setFileInfo(fileInfo);
     setCID(cid);
   };
 
@@ -243,6 +249,9 @@ export function FileItem({
             ) : (
               name
             )}
+          </div>
+          <div style={styles.nameContainer}>
+            {type!=='dir' && fileInfo?humanFileSize(fileInfo.size):null}
           </div>
           <div style={styles.tools}>
             {!enterPasswordMode ? (
