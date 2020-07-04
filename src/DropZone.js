@@ -28,9 +28,14 @@ export function DropZone({children, sharedFs, currentDirectory}) {
     async (acceptedFiles) => {
       if (encryptionKey) {
         let encryptedFiles = [];
-
+        let i = 0;
         for (let file of acceptedFiles) {
-          dispatch(setStatus({message: 'Encrypting ' + file.path}));
+          i++;
+          dispatch(
+            setStatus({
+              message: `[${i}/${acceptedFiles.length}] Encrypting ${file.path}`,
+            }),
+          );
 
           const encryptedBlob = await encryptFile(file, encryptionKey.key);
           dispatch(setStatus({}));
