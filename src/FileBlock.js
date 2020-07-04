@@ -77,7 +77,7 @@ export function FileBlock({
       />
       <div style={styles.fileHeader}>
         <div style={{...styles.fileHeaderItem}}>Name</div>
-        <div style={styles.fileHeaderItem}>Size</div>
+        <div style={{...styles.fileHeaderItem, width: 120 }}>Size</div>
         <div style={styles.fileHeaderItem}></div>
       </div>
       <div style={styles.dropContainer}>

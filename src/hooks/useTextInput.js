@@ -35,6 +35,7 @@ export default function useTextInput(
       fontSize: 14,
       fontWeight: 200,
       padding: 4,
+      marginRight: 4,
     },
   };
 

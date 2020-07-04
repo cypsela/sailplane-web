@@ -9,7 +9,9 @@ import {FilePreview} from './FilePreview';
 import {Link} from 'react-router-dom';
 import {
   getBlobFromPath,
-  getFileExtensionFromFilename, getFileInfoFromCID, humanFileSize,
+  getFileExtensionFromFilename,
+  getFileInfoFromCID,
+  humanFileSize,
   isFileExtensionSupported,
   sha256,
 } from '../utils/Utils';
@@ -156,7 +158,6 @@ export function FileItem({
   const getCID = async () => {
     const cid = await sharedFs.current.read(path);
     const fileInfo = await getFileInfoFromCID(cid, ipfs);
-    console.log('fileinfo', fileInfo)
     setFileInfo(fileInfo);
     setCID(cid);
   };
@@ -250,8 +251,8 @@ export function FileItem({
               name
             )}
           </div>
-          <div style={styles.nameContainer}>
-            {type!=='dir' && fileInfo?humanFileSize(fileInfo.size):null}
+          <div style={{...styles.nameContainer, width: 120}}>
+            {type !== 'dir' && fileInfo ? humanFileSize(fileInfo.size) : null}
           </div>
           <div style={styles.tools}>
             {!enterPasswordMode ? (
