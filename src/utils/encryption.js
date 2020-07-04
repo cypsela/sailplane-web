@@ -82,4 +82,5 @@ export const encryptFile = async (file, password) => {
   encryptedBlob.path = file.path;
   encryptedBlob.lastModified = Date.now();
   encryptedBlob.lastModifiedDate = new Date();
+  return encryptedBlob
 };
