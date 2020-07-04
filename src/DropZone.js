@@ -27,15 +27,11 @@ export function DropZone({children, sharedFs, currentDirectory}) {
   const onDrop = useCallback(
     async (acceptedFiles) => {
       if (encryptionKey) {
-        console.log('encrypting')
         let encryptedFiles = [];
 
         for (let file of acceptedFiles) {
           const encryptedBlob = await encryptFile(file, encryptionKey.key);
           encryptedFiles.push(encryptedBlob);
-          console.log('original', file);
-          console.log('encrypted', encryptedBlob);
-          // console.log('enc', encryptedBytes)
         }
         acceptedFiles = encryptedFiles;
       }

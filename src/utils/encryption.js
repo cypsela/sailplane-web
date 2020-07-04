@@ -1,4 +1,4 @@
-import {getFileExtensionFromFilename} from './Utils';
+import {getFileExtensionFromFilename, sha256} from './Utils';
 
 const pbkdf2iterations = 10000;
 const sailplaneExtension = 'encrypted-sailplane';
@@ -83,7 +83,11 @@ export const encryptFile = async (file, password) => {
   });
 
   encryptedBlob.name = file.name;
-  encryptedBlob.path = file.path + '.encrypted-sailplane';
+
+  const passwordHash = await sha256(password);
+  const passCheckString = passwordHash.substr(0, 10);
+
+  encryptedBlob.path = `${file.path}.encrypted-sailplane_${passCheckString}`;
   encryptedBlob.lastModified = file.lastModified;
   encryptedBlob.lastModifiedDate = file.lastModifiedDate;
   return encryptedBlob;
@@ -163,11 +167,18 @@ export const decryptFile = async (file, password) => {
 export const getEncryptionInfoFromFilename = (filename) => {
   const extension = getFileExtensionFromFilename(filename);
 
-  return {
-    isEncrypted: /encrypted-sailplane/.test(extension),
-    decryptedFilename: filename.substring(
-      0,
-      filename.length - sailplaneExtension.length - 1,
-    ),
-  };
+  if (/encrypted-sailplane/.test(extension)) {
+    const extensionSplit = extension.split('_');
+
+    return {
+      isEncrypted: true,
+      passHash: extensionSplit[1],
+      decryptedFilename: filename.substring(
+        0,
+        filename.length - extension.length - 1,
+      ),
+    };
+  } else {
+    return {};
+  }
 };
