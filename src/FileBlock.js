@@ -1,6 +1,6 @@
 import {FileItem} from './components/FileItem';
 import {DropZone} from './DropZone';
-import React from 'react';
+import React, {useRef} from 'react';
 import {primary2, primary35} from './colors';
 import {FolderTools} from './FolderTools';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
@@ -52,6 +52,7 @@ export function FileBlock({
   setCurrentDirectory,
   currentDirectory,
 }) {
+  const dropzoneRef = useRef(null);
   const sortedContents = directoryContents.sort((a, b) => {
     if (a.name < b.name) {
       return -1;
@@ -74,14 +75,20 @@ export function FileBlock({
         currentDirectory={currentDirectory}
         sharedFs={sharedFs}
         setCurrentDirectory={setCurrentDirectory}
+        handleOpenUpload={() => {
+          dropzoneRef.current.openUpload();
+        }}
       />
       <div style={styles.fileHeader}>
         <div style={{...styles.fileHeaderItem}}>Name</div>
-        <div style={{...styles.fileHeaderItem, width: 120 }}>Size</div>
+        <div style={{...styles.fileHeaderItem, width: 120}}>Size</div>
         <div style={styles.fileHeaderItem}></div>
       </div>
       <div style={styles.dropContainer}>
-        <DropZone sharedFs={sharedFs} currentDirectory={currentDirectory}>
+        <DropZone
+          sharedFs={sharedFs}
+          currentDirectory={currentDirectory}
+          ref={dropzoneRef}>
           <DragDropContext
             onDragEnd={async (draggable) => {
               if (draggable.combine) {
@@ -149,7 +156,7 @@ export function FileBlock({
           </DragDropContext>
         </DropZone>
       </div>
-      <StatusBar/>
+      <StatusBar />
     </div>
   );
 }

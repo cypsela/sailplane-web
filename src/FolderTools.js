@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ToolItem} from './components/ToolItem';
-import {FiFolderPlus, FiUnlock, FiLock} from 'react-icons/fi';
+import {FiFolderPlus, FiUnlock, FiLock, FiUpload} from 'react-icons/fi';
 import {errorColor, goodColor, primary} from './colors';
 import {Breadcrumb} from './components/Breadcrumb';
 import useTextInput from './hooks/useTextInput';
@@ -23,7 +23,7 @@ const styles = {
   },
 };
 
-export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory}) {
+export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory, handleOpenUpload}) {
   const [addFolderMode, setAddFolderMode] = useState(false);
   const [securePanelOpen, setSecurePanelOpen] = useState(false);
   const dispatch = useDispatch();
@@ -77,6 +77,14 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory}) {
         <div style={styles.rightTools}>
           {!addFolderMode && !securePanelOpen ? (
             <>
+              <ToolItem
+                iconComponent={FiUpload}
+                size={18}
+                changeColor={primary}
+                onClick={() => {
+                  handleOpenUpload();
+                }}
+              />
               <ToolItem
                 iconComponent={encryptionKey ? FiLock : FiUnlock}
                 size={18}

@@ -1,4 +1,8 @@
-import React, {useCallback} from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+} from 'react';
 import {useDropzone} from 'react-dropzone';
 import {primary5} from './colors';
 import fileListSource from '@tabcat/file-list-source';
@@ -6,7 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setStatus} from './actions/tempData';
 import {encryptFile} from './utils/encryption';
 
-export function DropZone({children, sharedFs, currentDirectory}) {
+export function DropZone({children, sharedFs, currentDirectory}, ref) {
   const styles = {
     container: {
       cursor: 'pointer',
@@ -53,10 +57,16 @@ export function DropZone({children, sharedFs, currentDirectory}) {
     [currentDirectory, encryptionKey],
   );
 
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+  const {getRootProps, getInputProps, isDragActive, open} = useDropzone({
     onDrop,
     noClick: true,
   });
+
+  useImperativeHandle(ref, () => ({
+    openUpload: () => {
+      open();
+    },
+  }));
 
   return (
     <div {...getRootProps()} style={styles.container}>
@@ -65,3 +75,5 @@ export function DropZone({children, sharedFs, currentDirectory}) {
     </div>
   );
 }
+
+DropZone = forwardRef(DropZone);
