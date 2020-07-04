@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import {primary, primary2, primary45, primary5} from '../colors';
 import {FaFile, FaFolder, FaLock} from 'react-icons/fa';
 import {FiFile, FiLock} from 'react-icons/fi';
-import {FiDownload, FiEdit, FiTrash} from 'react-icons/fi';
+import {FiDownload, FiEdit, FiTrash, FiShare} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
+import {Link} from 'react-router-dom';
 import {
   getBlobFromPath,
   getFileExtensionFromFilename,
@@ -15,7 +16,7 @@ import {
 import {saveAs} from 'file-saver';
 import {Draggable} from 'react-beautiful-dnd';
 import useTextInput from '../hooks/useTextInput';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setStatus} from '../actions/tempData';
 import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
 
@@ -29,11 +30,14 @@ export function FileItem({
 }) {
   const {path, type} = data;
   const pathSplit = path.split('/');
+  const name = pathSplit[pathSplit.length - 1];
   const [hoverRef, isHovered] = useHover();
   const [editMode, setEditMode] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const [enterPasswordMode, setEnterPasswordMode] = useState(false);
-  const name = pathSplit[pathSplit.length - 1];
+  const main = useSelector((state) => state.main);
+  const {instances, instanceIndex} = main;
+  const currentInstance = instances[instanceIndex];
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
   const {
@@ -62,7 +66,6 @@ export function FileItem({
       let blob = await getBlob();
 
       dispatch(setStatus({message: 'Decrypting file'}));
-
       blob = await decryptFile(blob, password);
       dispatch(setStatus({}));
 
@@ -234,6 +237,19 @@ export function FileItem({
           <div style={styles.tools}>
             {!enterPasswordMode ? (
               <div>
+                <Link
+                  to={`/download/${encodeURIComponent(
+                    currentInstance.address,
+                  )}/${encodeURIComponent(path)}`}
+                  target={'_blank'}>
+                  <ToolItem
+                    iconComponent={FiShare}
+                    changeColor={primary}
+                    tooltip={'Share'}
+                    onClick={async () => {}}
+                  />
+                </Link>
+
                 <ToolItem
                   iconComponent={FiDownload}
                   changeColor={primary}

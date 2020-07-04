@@ -1,6 +1,7 @@
 import React from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {HashRouter as Router, Route} from 'react-router-dom';
 import App from './App';
+import Download from "./Download";
 
 const styles = {
   container: {
@@ -14,6 +15,7 @@ export default function Routes() {
   return (
     <Router>
       <Route exact path="/" component={App} />
+      <Route exact path="/download/:address/:path" component={Download} />
     </Router>
   );
 }
