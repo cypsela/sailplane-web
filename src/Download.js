@@ -48,7 +48,9 @@ function Download({match}) {
       ipfsObj.ipfs,
       (currentIndex, totalCount) => {
         dispatch(
-          setStatus({message: `[${currentIndex}/${totalCount}] Downloading`}),
+          setStatus({
+            message: `[${Math.round(currentIndex / totalCount)}%] Downloading`,
+          }),
         );
       },
     );
