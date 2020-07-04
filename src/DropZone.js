@@ -1,9 +1,10 @@
 import React, {useCallback} from 'react';
 import {useDropzone} from 'react-dropzone';
-import {primary4, primary45, primary5, primary6} from './colors';
+import {primary5} from './colors';
 import fileListSource from '@tabcat/file-list-source';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setStatus} from './actions/tempData';
+import {encryptFile} from './utils/encryption';
 
 export function DropZone({children, sharedFs, currentDirectory}) {
   const styles = {
@@ -21,9 +22,23 @@ export function DropZone({children, sharedFs, currentDirectory}) {
   };
 
   const dispatch = useDispatch();
+  const encryptionKey = useSelector((state) => state.main.encryptionKey);
 
   const onDrop = useCallback(
     async (acceptedFiles) => {
+      if (encryptionKey) {
+        let encryptedFiles = [];
+
+        for (let file of acceptedFiles) {
+          const encryptedBlob = await encryptFile(file, encryptionKey.key);
+          encryptedFiles.push(encryptedBlob);
+          console.log('original', file);
+          console.log('encrypted', encryptedBlob);
+          // console.log('enc', encryptedBytes)
+        }
+        acceptedFiles = encryptedFiles;
+      }
+
       dispatch(setStatus({message: 'Uploading'}));
       const listSource = fileListSource(acceptedFiles);
       await sharedFs.current.upload(currentDirectory, listSource);
