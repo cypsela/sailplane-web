@@ -2,7 +2,7 @@
   "name": "sailplane-web",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "./",
   "dependencies": {
     "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#4c0b6be2461c65728ed632c02c3438ce4e36b82e",
     "@tabcat/file-list-source": "https://github.com/tabcat/file-list-source#858ad4e09e0f17b9bd53185618d68739f0f3409b",
