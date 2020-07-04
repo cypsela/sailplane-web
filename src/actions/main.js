@@ -4,7 +4,21 @@ export function addInstance(name, address) {
   return {
     type: main.ADD_INSTANCE,
     name,
-    address
+    address,
+  };
+}
+
+export function setEncryptionKey(key, keyType) {
+  return {
+    type: main.SET_ENCRYPTION_KEY,
+    key,
+    keyType,
+  };
+}
+
+export function clearEncryptionKey() {
+  return {
+    type: main.CLEAR_ENCRYPTION_KEY,
   };
 }
 
@@ -14,6 +28,7 @@ export function setInstanceIndex(index) {
     index,
   };
 }
+
 export function removeInstance(index) {
   return {
     type: main.REMOVE_INSTANCE,

@@ -4,6 +4,7 @@ import produce from 'immer';
 const initialState = {
   instances: [],
   instanceIndex: 0,
+  encryptionKey: null,
 };
 
 export default function main(state = initialState, action) {
@@ -21,6 +22,24 @@ export default function main(state = initialState, action) {
         draftState.instanceIndex = index;
       });
     }
+
+    case mainTypes.SET_ENCRYPTION_KEY: {
+      const {key, keyType} = action;
+      return produce(state, (draftState) => {
+        draftState.encryptionKey = {
+          key,
+          type: keyType,
+        };
+      });
+    }
+
+    case mainTypes.CLEAR_ENCRYPTION_KEY: {
+      const {key, keyType} = action;
+      return produce(state, (draftState) => {
+        draftState.encryptionKey = null;
+      });
+    }
+
     case mainTypes.REMOVE_INSTANCE: {
       const {index} = action;
       return produce(state, (draftState) => {
@@ -28,14 +47,10 @@ export default function main(state = initialState, action) {
           (instance, i) => index !== i,
         );
 
-        console.log('state', draftState.instances[draftState.instanceIndex])
         if (!draftState.instances[draftState.instanceIndex]) {
-          console.log('inner ran')
+          console.log('inner ran');
           draftState.instanceIndex = 0;
         }
-
-        console.log('afterState', draftState.instances[draftState.instanceIndex])
-
       });
     }
   }

@@ -18,3 +18,4 @@ export const primary6 = '#132b3a';
 // export const primary6 = '#333';
 
 export const errorColor = '#ef6565';
+export const goodColor = '#53c171';

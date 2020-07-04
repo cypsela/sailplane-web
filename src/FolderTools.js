@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import {ToolItem} from './components/ToolItem';
-import {FiFolderPlus} from 'react-icons/fi';
-import {primary} from './colors';
+import {FiFolderPlus, FiUnlock, FiLock} from 'react-icons/fi';
+import {errorColor, goodColor, primary} from './colors';
 import {Breadcrumb} from './components/Breadcrumb';
 import useTextInput from './hooks/useTextInput';
+import {useDispatch, useSelector} from 'react-redux';
+import {clearEncryptionKey, setEncryptionKey} from './actions/main';
 
 const styles = {
   tools: {
@@ -23,16 +25,9 @@ const styles = {
 
 export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory}) {
   const [addFolderMode, setAddFolderMode] = useState(false);
-  const InputComponent = useTextInput(
-    addFolderMode,
-    (newFolderName) => createFolder(newFolderName),
-    () => setAddFolderMode(false),
-    '',
-    {
-      placeholder: 'new folder',
-      actionTitle: 'Create',
-    }
-  );
+  const [securePanelOpen, setSecurePanelOpen] = useState(false);
+  const dispatch = useDispatch();
+  const encryptionKey = useSelector((state) => state.main.encryptionKey);
 
   const createFolder = async (newFolderName) => {
     try {
@@ -44,6 +39,32 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory}) {
     }
   };
 
+  const InputComponent = useTextInput(
+    addFolderMode,
+    (newFolderName) => createFolder(newFolderName),
+    () => setAddFolderMode(false),
+    '',
+    {
+      placeholder: 'new folder',
+    },
+  );
+
+  const setSecure = (password) => {
+    dispatch(setEncryptionKey(password, 'string'));
+    setSecurePanelOpen(false);
+  };
+
+  const SecureInputComponent = useTextInput(
+    securePanelOpen,
+    (password) => setSecure(password),
+    () => setSecurePanelOpen(false),
+    '',
+    {
+      placeholder: 'secure password',
+      isPassword: true,
+    },
+  );
+
   return (
     <div>
       <div style={styles.tools}>
@@ -54,16 +75,33 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory}) {
           />
         </div>
         <div style={styles.rightTools}>
-          {addFolderMode ? (
-            <>{InputComponent}</>
-          ) : (
-            <ToolItem
-              iconComponent={FiFolderPlus}
-              size={18}
-              changeColor={primary}
-              onClick={() => setAddFolderMode(true)}
-            />
-          )}
+          {!addFolderMode && !securePanelOpen ? (
+            <>
+              <ToolItem
+                iconComponent={encryptionKey ? FiLock : FiUnlock}
+                size={18}
+                defaultColor={encryptionKey ? goodColor : null}
+                changeColor={encryptionKey?errorColor:goodColor}
+                onClick={() => {
+                  if (encryptionKey) {
+                    dispatch(clearEncryptionKey());
+                  } else {
+                    setSecurePanelOpen(true);
+                  }
+                }}
+              />
+              <ToolItem
+                iconComponent={FiFolderPlus}
+                size={18}
+                changeColor={primary}
+                onClick={() => setAddFolderMode(true)}
+              />
+            </>
+          ) : null}
+
+          {addFolderMode ? <>{InputComponent}</> : null}
+
+          {securePanelOpen ? <>{SecureInputComponent}</> : null}
         </div>
       </div>
     </div>

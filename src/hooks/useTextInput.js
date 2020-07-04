@@ -7,7 +7,7 @@ export default function useTextInput(
   handleDone,
   handleCancel,
   initialValue,
-  {placeholder},
+  {placeholder, isPassword},
 ) {
   const [inputString, setInputString] = useState(initialValue);
   const inputRef = useRef(null);
@@ -36,7 +36,7 @@ export default function useTextInput(
     <>
       <input
         ref={inputRef}
-        type={'text'}
+        type={isPassword ? 'password' : 'text'}
         placeholder={placeholder}
         style={styles.input}
         value={inputString}
