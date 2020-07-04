@@ -1,5 +1,5 @@
 import React from 'react';
-import {primary45} from './colors';
+import {primary3} from './colors';
 import {FiLoader} from 'react-icons/fi';
 import {useSelector} from 'react-redux';
 
@@ -9,8 +9,11 @@ export function StatusBar() {
 
   const styles = {
     container: {
+      backgroundColor: primary3,
+      padding: 8,
+      borderRadius: 4,
       fontFamily: 'Open Sans',
-      color: primary45,
+      color: '#FFF',
       fontSize: 14,
       display: 'flex',
       alignItems: 'center',
@@ -25,7 +28,7 @@ export function StatusBar() {
   return (
     <div style={styles.container}>
       <FiLoader
-        color={primary45}
+        color={'#FFF'}
         size={16}
         style={styles.icon}
         className={'rotating'}

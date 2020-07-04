@@ -8,6 +8,7 @@ import {StatusBar} from './StatusBar';
 
 const styles = {
   container: {
+    position: 'relative',
     padding: 10,
     backgroundColor: '#FFF',
     width: '100%',
@@ -17,7 +18,7 @@ const styles = {
     fontFamily: 'Open Sans',
   },
   fileHeader: {
-    marginTop: 10,
+    marginTop: 20,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -73,7 +74,6 @@ export function FileBlock({
         sharedFs={sharedFs}
         setCurrentDirectory={setCurrentDirectory}
       />
-      <StatusBar/>
       <div style={styles.fileHeader}>
         <div style={{...styles.fileHeaderItem, marginLeft: 8}}>Name</div>
         {/*<div style={styles.fileHeaderItem}>Modified</div>*/}
@@ -147,6 +147,7 @@ export function FileBlock({
           </DragDropContext>
         </DropZone>
       </div>
+      <StatusBar/>
     </div>
   );
 }

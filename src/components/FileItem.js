@@ -13,6 +13,8 @@ import {
 import {saveAs} from 'file-saver';
 import {Draggable} from 'react-beautiful-dnd';
 import useTextInput from '../hooks/useTextInput';
+import {useDispatch} from 'react-redux';
+import {setStatus} from '../actions/tempData';
 
 export function FileItem({
   data,
@@ -30,6 +32,7 @@ export function FileItem({
   const name = pathSplit[pathSplit.length - 1];
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
+  const dispatch = useDispatch();
 
   const InputComponent = useTextInput(
     editMode,
@@ -146,7 +149,10 @@ export function FileItem({
               changeColor={primary}
               tooltip={'Download'}
               onClick={async () => {
+                dispatch(setStatus({message: 'Fetching download'}));
                 const blob = await getBlobFromPath(sharedFs, path, ipfs);
+                dispatch(setStatus({}));
+
                 saveAs(blob, name);
               }}
             />
