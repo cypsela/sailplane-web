@@ -1,5 +1,5 @@
 import React from 'react';
-import {errorColor, primary2, primary3, primary4} from '../colors';
+import {errorColor, primary2, primary3, primary4, primary45} from '../colors';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FiTrash} from 'react-icons/fi';
@@ -8,12 +8,13 @@ export function Instance({data, selected, onClick, onDelete}) {
   const [hoverRef, isHovered] = useHover();
   const {name, address} = data;
 
+  let backgroundColor = selected ? primary3 : primary2;
+
   const styles = {
     outer: {
-      padding: 10,
-      backgroundColor: selected ? primary3 : '#FFF',
-      color: selected ? '#FFF' : primary4,
-      border: `1px solid ${isHovered ? primary4 : primary3}`,
+      padding: 8,
+      backgroundColor: backgroundColor,
+      color: selected ? '#FFF' : primary45,
       borderRadius: 4,
       marginBottom: 4,
       fontFamily: 'Open Sans',
@@ -53,7 +54,7 @@ export function Instance({data, selected, onClick, onDelete}) {
       </div>
       <div style={styles.tools}>
         <ToolItem
-          defaultColor={selected ? primary2 : null}
+          defaultColor={selected ? primary2 : primary45}
           iconComponent={FiTrash}
           size={16}
           changeColor={errorColor}
