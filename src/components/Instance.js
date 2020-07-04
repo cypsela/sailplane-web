@@ -19,9 +19,9 @@ export function Instance({data, selected, onClick, onDelete}) {
       borderRadius: 4,
       marginBottom: 4,
       fontFamily: 'Open Sans',
+      cursor: 'pointer',
     },
     container: {
-      cursor: 'pointer',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
