@@ -1,17 +1,15 @@
 import {tempData} from '../actions/actionTypes';
 
 const initialState = {
-  connectionState: null
+  status: {},
 };
 
 export default function main(state = initialState, action) {
-  let copy = {...state};
-
   switch (action.type) {
-    case tempData.SET_CONNECTION_STATE:
+    case tempData.SET_STATUS:
       return {
         ...state,
-        connectionState: action.connectionState,
+        status: action.status,
       };
   }
 

@@ -2,9 +2,9 @@
 
 import {tempData} from './actionTypes';
 
-// export function setConnectionState(connectionState) {
-//   return {
-//     type: tempData.SET_CONNECTION_STATE,
-//     connectionState
-//   };
-// }
+export function setStatus(status) {
+  return {
+    type: tempData.SET_STATUS,
+    status
+  };
+}

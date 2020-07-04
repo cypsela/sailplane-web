@@ -4,6 +4,7 @@ import React from 'react';
 import {primary2, primary35} from './colors';
 import {FolderTools} from './FolderTools';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
+import {StatusBar} from './StatusBar';
 
 const styles = {
   container: {
@@ -16,7 +17,7 @@ const styles = {
     fontFamily: 'Open Sans',
   },
   fileHeader: {
-    marginTop: 20,
+    marginTop: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -72,6 +73,7 @@ export function FileBlock({
         sharedFs={sharedFs}
         setCurrentDirectory={setCurrentDirectory}
       />
+      <StatusBar/>
       <div style={styles.fileHeader}>
         <div style={{...styles.fileHeaderItem, marginLeft: 8}}>Name</div>
         {/*<div style={styles.fileHeaderItem}>Modified</div>*/}

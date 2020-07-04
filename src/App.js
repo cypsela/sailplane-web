@@ -11,7 +11,7 @@ import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
 import {Instances} from './Instances';
 import {useSelector, useDispatch} from 'react-redux';
-import {addInstance} from "./actions/main";
+import {addInstance} from './actions/main';
 
 function App() {
   const windowSize = useWindowSize();
@@ -73,8 +73,10 @@ function App() {
       if (instances.length) {
         address = currentInstance.address;
       } else {
-        const name = 'main'
-        address = await sailplane.determineAddress('superdrive', { meta: { name } });
+        const name = 'main';
+        address = await sailplane.determineAddress('superdrive', {
+          meta: {name},
+        });
         dispatch(addInstance(name, address.toString()));
       }
       sharedFS.current = await sailplane.mount(address, {});
@@ -123,11 +125,7 @@ function App() {
     } else if (currentRightPanel === 'settings') {
       return <Settings />;
     } else if (currentRightPanel === 'instances') {
-      return (
-        <Instances
-          sailplane={sailplaneRef.current}
-        />
-      );
+      return <Instances sailplane={sailplaneRef.current} />;
     }
   };
 

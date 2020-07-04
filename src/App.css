@@ -22,3 +22,15 @@ body, html {
 input:focus, textarea:focus, select:focus, audio:focus, source:focus{
     outline: none;
 }
+@keyframes rotating {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(359deg);
+    }
+}
+
+.rotating {
+    animation: rotating 2s linear infinite;
+}
