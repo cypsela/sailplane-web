@@ -128,7 +128,9 @@ export function FileItem({
                 !fileBlob &&
                 supportedPreviewExtensions.includes(fileExtension)
               ) {
+                dispatch(setStatus({message: 'Fetching preview'}));
                 const blob = await getBlobFromPath(sharedFs, path, ipfs);
+                dispatch(setStatus({}));
                 setFileBlob(blob);
               } else {
                 setFileBlob(null);
@@ -149,11 +151,15 @@ export function FileItem({
               changeColor={primary}
               tooltip={'Download'}
               onClick={async () => {
-                dispatch(setStatus({message: 'Fetching download'}));
-                const blob = await getBlobFromPath(sharedFs, path, ipfs);
-                dispatch(setStatus({}));
+                if (!fileBlob) {
+                  dispatch(setStatus({message: 'Fetching download'}));
+                  const blob = await getBlobFromPath(sharedFs, path, ipfs);
+                  dispatch(setStatus({}));
 
-                saveAs(blob, name);
+                  saveAs(blob, name);
+                } else {
+                  saveAs(fileBlob, name);
+                }
               }}
             />
 
