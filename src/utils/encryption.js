@@ -179,6 +179,9 @@ export const getEncryptionInfoFromFilename = (filename) => {
       ),
     };
   } else {
-    return {};
+    return {
+      isEncrypted: false,
+      decryptedFilename: filename,
+    };
   }
 };

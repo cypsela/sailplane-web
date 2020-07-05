@@ -12,6 +12,7 @@ import {setStatus} from './actions/tempData';
 import {getBlobFromPathCID} from './utils/Utils';
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
+import {decryptFile, getEncryptionInfoFromFilename} from './utils/encryption';
 
 function Download({match}) {
   const windowSize = useWindowSize();
@@ -40,9 +41,9 @@ function Download({match}) {
     }
   }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready]);
 
-  const getDownload = async () => {
+  const getDownload = async (password) => {
     dispatch(setStatus({message: 'Fetching file'}));
-    const blob = await getBlobFromPathCID(
+    let blob = await getBlobFromPathCID(
       cleanCID,
       cleanPath,
       ipfsObj.ipfs,
@@ -60,7 +61,30 @@ function Download({match}) {
 
     const pathSplit = cleanPath.split('/');
     const name = pathSplit[pathSplit.length - 1];
-    saveAs(blob, name);
+
+    const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(
+      name,
+    );
+
+    if (isEncrypted) {
+      dispatch(setStatus({message: 'Decrypting file'}));
+      blob = await decryptFile(blob, password);
+      dispatch(setStatus({}));
+
+      if (!blob) {
+        dispatch(
+          setStatus({
+            message: 'Error decrypting file: Incorrect password!',
+            isError: true,
+          }),
+        );
+        setTimeout(() => {
+          dispatch(setStatus({}));
+        }, 3000);
+      }
+    }
+
+    saveAs(blob, decryptedFilename);
     setDownloadComplete(true);
   };
 

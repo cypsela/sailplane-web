@@ -7,7 +7,7 @@ export default function useTextInput(
   handleDone,
   handleCancel,
   initialValue,
-  {placeholder, isPassword, isError},
+  {placeholder, isPassword, isError, confirmTitle},
 ) {
   const [inputString, setInputString] = useState(initialValue);
   const [showRedBorder, setShowRedBorder] = useState(false);
@@ -65,7 +65,10 @@ export default function useTextInput(
           }
         }}
       />
-      <ToolItem title={'Accept'} onClick={() => handleDone(inputString)} />
+      <ToolItem
+        title={confirmTitle ? confirmTitle : 'Accept'}
+        onClick={() => handleDone(inputString)}
+      />
       <ToolItem title={'Cancel'} onClick={() => handleCancel()} />
     </>
   );
