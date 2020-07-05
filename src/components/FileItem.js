@@ -22,6 +22,7 @@ import useTextInput from '../hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {setStatus} from '../actions/tempData';
 import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
+import useDoubleClick from '../hooks/useDoubleClick';
 
 export function FileItem({
   data,
@@ -40,6 +41,7 @@ export function FileItem({
   const [editMode, setEditMode] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const [enterPasswordMode, setEnterPasswordMode] = useState(false);
+  const [doubleClickRef] = useDoubleClick(() => setEditMode(true));
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
   const {
@@ -262,7 +264,11 @@ export function FileItem({
             ) : isEncrypted ? (
               decryptedFilename
             ) : (
-              name
+              <span
+                onClick={(event) => event.stopPropagation()}
+                ref={doubleClickRef}>
+                {name}
+              </span>
             )}
           </div>
           <div style={{...styles.nameContainer, width: 120}}>
