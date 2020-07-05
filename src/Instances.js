@@ -5,6 +5,7 @@ import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {addInstance, removeInstance, setInstanceIndex} from './actions/main';
+import OrbitDBAddress from 'orbit-db/src/orbit-db-address'
 
 const styles = {
   container: {
@@ -53,14 +54,17 @@ export function Instances({sailplane}) {
   const {instances, instanceIndex} = main;
 
   const createInstance = async (name) => {
-    const address = await sailplane.determineAddress('superdrive', { meta: { name }});
+    const address = await sailplane.determineAddress(name, { meta: 'superdrive' });
 
-    dispatch(addInstance(name, address.toString()));
+    dispatch(addInstance(address.path, address.toString()));
     setAddInstanceMode(false);
   };
   const importInstance = async (address) => {
-    dispatch(addInstance('Imported #' + (instances.length + 1), address));
-    setImportInstanceMode(false);
+    if (OrbitDBAddress.isValid(address)) {
+      address = OrbitDBAddress.parse(address)
+      dispatch(addInstance(address.path, address));
+      setImportInstanceMode(false);
+    }
   };
 
   const ImportInstanceInput = useTextInput(
@@ -115,7 +119,7 @@ export function Instances({sailplane}) {
       <div>
         {instances.map((instance, index) => (
           <Instance
-            key={instance.name}
+            key={instance.address}
             data={instance}
             selected={instance === instances[instanceIndex]}
             onClick={() => {
