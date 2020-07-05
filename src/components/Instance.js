@@ -56,7 +56,9 @@ export function Instance({data, selected, onClick, onDelete}) {
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
     document.execCommand('copy');
-    window.getSelection().removeAllRanges();
+    setTimeout(() => {
+      window.getSelection().removeRange(range);
+    }, 100);
 
     dispatch(setStatus({message: 'Instance address copied to clipboard!', isInfo: true}));
     setTimeout(() => {
