@@ -177,8 +177,8 @@ export function FileItem({
 
     if (!fileBlob) {
       dispatch(setStatus({message: 'Fetching download'}));
-      blob = await getBlobFromPath(
-        sharedFs,
+      blob = await getBlobFromPathCID(
+        CID,
         path,
         ipfs,
         (currentIndex, totalCount) => {
@@ -269,7 +269,7 @@ export function FileItem({
                         name,
                         url: `${
                           window.location.origin + window.location.pathname
-                        }/#/download/${encodeURIComponent(
+                        }#/download/${encodeURIComponent(
                           CID,
                         )}/${encodeURIComponent(path)}`,
                       }),
