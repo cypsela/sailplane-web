@@ -78,14 +78,6 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory, ha
           {!addFolderMode && !securePanelOpen ? (
             <>
               <ToolItem
-                iconComponent={FiUpload}
-                size={18}
-                changeColor={primary}
-                onClick={() => {
-                  handleOpenUpload();
-                }}
-              />
-              <ToolItem
                 iconComponent={encryptionKey ? FiLock : FiUnlock}
                 size={18}
                 defaultColor={encryptionKey ? goodColor : null}
@@ -96,6 +88,14 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory, ha
                   } else {
                     setSecurePanelOpen(true);
                   }
+                }}
+              />
+              <ToolItem
+                iconComponent={FiUpload}
+                size={18}
+                changeColor={primary}
+                onClick={() => {
+                  handleOpenUpload();
                 }}
               />
               <ToolItem
