@@ -8,3 +8,10 @@ export function setStatus(status) {
     status
   };
 }
+
+export function setShareData(shareData) {
+  return {
+    type: tempData.SET_SHARE_DATA,
+    shareData
+  };
+}

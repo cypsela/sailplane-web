@@ -10,9 +10,10 @@ import {LoadingRightBlock} from './LoadingRightBlock';
 import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
 import {Instances} from './Instances';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {addInstance} from './actions/main';
 import {setStatus} from './actions/tempData';
+import {ShareDialog} from './ShareDialog';
 
 function App() {
   const windowSize = useWindowSize();
@@ -33,6 +34,7 @@ function App() {
 
   const styles = {
     container: {
+      position: 'relative',
       display: 'flex',
       flexDirection: 'row',
       height: '100%',

@@ -20,7 +20,7 @@ import {saveAs} from 'file-saver';
 import {Draggable} from 'react-beautiful-dnd';
 import useTextInput from '../hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
-import {setStatus} from '../actions/tempData';
+import {setShareData, setStatus} from '../actions/tempData';
 import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
 import useDoubleClick from '../hooks/useDoubleClick';
 
@@ -264,10 +264,7 @@ export function FileItem({
             ) : isEncrypted ? (
               decryptedFilename
             ) : (
-              <span
-                ref={doubleClickRef}>
-                {name}
-              </span>
+              <span ref={doubleClickRef}>{name}</span>
             )}
           </div>
           <div style={{...styles.nameContainer, width: 120}}>
@@ -276,18 +273,23 @@ export function FileItem({
           <div style={styles.tools}>
             {!enterPasswordMode ? (
               <div>
-                <Link
-                  to={`/download/${encodeURIComponent(
-                    CID,
-                  )}/${encodeURIComponent(path)}`}
-                  target={'_blank'}>
-                  <ToolItem
-                    iconComponent={FiShare2}
-                    changeColor={primary}
-                    tooltip={'Share'}
-                    onClick={async () => {}}
-                  />
-                </Link>
+                <ToolItem
+                  iconComponent={FiShare2}
+                  changeColor={primary}
+                  tooltip={'Share'}
+                  onClick={() => {
+                    dispatch(
+                      setShareData({
+                        name,
+                        url: `${
+                          window.location.origin
+                        }/#/download/${encodeURIComponent(
+                          CID,
+                        )}/${encodeURIComponent(path)}`,
+                      }),
+                    );
+                  }}
+                />
 
                 <ToolItem
                   iconComponent={FiDownload}

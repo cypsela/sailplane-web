@@ -12,5 +12,6 @@ export const main = {
 // tempData actions
 export const tempData = {
   SET_STATUS: 'SET_STATUS',
+  SET_SHARE_DATA: 'SET_SHARE_DATA',
   // SET_CONNECTION_STATE: 'SET_CONNECTION_STATE',
 };

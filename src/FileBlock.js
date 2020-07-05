@@ -5,6 +5,7 @@ import {primary2, primary35} from './colors';
 import {FolderTools} from './FolderTools';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {StatusBar} from './StatusBar';
+import {ShareDialog} from './ShareDialog';
 
 const styles = {
   container: {
@@ -157,6 +158,7 @@ export function FileBlock({
         </DropZone>
       </div>
       <StatusBar />
+      <ShareDialog />
     </div>
   );
 }
