@@ -1,8 +1,4 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-} from 'react';
+import React, {forwardRef, useCallback, useImperativeHandle} from 'react';
 import {useDropzone} from 'react-dropzone';
 import {primary5} from './colors';
 import fileListSource from '@tabcat/file-list-source';
@@ -51,7 +47,13 @@ export function DropZone({children, sharedFs, currentDirectory}, ref) {
 
       dispatch(setStatus({message: 'Uploading'}));
       const listSource = fileListSource(acceptedFiles);
-      await sharedFs.current.upload(currentDirectory, listSource);
+      const totalSize = acceptedFiles.reduce((prev, cur) => cur.size + prev, 0);
+      await sharedFs.current.upload(currentDirectory, listSource, {
+        progress: (length) => {
+          const percentage = Math.round((length / totalSize) * 100);
+          dispatch(setStatus({message: `[${percentage}%] Uploading files`}));
+        },
+      });
       dispatch(setStatus({}));
     },
     [currentDirectory, encryptionKey],
