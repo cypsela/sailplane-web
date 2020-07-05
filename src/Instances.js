@@ -5,10 +5,12 @@ import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {addInstance, removeInstance, setInstanceIndex} from './actions/main';
-import OrbitDBAddress from 'orbit-db/src/orbit-db-address'
+import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
+import {StatusBar} from './StatusBar';
 
 const styles = {
   container: {
+    position: 'relative',
     padding: 10,
     backgroundColor: '#FFF',
     width: '100%',
@@ -43,7 +45,7 @@ const styles = {
   },
   toolTitle: {
     marginRight: 6,
-  }
+  },
 };
 
 export function Instances({sailplane}) {
@@ -54,14 +56,16 @@ export function Instances({sailplane}) {
   const {instances, instanceIndex} = main;
 
   const createInstance = async (name) => {
-    const address = await sailplane.determineAddress(name, { meta: 'superdrive' });
+    const address = await sailplane.determineAddress(name, {
+      meta: 'superdrive',
+    });
 
     dispatch(addInstance(address.path, address.toString()));
     setAddInstanceMode(false);
   };
   const importInstance = async (address) => {
     if (OrbitDBAddress.isValid(address)) {
-      address = OrbitDBAddress.parse(address)
+      address = OrbitDBAddress.parse(address);
       dispatch(addInstance(address.path, address));
       setImportInstanceMode(false);
     }
@@ -131,6 +135,7 @@ export function Instances({sailplane}) {
           />
         ))}
       </div>
+      <StatusBar />
     </div>
   );
 }

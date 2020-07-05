@@ -1,11 +1,15 @@
 import React from 'react';
-import {errorColor, primary, primary2, primary3, primary4, primary45} from '../colors';
+import {errorColor, primary, primary2, primary3, primary45} from '../colors';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FiCopy, FiTrash} from 'react-icons/fi';
+import {setStatus} from '../actions/tempData';
+import {useDispatch} from 'react-redux';
 
 export function Instance({data, selected, onClick, onDelete}) {
   const [hoverRef, isHovered] = useHover();
+  const dispatch = useDispatch();
+
   const {name, address} = data;
 
   let backgroundColor = selected ? primary3 : primary2;
@@ -14,7 +18,7 @@ export function Instance({data, selected, onClick, onDelete}) {
     outer: {
       padding: 8,
       backgroundColor: backgroundColor,
-      border: `1px solid ${isHovered?primary3:backgroundColor}`,
+      border: `1px solid ${isHovered ? primary3 : backgroundColor}`,
       color: selected ? '#FFF' : primary45,
       borderRadius: 4,
       marginBottom: 4,
@@ -44,7 +48,7 @@ export function Instance({data, selected, onClick, onDelete}) {
     },
   };
 
-  const addressId = `instance-${address}`
+  const addressId = `instance-${address}`;
 
   const onCopy = (id) => {
     const range = document.createRange();
@@ -52,8 +56,13 @@ export function Instance({data, selected, onClick, onDelete}) {
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
     document.execCommand('copy');
-    window.getSelection().removeAllRanges()
-  }
+    window.getSelection().removeAllRanges();
+
+    dispatch(setStatus({message: 'Instance address copied to clipboard!', isInfo: true}));
+    setTimeout(() => {
+      dispatch(setStatus({}));
+    }, 3000);
+  };
 
   return (
     <div
@@ -65,7 +74,9 @@ export function Instance({data, selected, onClick, onDelete}) {
       }}>
       <div style={styles.container}>
         <div style={styles.name}>{name}</div>
-        <div id={addressId} style={styles.address}>{address}</div>
+        <div id={addressId} style={styles.address}>
+          {address}
+        </div>
       </div>
       <div style={styles.tools}>
         <div style={styles.toolItem}>

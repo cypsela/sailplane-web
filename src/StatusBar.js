@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 
 export function StatusBar() {
   const status = useSelector((state) => state.tempData.status);
-  const {message, isError} = status;
+  const {message, isError, isInfo} = status;
 
   const styles = {
     container: {
@@ -22,8 +22,8 @@ export function StatusBar() {
       height: 18,
       opacity: message ? 1 : 0,
     },
-    message: {
-      marginLeft: 4,
+    icon: {
+      marginRight: 4,
     },
   };
 
@@ -37,12 +37,14 @@ export function StatusBar() {
 
   return (
     <div style={styles.container}>
-      <IconComponent
-        color={isError ? errorColor : '#FFF'}
-        size={16}
-        style={styles.icon}
-        className={!isError ? 'rotating' : ''}
-      />
+      {!isInfo ? (
+        <IconComponent
+          color={isError ? errorColor : '#FFF'}
+          size={16}
+          style={styles.icon}
+          className={!isError ? 'rotating' : ''}
+        />
+      ) : null}
 
       <span style={styles.message}>{message}</span>
     </div>
