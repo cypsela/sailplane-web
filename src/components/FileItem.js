@@ -260,7 +260,7 @@ export function FileItem({
               </span>
             )}
           </div>
-          <div style={{...styles.flexItem}}>
+          <div style={{...styles.flexItem, justifyContent: 'flex-end'}}>
             {type !== 'dir' && fileInfo ? humanFileSize(fileInfo.size) : null}
           </div>
           <div style={styles.tools}>
