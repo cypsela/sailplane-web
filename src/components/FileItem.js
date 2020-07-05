@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {primary, primary2, primary45, primary5} from '../colors';
 import {FaFile, FaFolder, FaLock} from 'react-icons/fa';
 import {FiFile, FiLock} from 'react-icons/fi';
-import {FiDownload, FiEdit, FiTrash, FiShare} from 'react-icons/fi';
+import {FiDownload, FiEdit, FiTrash, FiShare2} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
@@ -277,7 +277,7 @@ export function FileItem({
                   )}/${encodeURIComponent(path)}`}
                   target={'_blank'}>
                   <ToolItem
-                    iconComponent={FiShare}
+                    iconComponent={FiShare2}
                     changeColor={primary}
                     tooltip={'Share'}
                     onClick={async () => {}}
