@@ -36,6 +36,8 @@ export default function useTextInput(
       fontWeight: 200,
       padding: 4,
       marginRight: 4,
+      display: 'inline-flex',
+      flexGrow: 2,
     },
   };
 
