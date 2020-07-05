@@ -259,25 +259,23 @@ export function FileItem({
           <div style={styles.tools}>
             {!enterPasswordMode ? (
               <div>
-                {type !== 'dir' ? (
-                  <ToolItem
-                    iconComponent={FiShare2}
-                    changeColor={primary}
-                    tooltip={'Share'}
-                    onClick={() => {
-                      dispatch(
-                        setShareData({
-                          name,
-                          url: `${
-                            window.location.origin + window.location.pathname
-                          }/#/download/${encodeURIComponent(
-                            CID,
-                          )}/${encodeURIComponent(path)}`,
-                        }),
-                      );
-                    }}
-                  />
-                ) : null}
+                <ToolItem
+                  iconComponent={FiShare2}
+                  changeColor={primary}
+                  tooltip={'Share'}
+                  onClick={() => {
+                    dispatch(
+                      setShareData({
+                        name,
+                        url: `${
+                          window.location.origin + window.location.pathname
+                        }/#/download/${encodeURIComponent(
+                          CID,
+                        )}/${encodeURIComponent(path)}`,
+                      }),
+                    );
+                  }}
+                />
 
                 <ToolItem
                   iconComponent={FiDownload}
