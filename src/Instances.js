@@ -40,6 +40,9 @@ const styles = {
     color: primary4,
     fontSize: 14,
   },
+  toolTitle: {
+    marginRight: 6,
+  }
 };
 
 export function Instances({sailplane}) {
@@ -60,16 +63,6 @@ export function Instances({sailplane}) {
     setImportInstanceMode(false);
   };
 
-  const CreateInstanceInput = useTextInput(
-    addInstanceMode,
-    (instanceName) => createInstance(instanceName),
-    () => setAddInstanceMode(false),
-    '',
-    {
-      placeholder: 'instance name',
-    },
-  );
-
   const ImportInstanceInput = useTextInput(
     importInstanceMode,
     (instanceAddress) => importInstance(instanceAddress),
@@ -77,6 +70,16 @@ export function Instances({sailplane}) {
     '',
     {
       placeholder: 'instance address',
+    },
+  );
+
+  const CreateInstanceInput = useTextInput(
+    addInstanceMode,
+    (instanceName) => createInstance(instanceName),
+    () => setAddInstanceMode(false),
+    '',
+    {
+      placeholder: 'instance name',
     },
   );
 
@@ -90,16 +93,16 @@ export function Instances({sailplane}) {
               <div
                 style={styles.tools}
                 className={'addInstance'}
-                onClick={() => setAddInstanceMode(true)}>
-                <FiPlusCircle color={primary4} size={18} style={styles.icon} />
-                <span style={{marginRight: 6}}>Create instance</span>
+                onClick={() => setImportInstanceMode(true)}>
+                <FiUpload color={primary4} size={18} style={styles.icon} />
+                <span style={styles.toolTitle}>Import instance</span>
               </div>
               <div
                 style={styles.tools}
                 className={'addInstance'}
-                onClick={() => setImportInstanceMode(true)}>
-                <FiUpload color={primary4} size={18} style={styles.icon} />
-                <span style={styles.toolTitle}>Import instance</span>
+                onClick={() => setAddInstanceMode(true)}>
+                <FiPlusCircle color={primary4} size={18} style={styles.icon} />
+                <span style={styles.toolTitle}>Create instance</span>
               </div>
             </>
           ) : null}
