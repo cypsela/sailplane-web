@@ -25,6 +25,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    userSelect: 'none',
   },
   settingsBlock: {
     bottom: 0,
