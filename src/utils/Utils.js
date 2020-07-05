@@ -1,6 +1,8 @@
 import all from 'it-all';
 import first from 'it-first';
 import JSZip from 'jszip';
+import {FiFile, FiLock} from 'react-icons/fi';
+import {FaFolder} from 'react-icons/fa';
 
 async function fileToBlob(file, handleUpdate) {
   const {content, size} = file;
@@ -124,4 +126,17 @@ export function getDraggableStyleHack(style, snapshot) {
     // cannot be 0, but make it super tiny
     transitionDuration: `0.001s`,
   };
+}
+
+export function getIconForPath(type, isEncrypted) {
+  let iconComponent = FiFile;
+
+  if (type === 'dir') {
+    iconComponent = FaFolder;
+  }
+
+  if (isEncrypted) {
+    iconComponent = FiLock;
+  }
+  return iconComponent;
 }

@@ -185,3 +185,11 @@ export const getEncryptionInfoFromFilename = (filename) => {
     };
   }
 };
+
+export const doesPasswordMatchHash = async (password, passHash) => {
+  const hash = await sha256(password);
+  const smallHash = hash.substr(0, 10);
+  if (smallHash !== passHash) {
+    return true;
+  }
+};

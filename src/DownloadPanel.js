@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StatusBar} from './StatusBar';
 import {primary45} from './colors';
-import {getEncryptionInfoFromFilename} from './utils/encryption';
+import {doesPasswordMatchHash, getEncryptionInfoFromFilename} from './utils/encryption';
 import {FiLock} from 'react-icons/fi';
 import {sha256} from './utils/Utils';
 import useTextInput from './hooks/useTextInput';
@@ -50,11 +50,7 @@ export function DownloadPanel({ready, path, handleDownload, downloadComplete}) {
   } = getEncryptionInfoFromFilename(name);
 
   const doesPasswordFailHashCheck = async (text) => {
-    const hash = await sha256(text);
-    const smallHash = hash.substr(0, 10);
-    if (smallHash !== passHash) {
-      return true;
-    }
+    return await doesPasswordMatchHash(text, passHash);
   };
 
   const setDecryptPassword = async (password) => {

@@ -1,14 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {primary, primary2, primary45, primary5} from '../colors';
-import {FaFolder} from 'react-icons/fa';
-import {
-  FiDownload,
-  FiEdit,
-  FiFile,
-  FiLock,
-  FiShare2,
-  FiTrash,
-} from 'react-icons/fi';
+import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
@@ -17,16 +9,20 @@ import {
   getDraggableStyleHack,
   getFileExtensionFromFilename,
   getFileInfoFromCID,
+  getIconForPath,
   humanFileSize,
   isFileExtensionSupported,
-  sha256,
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import {Draggable} from 'react-beautiful-dnd';
 import useTextInput from '../hooks/useTextInput';
 import {useDispatch} from 'react-redux';
 import {setShareData, setStatus} from '../actions/tempData';
-import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
+import {
+  decryptFile,
+  doesPasswordMatchHash,
+  getEncryptionInfoFromFilename,
+} from '../utils/encryption';
 import useDoubleClick from '../hooks/useDoubleClick';
 import {useWindowSize} from '../hooks/useWindowSize';
 
@@ -86,11 +82,7 @@ export function FileItem({
   };
 
   const doesPasswordFailHashCheck = async (text) => {
-    const hash = await sha256(text);
-    const smallHash = hash.substr(0, 10);
-    if (smallHash !== passHash) {
-      return true;
-    }
+    return await doesPasswordMatchHash(text, passHash);
   };
 
   const PasswordInputComponent = useTextInput(
@@ -145,7 +137,7 @@ export function FileItem({
       opacity:
         (isHovered || fileBlob || enterPasswordMode) && !isParent ? 1 : 0,
       fontSize: 14,
-      // width: 80,
+      marginLeft: enterPasswordMode ? 8 : 0,
     },
     filename: {
       // whiteSpace: 'nowrap',
@@ -154,15 +146,7 @@ export function FileItem({
     },
   };
 
-  let iconComponent = FiFile;
-
-  if (type === 'dir') {
-    iconComponent = FaFolder;
-  }
-
-  if (isEncrypted) {
-    iconComponent = FiLock;
-  }
+  const iconComponent = getIconForPath(type, isEncrypted);
 
   const getCID = async () => {
     const cid = await sharedFs.current.read(path);
