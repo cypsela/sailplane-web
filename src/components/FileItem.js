@@ -9,6 +9,7 @@ import {FilePreview} from './FilePreview';
 import {Link} from 'react-router-dom';
 import {
   getBlobFromPath,
+  getBlobFromPathCID,
   getFileExtensionFromFilename,
   getFileInfoFromCID,
   humanFileSize,
@@ -196,7 +197,20 @@ export function FileItem({
 
     if (!fileBlob) {
       dispatch(setStatus({message: 'Fetching download'}));
-      blob = await getBlobFromPath(sharedFs, path, ipfs);
+      blob = await getBlobFromPathCID(
+        CID,
+        path,
+        ipfs,
+        (currentIndex, totalCount) => {
+          dispatch(
+            setStatus({
+              message: `[${Math.round(
+                (currentIndex / totalCount) * 100,
+              )}%] Downloading`,
+            }),
+          );
+        },
+      );
       dispatch(setStatus({}));
     } else {
       blob = fileBlob;
@@ -231,7 +245,7 @@ export function FileItem({
             } else {
               if (!fileBlob && isFileExtensionSupported(fileExtension)) {
                 dispatch(setStatus({message: 'Fetching preview'}));
-                const blob = await getBlobFromPath(sharedFs, path, ipfs);
+                const blob = await getBlob();
                 dispatch(setStatus({}));
                 setFileBlob(blob);
               } else {

@@ -49,7 +49,9 @@ function Download({match}) {
       (currentIndex, totalCount) => {
         dispatch(
           setStatus({
-            message: `[${Math.round(currentIndex / totalCount)}%] Downloading`,
+            message: `[${Math.round(
+              (currentIndex / totalCount) * 100,
+            )}%] Downloading`,
           }),
         );
       },
