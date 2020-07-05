@@ -66,8 +66,8 @@ export function Instances({sailplane}) {
   };
   const importInstance = async (address) => {
     if (OrbitDBAddress.isValid(address)) {
-      address = OrbitDBAddress.parse(address);
-      dispatch(addInstance(address.path, address));
+      address = OrbitDBAddress.parse(address)
+      dispatch(addInstance(address.path, address.toString()));
       setImportInstanceMode(false);
     }
   };
@@ -124,7 +124,7 @@ export function Instances({sailplane}) {
       <div>
         {instances.map((instance, index) => (
           <Instance
-            key={instance.address}
+            key={instance.address.toString()}
             data={instance}
             selected={instance === instances[instanceIndex]}
             onClick={() => {
