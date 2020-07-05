@@ -112,3 +112,16 @@ export function humanFileSize(bytes, si = true, dp = 1) {
 
   return bytes.toFixed(dp) + ' ' + units[u];
 }
+
+export function getDraggableStyleHack(style, snapshot) {
+  if (!snapshot.isDragging) return {};
+  if (!snapshot.isDropAnimating) {
+    return style;
+  }
+
+  return {
+    ...style,
+    // cannot be 0, but make it super tiny
+    transitionDuration: `0.001s`,
+  };
+}

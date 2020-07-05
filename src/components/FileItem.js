@@ -1,14 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {primary, primary2, primary45, primary5} from '../colors';
-import {FaFile, FaFolder, FaLock} from 'react-icons/fa';
-import {FiFile, FiLock} from 'react-icons/fi';
-import {FiDownload, FiEdit, FiTrash, FiShare2} from 'react-icons/fi';
+import {FaFolder} from 'react-icons/fa';
+import {
+  FiDownload,
+  FiEdit,
+  FiFile,
+  FiLock,
+  FiShare2,
+  FiTrash,
+} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
 import {
-  getBlobFromPath,
   getBlobFromPathCID,
+  getDraggableStyleHack,
   getFileExtensionFromFilename,
   getFileInfoFromCID,
   humanFileSize,
@@ -18,7 +24,7 @@ import {
 import {saveAs} from 'file-saver';
 import {Draggable} from 'react-beautiful-dnd';
 import useTextInput from '../hooks/useTextInput';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {setShareData, setStatus} from '../actions/tempData';
 import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
 import useDoubleClick from '../hooks/useDoubleClick';
@@ -75,18 +81,6 @@ export function FileItem({
       blob = await decryptFile(blob, password);
       dispatch(setStatus({}));
 
-      if (!blob) {
-        dispatch(
-          setStatus({
-            message: 'Error decrypting file: Incorrect password!',
-            isError: true,
-          }),
-        );
-        setTimeout(() => {
-          dispatch(setStatus({}));
-        }, 3000);
-      }
-
       saveAs(blob, decryptedFilename);
     }
   };
@@ -121,6 +115,7 @@ export function FileItem({
       padding: 7,
       marginBottom: 8,
       fontFamily: 'Open Sans',
+      userSelect: 'none',
     },
     container: {
       display: 'flex',
@@ -191,19 +186,6 @@ export function FileItem({
       console.log('Error moving!', e);
     }
   };
-
-  function getStyle(style, snapshot) {
-    if (!snapshot.isDragging) return {};
-    if (!snapshot.isDropAnimating) {
-      return style;
-    }
-
-    return {
-      ...style,
-      // cannot be 0, but make it super tiny
-      transitionDuration: `0.001s`,
-    };
-  }
 
   async function getBlob() {
     let blob;
@@ -364,7 +346,7 @@ export function FileItem({
             ref={innerRef}
             {...draggableProps}
             {...dragHandleProps}
-            style={getStyle(draggableProps.style, snapshot)}>
+            style={getDraggableStyleHack(draggableProps.style, snapshot)}>
             {getContent(snapshot)}
           </div>
         );

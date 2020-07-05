@@ -70,18 +70,6 @@ function Download({match}) {
       dispatch(setStatus({message: 'Decrypting file'}));
       blob = await decryptFile(blob, password);
       dispatch(setStatus({}));
-
-      if (!blob) {
-        dispatch(
-          setStatus({
-            message: 'Error decrypting file: Incorrect password!',
-            isError: true,
-          }),
-        );
-        setTimeout(() => {
-          dispatch(setStatus({}));
-        }, 3000);
-      }
     }
 
     saveAs(blob, decryptedFilename);
