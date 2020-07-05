@@ -13,7 +13,6 @@ import {Instances} from './Instances';
 import {useDispatch, useSelector} from 'react-redux';
 import {addInstance} from './actions/main';
 import {setStatus} from './actions/tempData';
-import {ShareDialog} from './ShareDialog';
 
 function App() {
   const windowSize = useWindowSize();
