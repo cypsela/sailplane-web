@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setShareData, setStatus} from '../actions/tempData';
 import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
 import useDoubleClick from '../hooks/useDoubleClick';
+import {useWindowSize} from '../hooks/useWindowSize';
 
 export function FileItem({
   data,
@@ -43,6 +44,8 @@ export function FileItem({
   const [doubleClickRef] = useDoubleClick(() => setEditMode(true));
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
+  const windowSize = useWindowSize();
+
   const {
     isEncrypted,
     decryptedFilename,
@@ -122,6 +125,7 @@ export function FileItem({
     container: {
       display: 'flex',
       flexDirection: 'row',
+      flexWrap: windowSize.width < 600 ? 'wrap' : 'nowrap',
       justifyContent: 'space-between',
 
       cursor: 'pointer',
@@ -132,6 +136,8 @@ export function FileItem({
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
+      flexGrow: 2,
+      marginBottom: windowSize.width < 600 ? 10 : 0,
     },
     icon: {
       marginRight: 4,
@@ -274,7 +280,7 @@ export function FileItem({
               </span>
             )}
           </div>
-          <div style={{...styles.flexItem, width: 120}}>
+          <div style={{...styles.flexItem}}>
             {type !== 'dir' && fileInfo ? humanFileSize(fileInfo.size) : null}
           </div>
           <div style={styles.tools}>
