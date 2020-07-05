@@ -272,11 +272,9 @@ export function FileItem({
               <>{InputComponent}</>
             ) : isParent ? (
               '. . /'
-            ) : isEncrypted ? (
-              decryptedFilename
             ) : (
               <span ref={doubleClickRef} style={styles.filename}>
-                {name}
+                {decryptedFilename}
               </span>
             )}
           </div>
