@@ -43,7 +43,8 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
       <div>
         <div
           style={styles.logo}
-          onClick={() => (document.location = `${window.location.origin}/`)}>
+          // onClick={() => (document.location = `${window.location.origin}/`)}
+        >
           <FaPaperPlane color={'#FFF'} size={18} style={styles.icon} />
           Sailplane
         </div>
