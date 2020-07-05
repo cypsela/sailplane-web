@@ -126,7 +126,7 @@ export function FileItem({
 
       cursor: 'pointer',
     },
-    nameContainer: {
+    flexItem: {
       width: '100%',
       display: 'flex',
       flexDirection: 'row',
@@ -145,6 +145,11 @@ export function FileItem({
         (isHovered || fileBlob || enterPasswordMode) && !isParent ? 1 : 0,
       fontSize: 14,
       // width: 80,
+    },
+    filename: {
+      // whiteSpace: 'nowrap',
+      // textOverflow: 'ellipsis',
+      // overflow: 'hidden',
     },
   };
 
@@ -255,7 +260,7 @@ export function FileItem({
               }
             }
           }}>
-          <div style={styles.nameContainer}>
+          <div style={styles.flexItem}>
             <IconComponent color={primary45} size={16} style={styles.icon} />
             {editMode ? (
               <>{InputComponent}</>
@@ -264,10 +269,12 @@ export function FileItem({
             ) : isEncrypted ? (
               decryptedFilename
             ) : (
-              <span ref={doubleClickRef}>{name}</span>
+              <span ref={doubleClickRef} style={styles.filename}>
+                {name}
+              </span>
             )}
           </div>
-          <div style={{...styles.nameContainer, width: 120}}>
+          <div style={{...styles.flexItem, width: 120}}>
             {type !== 'dir' && fileInfo ? humanFileSize(fileInfo.size) : null}
           </div>
           <div style={styles.tools}>

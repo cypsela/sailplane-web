@@ -18,6 +18,7 @@ const styles = {
     flexDirection: 'column',
     fontFamily: 'Open Sans',
     boxSizing: 'border-box',
+    height: '100%',
   },
   fileHeader: {
     marginTop: 20,

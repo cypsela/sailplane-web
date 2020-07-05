@@ -15,6 +15,7 @@ const styles = {
     transform: 'translateX(-50%)',
     width: '80%',
     fontFamily: 'Open Sans',
+    zIndex: 10000,
   },
   header: {
     backgroundColor: primary45,
