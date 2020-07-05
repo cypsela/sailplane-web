@@ -281,7 +281,7 @@ export function FileItem({
                       setShareData({
                         name,
                         url: `${
-                          window.location.origin
+                          window.location.origin + window.location.pathname
                         }/#/download/${encodeURIComponent(
                           CID,
                         )}/${encodeURIComponent(path)}`,
