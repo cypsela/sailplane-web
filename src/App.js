@@ -35,7 +35,7 @@ function App() {
   const styles = {
     container: {
       position: 'relative',
-      display: 'flex',
+      display: windowWidth>600?'flex':'block',
       flexDirection: 'row',
       height: '100%',
     },
@@ -137,12 +137,10 @@ function App() {
 
   return (
     <div style={styles.container}>
-      {windowWidth > 600 ? (
         <LeftPanel
           setCurrentRightPanel={setCurrentRightPanel}
           currentRightPanel={currentRightPanel}
         />
-      ) : null}
 
       {ready ? getRightPanel() : <LoadingRightBlock />}
     </div>

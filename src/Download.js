@@ -28,7 +28,7 @@ function Download({match}) {
 
   const styles = {
     container: {
-      display: 'flex',
+      display: windowWidth > 600 ? 'flex' : 'block',
       flexDirection: 'row',
       height: '100%',
     },
@@ -66,12 +66,10 @@ function Download({match}) {
 
   return (
     <div style={styles.container}>
-      {windowWidth > 600 ? (
-        <LeftPanel
-          setCurrentRightPanel={setCurrentRightPanel}
-          currentRightPanel={currentRightPanel}
-        />
-      ) : null}
+      <LeftPanel
+        setCurrentRightPanel={setCurrentRightPanel}
+        currentRightPanel={currentRightPanel}
+      />
 
       {ready ? (
         <DownloadPanel

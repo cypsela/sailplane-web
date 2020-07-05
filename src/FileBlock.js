@@ -17,6 +17,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     fontFamily: 'Open Sans',
+    boxSizing: 'border-box',
   },
   fileHeader: {
     marginTop: 20,

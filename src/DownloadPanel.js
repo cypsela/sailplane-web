@@ -11,6 +11,7 @@ const styles = {
     overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
+    boxSizing: 'border-box',
   },
   filename: {
     color: primary45,

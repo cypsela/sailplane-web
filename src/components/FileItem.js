@@ -135,6 +135,7 @@ export function FileItem({
     },
     icon: {
       marginRight: 4,
+      width: 30,
     },
     tools: {
       display: 'flex',

@@ -11,7 +11,7 @@ const styles = {
     backgroundColor: primary45,
     color: '#FFF',
     padding: '20px 10px',
-    width: 200,
+    minWidth: 200,
     fontFamily: 'Open Sans',
     paddingBottom: 0,
   },

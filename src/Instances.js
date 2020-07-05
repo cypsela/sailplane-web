@@ -18,6 +18,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     fontFamily: 'Open Sans',
+    boxSizing: 'border-box',
   },
   title: {
     color: primary4,
