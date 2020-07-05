@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "http://cypsela.github.io/sailplane-web",
   "dependencies": {
-    "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#04ab3f8d7537b3d4f6194173fdf0bbe95c8db533",
+    "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#84e329a22153c5d69192526a998711606bbf598e",
     "@tabcat/file-list-source": "https://github.com/tabcat/file-list-source#858ad4e09e0f17b9bd53185618d68739f0f3409b",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
