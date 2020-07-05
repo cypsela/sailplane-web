@@ -204,7 +204,7 @@ export function FileItem({
     }
 
     saveAs(blob, name);
-  }
+  };
 
   const getContent = (snapshot) => {
     if (!snapshot) {
@@ -259,23 +259,25 @@ export function FileItem({
           <div style={styles.tools}>
             {!enterPasswordMode ? (
               <div>
-                <ToolItem
-                  iconComponent={FiShare2}
-                  changeColor={primary}
-                  tooltip={'Share'}
-                  onClick={() => {
-                    dispatch(
-                      setShareData({
-                        name,
-                        url: `${
-                          window.location.origin + window.location.pathname
-                        }/#/download/${encodeURIComponent(
-                          CID,
-                        )}/${encodeURIComponent(path)}`,
-                      }),
-                    );
-                  }}
-                />
+                {type !== 'dir' ? (
+                  <ToolItem
+                    iconComponent={FiShare2}
+                    changeColor={primary}
+                    tooltip={'Share'}
+                    onClick={() => {
+                      dispatch(
+                        setShareData({
+                          name,
+                          url: `${
+                            window.location.origin + window.location.pathname
+                          }/#/download/${encodeURIComponent(
+                            CID,
+                          )}/${encodeURIComponent(path)}`,
+                        }),
+                      );
+                    }}
+                  />
+                ) : null}
 
                 <ToolItem
                   iconComponent={FiDownload}
