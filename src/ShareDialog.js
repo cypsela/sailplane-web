@@ -3,6 +3,7 @@ import {errorColor, goodColor, primary, primary3, primary45} from './colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {FaTimes} from 'react-icons/fa';
 import {setShareData} from './actions/tempData';
+import {Link} from 'react-router-dom';
 
 const styles = {
   container: {
@@ -27,7 +28,7 @@ const styles = {
     alignItems: 'center',
   },
   body: {
-    padding: 10,
+    padding: 14,
   },
   filename: {
     color: primary45,
@@ -41,7 +42,7 @@ const styles = {
     padding: 4,
     display: 'inline-flex',
     flexGrow: 2,
-    marginTop: 4,
+    marginTop: 8,
   },
   flex: {
     display: 'flex',
@@ -49,6 +50,10 @@ const styles = {
   icon: {
     cursor: 'pointer',
   },
+  link: {
+    marginTop: 8,
+    color: `${primary45} !important`,
+  }
 };
 
 export function ShareDialog() {
@@ -89,6 +94,9 @@ export function ShareDialog() {
             type={'text'}
             value={url}
           />
+        </div>
+        <div style={styles.link}>
+          <a href={url} className={'link'} target={'_blank'}>Open link</a>
         </div>
       </div>
     </div>
