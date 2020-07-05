@@ -5,6 +5,7 @@ import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
 import {
+  getBlobFromPath,
   getBlobFromPathCID,
   getDraggableStyleHack,
   getFileExtensionFromFilename,
@@ -77,7 +78,7 @@ export function FileItem({
       blob = await decryptFile(blob, password);
       dispatch(setStatus({}));
 
-      saveAs(blob, decryptedFilename);
+      saveAsFile(blob, decryptedFilename);
     }
   };
 
@@ -176,8 +177,8 @@ export function FileItem({
 
     if (!fileBlob) {
       dispatch(setStatus({message: 'Fetching download'}));
-      blob = await getBlobFromPathCID(
-        CID,
+      blob = await getBlobFromPath(
+        sharedFs,
         path,
         ipfs,
         (currentIndex, totalCount) => {
@@ -195,6 +196,14 @@ export function FileItem({
       blob = fileBlob;
     }
     return blob;
+  }
+
+  const saveAsFile = (blob, name) => {
+    if (type === 'dir') {
+      name = `${name}.zip`;
+    }
+
+    saveAs(blob, name);
   }
 
   const getContent = (snapshot) => {
@@ -279,7 +288,7 @@ export function FileItem({
                     }
 
                     const blob = await getBlob();
-                    saveAs(blob, name);
+                    saveAsFile(blob, name);
                   }}
                 />
 

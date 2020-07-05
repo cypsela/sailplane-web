@@ -44,13 +44,13 @@ export async function getFileInfoFromCID(cid, ipfs) {
   return await first(ipfs.get(cid));
 }
 
-export async function getBlobFromPath(sharedFs, path, ipfs) {
+export async function getBlobFromPath(sharedFs, path, ipfs, handleUpdate) {
   const cid = await sharedFs.current.read(path);
   const struct = await all(ipfs.get(cid));
 
   return struct[0].type === 'dir'
-    ? dirToBlob(path, struct)
-    : fileToBlob(struct[0]);
+    ? dirToBlob(path, struct, handleUpdate)
+    : fileToBlob(struct[0], handleUpdate);
 }
 
 export async function getBlobFromPathCID(cid, path, ipfs, handleUpdate) {
