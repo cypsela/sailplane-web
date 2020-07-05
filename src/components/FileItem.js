@@ -265,7 +265,6 @@ export function FileItem({
               decryptedFilename
             ) : (
               <span
-                onClick={(event) => event.stopPropagation()}
                 ref={doubleClickRef}>
                 {name}
               </span>
