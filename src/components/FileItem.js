@@ -6,7 +6,6 @@ import {FiDownload, FiEdit, FiTrash, FiShare2} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
-import {Link} from 'react-router-dom';
 import {
   getBlobFromPath,
   getBlobFromPathCID,

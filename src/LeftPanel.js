@@ -26,6 +26,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     userSelect: 'none',
+    cursor: 'pointer',
   },
   settingsBlock: {
     bottom: 0,
@@ -33,14 +34,16 @@ const styles = {
   },
   icon: {
     marginRight: 6,
-  }
+  },
 };
 
 export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
   return (
     <div style={styles.container}>
       <div>
-        <div style={styles.logo}>
+        <div
+          style={styles.logo}
+          onClick={() => (document.location = `${window.location.origin}/`)}>
           <FaPaperPlane color={'#FFF'} size={18} style={styles.icon} />
           Sailplane
         </div>
