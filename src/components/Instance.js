@@ -1,8 +1,8 @@
 import React from 'react';
-import {errorColor, primary2, primary3, primary4, primary45} from '../colors';
+import {errorColor, primary, primary2, primary3, primary4, primary45} from '../colors';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
-import {FiTrash} from 'react-icons/fi';
+import {FiCopy, FiTrash} from 'react-icons/fi';
 
 export function Instance({data, selected, onClick, onDelete}) {
   const [hoverRef, isHovered] = useHover();
@@ -36,10 +36,24 @@ export function Instance({data, selected, onClick, onDelete}) {
       justifyContent: 'flex-end',
       marginTop: 10,
     },
+    toolItem: {
+      marginLeft: 10,
+    },
     name: {
       fontSize: 20,
     },
   };
+
+  const addressId = `instance-${address}`
+
+  const onCopy = (id) => {
+    const range = document.createRange();
+    range.selectNode(document.getElementById(id));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges()
+  }
 
   return (
     <div
@@ -51,16 +65,27 @@ export function Instance({data, selected, onClick, onDelete}) {
       }}>
       <div style={styles.container}>
         <div style={styles.name}>{name}</div>
-        <div style={styles.address}>{address}</div>
+        <div id={addressId} style={styles.address}>{address}</div>
       </div>
       <div style={styles.tools}>
-        <ToolItem
-          defaultColor={selected ? primary2 : primary45}
-          iconComponent={FiTrash}
-          size={16}
-          changeColor={errorColor}
-          onClick={() => onDelete()}
-        />
+        <div style={styles.toolItem}>
+          <ToolItem
+            defaultColor={selected ? primary2 : primary45}
+            iconComponent={FiCopy}
+            size={16}
+            changeColor={primary}
+            onClick={() => onCopy(addressId)}
+          />
+        </div>
+        <div style={styles.toolItem}>
+          <ToolItem
+            defaultColor={selected ? primary2 : primary45}
+            iconComponent={FiTrash}
+            size={16}
+            changeColor={errorColor}
+            onClick={() => onDelete()}
+          />
+        </div>
       </div>
     </div>
   );
