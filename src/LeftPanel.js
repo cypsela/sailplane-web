@@ -25,13 +25,13 @@ const styles = {
     paddingBottom: 0,
   },
   logo: {
+    display: 'inline-block',
     fontFamily: 'MuseoModerno',
     color: '#FFF',
     fontSize: 24,
     fontWeight: 500,
     marginBottom: 10,
     textAlign: 'center',
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     userSelect: 'none',
@@ -52,6 +52,11 @@ const styles = {
     top: 25,
     left: 14,
   },
+  logoContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 };
 
 export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
@@ -80,15 +85,17 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
         />
       ) : null}
       <div>
-        <div
-          style={styles.logo}
-          onClick={() => {
-            document.location = `${
-              window.location.origin + window.location.pathname
-            }`;
-          }}>
-          <FaPaperPlane color={'#FFF'} size={18} style={styles.icon} />
-          Sailplane
+        <div style={styles.logoContainer}>
+          <div
+            style={styles.logo}
+            onClick={() => {
+              document.location = `${
+                window.location.origin + window.location.pathname
+              }`;
+            }}>
+            <FaPaperPlane color={'#FFF'} size={18} style={styles.icon} />
+            Sailplane
+          </div>
         </div>
         {isMobileOpen || !isMobile ? (
           <>
