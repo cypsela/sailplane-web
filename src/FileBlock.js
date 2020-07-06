@@ -14,7 +14,6 @@ const styles = {
     padding: 10,
     backgroundColor: '#FFF',
     width: '100%',
-    overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
     fontFamily: 'Open Sans',
@@ -46,6 +45,8 @@ const styles = {
     alignItems: 'stretch',
     flexGrow: 2,
     opacity: 1,
+    height: '100%',
+    overflowY: 'auto'
   },
 };
 
