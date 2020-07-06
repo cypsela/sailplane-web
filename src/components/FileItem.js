@@ -149,6 +149,7 @@ export function FileItem({
 
     setFileInfo(fileInfo);
     setCID(cid);
+    return cid;
   };
 
   useEffect(() => {
@@ -174,8 +175,14 @@ export function FileItem({
 
     if (!fileBlob) {
       dispatch(setStatus({message: 'Fetching download'}));
+      let tmpCID = CID;
+
+      if (!CID) {
+        tmpCID = await getCID();
+      }
+
       blob = await getBlobFromPathCID(
-        CID,
+        tmpCID,
         path,
         ipfs,
         (currentIndex, totalCount) => {
