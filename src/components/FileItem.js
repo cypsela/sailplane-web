@@ -50,55 +50,6 @@ export function FileItem({
   const windowSize = useWindowSize();
   const contextID = `menu-id`;
 
-  const {
-    isEncrypted,
-    decryptedFilename,
-    passHash,
-  } = getEncryptionInfoFromFilename(name);
-
-  const dispatch = useDispatch();
-
-  const InputComponent = useTextInput(
-    editMode,
-    (editNameValue) => rename(editNameValue),
-    () => setEditMode(false),
-    name,
-    {
-      placeholder: '',
-    },
-  );
-
-  const setDecryptPassword = async (password) => {
-    let doesNotMatchHash = await doesPasswordFailHashCheck(password);
-    if (!doesNotMatchHash) {
-      setEnterPasswordMode(false);
-
-      let blob = await getBlob();
-
-      dispatch(setStatus({message: 'Decrypting file'}));
-      blob = await decryptFile(blob, password);
-      dispatch(setStatus({}));
-
-      saveAsFile(blob, decryptedFilename);
-    }
-  };
-
-  const doesPasswordFailHashCheck = async (text) => {
-    return await doesPasswordMatchHash(text, passHash);
-  };
-
-  const PasswordInputComponent = useTextInput(
-    enterPasswordMode,
-    (password) => setDecryptPassword(password),
-    () => setEnterPasswordMode(false),
-    '',
-    {
-      placeholder: 'password',
-      isPassword: true,
-      isError: doesPasswordFailHashCheck,
-    },
-  );
-
   const styles = {
     outer: {
       borderRadius: 4,
@@ -141,6 +92,52 @@ export function FileItem({
     },
   };
 
+  const {
+    isEncrypted,
+    decryptedFilename,
+    passHash,
+  } = getEncryptionInfoFromFilename(name);
+
+  const dispatch = useDispatch();
+
+  const InputComponent = useTextInput(
+    editMode,
+    (editNameValue) => rename(editNameValue),
+    () => setEditMode(false),
+    name,
+    {
+      placeholder: '',
+    },
+  );
+  const setDecryptPassword = async (password) => {
+    let doesNotMatchHash = await doesPasswordFailHashCheck(password);
+    if (!doesNotMatchHash) {
+      setEnterPasswordMode(false);
+
+      let blob = await getBlob();
+      dispatch(setStatus({message: 'Decrypting file'}));
+      blob = await decryptFile(blob, password);
+
+      dispatch(setStatus({}));
+      saveAsFile(blob, decryptedFilename);
+    }
+  };
+  const doesPasswordFailHashCheck = async (text) => {
+    return await doesPasswordMatchHash(text, passHash);
+  };
+
+  const PasswordInputComponent = useTextInput(
+    enterPasswordMode,
+    (password) => setDecryptPassword(password),
+    () => setEnterPasswordMode(false),
+    '',
+    {
+      placeholder: 'password',
+      isPassword: true,
+      isError: doesPasswordFailHashCheck,
+    },
+  );
+
   const iconComponent = getIconForPath(type, isEncrypted);
 
   const getCID = async () => {
@@ -156,6 +153,7 @@ export function FileItem({
     if (type !== 'dir') {
       getCID();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
 
   const IconComponent = iconComponent;
