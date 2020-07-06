@@ -26,6 +26,10 @@ import {
 } from '../utils/encryption';
 import useDoubleClick from '../hooks/useDoubleClick';
 import {useWindowSize} from '../hooks/useWindowSize';
+import {Menu, Item, Separator, Submenu, MenuProvider} from 'react-contexify';
+import 'react-contexify/dist/ReactContexify.min.css';
+import {contextMenu} from 'react-contexify';
+import useRightClick from '../hooks/useRightClick';
 
 export function FileItem({
   data,
@@ -48,6 +52,7 @@ export function FileItem({
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
   const windowSize = useWindowSize();
+  const contextID = `menu-id`;
 
   const {
     isEncrypted,
@@ -140,11 +145,6 @@ export function FileItem({
       fontSize: 14,
       marginLeft: enterPasswordMode ? 8 : 0,
     },
-    filename: {
-      // whiteSpace: 'nowrap',
-      // textOverflow: 'ellipsis',
-      // overflow: 'hidden',
-    },
   };
 
   const iconComponent = getIconForPath(type, isEncrypted);
@@ -211,122 +211,143 @@ export function FileItem({
       snapshot = {};
     }
 
+    const handleShare = () => {
+      dispatch(
+        setShareData({
+          name,
+          url: `${
+            window.location.origin + window.location.pathname
+          }#/download/${encodeURIComponent(CID)}/${encodeURIComponent(path)}`,
+        }),
+      );
+    };
+
+    const handleDownload = async () => {
+      if (isEncrypted) {
+        setEnterPasswordMode(true);
+        return;
+      }
+
+      const blob = await getBlob();
+      saveAsFile(blob, name);
+    };
+
+    const handleEdit = async () => {
+      setEditMode(true);
+    };
+
+    const handleDelete = async () => {
+      dispatch(
+        setStatus({
+          message: `Deleting ${type === 'dir' ? 'folder' : 'file'}`,
+        }),
+      );
+      await sharedFs.current.remove(path);
+      dispatch(setStatus({}));
+    };
+
     return (
-      <div
-        style={{
-          ...styles.outer,
-          backgroundColor:
-            snapshot.combineTargetFor && type === 'dir' ? primary2 : '#FFF',
-        }}>
+      <div>
         <div
-          style={styles.container}
-          ref={hoverRef}
-          onClick={async (event) => {
-            event.stopPropagation();
+          onContextMenu={(event) => {
+            event.preventDefault();
 
-            if (editMode) {
-              return;
-            }
-
-            if (type === 'dir') {
-              setCurrentDirectory(path);
-            } else {
-              if (!fileBlob && isFileExtensionSupported(fileExtension)) {
-                dispatch(setStatus({message: 'Fetching preview'}));
-                const blob = await getBlob();
-                dispatch(setStatus({}));
-                setFileBlob(blob);
-              } else {
-                setFileBlob(null);
-              }
-            }
+            console.log('show contec', event);
+            contextMenu.show({
+              event,
+              id: contextID,
+              props: {
+                handleDelete,
+                handleDownload,
+                handleShare,
+                handleEdit
+              },
+            });
+          }}
+          style={{
+            ...styles.outer,
+            backgroundColor:
+              snapshot.combineTargetFor && type === 'dir' ? primary2 : '#FFF',
           }}>
-          <div style={styles.flexItem}>
-            <IconComponent color={primary45} size={16} style={styles.icon} />
-            {editMode ? (
-              <>{InputComponent}</>
-            ) : isParent ? (
-              '. . /'
-            ) : (
-              <span ref={doubleClickRef} style={styles.filename}>
-                {decryptedFilename}
-              </span>
-            )}
+          <div
+            style={styles.container}
+            ref={hoverRef}
+            onClick={async (event) => {
+              event.stopPropagation();
+
+              if (editMode) {
+                return;
+              }
+
+              if (type === 'dir') {
+                setCurrentDirectory(path);
+              } else {
+                if (!fileBlob && isFileExtensionSupported(fileExtension)) {
+                  dispatch(setStatus({message: 'Fetching preview'}));
+                  const blob = await getBlob();
+                  dispatch(setStatus({}));
+                  setFileBlob(blob);
+                } else {
+                  setFileBlob(null);
+                }
+              }
+            }}>
+            <div style={styles.flexItem}>
+              <IconComponent color={primary45} size={16} style={styles.icon} />
+              {editMode ? (
+                <>{InputComponent}</>
+              ) : isParent ? (
+                '. . /'
+              ) : (
+                <span ref={doubleClickRef} style={styles.filename}>
+                  {decryptedFilename}
+                </span>
+              )}
+            </div>
+            <div style={{...styles.flexItem, justifyContent: 'flex-end'}}>
+              {type !== 'dir' && fileInfo ? humanFileSize(fileInfo.size) : null}
+            </div>
+            <div style={styles.tools}>
+              {!enterPasswordMode ? (
+                <div>
+                  <ToolItem
+                    iconComponent={FiShare2}
+                    changeColor={primary}
+                    tooltip={'Share'}
+                    onClick={handleShare}
+                  />
+
+                  <ToolItem
+                    iconComponent={FiDownload}
+                    changeColor={primary}
+                    tooltip={'Download'}
+                    onClick={handleDownload}
+                  />
+
+                  <ToolItem
+                    iconComponent={FiEdit}
+                    changeColor={primary}
+                    tooltip={'Rename'}
+                    onClick={handleEdit}
+                  />
+
+                  <ToolItem
+                    iconComponent={FiTrash}
+                    tooltip={'Delete'}
+                    onClick={handleDelete}
+                  />
+                </div>
+              ) : (
+                <>{PasswordInputComponent}</>
+              )}
+            </div>
           </div>
-          <div style={{...styles.flexItem, justifyContent: 'flex-end'}}>
-            {type !== 'dir' && fileInfo ? humanFileSize(fileInfo.size) : null}
-          </div>
-          <div style={styles.tools}>
-            {!enterPasswordMode ? (
-              <div>
-                <ToolItem
-                  iconComponent={FiShare2}
-                  changeColor={primary}
-                  tooltip={'Share'}
-                  onClick={() => {
-                    dispatch(
-                      setShareData({
-                        name,
-                        url: `${
-                          window.location.origin + window.location.pathname
-                        }#/download/${encodeURIComponent(
-                          CID,
-                        )}/${encodeURIComponent(path)}`,
-                      }),
-                    );
-                  }}
-                />
-
-                <ToolItem
-                  iconComponent={FiDownload}
-                  changeColor={primary}
-                  tooltip={'Download'}
-                  onClick={async () => {
-                    if (isEncrypted) {
-                      setEnterPasswordMode(true);
-                      return;
-                    }
-
-                    const blob = await getBlob();
-                    saveAsFile(blob, name);
-                  }}
-                />
-
-                <ToolItem
-                  iconComponent={FiEdit}
-                  changeColor={primary}
-                  tooltip={'Rename'}
-                  onClick={async () => {
-                    setEditMode(true);
-                  }}
-                />
-
-                <ToolItem
-                  iconComponent={FiTrash}
-                  tooltip={'Delete'}
-                  onClick={async () => {
-                    dispatch(
-                      setStatus({
-                        message: `Deleting ${
-                          type === 'dir' ? 'folder' : 'file'
-                        }`,
-                      }),
-                    );
-                    await sharedFs.current.remove(path);
-                    dispatch(setStatus({}));
-                  }}
-                />
-              </div>
-            ) : (
-              <>{PasswordInputComponent}</>
-            )}
-          </div>
+          {fileBlob ? (
+            <div style={styles.preview}>
+              <FilePreview blob={fileBlob} filename={name} />
+            </div>
+          ) : null}
         </div>
-        {fileBlob ? (
-          <div style={styles.preview}>
-            <FilePreview blob={fileBlob} filename={name} />
-          </div>
-        ) : null}
       </div>
     );
   };

@@ -18,6 +18,7 @@
     "orbit-db": "^0.24.2",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
+    "react-contexify": "^4.1.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.1",
     "react-icons": "^3.10.0",

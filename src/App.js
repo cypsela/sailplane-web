@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addInstance} from './actions/main';
 import {setStatus} from './actions/tempData';
 import usePrevious from './hooks/usePrevious';
+import {ContextMenu} from './ContextMenu';
 
 function App() {
   const windowSize = useWindowSize();
@@ -88,9 +89,7 @@ function App() {
       sharedFS.current = await sailplane.mount(address, {autoStart: false});
 
       sharedFS.current.events.on('db.load.progress', (current, max) => {
-        dispatch(
-          setStatus({message: `[${current}/${max}] Loading`}),
-        );
+        dispatch(setStatus({message: `[${current}/${max}] Loading`}));
         if (current === max) {
           setTimeout(() => {
             dispatch(setStatus({}));
@@ -98,9 +97,7 @@ function App() {
         }
       });
       sharedFS.current.events.on('db.replicate.progress', (current, max) => {
-        dispatch(
-          setStatus({message: `[${current}/${max}] Replicating`}),
-        );
+        dispatch(setStatus({message: `[${current}/${max}] Replicating`}));
         if (current === max) {
           setTimeout(() => {
             dispatch(setStatus({}));
@@ -167,6 +164,7 @@ function App() {
       />
 
       {ready ? getRightPanel() : <LoadingRightBlock />}
+      <ContextMenu />
     </div>
   );
 }
