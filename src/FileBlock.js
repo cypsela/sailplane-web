@@ -85,6 +85,7 @@ export function FileBlock({
       <div style={styles.fileHeader}>
         <div style={{...styles.fileHeaderItem, paddingLeft: 12}}>Name</div>
         <div style={{...styles.fileHeaderItem, textAlign: 'right'}}>Size</div>
+        <div style={{...styles.fileHeaderItem, textAlign: 'right'}}>Modified</div>
         <div style={styles.fileHeaderItem}></div>
       </div>
       <div style={styles.dropContainer}>
