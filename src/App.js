@@ -117,7 +117,7 @@ function App() {
       } else {
         setReady(true);
       }
-      // dispatch(setStatus({}));
+      dispatch(setStatus({}));
     },
     [instances, instanceIndex],
   );
