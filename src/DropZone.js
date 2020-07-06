@@ -46,7 +46,7 @@ export function DropZone({children, sharedFs, currentDirectory}, ref) {
       }
 
       dispatch(setStatus({message: 'Uploading'}));
-      const listSource = fileListSource(acceptedFiles);
+      const listSource = fileListSource(acceptedFiles, {preserveMtime: true});
       const totalSize = acceptedFiles.reduce((prev, cur) => cur.size + prev, 0);
       await sharedFs.current.upload(currentDirectory, listSource, {
         progress: (length) => {
