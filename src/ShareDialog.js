@@ -1,9 +1,10 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {errorColor, goodColor, primary, primary3, primary45} from './colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {FaTimes} from 'react-icons/fa';
 import {setShareData} from './actions/tempData';
 import {Link} from 'react-router-dom';
+import {FiLoader} from 'react-icons/fi';
 
 const styles = {
   container: {
@@ -47,30 +48,61 @@ const styles = {
   flex: {
     display: 'flex',
   },
-  icon: {
+  xIcon: {
     cursor: 'pointer',
   },
   link: {
     marginTop: 8,
     color: `${primary45} !important`,
-  }
+  },
+  loading: {
+    display: 'flex',
+    alignItems: 'center',
+    color: primary45,
+    marginTop: 6,
+  },
+  icon: {
+    marginRight: 4,
+  },
 };
 
-export function ShareDialog() {
+export function ShareDialog({sharedFs}) {
   const dispatch = useDispatch();
   const shareData = useSelector((state) => state.tempData.shareData);
   const inputRef = useRef(null);
-  const {url, name} = shareData;
+  const {CID, path, name} = shareData;
+  const [loadedCID, setLoadedCID] = useState(CID);
 
   useEffect(() => {
-    if (name) {
+    if (name && loadedCID) {
       inputRef.current.select();
     }
-  }, [name]);
 
-  if (!url) {
+    if (!name) {
+      setLoadedCID(null);
+    } else {
+      setLoadedCID(CID);
+    }
+  }, [name, CID]);
+
+  const getCID = async () => {
+    const cid = await sharedFs.current.read(path);
+    setLoadedCID(cid);
+  };
+
+  useEffect(() => {
+    if (!loadedCID && path) {
+      getCID();
+    }
+  }, [loadedCID, path]);
+
+  if (!path) {
     return null;
   }
+
+  const url = `${
+    window.location.origin + window.location.pathname
+  }#/download/${encodeURIComponent(loadedCID)}/${encodeURIComponent(path)}`;
 
   return (
     <div style={styles.container}>
@@ -79,7 +111,7 @@ export function ShareDialog() {
         <FaTimes
           color={'#FFF'}
           size={16}
-          style={styles.icon}
+          style={styles.xIcon}
           onClick={() => {
             dispatch(setShareData({}));
           }}
@@ -87,17 +119,33 @@ export function ShareDialog() {
       </div>
       <div style={styles.body}>
         <div style={styles.filename}>{name}</div>
-        <div style={styles.flex}>
-          <input
-            ref={inputRef}
-            style={styles.input}
-            type={'text'}
-            value={url}
-          />
-        </div>
-        <div style={styles.link}>
-          <a href={url} className={'link'} target={'_blank'}>Open link</a>
-        </div>
+        {loadedCID ? (
+          <div>
+            <div style={styles.flex}>
+              <input
+                ref={inputRef}
+                style={styles.input}
+                type={'text'}
+                value={url}
+              />
+            </div>
+            <div style={styles.link}>
+              <a href={url} className={'link'} target={'_blank'}>
+                Open link
+              </a>
+            </div>
+          </div>
+        ) : (
+          <div style={styles.loading}>
+            <FiLoader
+              color={primary45}
+              size={16}
+              style={styles.icon}
+              className={'rotating'}
+            />
+            Loading...
+          </div>
+        )}
       </div>
     </div>
   );

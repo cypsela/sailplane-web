@@ -160,7 +160,7 @@ export function FileBlock({
         </DropZone>
       </div>
       <StatusBar />
-      <ShareDialog />
+      <ShareDialog sharedFs={sharedFs}/>
     </div>
   );
 }

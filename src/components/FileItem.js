@@ -5,7 +5,6 @@ import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
 import {
-  getBlobFromPath,
   getBlobFromPathCID,
   getDraggableStyleHack,
   getFileExtensionFromFilename,
@@ -26,10 +25,7 @@ import {
 } from '../utils/encryption';
 import useDoubleClick from '../hooks/useDoubleClick';
 import {useWindowSize} from '../hooks/useWindowSize';
-import {Menu, Item, Separator, Submenu, MenuProvider} from 'react-contexify';
-import 'react-contexify/dist/ReactContexify.min.css';
 import {contextMenu} from 'react-contexify';
-import useRightClick from '../hooks/useRightClick';
 
 export function FileItem({
   data,
@@ -43,7 +39,7 @@ export function FileItem({
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
   const [hoverRef, isHovered] = useHover();
-  const [CID, setCID] = useState(false);
+  const [CID, setCID] = useState(null);
   const [fileInfo, setFileInfo] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
@@ -152,12 +148,15 @@ export function FileItem({
   const getCID = async () => {
     const cid = await sharedFs.current.read(path);
     const fileInfo = await getFileInfoFromCID(cid, ipfs);
+
     setFileInfo(fileInfo);
     setCID(cid);
   };
 
   useEffect(() => {
-    getCID();
+    if (type !== 'dir') {
+      getCID();
+    }
   }, [path]);
 
   const IconComponent = iconComponent;
@@ -215,9 +214,8 @@ export function FileItem({
       dispatch(
         setShareData({
           name,
-          url: `${
-            window.location.origin + window.location.pathname
-          }#/download/${encodeURIComponent(CID)}/${encodeURIComponent(path)}`,
+          CID,
+          path,
         }),
       );
     };
@@ -260,7 +258,7 @@ export function FileItem({
                 handleDelete,
                 handleDownload,
                 handleShare,
-                handleEdit
+                handleEdit,
               },
             });
           }}
