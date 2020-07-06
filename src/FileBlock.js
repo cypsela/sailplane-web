@@ -6,6 +6,7 @@ import {FolderTools} from './FolderTools';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {StatusBar} from './StatusBar';
 import {ShareDialog} from './ShareDialog';
+import {useWindowSize} from './hooks/useWindowSize';
 
 const styles = {
   container: {
@@ -55,6 +56,8 @@ export function FileBlock({
   setCurrentDirectory,
   currentDirectory,
 }) {
+  const windowSize = useWindowSize();
+  const isMobile = windowSize.width < 600;
   const dropzoneRef = useRef(null);
   const sortedContents = directoryContents.sort((a, b) => {
     if (a.name < b.name) {
@@ -84,8 +87,17 @@ export function FileBlock({
       />
       <div style={styles.fileHeader}>
         <div style={{...styles.fileHeaderItem, paddingLeft: 12}}>Name</div>
-        <div style={{...styles.fileHeaderItem, textAlign: 'right'}}>Size</div>
-        <div style={{...styles.fileHeaderItem, textAlign: 'right'}}>Modified</div>
+        {!isMobile ? (
+          <>
+            <div style={{...styles.fileHeaderItem, textAlign: 'right'}}>
+              Size
+            </div>
+            <div style={{...styles.fileHeaderItem, textAlign: 'right'}}>
+              Modified
+            </div>
+          </>
+        ) : null}
+
         <div style={styles.fileHeaderItem}></div>
       </div>
       <div style={styles.dropContainer}>
@@ -161,7 +173,7 @@ export function FileBlock({
         </DropZone>
       </div>
       <StatusBar />
-      <ShareDialog sharedFs={sharedFs}/>
+      <ShareDialog sharedFs={sharedFs} />
     </div>
   );
 }

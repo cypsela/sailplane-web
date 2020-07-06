@@ -9,6 +9,7 @@ import {
   getDraggableStyleHack,
   getFileExtensionFromFilename,
   getFileInfoFromCID,
+  getFileTime,
   getIconForPath,
   humanFileSize,
   isFileExtensionSupported,
@@ -48,6 +49,7 @@ export function FileItem({
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
   const windowSize = useWindowSize();
+  const isMobile = windowSize.width < 600;
   const contextID = `menu-id`;
 
   const styles = {
@@ -63,9 +65,8 @@ export function FileItem({
     container: {
       display: 'flex',
       flexDirection: 'row',
-      flexWrap: windowSize.width < 600 ? 'wrap' : 'nowrap',
+      flexWrap: isMobile ? 'wrap' : 'nowrap',
       justifyContent: 'space-between',
-
       cursor: 'pointer',
     },
     flexItem: {
@@ -75,11 +76,12 @@ export function FileItem({
       justifyContent: 'flex-start',
       alignItems: 'center',
       flexGrow: 2,
-      marginBottom: windowSize.width < 600 ? 10 : 0,
+      marginBottom: isMobile ? 10 : 0,
     },
     icon: {
       marginRight: 4,
       width: 30,
+      flexShrink: 0,
     },
     tools: {
       display: 'flex',
@@ -89,6 +91,12 @@ export function FileItem({
         (isHovered || fileBlob || enterPasswordMode) && !isParent ? 1 : 0,
       fontSize: 14,
       marginLeft: enterPasswordMode ? 8 : 0,
+    },
+    filename: {
+      textAlign: 'left',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
     },
   };
 
@@ -296,7 +304,8 @@ export function FileItem({
                 }
               }
             }}>
-            <div style={styles.flexItem}>
+            <div
+              style={{...styles.flexItem, maxWidth: isMobile ? null : '25%'}}>
               <IconComponent color={primary45} size={16} style={styles.icon} />
               {editMode ? (
                 <>{InputComponent}</>
@@ -310,6 +319,11 @@ export function FileItem({
             </div>
             <div style={{...styles.flexItem, justifyContent: 'flex-end'}}>
               {type !== 'dir' && fileInfo ? humanFileSize(fileInfo.size) : null}
+            </div>
+            <div style={{...styles.flexItem, justifyContent: 'flex-end'}}>
+              {type !== 'dir' && fileInfo && fileInfo.mtime
+                ? getFileTime(fileInfo.mtime.secs)
+                : null}
             </div>
             <div style={styles.tools}>
               {!enterPasswordMode ? (

@@ -3,6 +3,7 @@ import first from 'it-first';
 import JSZip from 'jszip';
 import {FiFile, FiLock} from 'react-icons/fi';
 import {FaFolder} from 'react-icons/fa';
+import dayjs from 'dayjs';
 
 async function fileToBlob(file, handleUpdate) {
   const {content, size} = file;
@@ -140,3 +141,12 @@ export function getIconForPath(type, isEncrypted) {
   }
   return iconComponent;
 }
+
+export const getFileTime = (unixTime) => {
+  const dayObj = dayjs.unix(unixTime);
+  if (dayObj.isBefore(dayjs().subtract(1, 'day'))) {
+    return dayObj.format('MM/DD/YYYY');
+  } else {
+    return dayObj.format('h:mm a');
+  }
+};
