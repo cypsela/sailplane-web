@@ -1,11 +1,11 @@
 import {Item, Menu, Separator} from 'react-contexify';
 import React from 'react';
 import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
-import {errorColor, primary45} from './colors';
+import {errorColor, primary4, primary45} from './colors';
 
 const styles = {
   menuItem: {
-    color: primary45,
+    color: primary4,
     marginLeft: 4,
     fontSize: 14,
   },
