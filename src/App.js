@@ -85,26 +85,30 @@ function App() {
         });
         dispatch(addInstance(address.path, address.toString()));
       }
-      sharedFS.current = await sailplane.mount(address, { autoStart: false });
+      sharedFS.current = await sailplane.mount(address, {autoStart: false});
 
       sharedFS.current.events.on('db.load.progress', (current, max) => {
-        dispatch(setStatus({message: `[${current}/${max}] Loading`, isInfo: true}));
+        dispatch(
+          setStatus({message: `[${current}/${max}] Loading`}),
+        );
         if (current === max) {
           setTimeout(() => {
-          dispatch(setStatus({}));
-        }, 2000);
+            dispatch(setStatus({}));
+          }, 2000);
         }
-      })
+      });
       sharedFS.current.events.on('db.replicate.progress', (current, max) => {
-        dispatch(setStatus({message: `[${current}/${max}] Replicating`, isInfo: true}));
+        dispatch(
+          setStatus({message: `[${current}/${max}] Replicating`}),
+        );
         if (current === max) {
           setTimeout(() => {
-          dispatch(setStatus({}));
-        }, 2000);
+            dispatch(setStatus({}));
+          }, 2000);
         }
-      })
+      });
 
-      await sharedFS.current.start()
+      await sharedFS.current.start();
 
       sharedFS.current.events.on('updated', () => {
         setLastUpdateTime(Date.now());
