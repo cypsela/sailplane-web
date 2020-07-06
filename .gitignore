@@ -11,6 +11,7 @@
 
 # production
 /build
+/ipfs-serve
 
 # misc
 .DS_Store
