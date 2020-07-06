@@ -42,9 +42,9 @@ function App() {
 
   const rootLS = async () => {
     if (ready) {
-      dispatch(setStatus({message: 'Getting folder'}));
+      // dispatch(setStatus({message: 'Getting folder'}));
       const res = await sharedFS.current.fs.ls(currentDirectory);
-      dispatch(setStatus({}));
+      // dispatch(setStatus({}));
 
       let contents = [];
 
@@ -86,10 +86,20 @@ function App() {
       sharedFS.current = await sailplane.mount(address, { autoStart: false });
 
       sharedFS.current.events.on('db.load.progress', (current, max) => {
-        console.log(current, max)
+        dispatch(setStatus({message: `[${current}/${max}] Loading`, isInfo: true}));
+        if (current === max) {
+          setTimeout(() => {
+          dispatch(setStatus({}));
+        }, 2000);
+        }
       })
       sharedFS.current.events.on('db.replicate.progress', (current, max) => {
-        console.log(current, max)
+        dispatch(setStatus({message: `[${current}/${max}] Replicating`, isInfo: true}));
+        if (current === max) {
+          setTimeout(() => {
+          dispatch(setStatus({}));
+        }, 2000);
+        }
       })
 
       await sharedFS.current.start()
@@ -107,7 +117,7 @@ function App() {
       } else {
         setReady(true);
       }
-      dispatch(setStatus({}));
+      // dispatch(setStatus({}));
     },
     [instances, instanceIndex],
   );
