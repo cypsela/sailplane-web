@@ -72,6 +72,7 @@ export const supportedPreviewExtensions = [
   'png',
   'gif',
   'mp3',
+  'wav',
   'ogg',
   'flac',
   'jpeg',
