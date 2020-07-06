@@ -1,10 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {primary45} from './colors';
-import {FaFolderOpen, FaCog, FaDatabase, FaPaperPlane} from 'react-icons/fa';
+import {
+  FaFolderOpen,
+  FaCog,
+  FaDatabase,
+  FaPaperPlane,
+  FaBars,
+  FaTimes,
+} from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
+import {useWindowSize} from './hooks/useWindowSize';
 
 const styles = {
   container: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -35,11 +44,41 @@ const styles = {
   icon: {
     marginRight: 6,
   },
+  mobilePadding: {
+    paddingBottom: 6,
+  },
+  menuIcon: {
+    position: 'absolute',
+    top: 25,
+    left: 14,
+  },
 };
 
 export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
+  const windowSize = useWindowSize();
+  const isMobile = windowSize.width < 600;
+
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  let iconComponent = FaBars;
+  if (isMobileOpen) {
+    iconComponent = FaTimes;
+  }
+
+  const IconComponent = iconComponent;
+
   return (
     <div style={styles.container}>
+      {isMobile ? (
+        <IconComponent
+          color={'#FFF'}
+          size={24}
+          style={styles.menuIcon}
+          onClick={() => {
+            setIsMobileOpen(!isMobileOpen);
+          }}
+        />
+      ) : null}
       <div>
         <div
           style={styles.logo}
@@ -51,27 +90,33 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
           <FaPaperPlane color={'#FFF'} size={18} style={styles.icon} />
           Sailplane
         </div>
-        <PanelItem
-          title={'Files'}
-          iconComponent={FaFolderOpen}
-          selected={currentRightPanel === 'files'}
-          onClick={() => setCurrentRightPanel('files')}
-        />
-        <PanelItem
-          title={'Instances'}
-          iconComponent={FaDatabase}
-          selected={currentRightPanel === 'instances'}
-          onClick={() => setCurrentRightPanel('instances')}
-        />
-      </div>
+        {isMobileOpen || !isMobile ? (
+          <>
+            <PanelItem
+              title={'Files'}
+              iconComponent={FaFolderOpen}
+              selected={currentRightPanel === 'files'}
+              onClick={() => setCurrentRightPanel('files')}
+            />
+            <PanelItem
+              title={'Instances'}
+              iconComponent={FaDatabase}
+              selected={currentRightPanel === 'instances'}
+              onClick={() => setCurrentRightPanel('instances')}
+            />
 
-      <div style={styles.settingsBlock}>
-        <PanelItem
-          title={'Settings'}
-          selected={currentRightPanel === 'settings'}
-          onClick={() => setCurrentRightPanel('settings')}
-          iconComponent={FaCog}
-        />
+            <div style={styles.settingsBlock}>
+              <PanelItem
+                title={'Settings'}
+                selected={currentRightPanel === 'settings'}
+                onClick={() => setCurrentRightPanel('settings')}
+                iconComponent={FaCog}
+              />
+            </div>
+          </>
+        ) : (
+          <div style={styles.mobilePadding}></div>
+        )}
       </div>
     </div>
   );
