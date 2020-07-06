@@ -101,8 +101,6 @@ export function FileItem({
 
   const styles = {
     outer: {
-      border:
-        isHovered || fileBlob ? `1px solid ${primary2}` : '1px solid #FFF',
       borderRadius: 4,
       color: primary5,
       fontSize: 14,
@@ -205,44 +203,44 @@ export function FileItem({
     saveAs(blob, name);
   };
 
+  const handleShare = () => {
+    dispatch(
+      setShareData({
+        name,
+        CID,
+        path,
+      }),
+    );
+  };
+
+  const handleDownload = async () => {
+    if (isEncrypted) {
+      setEnterPasswordMode(true);
+      return;
+    }
+
+    const blob = await getBlob();
+    saveAsFile(blob, name);
+  };
+
+  const handleEdit = async () => {
+    setEditMode(true);
+  };
+
+  const handleDelete = async () => {
+    dispatch(
+      setStatus({
+        message: `Deleting ${type === 'dir' ? 'folder' : 'file'}`,
+      }),
+    );
+    await sharedFs.current.remove(path);
+    dispatch(setStatus({}));
+  };
+
   const getContent = (snapshot) => {
     if (!snapshot) {
       snapshot = {};
     }
-
-    const handleShare = () => {
-      dispatch(
-        setShareData({
-          name,
-          CID,
-          path,
-        }),
-      );
-    };
-
-    const handleDownload = async () => {
-      if (isEncrypted) {
-        setEnterPasswordMode(true);
-        return;
-      }
-
-      const blob = await getBlob();
-      saveAsFile(blob, name);
-    };
-
-    const handleEdit = async () => {
-      setEditMode(true);
-    };
-
-    const handleDelete = async () => {
-      dispatch(
-        setStatus({
-          message: `Deleting ${type === 'dir' ? 'folder' : 'file'}`,
-        }),
-      );
-      await sharedFs.current.remove(path);
-      dispatch(setStatus({}));
-    };
 
     return (
       <div>
@@ -250,7 +248,6 @@ export function FileItem({
           onContextMenu={(event) => {
             event.preventDefault();
 
-            console.log('show contec', event);
             contextMenu.show({
               event,
               id: contextID,
@@ -264,6 +261,10 @@ export function FileItem({
           }}
           style={{
             ...styles.outer,
+            border:
+              isHovered || fileBlob || snapshot.isDragging
+                ? `1px solid ${primary2}`
+                : '1px solid #FFF',
             backgroundColor:
               snapshot.combineTargetFor && type === 'dir' ? primary2 : '#FFF',
           }}>
