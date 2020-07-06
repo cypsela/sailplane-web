@@ -83,7 +83,16 @@ function App() {
         });
         dispatch(addInstance(address.path, address.toString()));
       }
-      sharedFS.current = await sailplane.mount(address, {});
+      sharedFS.current = await sailplane.mount(address, { autoStart: false });
+
+      sharedFS.current.events.on('db.load.progress', (current, max) => {
+        console.log(current, max)
+      })
+      sharedFS.current.events.on('db.replicate.progress', (current, max) => {
+        console.log(current, max)
+      })
+
+      await sharedFS.current.start()
 
       sharedFS.current.events.on('updated', () => {
         setLastUpdateTime(Date.now());
