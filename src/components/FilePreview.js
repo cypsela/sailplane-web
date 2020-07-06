@@ -14,9 +14,7 @@ const styles = {
   },
 };
 
-export function FilePreview({blob, filename}) {
-  console.log('blob', blob)
-
+export const FilePreview = React.memo(({blob, filename}) => {
   const ext = getFileExtensionFromFilename(filename);
   const objURL = window.URL.createObjectURL(blob);
 
@@ -36,4 +34,4 @@ export function FilePreview({blob, filename}) {
       ) : null}
     </div>
   );
-}
+});

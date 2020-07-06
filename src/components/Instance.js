@@ -6,7 +6,7 @@ import {FiCopy, FiTrash} from 'react-icons/fi';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
 
-export function Instance({data, selected, onClick, onDelete}) {
+export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
   const [hoverRef, isHovered] = useHover();
   const dispatch = useDispatch();
 
@@ -60,7 +60,12 @@ export function Instance({data, selected, onClick, onDelete}) {
       window.getSelection().removeRange(range);
     }, 100);
 
-    dispatch(setStatus({message: 'Instance address copied to clipboard!', isInfo: true}));
+    dispatch(
+      setStatus({
+        message: 'Instance address copied to clipboard!',
+        isInfo: true,
+      }),
+    );
     setTimeout(() => {
       dispatch(setStatus({}));
     }, 3000);
@@ -102,4 +107,4 @@ export function Instance({data, selected, onClick, onDelete}) {
       </div>
     </div>
   );
-}
+});

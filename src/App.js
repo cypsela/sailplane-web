@@ -13,6 +13,7 @@ import {Instances} from './Instances';
 import {useDispatch, useSelector} from 'react-redux';
 import {addInstance} from './actions/main';
 import {setStatus} from './actions/tempData';
+import usePrevious from './hooks/usePrevious';
 
 function App() {
   const windowSize = useWindowSize();
@@ -30,11 +31,12 @@ function App() {
   const main = useSelector((state) => state.main);
   const {instances, instanceIndex} = main;
   const currentInstance = instances[instanceIndex];
+  const prevInstanceIndex = usePrevious(instanceIndex);
 
   const styles = {
     container: {
       position: 'relative',
-      display: windowWidth>600?'flex':'block',
+      display: windowWidth > 600 ? 'flex' : 'block',
       flexDirection: 'row',
       height: '100%',
     },
@@ -105,16 +107,16 @@ function App() {
 
   // Connect orbit todo: refactor hook
   useEffect(() => {
-    if (ipfsObj.isIpfsReady && !ready) {
-      connectOrbit(ipfsObj.ipfs);
+    if (ipfsObj.isIpfsReady) {
+      connectOrbit(ipfsObj.ipfs, prevInstanceIndex !== instanceIndex);
     }
-  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, connectOrbit]);
-
-  useEffect(() => {
-    if (ipfsObj.isIpfsReady && ready) {
-      connectOrbit(ipfsObj.ipfs, true);
-    }
-  }, [instanceIndex, ready, instances]);
+  }, [
+    ipfsObj.ipfs,
+    ipfsObj.isIpfsReady,
+    connectOrbit,
+    instanceIndex,
+    instances,
+  ]);
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
@@ -136,10 +138,10 @@ function App() {
 
   return (
     <div style={styles.container}>
-        <LeftPanel
-          setCurrentRightPanel={setCurrentRightPanel}
-          currentRightPanel={currentRightPanel}
-        />
+      <LeftPanel
+        setCurrentRightPanel={setCurrentRightPanel}
+        currentRightPanel={currentRightPanel}
+      />
 
       {ready ? getRightPanel() : <LoadingRightBlock />}
     </div>
