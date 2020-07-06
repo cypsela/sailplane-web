@@ -1,12 +1,10 @@
 import {Item, Menu, Separator} from 'react-contexify';
 import React from 'react';
 import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
-import {errorColor, primary4, primary45} from './colors';
-import 'react-contexify/dist/ReactContexify.min.css';
+import './context.css';
 
 const styles = {
   menuItem: {
-    color: primary4,
     marginLeft: 4,
     fontSize: 14,
   },
@@ -16,25 +14,25 @@ export const ContextMenu = () => {
   return (
     <Menu id={'menu-id'}>
       <Item className={'MenuItem'} onClick={(obj) => obj.props.handleDownload()}>
-        <FiDownload color={primary45} size={16} style={styles.icon} />
+        <FiDownload size={16} style={styles.icon} />
         <span style={{...styles.menuItem}}>Download</span>
       </Item>
 
       <Item className={'MenuItem'} onClick={(obj) => obj.props.handleEdit()}>
-        <FiEdit color={primary45} size={16} style={styles.icon} />
+        <FiEdit size={16} style={styles.icon} />
         <span style={{...styles.menuItem}}>Rename</span>
       </Item>
 
       <Item className={'MenuItem'} onClick={(obj) => obj.props.handleShare()}>
-        <FiShare2 color={primary45} size={16} style={styles.icon} />
+        <FiShare2 size={16} style={styles.icon} />
         <span style={{...styles.menuItem}}>Share</span>
       </Item>
 
       <Separator />
 
-      <Item className={'MenuItem'} onClick={(obj) => obj.props.handleDelete()}>
-        <FiTrash color={errorColor} size={16} style={styles.icon} />
-        <span style={{...styles.menuItem, color: errorColor}}>Delete</span>
+      <Item className={'MenuItem delete'} onClick={(obj) => obj.props.handleDelete()}>
+        <FiTrash size={16} style={styles.icon} />
+        <span style={{...styles.menuItem}}>Delete</span>
       </Item>
       {/*<Submenu label="Foobar">*/}
       {/*  <Item onClick={onClick}>Foo</Item>*/}
