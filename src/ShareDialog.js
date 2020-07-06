@@ -59,7 +59,8 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     color: primary45,
-    marginTop: 6,
+    marginTop: 10,
+    fontSize: 14,
   },
   icon: {
     marginRight: 4,
@@ -143,7 +144,7 @@ export function ShareDialog({sharedFs}) {
               style={styles.icon}
               className={'rotating'}
             />
-            Loading...
+            Loading share link...
           </div>
         )}
       </div>
