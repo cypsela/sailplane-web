@@ -9,7 +9,7 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
-import {useWindowSize} from './hooks/useWindowSize';
+import {useIsMobile} from './hooks/useIsMobile';
 
 const styles = {
   container: {
@@ -60,8 +60,7 @@ const styles = {
 };
 
 export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
-  const windowSize = useWindowSize();
-  const isMobile = windowSize.width < 600;
+  const isMobile = useIsMobile();
 
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 

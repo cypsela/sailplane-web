@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './App.css';
 import {LeftPanel} from './LeftPanel';
 import {FileBlock} from './FileBlock';
-import {useWindowSize} from './hooks/useWindowSize';
+import {useIsMobile} from './hooks/useIsMobile';
 import useIPFS from './hooks/useIPFS';
 import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
@@ -17,8 +17,7 @@ import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
 
 function App() {
-  const windowSize = useWindowSize();
-  const windowWidth = windowSize.width;
+  const isMobile = useIsMobile();
   const ipfsObj = useIPFS();
   const sharedFS = useRef({});
   const sailplaneRef = useRef(null);
@@ -37,7 +36,7 @@ function App() {
   const styles = {
     container: {
       position: 'relative',
-      display: windowWidth > 600 ? 'flex' : 'block',
+      display: isMobile ? 'block' : 'flex',
       flexDirection: 'row',
       height: '100%',
     },

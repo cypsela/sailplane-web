@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './App.css';
 import {LeftPanel} from './LeftPanel';
-import {useWindowSize} from './hooks/useWindowSize';
+import {useIsMobile} from './hooks/useIsMobile';
 import useIPFS from './hooks/useIPFS';
 import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
@@ -16,8 +16,7 @@ import {decryptFile, getEncryptionInfoFromFilename} from './utils/encryption';
 
 function Download({match}) {
   const {cid, path, displayType} = match.params;
-  const windowSize = useWindowSize();
-  const windowWidth = windowSize.width;
+  const isMobile = useIsMobile();
   const ipfsObj = useIPFS();
   const [ready, setReady] = useState(false);
   const [files, setFiles] = useState(null);
@@ -35,7 +34,7 @@ function Download({match}) {
 
   const styles = {
     container: {
-      display: windowWidth > 600 ? 'flex' : 'block',
+      display: isMobile ? 'block' : 'flex',
       flexDirection: 'row',
       height: '100%',
     },

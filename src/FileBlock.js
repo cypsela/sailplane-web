@@ -6,7 +6,7 @@ import {FolderTools} from './FolderTools';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {StatusBar} from './StatusBar';
 import {ShareDialog} from './ShareDialog';
-import {useWindowSize} from './hooks/useWindowSize';
+import {useIsMobile} from './hooks/useIsMobile';
 
 const styles = {
   container: {
@@ -57,8 +57,7 @@ export function FileBlock({
   setCurrentDirectory,
   currentDirectory,
 }) {
-  const windowSize = useWindowSize();
-  const isMobile = windowSize.width < 600;
+  const isMobile = useIsMobile();
   const dropzoneRef = useRef(null);
   const sortedContents = directoryContents.sort((a, b) => {
     if (a.name < b.name) {

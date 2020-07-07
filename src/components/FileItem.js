@@ -25,7 +25,7 @@ import {
   getEncryptionInfoFromFilename,
 } from '../utils/encryption';
 import useDoubleClick from '../hooks/useDoubleClick';
-import {useWindowSize} from '../hooks/useWindowSize';
+import {useIsMobile} from '../hooks/useIsMobile';
 import {contextMenu} from 'react-contexify';
 
 export function FileItem({
@@ -48,8 +48,7 @@ export function FileItem({
   const [doubleClickRef] = useDoubleClick(() => setEditMode(true));
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
-  const windowSize = useWindowSize();
-  const isMobile = windowSize.width < 600;
+  const isMobile = useIsMobile();
   const contextID = `menu-id`;
 
   const styles = {
