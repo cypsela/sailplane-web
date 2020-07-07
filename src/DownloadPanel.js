@@ -1,10 +1,13 @@
 import React, {useState} from 'react';
 import {StatusBar} from './StatusBar';
 import {primary45} from './colors';
-import {doesPasswordMatchHash, getEncryptionInfoFromFilename} from './utils/encryption';
+import {
+  doesPasswordMatchHash,
+  getEncryptionInfoFromFilename,
+} from './utils/encryption';
 import {FiLock} from 'react-icons/fi';
-import {sha256} from './utils/Utils';
 import useTextInput from './hooks/useTextInput';
+import {ImageGalleryBlock} from './components/ImageGalleryBlock';
 
 const styles = {
   container: {
@@ -15,11 +18,13 @@ const styles = {
     overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
     boxSizing: 'border-box',
   },
   filename: {
     color: primary45,
     fontSize: 20,
+    textAlign: 'center',
   },
   downloadButton: {
     display: 'inline-block',
@@ -36,9 +41,25 @@ const styles = {
   passwordContainer: {
     marginTop: 10,
   },
+  imageContainer: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap'
+  },
+  downloadButtonHolder: {
+    textAlign: 'center',
+    marginBottom: 8,
+  }
 };
 
-export function DownloadPanel({ready, path, handleDownload, downloadComplete}) {
+export function DownloadPanel({
+  ready,
+  path,
+  handleDownload,
+  downloadComplete,
+  displayType,
+  files,
+}) {
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
   const [downloadClicked, setDownloadClicked] = useState(false);
@@ -87,27 +108,43 @@ export function DownloadPanel({ready, path, handleDownload, downloadComplete}) {
 
               {decryptedFilename}
             </div>
-            {!enterPasswordMode ? (
-              <div
-                style={styles.downloadButton}
-                onClick={() => {
-                  if (isEncrypted) {
-                    setEnterPasswordMode(true);
-                    return;
-                  }
+            <div style={styles.downloadButtonHolder}>
+              {!enterPasswordMode ? (
+                <div
+                  style={styles.downloadButton}
+                  onClick={() => {
+                    if (isEncrypted) {
+                      setEnterPasswordMode(true);
+                      return;
+                    }
 
-                  setDownloadClicked(true);
-                  handleDownload();
-                }}>
-                {downloadClicked && !downloadComplete
-                  ? 'Fetching download...'
-                  : 'Download now'}
+                    setDownloadClicked(true);
+                    handleDownload();
+                  }}>
+                  {downloadClicked && !downloadComplete
+                    ? 'Fetching download...'
+                    : 'Download now'}
+                </div>
+              ) : (
+                <div style={styles.passwordContainer}>
+                  {PasswordInputComponent}
+                </div>
+              )}
+            </div>
+
+            {displayType !== 'default' ? (
+              <div>
+                {displayType === 'image' ? (
+                  <div style={styles.imageContainer}>
+                    {files
+                      ? files.map((imageFile) => (
+                          <ImageGalleryBlock file={imageFile} />
+                        ))
+                      : null}
+                  </div>
+                ) : null}
               </div>
-            ) : (
-              <div style={styles.passwordContainer}>
-                {PasswordInputComponent}
-              </div>
-            )}
+            ) : null}
           </div>
         ) : (
           <div />

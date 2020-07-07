@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {errorColor, goodColor, primary, primary3, primary45} from './colors';
+import {primary, primary3, primary45} from './colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {FaTimes} from 'react-icons/fa';
 import {setShareData} from './actions/tempData';
-import {Link} from 'react-router-dom';
-import {FiLoader} from 'react-icons/fi';
+import {FiFile, FiImage, FiLoader, FiMusic} from 'react-icons/fi';
+import {SegmentedControl} from './components/SegmentedControl';
 
 const styles = {
   container: {
@@ -54,6 +54,7 @@ const styles = {
   link: {
     marginTop: 8,
     color: `${primary45} !important`,
+    fontSize: 14,
   },
   loading: {
     display: 'flex',
@@ -65,20 +66,37 @@ const styles = {
   icon: {
     marginRight: 4,
   },
+  nameHolder: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 };
+
+const shareTypes = [
+  {
+    name: 'default',
+    icon: FiFile,
+  },
+  {
+    name: 'image',
+    icon: FiImage,
+  },
+  {
+    name: 'audio',
+    icon: FiMusic,
+  },
+];
 
 export function ShareDialog({sharedFs}) {
   const dispatch = useDispatch();
   const shareData = useSelector((state) => state.tempData.shareData);
   const inputRef = useRef(null);
-  const {CID, path, name} = shareData;
+  const {CID, path, name, pathType} = shareData;
+  const [shareTypeIndex, setShareTypeIndex] = useState(0);
   const [loadedCID, setLoadedCID] = useState(CID);
 
   useEffect(() => {
-    if (name && loadedCID) {
-      inputRef.current.select();
-    }
-
     if (!name) {
       setLoadedCID(null);
     } else {
@@ -94,6 +112,10 @@ export function ShareDialog({sharedFs}) {
   useEffect(() => {
     if (!loadedCID && path) {
       getCID();
+    } else {
+      if (inputRef.current) {
+        inputRef.current.select();
+      }
     }
   }, [loadedCID, path]);
 
@@ -103,7 +125,9 @@ export function ShareDialog({sharedFs}) {
 
   const url = `${
     window.location.origin + window.location.pathname
-  }#/download/${encodeURIComponent(loadedCID)}/${encodeURIComponent(path)}`;
+  }#/download/${encodeURIComponent(loadedCID)}/${encodeURIComponent(path)}/${
+    shareTypes[shareTypeIndex].name
+  }`;
 
   return (
     <div style={styles.container}>
@@ -119,7 +143,17 @@ export function ShareDialog({sharedFs}) {
         />
       </div>
       <div style={styles.body}>
-        <div style={styles.filename}>{name}</div>
+        <div style={styles.nameHolder}>
+          <div style={styles.filename}>{name}</div>
+          <div>
+            {pathType === 'dir' ? (
+              <SegmentedControl
+                items={shareTypes}
+                onSelect={(shareTypeIndex) => setShareTypeIndex(shareTypeIndex)}
+              />
+            ) : null}
+          </div>
+        </div>
         {loadedCID ? (
           <div>
             <div style={styles.flex}>

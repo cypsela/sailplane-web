@@ -5,7 +5,7 @@ import {FiFile, FiLock} from 'react-icons/fi';
 import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
 
-async function fileToBlob(file, handleUpdate) {
+export async function fileToBlob(file, handleUpdate) {
   const {content, size} = file;
   let chunks = [];
   let i = 0;
@@ -54,6 +54,12 @@ export async function getBlobFromPath(sharedFs, path, ipfs, handleUpdate) {
     : fileToBlob(struct[0], handleUpdate);
 }
 
+export async function getFilesFromFolderCID(ipfs, cid, handleUpdate) {
+  const struct = await all(ipfs.get(cid));
+
+  return struct;
+}
+
 export async function getBlobFromPathCID(cid, path, ipfs, handleUpdate) {
   const struct = await all(ipfs.get(cid));
 
@@ -91,7 +97,6 @@ export async function sha256(str) {
     .call(new Uint8Array(buf), (x) => ('00' + x.toString(16)).slice(-2))
     .join('');
 }
-
 
 export function humanFileSize(bytes, si = true, dp = 1) {
   const thresh = si ? 1000 : 1024;
@@ -152,4 +157,4 @@ export const getFileTime = (unixTime) => {
   }
 };
 
-export const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

@@ -46,7 +46,7 @@ const styles = {
     flexGrow: 2,
     opacity: 1,
     height: '100%',
-    overflowY: 'auto'
+    overflowY: 'auto',
   },
 };
 

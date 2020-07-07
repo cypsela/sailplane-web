@@ -1,14 +1,10 @@
 import React from 'react';
 import {HashRouter as Router, Route} from 'react-router-dom';
 import App from './App';
-import Download from "./Download";
+import Download from './Download';
 
 const styles = {
-  container: {
-    // maxWidth: 900,
-    // margin: '0 auto',
-    // backgroundColor: '#FFF',
-  },
+  container: {},
 };
 
 export default function Routes() {
@@ -16,6 +12,11 @@ export default function Routes() {
     <Router>
       <Route exact path="/" component={App} />
       <Route exact path="/download/:cid/:path" component={Download} />
+      <Route
+        exact
+        path="/download/:cid/:path/:displayType"
+        component={Download}
+      />
     </Router>
   );
 }

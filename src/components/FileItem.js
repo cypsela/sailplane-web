@@ -222,6 +222,7 @@ export function FileItem({
         name,
         CID,
         path,
+        pathType: type,
       }),
     );
   };

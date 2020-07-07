@@ -9,20 +9,21 @@ import {LoadingRightBlock} from './LoadingRightBlock';
 import {hot} from 'react-hot-loader';
 import {useDispatch} from 'react-redux';
 import {setStatus} from './actions/tempData';
-import {getBlobFromPathCID} from './utils/Utils';
+import {getBlobFromPathCID, getFilesFromFolderCID} from './utils/Utils';
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
 import {decryptFile, getEncryptionInfoFromFilename} from './utils/encryption';
 
 function Download({match}) {
+  const {cid, path, displayType} = match.params;
   const windowSize = useWindowSize();
   const windowWidth = windowSize.width;
   const ipfsObj = useIPFS();
   const [ready, setReady] = useState(false);
-  const [downloadComplete, setDownloadComplete] = useState(false);
+  const [files, setFiles] = useState(null);
 
+  const [downloadComplete, setDownloadComplete] = useState(false);
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
-  const {cid, path} = match.params;
   const cleanPath = decodeURIComponent(path);
   const cleanCID = decodeURIComponent(cid);
   const dispatch = useDispatch();
@@ -35,11 +36,23 @@ function Download({match}) {
     },
   };
 
+  const getFileList = async () => {
+    const tmpFiles = await getFilesFromFolderCID(ipfsObj.ipfs, cleanCID, () => {
+      console.log('updateping');
+    });
+
+    setFiles(tmpFiles.slice(1));
+  };
+
   useEffect(() => {
     if (ipfsObj.isIpfsReady && !ready) {
       setReady(true);
+
+      if (displayType) {
+        getFileList();
+      }
     }
-  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready]);
+  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, displayType, cleanCID]);
 
   const getDownload = async (password) => {
     dispatch(setStatus({message: 'Fetching file'}));
@@ -88,6 +101,9 @@ function Download({match}) {
           handleDownload={getDownload}
           ready={ready}
           path={cleanPath}
+          cid={cleanCID}
+          files={files}
+          displayType={displayType}
           downloadComplete={downloadComplete}
         />
       ) : (
