@@ -39,8 +39,6 @@ const styles = {
   },
 };
 
-InstanceSelector.propTypes = {currentInstance: PropTypes.any};
-
 export function Breadcrumb({currentDirectory, setCurrentDirectory}) {
   const pathArr = currentDirectory.split('/').slice(2);
 

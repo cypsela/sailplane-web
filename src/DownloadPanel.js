@@ -8,7 +8,7 @@ import {
 import {FiLock} from 'react-icons/fi';
 import useTextInput from './hooks/useTextInput';
 import ImageGallery from './components/ImageGallery';
-import {humanFileSize} from "./utils/Utils";
+import {humanFileSize} from './utils/Utils';
 
 const styles = {
   container: {
@@ -59,7 +59,7 @@ export function DownloadPanel({
   downloadComplete,
   displayType,
   files,
-  fileInfo
+  fileInfo,
 }) {
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
@@ -133,8 +133,9 @@ export function DownloadPanel({
               )}
             </div>
 
-            {fileInfo && fileInfo.size?<div style={styles.fileSize}>{humanFileSize(fileInfo.size)}</div>:null}
-
+            {fileInfo && fileInfo.size ? (
+              <div style={styles.fileSize}>{humanFileSize(fileInfo.size)}</div>
+            ) : null}
 
             {displayType !== 'default' ? (
               <div>

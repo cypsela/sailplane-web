@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {primary45} from '../colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {SmallInstanceItem} from './SmallInstanceItem';
-import useHover from '../hooks/useHover';
 import {setInstanceIndex} from '../actions/main';
 
 export function InstanceSelector({}) {
@@ -11,7 +10,6 @@ export function InstanceSelector({}) {
   const {instances, instanceIndex} = main;
   const currentInstance = instances[instanceIndex];
   const [menuEnabled, setMenuEnabled] = useState(false);
-  const [hoverRef, isHovered] = useHover();
 
   const filteredInstances = instances.filter(
     (instance) => instance !== currentInstance,
@@ -19,6 +17,7 @@ export function InstanceSelector({}) {
 
   const styles = {
     container: {
+      display: instances.length > 1 ? 'block' : 'none',
       position: 'relative',
       marginRight: 6,
       backgroundColor: primary45,
@@ -40,7 +39,6 @@ export function InstanceSelector({}) {
   return (
     <span
       style={styles.container}
-      ref={hoverRef}
       onClick={() => {
         if (filteredInstances.length) {
           setMenuEnabled(!menuEnabled);
