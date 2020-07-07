@@ -7,7 +7,7 @@ import {
 } from './utils/encryption';
 import {FiLock} from 'react-icons/fi';
 import useTextInput from './hooks/useTextInput';
-import {ImageGalleryBlock} from './components/ImageGalleryBlock';
+import ImageGallery from './components/ImageGallery';
 
 const styles = {
   container: {
@@ -18,7 +18,6 @@ const styles = {
     overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     boxSizing: 'border-box',
   },
   filename: {
@@ -41,15 +40,10 @@ const styles = {
   passwordContainer: {
     marginTop: 10,
   },
-  imageContainer: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap'
-  },
   downloadButtonHolder: {
     textAlign: 'center',
     marginBottom: 8,
-  }
+  },
 };
 
 export function DownloadPanel({
@@ -135,13 +129,7 @@ export function DownloadPanel({
             {displayType !== 'default' ? (
               <div>
                 {displayType === 'image' ? (
-                  <div style={styles.imageContainer}>
-                    {files
-                      ? files.map((imageFile) => (
-                          <ImageGalleryBlock file={imageFile} />
-                        ))
-                      : null}
-                  </div>
+                  <ImageGallery files={files} />
                 ) : null}
               </div>
             ) : null}
