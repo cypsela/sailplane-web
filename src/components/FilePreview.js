@@ -1,5 +1,9 @@
 import React from 'react';
-import {getFileExtensionFromFilename} from '../utils/Utils';
+import {
+  getFileExtensionFromFilename,
+  isFileExtensionAudio,
+  isFileExtensionImage,
+} from '../utils/Utils';
 
 const styles = {
   container: {
@@ -20,12 +24,12 @@ export const FilePreview = React.memo(({blob, filename}) => {
 
   return (
     <div onClick={(event) => event.stopPropagation()} style={styles.container}>
-      {['jpg', 'jpeg', 'png', 'gif'].includes(ext.toLowerCase()) ? (
+      {isFileExtensionImage(ext) ? (
         <div>
           <img src={objURL} style={styles.image} />
         </div>
       ) : null}
-      {['mp3', 'wav', 'ogg', 'flac'].includes(ext.toLowerCase()) ? (
+      {isFileExtensionAudio(ext) ? (
         <div>
           <audio controls>
             <source src={objURL} style={styles.audio} />

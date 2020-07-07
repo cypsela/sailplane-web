@@ -2,6 +2,10 @@ import React, {useState} from 'react';
 import {ImageGalleryBlock} from './ImageGalleryBlock';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
+import {
+  getFileExtensionFromFilename, isFileExtensionImage,
+  isFileExtensionSupported,
+} from '../utils/Utils';
 
 export default function ImageGallery({files}) {
   const styles = {
@@ -12,9 +16,18 @@ export default function ImageGallery({files}) {
       flexWrap: 'wrap',
     },
   };
+
+  console.log('fls', files);
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [currentFileIndex, setCurrentFileIndex] = useState(0);
   const [fileURLS, setFileURLS] = useState(new Array(1000));
+
+  const filteredFiles = files
+    ? files.filter((file) => {
+        const ext = getFileExtensionFromFilename(file.name);
+        return isFileExtensionImage(ext);
+      })
+    : null;
 
   return (
     <div style={styles.container}>
@@ -28,8 +41,8 @@ export default function ImageGallery({files}) {
           onCloseRequest={() => setIsImageOpen(false)}
         />
       ) : null}
-      {files
-        ? files.map((imageFile, index) => (
+      {filteredFiles
+        ? filteredFiles.map((imageFile, index) => (
             <ImageGalleryBlock
               key={index}
               file={imageFile}

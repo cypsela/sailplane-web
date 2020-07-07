@@ -158,3 +158,11 @@ export const getFileTime = (unixTime) => {
 };
 
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export function isFileExtensionAudio(ext) {
+  return ['mp3', 'wav', 'ogg', 'flac'].includes(ext.toLowerCase());
+}
+
+export function isFileExtensionImage(ext) {
+  return ['jpg', 'jpeg', 'png', 'gif'].includes(ext.toLowerCase());
+}
