@@ -7,27 +7,24 @@ export function useElementCopy ({message}) {
   const elementToCopy = useRef(null);
 
   const doCopy = () => {
-    const node = elementToCopy.current
-    if (node) {
-      const range = document.createRange();
-      range.selectNode(elementToCopy.current);
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
-      document.execCommand('copy');
-      setTimeout(() => {
-        window.getSelection().removeRange(range);
-      }, 100);
+    const range = document.createRange();
+    range.selectNode(elementToCopy.current);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    setTimeout(() => {
+      window.getSelection().removeRange(range);
+    }, 100);
 
-      dispatch(
-        setStatus({
-          message,
-          isInfo: true,
-        }),
-      );
-      setTimeout(() => {
-        dispatch(setStatus({}));
-      }, 2000);
-    }
+    dispatch(
+      setStatus({
+        message,
+        isInfo: true,
+      }),
+    );
+    setTimeout(() => {
+      dispatch(setStatus({}));
+    }, 2000);
   };
 
   return [elementToCopy, doCopy];
