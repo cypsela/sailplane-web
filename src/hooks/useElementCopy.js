@@ -12,10 +12,11 @@ export function useElementCopy ({message}) {
     range.selectNode(elementToCopy.current);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
+
     document.execCommand('copy');
+    dispatch(setStatus({message, isInfo: true}));
 
     delay(100).then(() => window.getSelection().removeRange(range));
-    dispatch(setStatus({message, isInfo: true}));
     delay(2000).then(() => dispatch(setStatus({})));
   };
 
