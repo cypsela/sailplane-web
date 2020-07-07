@@ -59,7 +59,7 @@ export function Instances({sailplane}) {
   const prevInstanceLength = usePrevious(instances.length);
 
   useEffect(() => {
-    if (prevInstanceLength !== instances.length) {
+    if (prevInstanceLength && prevInstanceLength !== instances.length) {
       dispatch(setInstanceIndex(instances.length - 1));
     }
   }, [instances.length, prevInstanceLength]);
