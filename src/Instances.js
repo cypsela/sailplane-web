@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {primary4} from './colors';
 import {Instance} from './components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addInstance, removeInstance, setInstanceIndex} from './actions/main';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 import {StatusBar} from './StatusBar';
+import usePrevious from './hooks/usePrevious';
 
 const styles = {
   container: {
@@ -55,6 +56,13 @@ export function Instances({sailplane}) {
   const dispatch = useDispatch();
   const main = useSelector((state) => state.main);
   const {instances, instanceIndex} = main;
+  const prevInstanceLength = usePrevious(instances.length);
+
+  useEffect(() => {
+    if (prevInstanceLength !== instances.length) {
+      dispatch(setInstanceIndex(instances.length - 1));
+    }
+  }, [instances.length, prevInstanceLength]);
 
   const createInstance = async (name) => {
     const address = await sailplane.determineAddress(name, {
@@ -66,7 +74,7 @@ export function Instances({sailplane}) {
   };
   const importInstance = async (address) => {
     if (OrbitDBAddress.isValid(address)) {
-      address = OrbitDBAddress.parse(address)
+      address = OrbitDBAddress.parse(address);
       dispatch(addInstance(address.path, address.toString()));
       setImportInstanceMode(false);
     }
