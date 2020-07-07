@@ -21,6 +21,7 @@ export function PanelItem({selected, onClick, title, iconComponent}) {
     },
     title: {
       color: selected ? primary4 : '#FFF',
+      userSelect: 'none'
       // marginRight: 4,
     },
     icon: {
