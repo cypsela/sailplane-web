@@ -5,10 +5,12 @@ import {ToolItem} from './ToolItem';
 import {FiCopy, FiTrash} from 'react-icons/fi';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
+import {useElementCopy} from '../hooks/useElementCopy'
 
 export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
   const [hoverRef, isHovered] = useHover();
   const dispatch = useDispatch();
+  const [elementToCopy, doCopy] = useElementCopy({message: 'Instance address copied'})
 
   const {name, address} = data;
 
@@ -81,7 +83,7 @@ export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
       }}>
       <div style={styles.container}>
         <div style={styles.name}>{name}</div>
-        <div id={addressId} style={styles.address}>
+        <div id={addressId} style={styles.address} ref={elementToCopy}>
           {address}
         </div>
       </div>
@@ -92,7 +94,7 @@ export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
             iconComponent={FiCopy}
             size={16}
             changeColor={primary}
-            onClick={() => onCopy(addressId)}
+            onClick={doCopy}
           />
         </div>
         <div style={styles.toolItem}>
