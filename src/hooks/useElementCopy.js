@@ -1,6 +1,7 @@
 import {useRef} from 'react';
 import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
+import {delay} from '../utils/Utils'
 
 export function useElementCopy ({message}) {
   const dispatch = useDispatch();
@@ -12,19 +13,10 @@ export function useElementCopy ({message}) {
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
     document.execCommand('copy');
-    setTimeout(() => {
-      window.getSelection().removeRange(range);
-    }, 100);
 
-    dispatch(
-      setStatus({
-        message,
-        isInfo: true,
-      }),
-    );
-    setTimeout(() => {
-      dispatch(setStatus({}));
-    }, 2000);
+    delay(100).then(() => window.getSelection().removeRange(range));
+    dispatch(setStatus({message, isInfo: true}));
+    delay(2000).then(() => dispatch(setStatus({})));
   };
 
   return [elementToCopy, doCopy];

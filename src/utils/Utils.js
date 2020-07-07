@@ -151,3 +151,5 @@ export const getFileTime = (unixTime) => {
     return dayObj.format('h:mm a');
   }
 };
+
+export const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
