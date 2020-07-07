@@ -8,7 +8,7 @@ export default function ImageGallery({files}) {
     container: {
       display: 'flex',
       width: '100%',
-      justifyContent: 'flex-start',
+      justifyContent: 'center',
       flexWrap: 'wrap',
     },
   };
