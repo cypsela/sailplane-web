@@ -9,7 +9,7 @@ import {LoadingRightBlock} from './LoadingRightBlock';
 import {hot} from 'react-hot-loader';
 import {useDispatch} from 'react-redux';
 import {setStatus} from './actions/tempData';
-import {getBlobFromPathCID, getFilesFromFolderCID} from './utils/Utils';
+import {getBlobFromPathCID, getFileInfoFromCID, getFilesFromFolderCID} from './utils/Utils';
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
 import {decryptFile, getEncryptionInfoFromFilename} from './utils/encryption';
@@ -21,12 +21,17 @@ function Download({match}) {
   const ipfsObj = useIPFS();
   const [ready, setReady] = useState(false);
   const [files, setFiles] = useState(null);
+  const [fileInfo, setFileInfo] = useState(null);
 
   const [downloadComplete, setDownloadComplete] = useState(false);
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
   const cleanPath = decodeURIComponent(path);
   const cleanCID = decodeURIComponent(cid);
   const dispatch = useDispatch();
+  const pathSplit = cleanPath.split('/');
+  const name = pathSplit[pathSplit.length - 1];
+
+  const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(name);
 
   const styles = {
     container: {
@@ -44,6 +49,12 @@ function Download({match}) {
     setFiles(tmpFiles.slice(1));
   };
 
+  const getFileInfo = async () => {
+    const fileInfo = await getFileInfoFromCID(cleanCID, ipfsObj.ipfs);
+
+    setFileInfo(fileInfo);
+  };
+
   useEffect(() => {
     if (ipfsObj.isIpfsReady && !ready) {
       setReady(true);
@@ -51,6 +62,8 @@ function Download({match}) {
       if (displayType) {
         getFileList();
       }
+
+      getFileInfo();
     }
   }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, displayType, cleanCID]);
 
@@ -71,13 +84,6 @@ function Download({match}) {
       },
     );
     dispatch(setStatus({}));
-
-    const pathSplit = cleanPath.split('/');
-    const name = pathSplit[pathSplit.length - 1];
-
-    const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(
-      name,
-    );
 
     if (isEncrypted) {
       dispatch(setStatus({message: 'Decrypting file'}));
@@ -105,6 +111,7 @@ function Download({match}) {
           files={files}
           displayType={displayType}
           downloadComplete={downloadComplete}
+          fileInfo={fileInfo}
         />
       ) : (
         <LoadingRightBlock />
