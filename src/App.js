@@ -15,12 +15,15 @@ import {addInstance} from './actions/main';
 import {setStatus} from './actions/tempData';
 import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
+import {delay} from './utils/Utils'
+import all from 'it-all'
 
 function App() {
   const isMobile = useIsMobile();
   const ipfsObj = useIPFS();
-  const sharedFS = useRef({});
   const sailplaneRef = useRef(null);
+  const [nodeReady, setNodeReady] = useState(false);
+  const sharedFS = useRef({});
   const [ready, setReady] = useState(false);
   const [directoryContents, setDirectoryContents] = useState([]);
   const [currentDirectory, setCurrentDirectory] = useState('/r');
@@ -28,8 +31,7 @@ function App() {
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
 
   const dispatch = useDispatch();
-  const main = useSelector((state) => state.main);
-  const {instances, instanceIndex} = main;
+  const {instances, instanceIndex} = useSelector((state) => state.main);
   const currentInstance = instances[instanceIndex];
   const prevInstanceIndex = usePrevious(instanceIndex);
 
@@ -44,23 +46,14 @@ function App() {
 
   const rootLS = async () => {
     if (ready) {
-      // dispatch(setStatus({message: 'Getting folder'}));
-      const res = await sharedFS.current.fs.ls(currentDirectory);
-      // dispatch(setStatus({}));
+      const contents = sharedFS.current.fs.ls(currentDirectory)
+        .map((path) => {
+          const type = sharedFS.current.fs.content(path);
+          const pathSplit = path.split('/');
+          const name = pathSplit[pathSplit.length - 1];
 
-      let contents = [];
-
-      for (let lsItem of res) {
-        const type = sharedFS.current.fs.content(lsItem);
-        const pathSplit = lsItem.split('/');
-        const name = pathSplit[pathSplit.length - 1];
-
-        contents.push({
-          type,
-          name,
-          path: lsItem,
-        });
-      }
+          return { path, name, type }
+        })
 
       setDirectoryContents(contents);
     }
@@ -70,72 +63,72 @@ function App() {
     rootLS();
   }, [ready, currentDirectory, lastUpdateTime]);
 
-  const connectOrbit = useCallback(
-    async (ipfs, doLS) => {
-      dispatch(setStatus({message: 'Initializing'}));
-      const orbitdb = await OrbitDB.createInstance(ipfs);
-
-      const sailplane = await Sailplane.create(orbitdb, {});
-      let address;
-      if (instances.length) {
-        address = currentInstance.address;
-      } else {
-        address = await sailplane.determineAddress('main', {
-          meta: 'superdrive',
-        });
-        dispatch(addInstance(address.path, address.toString()));
-      }
-      sharedFS.current = await sailplane.mount(address, {autoStart: false});
-
-      sharedFS.current.events.on('db.load.progress', (current, max) => {
-        dispatch(setStatus({message: `[${current}/${max}] Loading`}));
-        if (current === max) {
-          setTimeout(() => {
-            dispatch(setStatus({}));
-          }, 2000);
-        }
-      });
-      sharedFS.current.events.on('db.replicate.progress', (current, max) => {
-        dispatch(setStatus({message: `[${current}/${max}] Replicating`}));
-        if (current === max) {
-          setTimeout(() => {
-            dispatch(setStatus({}));
-          }, 2000);
-        }
-      });
-
-      await sharedFS.current.start();
-
-      sharedFS.current.events.on('updated', () => {
-        setLastUpdateTime(Date.now());
-      });
-
-      sailplaneRef.current = sailplane;
-      // console.log('adds', await ipfs.config.get('Addresses'));
-
-      if (doLS) {
-        setCurrentDirectory('/r');
-        setLastUpdateTime(Date.now());
-      } else {
-        setReady(true);
-      }
-      dispatch(setStatus({}));
-    },
-    [instances, instanceIndex],
-  );
-
-  // Connect orbit todo: refactor hook
-  useEffect(() => {
-    if (ipfsObj.isIpfsReady) {
-      connectOrbit(ipfsObj.ipfs, prevInstanceIndex !== instanceIndex);
+  const switchInstance = async (doLS) => {
+    dispatch(setStatus({message: 'Initializing'}));
+    let address;
+    if (instances.length) {
+      address = currentInstance.address;
+    } else {
+      const defualtOptions = { meta: 'superdrive' }
+      address = await sailplane.determineAddress('main', defaultOptions);
+      dispatch(addInstance(address.path, address.toString()));
     }
-  }, [
-    ipfsObj.ipfs,
-    ipfsObj.isIpfsReady,
-    connectOrbit,
-    instanceIndex,
-    instances,
-  ]);
+
+    const sailplane = sailplaneRef.current
+    const sfs = sailplane.mounted[address.toString()] ||
+      await sailplane.mount(address, {autoStart: false});
+
+    const onProgress = (key) => (current, max) => {
+      dispatch(setStatus({message: `[${current}/${max}] ${key}`}));
+      if (current === max) delay(2000).then(() => dispatch(setStatus({})));
+    }
+    const onLoad = onProgress('Loading');
+    sfs.events.on('db.load.progress', onLoad);
+    const onReplicate = onProgress('Replicating');
+    sfs.events.on('db.replicate.progress', onReplicate);
+    const onUpdated = () => setLastUpdateTime(Date.now());
+    sfs.events.on('updated', onUpdated);
+
+    sfs.tearDown = () => {
+      sfs.events.removeListener('db.load.progress', onLoad);
+      sfs.events.removeListener('db.replicate.progress', onReplicate);
+      sfs.events.removeListener('updated', onUpdated);
+    }
+
+    if (sharedFS.current.tearDown) sharedFS.current.tearDown();
+    if (!sfs.running) await sfs.start();
+    sharedFS.current = sfs;
+
+    if (doLS) {
+      setCurrentDirectory('/r');
+      setLastUpdateTime(Date.now());
+    } else {
+      setReady(true);
+    }
+
+    dispatch(setStatus({}));
+  }
+
+  useEffect(() => {
+    if (nodeReady) switchInstance(prevInstanceIndex !== instanceIndex)
+  }, [nodeReady, instanceIndex, instances])
+
+  const connectSailplane = async (ipfs) => {
+    dispatch(setStatus({message: 'Connecting'}));
+    const orbitdb = await OrbitDB.createInstance(ipfs);
+    const sailplane = await Sailplane.create(orbitdb);
+
+    sailplaneRef.current = sailplane;
+    setNodeReady(true);
+    dispatch(setStatus({}));
+
+    window.sailplane = sailplane
+    window.all = all
+  }
+
+  useEffect(() => {
+    if (ipfsObj.isIpfsReady) connectSailplane(ipfsObj.ipfs);
+  }, [ipfsObj.ipfs, ipfsObj.isIpfsReady]);
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
