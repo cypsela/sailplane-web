@@ -166,3 +166,10 @@ export function isFileExtensionAudio(ext) {
 export function isFileExtensionImage(ext) {
   return ['jpg', 'jpeg', 'png', 'gif'].includes(ext.toLowerCase());
 }
+
+export const isWebRTCSupported =
+  navigator.getUserMedia ||
+  navigator.webkitGetUserMedia ||
+  navigator.mozGetUserMedia ||
+  navigator.msGetUserMedia ||
+  window.RTCPeerConnection;

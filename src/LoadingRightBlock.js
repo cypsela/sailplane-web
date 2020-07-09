@@ -1,5 +1,6 @@
 import React from 'react';
-import {primary4} from "./colors";
+import {primary4} from './colors';
+import {isWebRTCSupported} from './utils/Utils';
 
 const styles = {
   container: {
@@ -16,5 +17,13 @@ const styles = {
 };
 
 export function LoadingRightBlock() {
-  return <div style={styles.container}>Loading...</div>;
+  return (
+    <div style={styles.container}>
+      {isWebRTCSupported ? (
+        <div>Loading...</div>
+      ) : (
+        <div>This browser does not support WebRTC, please try Safari.</div>
+      )}
+    </div>
+  );
 }
