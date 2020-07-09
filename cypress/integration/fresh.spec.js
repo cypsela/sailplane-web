@@ -42,6 +42,10 @@ describe('App loads', () => {
     cy.contains('drag files to upload');
   });
 
+  it('has parent folder item', () => {
+    cy.contains('. . /').should('have.length', 1);
+  });
+
   it('can upload a file', () => {
     const file = 'pic1.jpg';
     cy.get('#fileUpload').attachFile(file);
@@ -67,9 +71,10 @@ describe('App loads', () => {
     cy.contains('pic1-renamed.jpg').trigger('mouseover');
     cy.get('#Share-file').click();
     cy.contains('Share options');
-    // const input = cy.get('input[type="text"]');
-    // input.should('have.attr', 'value')
-    //   .and('match', /QmXETG1AE738nUSFNgFMFhujUugKZyWNTqvZTZJB14TFVg/);
+    const input = cy.get('input[type="text"]');
+    input
+      .should('have.attr', 'value')
+      .and('match', /QmXETG1AE738nUSFNgFMFhujUugKZyWNTqvZTZJB14TFVg/);
   });
 
   it('can open a share link', () => {
@@ -90,6 +95,7 @@ describe('App loads', () => {
     cy.get('#fileUpload').attachFile('pic2.jpg').attachFile('pic3.jpg');
     cy.contains('pic2.jpg');
     cy.contains('pic3.jpg');
+    cy.wait(1000);
   });
 
   it('can create and share a photo gallery folder', () => {
@@ -123,19 +129,32 @@ describe('App loads', () => {
     cy.contains('Create instance').click();
     const input = cy.get('input[type="text"]');
     input.should('have.attr', 'placeholder', 'instance name');
-    input.type('Instance #2');;
+    input.type('Instance #2');
     cy.contains('Accept').click();
     cy.contains('Instance #2');
   });
 
-  it('should not have any files on fresh instance', ()=> {
+  it('should not have any files on fresh instance', () => {
     cy.contains('Files').click();
     cy.contains('drag files to upload');
   });
 
-  it('instance selector switches instance', ()=> {
+  it('instance selector switches instance', () => {
     cy.contains('Instance #2').click();
     cy.contains('main').click();
+    cy.contains('Folder-renamed');
+  });
+
+  it('upload encrypted file', () => {
+    cy.get('#togglePassword').click();
+    const input = cy.get('input[placeholder="secure password"]');
+    input.type('password1234');
+    cy.contains('Accept').click();
+
+    cy.get('#fileUpload').attachFile('pic1.jpg');
+    cy.contains('pic1.jpg');
+    cy.get('.fileItemEncrypted').should('have.length', 1);
+    cy.get('#togglePassword').click();
   });
 
   // it('can move folders into folders', ()=> {
@@ -145,9 +164,5 @@ describe('App loads', () => {
   //
   //   const dragFolder = cy.get(".fileItem :last-child");
   //   dragFolder.drag('.fileItem :first-child', {force: true});
-  // });
-
-  // it('has parent folder item', () => {
-  //   cy.contains('. . /').click();
   // });
 });

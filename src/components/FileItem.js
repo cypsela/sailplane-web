@@ -260,7 +260,7 @@ export function FileItem({
     }
 
     return (
-      <div className={'fileItem'}>
+      <div className={`fileItem ${isEncrypted ? 'fileItemEncrypted' : null}`}>
         <div
           onContextMenu={(event) => {
             event.preventDefault();

@@ -71,7 +71,7 @@ export function DropZone({children, sharedFs, currentDirectory}, ref) {
   }));
 
   return (
-    <div {...getRootProps()} style={styles.container}>
+    <div {...getRootProps()} style={styles.container} id={'dropZone'}>
       <input {...getInputProps()} id={'fileUpload'}/>
       {isDragActive ? <p>Drop the files here...</p> : <div>{children}</div>}
     </div>

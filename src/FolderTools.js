@@ -78,6 +78,7 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory, ha
           {!addFolderMode && !securePanelOpen ? (
             <>
               <ToolItem
+                id={'togglePassword'}
                 iconComponent={encryptionKey ? FiLock : FiUnlock}
                 size={18}
                 defaultColor={encryptionKey ? goodColor : null}
