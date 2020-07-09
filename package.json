@@ -64,6 +64,8 @@
     "react-hot-loader": "^4.12.21"
   },
   "resolutions": {
-    "libp2p-interfaces": "0.3.1"
+    "libp2p-interfaces": "0.3.1",
+    "libp2p-pubsub":  "0.5.4",
+    "libp2p-gossipsub":  "0.4.6"
   }
 }
