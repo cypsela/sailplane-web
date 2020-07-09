@@ -99,6 +99,7 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory, ha
                 }}
               />
               <ToolItem
+                id={'addFolder'}
                 iconComponent={FiFolderPlus}
                 size={18}
                 changeColor={primary}

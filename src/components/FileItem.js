@@ -88,6 +88,10 @@ export function FileItem({
       width: '100%',
       opacity:
         (isHovered || fileBlob || enterPasswordMode) && !isParent ? 1 : 0,
+      pointerEvents:
+        (isHovered || fileBlob || enterPasswordMode) && !isParent
+          ? null
+          : 'none',
       fontSize: 14,
       marginLeft: enterPasswordMode ? 8 : 0,
     },
@@ -329,6 +333,7 @@ export function FileItem({
               {!enterPasswordMode ? (
                 <div>
                   <ToolItem
+                    id={`Share-${type}`}
                     iconComponent={FiShare2}
                     changeColor={primary}
                     tooltip={'Share'}
@@ -336,6 +341,7 @@ export function FileItem({
                   />
 
                   <ToolItem
+                    id={`Download-${type}`}
                     iconComponent={FiDownload}
                     changeColor={primary}
                     tooltip={'Download'}
@@ -343,6 +349,7 @@ export function FileItem({
                   />
 
                   <ToolItem
+                    id={`Edit-${type}`}
                     iconComponent={FiEdit}
                     changeColor={primary}
                     tooltip={'Rename'}
@@ -350,6 +357,7 @@ export function FileItem({
                   />
 
                   <ToolItem
+                    id={`Delete-${type}`}
                     iconComponent={FiTrash}
                     tooltip={'Delete'}
                     onClick={handleDelete}
