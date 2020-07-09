@@ -59,6 +59,7 @@ describe('App loads', () => {
     cy.contains('pic1-renamed.jpg');
   });
 
+
   it('can share file', () => {
     cy.contains('pic1-renamed.jpg').trigger('mouseover');
     cy.get('#Share-file').click();
@@ -76,9 +77,37 @@ describe('App loads', () => {
       cy.contains('Download now');
       cy.contains('79.8 kB');
     });
+
+    cy.visit('http://localhost:3000/');
+  });
+
+  it('can add multiple files', () => {
+    cy.contains('Folder-renamed').click();
+
+    cy.get('#fileUpload').attachFile('pic2.jpg').attachFile('pic3.jpg');
+    cy.contains('pic2.jpg');
+    cy.contains('pic3.jpg');
   });
 
   it('can create and share a photo gallery folder', () => {
+    cy.contains('. . /').click();
+    cy.contains('Folder-renamed').trigger('mouseover');
+    cy.get('#Share-dir').click();
+    cy.get('#shareType-image').click();
+
+    const input = cy.get('input[type="text"]');
+    input.invoke('val').then((url) => {
+      expect(url).to.match(/image/);
+      cy.visit(url);
+      cy.contains('Download now');
+      cy.get('.imageGalleryBlock').should('have.length', 3);
+    });
+  });
+
+  it('gallery images open big', ()=> {
+    cy.get('.imageGalleryBlock').first().click();
+    cy.get('.ril-image-current')
+    cy.get('.ril-close').click()
     cy.visit('http://localhost:3000/');
   });
 

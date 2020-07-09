@@ -25,6 +25,7 @@ export function SegmentedControl({onSelect, items}) {
         const IconComponent = type.icon;
         return (
           <div
+            id={`shareType-${items[index].name}`}
             style={{
               ...styles.item,
               backgroundColor: index === currentIndex ? primary45 : null,

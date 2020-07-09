@@ -46,6 +46,7 @@ export function ImageGalleryBlock({file, onLoadURL, fileURLS, fileIndex, onClick
     <div style={styles.container}>
 
       <div
+        className={'imageGalleryBlock'}
         style={styles.img}
         onClick={()=>onClick()}
         >
