@@ -44,6 +44,20 @@ function App() {
     },
   };
 
+  const rootLS = async () => {
+    if (ready) {
+      const contents = sharedFS.current.fs.ls(currentDirectory)
+        .map((path) => {
+          const type = sharedFS.current.fs.content(path);
+          const name = sharedFS.current.fs.pathName(path);
+
+          return { path, name, type }
+        })
+
+      setDirectoryContents(contents);
+    }
+  };
+
   useEffect(() => {
     const rootLS = async () => {
       if (ready) {

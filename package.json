@@ -4,7 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#84e329a22153c5d69192526a998711606bbf598e",
+    "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#23d65497b1dad54abebb30fe1d7fc22c37b6fbd0",
     "@tabcat/file-list-source": "https://github.com/tabcat/file-list-source#fe4abea54a82abe8a1be4edf4be0b6fe1fa9d1fe",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -68,7 +68,7 @@
   },
   "resolutions": {
     "libp2p-interfaces": "0.3.1",
-    "libp2p-pubsub":  "0.5.4",
-    "libp2p-gossipsub":  "0.4.6"
+    "libp2p-pubsub": "0.5.4",
+    "libp2p-gossipsub": "0.4.6"
   }
 }
