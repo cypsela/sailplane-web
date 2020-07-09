@@ -14,6 +14,7 @@ const styles = {
   container: {
     position: 'relative',
     padding: 10,
+    paddingTop: 20,
     backgroundColor: '#FFF',
     width: '100%',
     overflowY: 'auto',
