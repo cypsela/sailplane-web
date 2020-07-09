@@ -12,6 +12,7 @@ export function ToolItem({
   title,
   defaultColor,
   id,
+  className,
 }) {
   const [hoverRef, isHovered] = useHover();
   const [tooltipRef, tooltipDimenstions] = useDimensions();
@@ -56,6 +57,7 @@ export function ToolItem({
   return (
     <div
       id={id}
+      className={className}
       style={styles.container}
       ref={hoverRef}
       onClick={(event) => {

@@ -150,6 +150,13 @@ describe('App loads', () => {
     cy.contains('Folder-renamed');
   });
 
+  it('can delete instance', () => {
+    cy.contains('Instances').click();
+    cy.get('.instanceDelete').last().click();
+    cy.contains('Instance #2').should('have.length', 0);
+    cy.contains('Files').click();
+  });
+
   it('upload encrypted file', () => {
     cy.get('#togglePassword').click();
     const input = cy.get('input[placeholder="secure password"]');
@@ -175,6 +182,16 @@ describe('App loads', () => {
     cy.contains('pic1.jpg').trigger('mouseover');
     cy.get('#Delete-file').click();
     cy.contains('pic1.jpg').should('have.length', 0);
+  });
+
+  it('context menu rename works', () => {
+    cy.contains('Folder-renamed').trigger('contextmenu');
+    cy.contains('Rename').click();
+    const input = cy.get('input[type="text"]');
+    input.should('have.attr', 'value', 'Folder-renamed');
+    input.type('Folder');
+    cy.contains('Accept').click();
+    cy.contains('Accept').should('have.length', 0);
   });
 
   // it('can move folders into folders', ()=> {
