@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 describe('App loads', () => {
   it('shows loading and eventually the drag text', () => {
     window.indexedDB.databases().then((r) => {
@@ -8,7 +10,7 @@ describe('App loads', () => {
     cy.visit('http://localhost:3000/');
 
     cy.contains('Loading...');
-    cy.wait(2000);
+    cy.wait(5000);
     cy.contains('drag files to upload');
   });
 
@@ -66,14 +68,18 @@ describe('App loads', () => {
     //   .and('match', /QmXETG1AE738nUSFNgFMFhujUugKZyWNTqvZTZJB14TFVg/);
   });
 
-  it('can open a share link',  () => {
+  it('can open a share link', () => {
     const input = cy.get('input[type="text"]');
-    input.invoke('val').then(url=>{
+    input.invoke('val').then((url) => {
       expect(url).to.match(/default/);
       cy.visit(url);
-      cy.contains('Download now')
+      cy.contains('Download now');
+      cy.contains('79.8 kB');
     });
+  });
 
+  it('can create and share a photo gallery folder', () => {
+    cy.visit('http://localhost:3000/');
   });
 
   // it('has parent folder item', () => {
