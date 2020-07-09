@@ -2,7 +2,7 @@
   "name": "sailplane-web",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://cypsela.github.io/sailplane-web",
+  "homepage": ".",
   "dependencies": {
     "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#84e329a22153c5d69192526a998711606bbf598e",
     "@tabcat/file-list-source": "https://github.com/tabcat/file-list-source#fe4abea54a82abe8a1be4edf4be0b6fe1fa9d1fe",
@@ -36,8 +36,10 @@
     "build": "react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "reset-homepage": "json -I -f package.json -e 'this.homepage=\".\"'",
+    "set-homepage-gh-pages": "json -I -f package.json -e 'this.homepage=\"http://cypsela.github.io/sailplane-web\"'",
+    "predeploy": "set-homepage-gh-pages && yarn build && reset-homepage",
+    "deploy": "set-homepage-gh-pages && gh-pages -d build && reset-homepage"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -58,6 +60,7 @@
     "@hot-loader/react-dom": "^16.13.0",
     "@react-native-community/eslint-config": "^2.0.0",
     "gh-pages": "^3.1.0",
+    "json": "^9.0.6",
     "prettier": "^2.0.5",
     "react-app-rewire-hot-loader": "^2.0.1",
     "react-app-rewired": "^2.1.6",
