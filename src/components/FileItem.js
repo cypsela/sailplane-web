@@ -260,7 +260,7 @@ export function FileItem({
     }
 
     return (
-      <div>
+      <div className={'fileItem'}>
         <div
           onContextMenu={(event) => {
             event.preventDefault();

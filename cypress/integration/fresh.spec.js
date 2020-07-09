@@ -1,5 +1,14 @@
 /* eslint-disable */
 
+function createFolder(name) {
+  cy.get('#addFolder').click();
+  const input = cy.get('input[type="text"]');
+  input.should('have.attr', 'placeholder', 'new folder');
+  input.type(name);
+  cy.contains('Accept').click();
+  cy.contains(name);
+}
+
 describe('App loads', () => {
   it('shows loading and eventually the drag text', () => {
     window.indexedDB.databases().then((r) => {
@@ -15,12 +24,7 @@ describe('App loads', () => {
   });
 
   it('creates a new folder', () => {
-    cy.get('#addFolder').click();
-    const input = cy.get('input[type="text"]');
-    input.should('have.attr', 'placeholder', 'new folder');
-    input.type('Folder-test');
-    cy.contains('Accept').click();
-    cy.contains('Folder-test');
+    createFolder('Folder-test');
   });
 
   it('can rename a folder', () => {
@@ -58,7 +62,6 @@ describe('App loads', () => {
     cy.contains('Accept').click();
     cy.contains('pic1-renamed.jpg');
   });
-
 
   it('can share file', () => {
     cy.contains('pic1-renamed.jpg').trigger('mouseover');
@@ -104,12 +107,45 @@ describe('App loads', () => {
     });
   });
 
-  it('gallery images open big', ()=> {
+  it('gallery images open big', () => {
     cy.get('.imageGalleryBlock').first().click();
-    cy.get('.ril-image-current')
-    cy.get('.ril-close').click()
+    cy.get('.ril-image-current');
+    cy.get('.ril-close').click();
     cy.visit('http://localhost:3000/');
   });
+
+  it('instance panel opens', () => {
+    cy.contains('Instances').click();
+    cy.contains('main');
+  });
+
+  it('can create instance', () => {
+    cy.contains('Create instance').click();
+    const input = cy.get('input[type="text"]');
+    input.should('have.attr', 'placeholder', 'instance name');
+    input.type('Instance #2');;
+    cy.contains('Accept').click();
+    cy.contains('Instance #2');
+  });
+
+  it('should not have any files on fresh instance', ()=> {
+    cy.contains('Files').click();
+    cy.contains('drag files to upload');
+  });
+
+  it('instance selector switches instance', ()=> {
+    cy.contains('Instance #2').click();
+    cy.contains('main').click();
+  });
+
+  // it('can move folders into folders', ()=> {
+  //   cy.wait(1000);
+  //
+  //   createFolder('newParentFolder');
+  //
+  //   const dragFolder = cy.get(".fileItem :last-child");
+  //   dragFolder.drag('.fileItem :first-child', {force: true});
+  // });
 
   // it('has parent folder item', () => {
   //   cy.contains('. . /').click();

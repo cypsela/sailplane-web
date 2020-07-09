@@ -1,8 +1,6 @@
 import React from 'react';
 import {FaChevronRight} from 'react-icons/fa';
 import {primary45} from '../colors';
-import {useSelector} from 'react-redux';
-import * as PropTypes from 'prop-types';
 import {InstanceSelector} from './InstanceSelector';
 
 const styles = {
