@@ -9651,10 +9651,10 @@ libp2p-floodsub@^0.21.0:
     protons "^1.0.1"
     time-cache "^0.3.0"
 
-libp2p-gossipsub@^0.4.0:
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/libp2p-gossipsub/-/libp2p-gossipsub-0.4.5.tgz#8f911ffcb8f9cb6965644ef9b20b071df4d1e6e9"
-  integrity sha512-W+nfv+mtJ79Bt82TKNOhW4TfFdec9O98u/I3raGTZFEB9EZrQ7EFtMNW8dXB/6KC93RESAOKkWfgbx1vCN40fw==
+libp2p-gossipsub@0.4.6, libp2p-gossipsub@^0.4.0:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/libp2p-gossipsub/-/libp2p-gossipsub-0.4.6.tgz#dfc5fffccc6b80cefae05ed948238512861aedef"
+  integrity sha512-ViGAeWwQWmXCQxg7ya5PmtLexDVpzrFjIETFhFceMGHAUI/vv8kXhLmze7SNpIhKnWx33VfxUJfQmsiKVYWjbw==
   dependencies:
     buffer "^5.6.0"
     debug "^4.1.1"
@@ -9771,10 +9771,10 @@ libp2p-noise@^1.1.1:
     peer-id "^0.13.5"
     protobufjs "6.8.8"
 
-libp2p-pubsub@~0.5.2:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/libp2p-pubsub/-/libp2p-pubsub-0.5.3.tgz#4c00aff1a5a8189a9776bfa70ab80012ab86c99b"
-  integrity sha512-PoHe+W+8GFN+g4E5rpgrE0IsJ8B31e82UUvlganXGxbKqkMddezSFJkea4hnwREyD0jf9vTL2ysdgA59uqIGXg==
+libp2p-pubsub@0.5.4, libp2p-pubsub@~0.5.2:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/libp2p-pubsub/-/libp2p-pubsub-0.5.4.tgz#07749c2cb54e3b675e78bcdf5c9f0eac139df2cf"
+  integrity sha512-cWj+77ux20dzeFl8Zlqouyezwjgn1XrsZJYfXq3NnBw6C7+1uX5GTWAtpxQR9nvv0zinGLCYER1HzXx9caPSKA==
   dependencies:
     debug "^4.1.1"
     err-code "^2.0.0"

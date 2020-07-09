@@ -37,7 +37,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "reset-homepage": "json -I -f package.json -e 'this.homepage=\".\"'",
-    "set-homepage-gh-pages": "json -I -f package.json -e 'this.homepage=\"http://cypsela.github.io/sailplane-web\"'",
+    "set-homepage-gh-pages": "json -I -f package.json -e 'this.homepage=\"https://cypsela.github.io/sailplane-web\"'",
     "predeploy": "set-homepage-gh-pages && yarn build && reset-homepage",
     "deploy": "set-homepage-gh-pages && gh-pages -d build && reset-homepage"
   },
@@ -67,6 +67,8 @@
     "react-hot-loader": "^4.12.21"
   },
   "resolutions": {
-    "libp2p-interfaces": "0.3.1"
+    "libp2p-interfaces": "0.3.1",
+    "libp2p-pubsub":  "0.5.4",
+    "libp2p-gossipsub":  "0.4.6"
   }
 }
