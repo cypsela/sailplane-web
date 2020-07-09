@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {LeftPanel} from './LeftPanel';
 import {FileBlock} from './FileBlock';
@@ -128,6 +128,7 @@ function App() {
     if (nodeReady) {
       switchInstance(prevInstanceIndex !== instanceIndex);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodeReady, instanceIndex, instances]);
 
   useEffect(() => {
@@ -147,6 +148,7 @@ function App() {
     if (ipfsObj.isIpfsReady) {
       connectSailplane(ipfsObj.ipfs);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipfsObj.ipfs, ipfsObj.isIpfsReady]);
 
   const getRightPanel = () => {
