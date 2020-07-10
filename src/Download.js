@@ -106,6 +106,7 @@ function Download({match}) {
         },
       );
 
+      dispatch(setStatus({}));
       setFileBlob(blob);
     }
 
@@ -115,7 +116,6 @@ function Download({match}) {
   const getDownload = async (password) => {
     dispatch(setStatus({message: 'Fetching file'}));
     let blob = await getBlob();
-    dispatch(setStatus({}));
 
     if (isEncrypted) {
       dispatch(setStatus({message: 'Decrypting file'}));
