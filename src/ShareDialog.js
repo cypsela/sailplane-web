@@ -183,6 +183,7 @@ export function ShareDialog({sharedFs}) {
                 style={styles.input}
                 type={'text'}
                 value={url}
+                readOnly={true}
               />
             </div>
             <div style={styles.link}>

@@ -23,6 +23,10 @@ describe('App loads', () => {
     cy.contains('drag files to upload');
   });
 
+  it('main folder does not have share button', () => {
+    cy.get('#folderShare').should('have.length', 0);
+  });
+
   it('creates a new folder', () => {
     createFolder('Folder-test');
   });
@@ -44,6 +48,10 @@ describe('App loads', () => {
 
   it('has parent folder item', () => {
     cy.contains('. . /').should('have.length', 1);
+  });
+
+  it('has share folder button', () => {
+    cy.get('#folderShare').should('have.length', 1);
   });
 
   it('can upload a file', () => {
@@ -93,9 +101,9 @@ describe('App loads', () => {
     cy.contains('Folder-renamed').click();
 
     cy.get('#fileUpload').attachFile('pic2.jpg').attachFile('pic3.jpg');
+    cy.wait(1000);
     cy.contains('pic2.jpg');
     cy.contains('pic3.jpg');
-    cy.wait(1000);
   });
 
   it('can preview photos', () => {

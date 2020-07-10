@@ -1,11 +1,18 @@
 import React, {useState} from 'react';
 import {ToolItem} from './components/ToolItem';
-import {FiFolderPlus, FiUnlock, FiLock, FiUpload} from 'react-icons/fi';
+import {
+  FiFolderPlus,
+  FiUnlock,
+  FiLock,
+  FiUpload,
+  FiShare2,
+} from 'react-icons/fi';
 import {errorColor, goodColor, primary} from './colors';
 import {Breadcrumb} from './components/Breadcrumb';
 import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearEncryptionKey, setEncryptionKey} from './actions/main';
+import {setShareData} from './actions/tempData';
 
 const styles = {
   tools: {
@@ -23,11 +30,18 @@ const styles = {
   },
 };
 
-export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory, handleOpenUpload}) {
+export function FolderTools({
+  currentDirectory,
+  sharedFs,
+  setCurrentDirectory,
+  handleOpenUpload,
+}) {
   const [addFolderMode, setAddFolderMode] = useState(false);
   const [securePanelOpen, setSecurePanelOpen] = useState(false);
   const dispatch = useDispatch();
   const encryptionKey = useSelector((state) => state.main.encryptionKey);
+  const pathSplit = currentDirectory.split('/');
+  const folderName = pathSplit[pathSplit.length - 1];
 
   const createFolder = async (newFolderName) => {
     try {
@@ -82,7 +96,7 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory, ha
                 iconComponent={encryptionKey ? FiLock : FiUnlock}
                 size={18}
                 defaultColor={encryptionKey ? goodColor : null}
-                changeColor={encryptionKey?errorColor:goodColor}
+                changeColor={encryptionKey ? errorColor : goodColor}
                 onClick={() => {
                   if (encryptionKey) {
                     dispatch(clearEncryptionKey());
@@ -91,6 +105,23 @@ export function FolderTools({currentDirectory, sharedFs, setCurrentDirectory, ha
                   }
                 }}
               />
+              {currentDirectory !== '/r' ? (
+                <ToolItem
+                  id={'folderShare'}
+                  iconComponent={FiShare2}
+                  size={18}
+                  changeColor={primary}
+                  onClick={() => {
+                    dispatch(
+                      setShareData({
+                        name: folderName,
+                        path: currentDirectory,
+                        pathType: 'dir',
+                      }),
+                    );
+                  }}
+                />
+              ) : null}
               <ToolItem
                 iconComponent={FiUpload}
                 size={18}
