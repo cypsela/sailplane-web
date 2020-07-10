@@ -11,14 +11,15 @@ import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
 import {Instances} from './Instances';
 import {useDispatch, useSelector} from 'react-redux';
-import {addInstance} from './actions/main';
+import {addInstance, setInstanceIndex} from './actions/main';
 import {setStatus} from './actions/tempData';
 import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
 import {delay} from './utils/Utils';
 import all from 'it-all';
+import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 
-function App() {
+function App({match}) {
   const isMobile = useIsMobile();
   const ipfsObj = useIPFS();
   const sailplaneRef = useRef(null);
@@ -29,11 +30,14 @@ function App() {
   const [currentDirectory, setCurrentDirectory] = useState('/r');
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
+  const {importInstanceAddress} = match.params;
+  const cleanImportInstanceAddress = decodeURIComponent(importInstanceAddress);
 
   const dispatch = useDispatch();
   const {instances, instanceIndex} = useSelector((state) => state.main);
   const currentInstance = instances[instanceIndex];
   const prevInstanceIndex = usePrevious(instanceIndex);
+  const prevInstanceLength = usePrevious(instances.length);
 
   const styles = {
     container: {
@@ -43,6 +47,33 @@ function App() {
       height: '100%',
     },
   };
+
+  // Import instance block
+  useEffect(() => {
+    if (prevInstanceLength && prevInstanceLength !== instances.length) {
+      dispatch(setInstanceIndex(instances.length - 1));
+    }
+  }, [instances.length]);
+
+  useEffect(() => {
+    function importInstance() {
+      if (cleanImportInstanceAddress) {
+        if (OrbitDBAddress.isValid(cleanImportInstanceAddress)) {
+          const address = OrbitDBAddress.parse(cleanImportInstanceAddress);
+          const sameInstance = instances.find(
+            (instance) => instance.address === address.toString(),
+          );
+
+          if (!sameInstance) {
+            dispatch(addInstance(address.path, address.toString()));
+          }
+        }
+      }
+    }
+
+    importInstance();
+  }, [cleanImportInstanceAddress]);
+  // End
 
   useEffect(() => {
     const rootLS = async () => {

@@ -50,6 +50,9 @@ export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
   };
 
   const addressId = `instance-${address}`;
+  const shareURL = `${
+    window.location.origin + window.location.pathname
+  }#/importInstance/${encodeURIComponent(address)}`;
 
   return (
     <div
@@ -62,7 +65,7 @@ export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
       <div style={styles.container}>
         <div style={styles.name}>{name}</div>
         <div id={addressId} style={styles.address} ref={elementToCopy}>
-          {address}
+          {shareURL}
         </div>
       </div>
       <div style={styles.tools}>

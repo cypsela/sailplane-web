@@ -202,6 +202,12 @@ describe('App loads', () => {
     cy.contains('Accept').should('have.length', 0);
   });
 
+  it('imports from instance URL', () => {
+   cy.visit('http://localhost:3000/#/importInstance/%2Forbitdb%2FzdpuAxHi5JMYYEYEuYRj37aJ98uxFP1QnVSii4o4NZ4q6BiPM%2FTestinstance');
+   cy.contains('Testinstance');
+   cy.contains('drag files to upload');
+  });
+
   // it('can move folders into folders', ()=> {
   //   cy.wait(1000);
   //

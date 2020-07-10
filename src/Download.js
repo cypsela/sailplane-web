@@ -1,15 +1,17 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {LeftPanel} from './LeftPanel';
 import {useIsMobile} from './hooks/useIsMobile';
 import useIPFS from './hooks/useIPFS';
-import OrbitDB from 'orbit-db';
-import Sailplane from '@cypsela/sailplane-node';
 import {LoadingRightBlock} from './LoadingRightBlock';
 import {hot} from 'react-hot-loader';
 import {useDispatch} from 'react-redux';
 import {setStatus} from './actions/tempData';
-import {getBlobFromPathCID, getFileInfoFromCID, getFilesFromFolderCID} from './utils/Utils';
+import {
+  getBlobFromPathCID,
+  getFileInfoFromCID,
+  getFilesFromFolderCID,
+} from './utils/Utils';
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
 import {decryptFile, getEncryptionInfoFromFilename} from './utils/encryption';
