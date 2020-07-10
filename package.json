@@ -42,8 +42,8 @@
     "eject": "react-scripts eject",
     "reset-homepage": "json -I -f package.json -e 'this.homepage=\".\"'",
     "set-homepage-gh-pages": "json -I -f package.json -e 'this.homepage=\"https://cypsela.github.io/sailplane-web\"'",
-    "predeploy": "set-homepage-gh-pages && yarn build && reset-homepage",
-    "deploy": "set-homepage-gh-pages && gh-pages -d build && reset-homepage"
+    "predeploy": "yarn set-homepage-gh-pages && yarn build && yarn reset-homepage",
+    "deploy": "yarn set-homepage-gh-pages && gh-pages -d build && yarn reset-homepage"
   },
   "eslintConfig": {
     "extends": "react-app"
