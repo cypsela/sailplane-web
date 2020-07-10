@@ -9,6 +9,7 @@ import {FiLock} from 'react-icons/fi';
 import useTextInput from './hooks/useTextInput';
 import ImageGallery from './components/ImageGallery';
 import {humanFileSize} from './utils/Utils';
+import {FilePreview} from './components/FilePreview';
 
 const styles = {
   container: {
@@ -51,6 +52,11 @@ const styles = {
     textAlign: 'center',
     marginBottom: 8,
   },
+  previewBlock: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
 };
 
 export function DownloadPanel({
@@ -61,6 +67,7 @@ export function DownloadPanel({
   displayType,
   files,
   fileInfo,
+  fileBlob,
 }) {
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
@@ -136,6 +143,14 @@ export function DownloadPanel({
 
             {fileInfo && fileInfo.size ? (
               <div style={styles.fileSize}>{humanFileSize(fileInfo.size)}</div>
+            ) : null}
+
+            {fileBlob ? (
+              <div style={styles.previewBlock}>
+                <div style={styles.preview}>
+                  <FilePreview blob={fileBlob} filename={name} size={'large'} />
+                </div>
+              </div>
             ) : null}
 
             {displayType !== 'default' ? (

@@ -5,20 +5,24 @@ import {
   isFileExtensionImage,
 } from '../utils/Utils';
 
-const styles = {
-  container: {
-    marginTop: 10,
-  },
-  image: {
-    width: 300,
-  },
-  audio: {
-    userSelect: 'none',
-    outline: 0,
-  },
-};
+export const FilePreview = React.memo(({blob, filename, size}) => {
+  if (!size) {
+    size = 'small';
+  }
 
-export const FilePreview = React.memo(({blob, filename}) => {
+  const styles = {
+    container: {
+      marginTop: 10,
+    },
+    image: {
+      width: size === 'small' ? 300 : '100%',
+    },
+    audio: {
+      userSelect: 'none',
+      outline: 0,
+    },
+  };
+
   const ext = getFileExtensionFromFilename(filename);
   const objURL = window.URL.createObjectURL(blob);
 

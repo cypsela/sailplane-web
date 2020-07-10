@@ -9,8 +9,10 @@ import {useDispatch} from 'react-redux';
 import {setStatus} from './actions/tempData';
 import {
   getBlobFromPathCID,
+  getFileExtensionFromFilename,
   getFileInfoFromCID,
   getFilesFromFolderCID,
+  isFileExtensionSupported,
 } from './utils/Utils';
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
@@ -26,11 +28,26 @@ function Download({match}) {
 
   const [downloadComplete, setDownloadComplete] = useState(false);
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
+  const [fileBlob, setFileBlob] = useState(null);
   const cleanPath = decodeURIComponent(path);
   const cleanCID = decodeURIComponent(cid);
   const dispatch = useDispatch();
   const pathSplit = cleanPath.split('/');
   const name = pathSplit[pathSplit.length - 1];
+  const isSupportedPreviewType = isFileExtensionSupported(
+    getFileExtensionFromFilename(name),
+  );
+
+  useEffect(() => {
+    if (
+      isSupportedPreviewType &&
+      ready &&
+      !fileBlob &&
+      displayType === 'default'
+    ) {
+      getBlob();
+    }
+  }, [isSupportedPreviewType, ready, fileBlob, cleanCID, path]);
 
   const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(name);
 
@@ -68,22 +85,36 @@ function Download({match}) {
     }
   }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, displayType, cleanCID]);
 
+  async function getBlob() {
+    let blob;
+
+    if (fileBlob) {
+      blob = fileBlob;
+    } else {
+      blob = await getBlobFromPathCID(
+        cleanCID,
+        cleanPath,
+        ipfsObj.ipfs,
+        (currentIndex, totalCount) => {
+          dispatch(
+            setStatus({
+              message: `[${Math.round(
+                (currentIndex / totalCount) * 100,
+              )}%] Downloading`,
+            }),
+          );
+        },
+      );
+
+      setFileBlob(blob);
+    }
+
+    return blob;
+  }
+
   const getDownload = async (password) => {
     dispatch(setStatus({message: 'Fetching file'}));
-    let blob = await getBlobFromPathCID(
-      cleanCID,
-      cleanPath,
-      ipfsObj.ipfs,
-      (currentIndex, totalCount) => {
-        dispatch(
-          setStatus({
-            message: `[${Math.round(
-              (currentIndex / totalCount) * 100,
-            )}%] Downloading`,
-          }),
-        );
-      },
-    );
+    let blob = await getBlob();
     dispatch(setStatus({}));
 
     if (isEncrypted) {
@@ -113,6 +144,7 @@ function Download({match}) {
           displayType={displayType}
           downloadComplete={downloadComplete}
           fileInfo={fileInfo}
+          fileBlob={fileBlob}
         />
       ) : (
         <LoadingRightBlock />
