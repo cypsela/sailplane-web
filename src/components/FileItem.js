@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {primary, primary2, primary45, primary5} from '../colors';
-import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
+import {FiDownload, FiEdit, FiShare2, FiTrash, FiImage} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
@@ -149,7 +149,7 @@ export function FileItem({
     },
   );
 
-  const iconComponent = getIconForPath(type, isEncrypted);
+  const iconComponent = getIconForPath(type, isEncrypted, name);
 
   const getCID = async () => {
     const cid = await sharedFs.current.read(path);

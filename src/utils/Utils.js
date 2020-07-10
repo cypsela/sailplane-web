@@ -1,7 +1,14 @@
 import all from 'it-all';
 import first from 'it-first';
 import JSZip from 'jszip';
-import {FiFile, FiLock} from 'react-icons/fi';
+import {
+  FiFile,
+  FiLock,
+  FiImage,
+  FiMusic,
+  FiVideo,
+  FiArchive,
+} from 'react-icons/fi';
 import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
 
@@ -135,8 +142,20 @@ export function getDraggableStyleHack(style, snapshot) {
   };
 }
 
-export function getIconForPath(type, isEncrypted) {
+export function getIconForPath(type, isEncrypted, filename) {
+  const ext = getFileExtensionFromFilename(filename);
+
   let iconComponent = FiFile;
+
+  if (isFileExtensionImage(ext)) {
+    iconComponent = FiImage;
+  } else if (isFileExtensionAudio(ext)) {
+    iconComponent = FiMusic;
+  } else if (isFileExtensionVideo(ext)) {
+    iconComponent = FiVideo;
+  } else if (isFileExtensionArchive(ext)) {
+    iconComponent = FiArchive;
+  }
 
   if (type === 'dir') {
     iconComponent = FaFolder;
@@ -165,6 +184,16 @@ export function isFileExtensionAudio(ext) {
 
 export function isFileExtensionImage(ext) {
   return ['jpg', 'jpeg', 'png', 'gif'].includes(ext.toLowerCase());
+}
+
+export function isFileExtensionVideo(ext) {
+  return ['mp4', 'mov', 'flv', 'mpg', 'mpeg', 'avi'].includes(
+    ext.toLowerCase(),
+  );
+}
+
+export function isFileExtensionArchive(ext) {
+  return ['zip', 'tar', 'gz', 'rar', '7z'].includes(ext.toLowerCase());
 }
 
 export function getShareTypeFromFolderFiles(files) {
