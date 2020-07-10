@@ -29,7 +29,7 @@ const styles = {
     fontFamily: 'MuseoModerno',
     color: '#FFF',
     fontSize: 24,
-    fontWeight: 500,
+    fontWeight: 400,
     marginBottom: 10,
     textAlign: 'center',
     justifyContent: 'center',
