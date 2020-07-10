@@ -107,10 +107,10 @@ describe('App loads', () => {
     cy.contains('. . /').click();
     cy.contains('Folder-renamed').trigger('mouseover');
     cy.get('#Share-dir').click();
-    cy.get('#shareType-image').click();
 
     const input = cy.get('input[type="text"]');
     input.invoke('val').then((url) => {
+      // Should automatically know to be in image mode
       expect(url).to.match(/image/);
       cy.visit(url);
       cy.contains('Download now');

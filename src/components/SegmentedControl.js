@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {FiImage, FiFile} from 'react-icons/fi';
 import {primary45} from '../colors';
 
-export function SegmentedControl({onSelect, items}) {
+export function SegmentedControl({onSelect, items, currentIndex}) {
   const styles = {
     container: {
       display: 'flex',
@@ -17,8 +17,6 @@ export function SegmentedControl({onSelect, items}) {
     },
   };
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   return (
     <div style={styles.container}>
       {items.map((type, index) => {
@@ -31,7 +29,6 @@ export function SegmentedControl({onSelect, items}) {
               backgroundColor: index === currentIndex ? primary45 : null,
             }}
             onClick={() => {
-              setCurrentIndex(index);
               onSelect(index);
             }}>
             <IconComponent

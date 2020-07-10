@@ -5,6 +5,7 @@ import {FaTimes} from 'react-icons/fa';
 import {setShareData} from './actions/tempData';
 import {FiFile, FiImage, FiLoader, FiMusic} from 'react-icons/fi';
 import {SegmentedControl} from './components/SegmentedControl';
+import {getShareTypeFromFolderFiles} from './utils/Utils';
 
 const styles = {
   container: {
@@ -99,17 +100,35 @@ export function ShareDialog({sharedFs}) {
   useEffect(() => {
     if (!name) {
       setLoadedCID(null);
+      setShareTypeIndex(0);
     } else {
       setLoadedCID(CID);
     }
   }, [name, CID]);
 
-  const getCID = async () => {
-    const cid = await sharedFs.current.read(path);
-    setLoadedCID(cid);
-  };
-
   useEffect(() => {
+    const getCID = async () => {
+      const cid = await sharedFs.current.read(path);
+      setLoadedCID(cid);
+
+      if (pathType === 'dir') {
+        const dirContents = sharedFs.current.fs.ls(path).map((tmpPath) => {
+          const type = sharedFs.current.fs.content(tmpPath);
+          const pathSplit = path.split('/');
+          const tmpName = pathSplit[pathSplit.length - 1];
+
+          return {path: tmpPath, name: tmpName, type};
+        });
+
+        const shareType = getShareTypeFromFolderFiles(dirContents);
+        const shareTypeIndexToSwitchTo = shareTypes.findIndex(
+          (curShareType) => curShareType.name === shareType,
+        );
+
+        setShareTypeIndex(shareTypeIndexToSwitchTo);
+      }
+    };
+
     if (!loadedCID && path) {
       getCID();
     } else {
@@ -117,6 +136,7 @@ export function ShareDialog({sharedFs}) {
         inputRef.current.select();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedCID, path]);
 
   if (!path) {
@@ -148,8 +168,9 @@ export function ShareDialog({sharedFs}) {
           <div>
             {pathType === 'dir' ? (
               <SegmentedControl
+                currentIndex={shareTypeIndex}
                 items={shareTypes}
-                onSelect={(shareTypeIndex) => setShareTypeIndex(shareTypeIndex)}
+                onSelect={(index) => setShareTypeIndex(index)}
               />
             ) : null}
           </div>

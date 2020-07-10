@@ -167,6 +167,36 @@ export function isFileExtensionImage(ext) {
   return ['jpg', 'jpeg', 'png', 'gif'].includes(ext.toLowerCase());
 }
 
+export function getShareTypeFromFolderFiles(files) {
+  let audioCount = 0;
+  let imageCount = 0;
+
+  files.forEach((file) => {
+    const pathSplit = file.path.split('/');
+    const name = pathSplit[pathSplit.length - 1];
+    const ext = getFileExtensionFromFilename(name);
+
+    if (isFileExtensionAudio(ext)) {
+      audioCount++;
+    }
+
+    if (isFileExtensionImage(ext)) {
+      imageCount++;
+    }
+  });
+
+  const audioPercentage = Math.round((audioCount / files.length) * 100);
+  const imagePercentage = Math.round((imageCount / files.length) * 100);
+
+  if (audioPercentage > 60) {
+    return 'audio';
+  } else if (imagePercentage > 60) {
+    return 'image';
+  } else {
+    return 'default';
+  }
+}
+
 export const isWebRTCSupported =
   navigator.getUserMedia ||
   navigator.webkitGetUserMedia ||
