@@ -127,6 +127,9 @@ describe('App loads', () => {
       cy.visit(url);
       cy.contains('Download now');
       cy.get('.imageGalleryBlock').should('have.length', 3);
+      cy.contains('pic1-renamed.jpg');
+      cy.contains('pic2.jpg');
+      cy.contains('pic3.jpg');
     });
   });
 

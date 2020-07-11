@@ -34,6 +34,7 @@ export function FileItem({
   ipfs,
   isParent,
   snapshot,
+  readOnly,
 }) {
   const {path, type} = data;
   const pathSplit = path.split('/');
@@ -151,12 +152,20 @@ export function FileItem({
   const iconComponent = getIconForPath(type, isEncrypted, name);
 
   const getCID = async () => {
-    const cid = await sharedFs.current.read(path);
-    const fileInfo = await getFileInfoFromCID(cid, ipfs);
+    let tmpCID;
 
-    setFileInfo(fileInfo);
-    setCID(cid);
-    return cid;
+    if (data.cid) {
+      tmpCID = data.cid;
+    } else {
+      tmpCID = await sharedFs.current.read(path);
+    }
+
+    const tmpFileInfo = await getFileInfoFromCID(tmpCID, ipfs);
+    console.log('info', tmpFileInfo);
+
+    setFileInfo(tmpFileInfo);
+    setCID(tmpCID);
+    return tmpCID;
   };
 
   useEffect(() => {
@@ -345,20 +354,23 @@ export function FileItem({
                     onClick={handleDownload}
                   />
 
-                  <ToolItem
-                    id={`Edit-${type}`}
-                    iconComponent={FiEdit}
-                    changeColor={primary}
-                    tooltip={'Rename'}
-                    onClick={handleEdit}
-                  />
-
-                  <ToolItem
-                    id={`Delete-${type}`}
-                    iconComponent={FiTrash}
-                    tooltip={'Delete'}
-                    onClick={handleDelete}
-                  />
+                  {!readOnly ? (
+                    <>
+                      <ToolItem
+                        id={`Edit-${type}`}
+                        iconComponent={FiEdit}
+                        changeColor={primary}
+                        tooltip={'Rename'}
+                        onClick={handleEdit}
+                      />
+                      <ToolItem
+                        id={`Delete-${type}`}
+                        iconComponent={FiTrash}
+                        tooltip={'Delete'}
+                        onClick={handleDelete}
+                      />
+                    </>
+                  ) : null}
                 </div>
               ) : (
                 <>{PasswordInputComponent}</>

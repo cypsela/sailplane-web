@@ -7,6 +7,7 @@ import {StatusBar} from './StatusBar';
 import {ShareDialog} from './ShareDialog';
 import {useIsMobile} from './hooks/useIsMobile';
 import {DraggableFileItem} from './components/DraggableFileItem';
+import {sortDirectoryContents} from './utils/Utils';
 
 const styles = {
   container: {
@@ -59,17 +60,7 @@ export function FileBlock({
 }) {
   const isMobile = useIsMobile();
   const dropzoneRef = useRef(null);
-  const sortedContents = directoryContents.sort((a, b) => {
-    if (a.name < b.name) {
-      return -1;
-    } else {
-      return 1;
-    }
-  });
-
-  const directories = sortedContents.filter((item) => item.type === 'dir');
-  const files = sortedContents.filter((item) => item.type !== 'dir');
-  const fullFileList = directories.concat(files);
+  const fullFileList = sortDirectoryContents(directoryContents);
 
   const pathSplit = currentDirectory.split('/');
   const parentSplit = pathSplit.slice(0, pathSplit.length - 1);
@@ -98,7 +89,7 @@ export function FileBlock({
           </>
         ) : null}
 
-        <div style={styles.fileHeaderItem}></div>
+        <div style={styles.fileHeaderItem} />
       </div>
       <div style={styles.dropContainer}>
         <DropZone

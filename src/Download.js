@@ -48,7 +48,8 @@ function Download({match}) {
     ) {
       getBlob();
     }
-  }, [isSupportedPreviewType, ready, fileBlob, cleanCID, path]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSupportedPreviewType, ready, fileBlob, cleanCID, path, displayType]);
 
   const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(name);
 
@@ -78,12 +79,10 @@ function Download({match}) {
     if (ipfsObj.isIpfsReady && !ready) {
       setReady(true);
 
-      if (displayType) {
-        getFileList();
-      }
-
+      getFileList();
       getFileInfo();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipfsObj.ipfs, ipfsObj.isIpfsReady, ready, displayType, cleanCID]);
 
   async function getBlob() {
@@ -144,6 +143,7 @@ function Download({match}) {
           downloadComplete={downloadComplete}
           fileInfo={fileInfo}
           fileBlob={fileBlob}
+          ipfs={ipfsObj.ipfs}
         />
       ) : (
         <LoadingRightBlock />

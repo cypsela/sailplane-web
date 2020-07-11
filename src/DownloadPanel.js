@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StatusBar} from './StatusBar';
-import {primary45} from './colors';
+import {primary2, primary35, primary45} from './colors';
 import {
   doesPasswordMatchHash,
   getEncryptionInfoFromFilename,
@@ -8,8 +8,10 @@ import {
 import {FiLock} from 'react-icons/fi';
 import useTextInput from './hooks/useTextInput';
 import ImageGallery from './components/ImageGallery';
-import {humanFileSize} from './utils/Utils';
+import {humanFileSize, sortDirectoryContents} from './utils/Utils';
 import {FilePreview} from './components/FilePreview';
+import {FileItem} from './components/FileItem';
+import {useIsMobile} from './hooks/useIsMobile';
 
 const styles = {
   container: {
@@ -57,6 +59,22 @@ const styles = {
     justifyContent: 'center',
     marginTop: 10,
   },
+  fileHeader: {
+    marginTop: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottom: `1px solid ${primary2}`,
+    paddingBottom: 10,
+    marginBottom: 4,
+  },
+  fileHeaderItem: {
+    width: '100%',
+    color: primary35,
+    fontSize: 12,
+    letterSpacing: 1.08,
+    textAlign: 'left',
+  },
 };
 
 export function DownloadPanel({
@@ -68,11 +86,13 @@ export function DownloadPanel({
   files,
   fileInfo,
   fileBlob,
+  ipfs,
 }) {
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
   const [downloadClicked, setDownloadClicked] = useState(false);
   const [enterPasswordMode, setEnterPasswordMode] = useState(false);
+  const isMobile = useIsMobile();
   const {
     isEncrypted,
     decryptedFilename,
@@ -104,6 +124,8 @@ export function DownloadPanel({
       confirmTitle: 'Enter',
     },
   );
+
+  const sortedFiles = sortDirectoryContents(files);
 
   return (
     <div style={styles.container}>
@@ -158,6 +180,38 @@ export function DownloadPanel({
                 {displayType === 'image' ? (
                   <ImageGallery files={files} />
                 ) : null}
+              </div>
+            ) : null}
+
+            {files ? (
+              <div style={styles.fileContainer}>
+                <div style={styles.fileHeader}>
+                  <div style={{...styles.fileHeaderItem, paddingLeft: 12}}>
+                    Name
+                  </div>
+                  {!isMobile ? (
+                    <>
+                      <div
+                        style={{...styles.fileHeaderItem, textAlign: 'right'}}>
+                        Size
+                      </div>
+                      <div
+                        style={{...styles.fileHeaderItem, textAlign: 'right'}}>
+                        {/*Modified*/}
+                      </div>
+                    </>
+                  ) : null}
+
+                  <div style={styles.fileHeaderItem}></div>
+                </div>
+                {sortedFiles.map((file) => (
+                  <FileItem
+                    data={file}
+                    setCurrentDirectory={() => {}}
+                    readOnly={true}
+                    ipfs={ipfs}
+                  />
+                ))}
               </div>
             ) : null}
           </div>

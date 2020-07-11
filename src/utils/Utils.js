@@ -2,12 +2,12 @@ import all from 'it-all';
 import first from 'it-first';
 import JSZip from 'jszip';
 import {
+  FiArchive,
   FiFile,
-  FiLock,
   FiImage,
+  FiLock,
   FiMusic,
   FiVideo,
-  FiArchive,
 } from 'react-icons/fi';
 import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
@@ -242,3 +242,19 @@ export const isWebRTCSupported =
   navigator.mozGetUserMedia ||
   navigator.msGetUserMedia ||
   window.RTCPeerConnection;
+
+export function sortDirectoryContents(directoryContents) {
+  const sortedContents = directoryContents
+    ? directoryContents.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        } else {
+          return 1;
+        }
+      })
+    : [];
+
+  const directories = sortedContents.filter((item) => item.type === 'dir');
+  const files = sortedContents.filter((item) => item.type !== 'dir');
+  return directories.concat(files);
+}
