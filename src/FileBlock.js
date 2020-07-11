@@ -1,4 +1,3 @@
-import {FileItem} from './components/FileItem';
 import {DropZone} from './DropZone';
 import React, {useRef} from 'react';
 import {primary2, primary35} from './colors';
@@ -7,6 +6,7 @@ import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {StatusBar} from './StatusBar';
 import {ShareDialog} from './ShareDialog';
 import {useIsMobile} from './hooks/useIsMobile';
+import {DraggableFileItem} from './components/DraggableFileItem';
 
 const styles = {
   container: {
@@ -125,7 +125,7 @@ export function FileBlock({
               {(provided, snapshot) => (
                 <div style={styles.filesContainer}>
                   {currentDirectory !== '/r' ? (
-                    <FileItem
+                    <DraggableFileItem
                       fileIndex={0}
                       isParent={true}
                       key={parentPath}
@@ -148,7 +148,7 @@ export function FileBlock({
                     ) : (
                       <div style={styles.files}>
                         {fullFileList.map((fileItem, index) => (
-                          <FileItem
+                          <DraggableFileItem
                             fileIndex={index + 1}
                             key={fileItem.path}
                             data={fileItem}

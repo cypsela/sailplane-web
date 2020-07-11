@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {primary, primary2, primary45, primary5} from '../colors';
-import {FiDownload, FiEdit, FiShare2, FiTrash, FiImage} from 'react-icons/fi';
+import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
 import {
   getBlobFromPathCID,
-  getDraggableStyleHack,
   getFileExtensionFromFilename,
   getFileInfoFromCID,
   getFileTime,
@@ -15,7 +14,6 @@ import {
   isFileExtensionSupported,
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
-import {Draggable} from 'react-beautiful-dnd';
 import useTextInput from '../hooks/useTextInput';
 import {useDispatch} from 'react-redux';
 import {setShareData, setStatus} from '../actions/tempData';
@@ -33,8 +31,8 @@ export function FileItem({
   sharedFs,
   setCurrentDirectory,
   ipfs,
-  fileIndex,
   isParent,
+  snapshot,
 }) {
   const {path, type} = data;
   const pathSplit = path.split('/');
@@ -254,7 +252,7 @@ export function FileItem({
     dispatch(setStatus({}));
   };
 
-  const getContent = (snapshot) => {
+  const getContent = () => {
     if (!snapshot) {
       snapshot = {};
     }
@@ -378,19 +376,5 @@ export function FileItem({
     );
   };
 
-  return (
-    <Draggable draggableId={path} index={fileIndex}>
-      {({innerRef, draggableProps, dragHandleProps}, snapshot) => {
-        return (
-          <div
-            ref={innerRef}
-            {...draggableProps}
-            {...dragHandleProps}
-            style={getDraggableStyleHack(draggableProps.style, snapshot)}>
-            {getContent(snapshot)}
-          </div>
-        );
-      }}
-    </Draggable>
-  );
+  return <>{getContent()}</>;
 }
