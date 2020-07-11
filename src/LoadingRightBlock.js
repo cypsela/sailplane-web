@@ -22,7 +22,7 @@ export function LoadingRightBlock() {
       {isWebRTCSupported ? (
         <div>Loading...</div>
       ) : (
-        <div>This browser does not support WebRTC, please try Safari.</div>
+        <div>This browser does not support WebRTC, iOS users please try Safari.</div>
       )}
     </div>
   );
