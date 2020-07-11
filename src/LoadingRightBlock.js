@@ -13,16 +13,20 @@ const styles = {
     fontFamily: 'MuseoModerno',
     fontWeight: '300',
     color: primary4,
+    boxSizing: 'border-box',
   },
 };
 
-export function LoadingRightBlock() {
+export function LoadingRightBlock({ipfsError}) {
+  console.log('ipfsErr', ipfsError);
   return (
     <div style={styles.container}>
-      {isWebRTCSupported ? (
+      {isWebRTCSupported && !ipfsError ? (
         <div>Loading...</div>
       ) : (
-        <div>This browser does not support WebRTC, iOS users please try Safari.</div>
+        <div>
+          This browser does not support WebRTC, iOS users please try Safari.
+        </div>
       )}
     </div>
   );

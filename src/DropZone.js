@@ -53,19 +53,26 @@ export function DropZone({children, sharedFs, currentDirectory}, ref) {
       try {
         await sharedFs.current.upload(currentDirectory, listSource, {
           progress: (length) => {
-            dispatch(setStatus({message: `[${getPercent(length, totalSize)}%] Uploading files`}));
+            dispatch(
+              setStatus({
+                message: `[${getPercent(length, totalSize)}%] Uploading files`,
+              }),
+            );
           },
         });
         dispatch(setStatus({}));
       } catch (e) {
         // will add sharedFs.canWrite method later for richer ux
-        dispatch(setStatus({
-          message: `Missing write permissions.`,
-          isError: true
-        }));
+        dispatch(
+          setStatus({
+            message: `Missing write permissions.`,
+            isError: true,
+          }),
+        );
         delay(4000).then(() => dispatch(setStatus({})));
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentDirectory, encryptionKey],
   );
 
@@ -82,7 +89,7 @@ export function DropZone({children, sharedFs, currentDirectory}, ref) {
 
   return (
     <div {...getRootProps()} style={styles.container} id={'dropZone'}>
-      <input {...getInputProps()} id={'fileUpload'}/>
+      <input {...getInputProps()} id={'fileUpload'} />
       {isDragActive ? <p>Drop the files here...</p> : <div>{children}</div>}
     </div>
   );

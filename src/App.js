@@ -22,10 +22,13 @@ import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 
 function App({match}) {
   const isMobile = useIsMobile();
-  const ipfsObj = useIPFS();
   const sailplaneRef = useRef(null);
   const [nodeReady, setNodeReady] = useState(false);
   const sharedFS = useRef({});
+  const [ipfsError, setIpfsError] = useState(false);
+  const ipfsObj = useIPFS(() => {
+    setIpfsError(true);
+  });
   const [instanceReady, setInstanceReady] = useState(false);
   const [directoryContents, setDirectoryContents] = useState([]);
   const [currentDirectory, setCurrentDirectory] = useState('/r');
@@ -54,6 +57,7 @@ function App({match}) {
     if (prevInstanceLength && prevInstanceLength !== instances.length) {
       dispatch(setInstanceIndex(instances.length - 1));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [instances.length]);
 
   useEffect(() => {
@@ -73,6 +77,7 @@ function App({match}) {
     }
 
     importInstance();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cleanImportInstanceAddress]);
   // End
 
@@ -98,7 +103,6 @@ function App({match}) {
 
   useEffect(() => {
     const switchInstance = async (doLS) => {
-      console.log('switch');
       dispatch(setStatus({message: 'Looking for instance...'}));
       setInstanceReady(false);
       let address;
@@ -178,7 +182,6 @@ function App({match}) {
     };
 
     if (ipfsObj.isIpfsReady) {
-      console.log(ipfsObj)
       connectSailplane(ipfsObj.ipfs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -186,7 +189,9 @@ function App({match}) {
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
-      return !instanceReady ? <LoadingInstance /> : (
+      return !instanceReady ? (
+        <LoadingInstance />
+      ) : (
         <FileBlock
           sharedFs={sharedFS}
           ipfs={ipfsObj.ipfs}
@@ -209,7 +214,11 @@ function App({match}) {
         currentRightPanel={currentRightPanel}
       />
 
-      {nodeReady ? getRightPanel() : <LoadingRightBlock />}
+      {nodeReady ? (
+        getRightPanel()
+      ) : (
+        <LoadingRightBlock ipfsError={ipfsError} />
+      )}
       <ContextMenu />
     </div>
   );

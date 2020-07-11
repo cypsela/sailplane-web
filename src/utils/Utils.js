@@ -25,6 +25,7 @@ export async function fileToBlob(file, handleUpdate) {
     chunks.push(chunk);
     i++;
   }
+  // eslint-disable-next-line no-undef
   return new Blob(chunks);
 }
 
@@ -96,8 +97,10 @@ export function isFileExtensionSupported(fileExtension) {
 }
 
 export async function sha256(str) {
+  // eslint-disable-next-line no-undef
   const buf = await crypto.subtle.digest(
     'SHA-256',
+    // eslint-disable-next-line no-undef
     new TextEncoder('utf-8').encode(str),
   );
   return Array.prototype.map
@@ -130,7 +133,10 @@ export function humanFileSize(bytes, si = true, dp = 1) {
 }
 
 export function getDraggableStyleHack(style, snapshot) {
-  if (!snapshot.isDragging) return {};
+  if (!snapshot.isDragging) {
+    return {};
+  }
+
   if (!snapshot.isDropAnimating) {
     return style;
   }
@@ -226,8 +232,8 @@ export function getShareTypeFromFolderFiles(files) {
   }
 }
 
-export function getPercent (numer, denom) {
-  return Math.round((numer / denom) * 100)
+export function getPercent(numer, denom) {
+  return Math.round((numer / denom) * 100);
 }
 
 export const isWebRTCSupported =
