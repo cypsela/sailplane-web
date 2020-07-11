@@ -13,6 +13,7 @@ import {
   getFileInfoFromCID,
   getFilesFromFolderCID,
   isFileExtensionSupported,
+  getPercent,
 } from './utils/Utils';
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
@@ -98,9 +99,7 @@ function Download({match}) {
         (currentIndex, totalCount) => {
           dispatch(
             setStatus({
-              message: `[${Math.round(
-                (currentIndex / totalCount) * 100,
-              )}%] Downloading`,
+              message: `[${getPercent(currentIndex, totalCount)}%] Downloading`,
             }),
           );
         },

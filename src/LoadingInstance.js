@@ -16,14 +16,10 @@ const styles = {
   },
 };
 
-export function LoadingRightBlock() {
+export function LoadingInstance() {
   return (
     <div style={styles.container}>
-      {isWebRTCSupported ? (
-        <div>Loading...</div>
-      ) : (
-        <div>This browser does not support WebRTC, iOS users please try Safari.</div>
-      )}
+      <div>Looking for instance...</div>
     </div>
   );
 }

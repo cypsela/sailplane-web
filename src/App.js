@@ -7,6 +7,7 @@ import useIPFS from './hooks/useIPFS';
 import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
 import {LoadingRightBlock} from './LoadingRightBlock';
+import {LoadingInstance} from './LoadingInstance';
 import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
 import {Instances} from './Instances';
@@ -15,7 +16,7 @@ import {addInstance, setInstanceIndex} from './actions/main';
 import {setStatus} from './actions/tempData';
 import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
-import {delay} from './utils/Utils';
+import {delay, getPercent} from './utils/Utils';
 import all from 'it-all';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 
@@ -25,7 +26,7 @@ function App({match}) {
   const sailplaneRef = useRef(null);
   const [nodeReady, setNodeReady] = useState(false);
   const sharedFS = useRef({});
-  const [ready, setReady] = useState(false);
+  const [instanceReady, setInstanceReady] = useState(false);
   const [directoryContents, setDirectoryContents] = useState([]);
   const [currentDirectory, setCurrentDirectory] = useState('/r');
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
@@ -77,7 +78,7 @@ function App({match}) {
 
   useEffect(() => {
     const rootLS = async () => {
-      if (ready) {
+      if (instanceReady) {
         const contents = sharedFS.current.fs
           .ls(currentDirectory)
           .map((path) => {
@@ -93,12 +94,13 @@ function App({match}) {
     };
 
     rootLS();
-  }, [ready, currentDirectory, lastUpdateTime]);
+  }, [instanceReady, currentDirectory, lastUpdateTime]);
 
   useEffect(() => {
     const switchInstance = async (doLS) => {
       console.log('switch');
-      dispatch(setStatus({message: 'Initializing'}));
+      dispatch(setStatus({message: 'Looking for instance...'}));
+      setInstanceReady(false);
       let address;
       const sailplane = sailplaneRef.current;
 
@@ -115,16 +117,16 @@ function App({match}) {
         (await sailplane.mount(address, {autoStart: false}));
 
       const onProgress = (key) => (current, max) => {
-        dispatch(setStatus({message: `[${current}/${max}] ${key}`}));
+        dispatch(setStatus({message: `${key} ${getPercent(current, max)}%`}));
         if (current === max) {
-          delay(2000).then(() => dispatch(setStatus({})));
+          delay(1500).then(() => dispatch(setStatus({})));
         }
       };
 
-      const onLoad = onProgress('Loading');
+      const onLoad = onProgress('Load');
       sfs.events.on('db.load.progress', onLoad);
 
-      const onReplicate = onProgress('Replicating');
+      const onReplicate = onProgress('Sync');
       sfs.events.on('db.replicate.progress', onReplicate);
 
       const onUpdated = () => setLastUpdateTime(Date.now());
@@ -149,10 +151,9 @@ function App({match}) {
       if (doLS) {
         setCurrentDirectory('/r');
         setLastUpdateTime(Date.now());
-      } else {
-        setReady(true);
       }
 
+      setInstanceReady(true);
       dispatch(setStatus({}));
     };
 
@@ -177,6 +178,7 @@ function App({match}) {
     };
 
     if (ipfsObj.isIpfsReady) {
+      console.log(ipfsObj)
       connectSailplane(ipfsObj.ipfs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -184,7 +186,7 @@ function App({match}) {
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
-      return (
+      return !instanceReady ? <LoadingInstance /> : (
         <FileBlock
           sharedFs={sharedFS}
           ipfs={ipfsObj.ipfs}
@@ -207,7 +209,7 @@ function App({match}) {
         currentRightPanel={currentRightPanel}
       />
 
-      {ready ? getRightPanel() : <LoadingRightBlock />}
+      {nodeReady ? getRightPanel() : <LoadingRightBlock />}
       <ContextMenu />
     </div>
   );

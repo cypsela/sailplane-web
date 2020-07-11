@@ -12,6 +12,7 @@ import {
   getIconForPath,
   humanFileSize,
   isFileExtensionSupported,
+  getPercent,
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import useTextInput from '../hooks/useTextInput';
@@ -195,9 +196,7 @@ export function FileItem({
         (currentIndex, totalCount) => {
           dispatch(
             setStatus({
-              message: `[${Math.round(
-                (currentIndex / totalCount) * 100,
-              )}%] Downloading`,
+              message: `[${getPercent(currentIndex, totalCount)}%] Downloading`,
             }),
           );
         },
