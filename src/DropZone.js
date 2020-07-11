@@ -5,6 +5,7 @@ import fileListSource from '@tabcat/file-list-source';
 import {useDispatch, useSelector} from 'react-redux';
 import {setStatus} from './actions/tempData';
 import {encryptFile} from './utils/encryption';
+import {getPercent} from './utils/Utils';
 
 export function DropZone({children, sharedFs, currentDirectory}, ref) {
   const styles = {
@@ -50,8 +51,7 @@ export function DropZone({children, sharedFs, currentDirectory}, ref) {
       const totalSize = acceptedFiles.reduce((prev, cur) => cur.size + prev, 0);
       await sharedFs.current.upload(currentDirectory, listSource, {
         progress: (length) => {
-          const percentage = Math.round((length / totalSize) * 100);
-          dispatch(setStatus({message: `[${percentage}%] Uploading files`}));
+          dispatch(setStatus({message: `[${getPercent(length, totalSize)}%] Uploading files`}));
         },
       });
       dispatch(setStatus({}));

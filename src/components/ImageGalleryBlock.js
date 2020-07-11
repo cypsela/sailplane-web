@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {fileToBlob} from '../utils/Utils';
+import {fileToBlob, getPercent} from '../utils/Utils';
 import {primary45} from '../colors';
 
 export function ImageGalleryBlock({file, onLoadURL, fileURLS, fileIndex, onClick}) {
@@ -27,7 +27,7 @@ export function ImageGalleryBlock({file, onLoadURL, fileURLS, fileIndex, onClick
   async function getBlob() {
     try {
       const blob = await fileToBlob(file, (curr, total) => {
-        setProgress(Math.round((curr / total) * 100));
+        setProgress(getPercent(curr, total));
       });
 
       const objURL = window.URL.createObjectURL(blob);

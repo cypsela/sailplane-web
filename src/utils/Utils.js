@@ -214,8 +214,8 @@ export function getShareTypeFromFolderFiles(files) {
     }
   });
 
-  const audioPercentage = Math.round((audioCount / files.length) * 100);
-  const imagePercentage = Math.round((imageCount / files.length) * 100);
+  const audioPercentage = getPercent(audioCount, files.length);
+  const imagePercentage = getPercent(imageCount, files.length);
 
   if (audioPercentage > 60) {
     return 'audio';
@@ -224,6 +224,10 @@ export function getShareTypeFromFolderFiles(files) {
   } else {
     return 'default';
   }
+}
+
+export function getPercent (numer, denom) {
+  return Math.round((numer / denom) * 100)
 }
 
 export const isWebRTCSupported =

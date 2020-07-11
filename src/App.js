@@ -16,7 +16,7 @@ import {addInstance, setInstanceIndex} from './actions/main';
 import {setStatus} from './actions/tempData';
 import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
-import {delay} from './utils/Utils';
+import {delay, getPercent} from './utils/Utils';
 import all from 'it-all';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 
@@ -117,7 +117,7 @@ function App({match}) {
         (await sailplane.mount(address, {autoStart: false}));
 
       const onProgress = (key) => (current, max) => {
-        dispatch(setStatus({message: `[${current}/${max}] ${key}`}));
+        dispatch(setStatus({message: `[${getPercent(current, max)}%] ${key}`}));
         if (current === max) {
           delay(2000).then(() => dispatch(setStatus({})));
         }
