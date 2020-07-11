@@ -117,16 +117,16 @@ function App({match}) {
         (await sailplane.mount(address, {autoStart: false}));
 
       const onProgress = (key) => (current, max) => {
-        dispatch(setStatus({message: `[${getPercent(current, max)}%] ${key}`}));
+        dispatch(setStatus({message: `${key} ${getPercent(current, max)}%`}));
         if (current === max) {
-          delay(2000).then(() => dispatch(setStatus({})));
+          delay(1500).then(() => dispatch(setStatus({})));
         }
       };
 
-      const onLoad = onProgress('Loading');
+      const onLoad = onProgress('Load');
       sfs.events.on('db.load.progress', onLoad);
 
-      const onReplicate = onProgress('Replicating');
+      const onReplicate = onProgress('Sync');
       sfs.events.on('db.replicate.progress', onReplicate);
 
       const onUpdated = () => setLastUpdateTime(Date.now());
