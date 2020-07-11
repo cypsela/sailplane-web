@@ -5,7 +5,7 @@ import fileListSource from '@tabcat/file-list-source';
 import {useDispatch, useSelector} from 'react-redux';
 import {setStatus} from './actions/tempData';
 import {encryptFile} from './utils/encryption';
-import {getPercent} from './utils/Utils';
+import {delay, getPercent} from './utils/Utils';
 
 export function DropZone({children, sharedFs, currentDirectory}, ref) {
   const styles = {
@@ -49,12 +49,22 @@ export function DropZone({children, sharedFs, currentDirectory}, ref) {
       dispatch(setStatus({message: 'Uploading'}));
       const listSource = fileListSource(acceptedFiles, {preserveMtime: true});
       const totalSize = acceptedFiles.reduce((prev, cur) => cur.size + prev, 0);
-      await sharedFs.current.upload(currentDirectory, listSource, {
-        progress: (length) => {
-          dispatch(setStatus({message: `[${getPercent(length, totalSize)}%] Uploading files`}));
-        },
-      });
-      dispatch(setStatus({}));
+
+      try {
+        await sharedFs.current.upload(currentDirectory, listSource, {
+          progress: (length) => {
+            dispatch(setStatus({message: `[${getPercent(length, totalSize)}%] Uploading files`}));
+          },
+        });
+        dispatch(setStatus({}));
+      } catch (e) {
+        // will add sharedFs.canWrite method later for richer ux
+        dispatch(setStatus({
+          message: `Missing write permissions.`,
+          isError: true
+        }));
+        delay(4000).then(() => dispatch(setStatus({})));
+      }
     },
     [currentDirectory, encryptionKey],
   );
