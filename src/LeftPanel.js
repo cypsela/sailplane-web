@@ -55,8 +55,8 @@ const styles = {
   logoContainer: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 };
 
 export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {

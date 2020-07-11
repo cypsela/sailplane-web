@@ -1,10 +1,10 @@
 import {getFileExtensionFromFilename, sha256} from './Utils';
 
 const pbkdf2iterations = 10000;
-const sailplaneExtension = 'encrypted-sailplane';
 
 function readfile(file) {
   return new Promise((resolve, reject) => {
+    // eslint-disable-next-line no-undef
     const fr = new FileReader();
     fr.onload = () => {
       resolve(fr.result);
@@ -20,6 +20,7 @@ export const encryptFile = async (file, password) => {
 
   plaintextbytes = new Uint8Array(plaintextbytes);
 
+  // eslint-disable-next-line no-undef
   const passphrasebytes = new TextEncoder('utf-8').encode(password);
   const pbkdf2salt = window.crypto.getRandomValues(new Uint8Array(8));
 
@@ -74,10 +75,12 @@ export const encryptFile = async (file, password) => {
   cipherbytes = new Uint8Array(cipherbytes);
 
   const resultbytes = new Uint8Array(cipherbytes.length + 16);
+  // eslint-disable-next-line no-undef
   resultbytes.set(new TextEncoder('utf-8').encode('Salted__'));
   resultbytes.set(pbkdf2salt, 8);
   resultbytes.set(cipherbytes, 16);
 
+  // eslint-disable-next-line no-undef
   let encryptedBlob = new Blob([resultbytes], {
     type: file.type,
   });
@@ -100,6 +103,7 @@ export const decryptFile = async (file, password) => {
 
   cipherbytes = new Uint8Array(cipherbytes);
 
+  // eslint-disable-next-line no-undef
   const passphrasebytes = new TextEncoder('utf-8').encode(password);
   const pbkdf2salt = cipherbytes.slice(8, 16);
 
@@ -153,6 +157,7 @@ export const decryptFile = async (file, password) => {
   console.log('ciphertext decrypted');
   plaintextbytes = new Uint8Array(plaintextbytes);
 
+  // eslint-disable-next-line no-undef
   const decryptedBlob = new Blob([plaintextbytes], {
     type: 'application/download',
   });

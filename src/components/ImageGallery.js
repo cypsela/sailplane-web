@@ -3,8 +3,8 @@ import {ImageGalleryBlock} from './ImageGalleryBlock';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import {
-  getFileExtensionFromFilename, isFileExtensionImage,
-  isFileExtensionSupported,
+  getFileExtensionFromFilename,
+  isFileExtensionImage,
 } from '../utils/Utils';
 
 export default function ImageGallery({files}) {
@@ -46,7 +46,6 @@ export default function ImageGallery({files}) {
             <ImageGalleryBlock
               key={index}
               file={imageFile}
-              fileURLS={fileURLS}
               fileIndex={index}
               onClick={() => {
                 if (fileURLS[index]) {

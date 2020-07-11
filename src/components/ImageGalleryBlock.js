@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {fileToBlob, getPercent} from '../utils/Utils';
 import {primary45} from '../colors';
 
-export function ImageGalleryBlock({file, onLoadURL, fileURLS, fileIndex, onClick}) {
+export function ImageGalleryBlock({file, onLoadURL, fileIndex, onClick}) {
   const [url, setURL] = useState(null);
   const [progress, setProgress] = useState(0);
 
@@ -40,16 +40,15 @@ export function ImageGalleryBlock({file, onLoadURL, fileURLS, fileIndex, onClick
 
   useEffect(() => {
     getBlob();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div style={styles.container}>
-
       <div
         className={'imageGalleryBlock'}
         style={styles.img}
-        onClick={()=>onClick()}
-        >
+        onClick={() => onClick()}>
         {!url ? <div>{progress}%</div> : null}
       </div>
     </div>

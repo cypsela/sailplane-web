@@ -50,7 +50,7 @@ export default function useTextInput(
     }
   }, [visible]);
 
-  const component = (
+  return (
     <>
       <input
         ref={inputRef}
@@ -72,6 +72,4 @@ export default function useTextInput(
       <ToolItem title={'Cancel'} onClick={() => handleCancel()} />
     </>
   );
-
-  return component;
 }

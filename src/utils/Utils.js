@@ -45,8 +45,7 @@ async function dirToBlob(path, struct, handleUpdate) {
       zip.file(path, blob, {dir: isDir});
     }),
   );
-  const data = await zip.generateAsync({type: 'blob'});
-  return data;
+  return await zip.generateAsync({type: 'blob'});
 }
 
 export async function getFileInfoFromCID(cid, ipfs) {
@@ -63,9 +62,7 @@ export async function getBlobFromPath(sharedFs, path, ipfs, handleUpdate) {
 }
 
 export async function getFilesFromFolderCID(ipfs, cid, handleUpdate) {
-  const struct = await all(ipfs.get(cid));
-
-  return struct;
+  return await all(ipfs.get(cid));
 }
 
 export async function getBlobFromPathCID(cid, path, ipfs, handleUpdate) {
