@@ -140,35 +140,35 @@ describe('App loads', () => {
     cy.visit('http://localhost:3000/');
   });
 
-  it('instance panel opens', () => {
-    cy.contains('Instances').click();
+  it('drive panel opens', () => {
+    cy.contains('Drives').click();
     cy.contains('main');
   });
 
-  it('can create instance', () => {
-    cy.contains('Create instance').click();
+  it('can create drive', () => {
+    cy.contains('Create drive').click();
     const input = cy.get('input[type="text"]');
-    input.should('have.attr', 'placeholder', 'instance name');
-    input.type('Instance #2');
+    input.should('have.attr', 'placeholder', 'drive name');
+    input.type('Drive #2');
     cy.contains('Accept').click();
-    cy.contains('Instance #2');
+    cy.contains('Drive #2');
   });
 
-  it('should not have any files on fresh instance', () => {
+  it('should not have any files on fresh drive', () => {
     cy.contains('Files').click();
     cy.contains('drag files to upload');
   });
 
-  it('instance selector switches instance', () => {
-    cy.contains('Instance #2').click();
+  it('drive selector switches drive', () => {
+    cy.contains('Drive #2').click();
     cy.contains('main').click();
     cy.contains('Folder-renamed');
   });
 
-  it('can delete instance', () => {
-    cy.contains('Instances').click();
+  it('can delete drive', () => {
+    cy.contains('Drives').click();
     cy.get('.instanceDelete').last().click();
-    cy.contains('Instance #2').should('have.length', 0);
+    cy.contains('Drive #2').should('have.length', 0);
     cy.contains('Files').click();
   });
 

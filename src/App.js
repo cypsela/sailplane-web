@@ -102,7 +102,7 @@ function App({match}) {
 
   useEffect(() => {
     const switchInstance = async (doLS) => {
-      dispatch(setStatus({message: 'Looking for instance...'}));
+      dispatch(setStatus({message: 'Looking for drive...'}));
       setInstanceReady(false);
       let address;
       const sailplane = sailplaneRef.current;
@@ -189,7 +189,7 @@ function App({match}) {
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
       return !instanceReady ? (
-        <LoadingRightBlock message={'Looking for instance...'} />
+        <LoadingRightBlock message={'Looking for drive...'} />
       ) : (
         <FileBlock
           sharedFs={sharedFS}

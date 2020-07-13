@@ -3,11 +3,11 @@ import {primary45} from './colors';
 import {
   FaFolderOpen,
   FaCog,
-  FaDatabase,
   FaPaperPlane,
   FaBars,
   FaTimes,
 } from 'react-icons/fa';
+import {FiServer} from 'react-icons/fi';
 import {PanelItem} from './components/PanelItem';
 import {useIsMobile} from './hooks/useIsMobile';
 
@@ -105,8 +105,8 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
               onClick={() => setCurrentRightPanel('files')}
             />
             <PanelItem
-              title={'Instances'}
-              iconComponent={FaDatabase}
+              title={'Drives'}
+              iconComponent={FiServer}
               selected={currentRightPanel === 'instances'}
               onClick={() => setCurrentRightPanel('instances')}
             />

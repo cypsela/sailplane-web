@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {primary4} from './colors';
+import {primary4, primary45} from './colors';
 import {Instance} from './components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import useTextInput from './hooks/useTextInput';
@@ -8,6 +8,7 @@ import {addInstance, removeInstance, setInstanceIndex} from './actions/main';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 import {StatusBar} from './StatusBar';
 import usePrevious from './hooks/usePrevious';
+import {FiServer} from 'react-icons/fi';
 
 const styles = {
   container: {
@@ -86,7 +87,7 @@ export function Instances({sailplane}) {
     () => setImportInstanceMode(false),
     '',
     {
-      placeholder: 'instance address',
+      placeholder: 'drive address',
     },
   );
 
@@ -96,14 +97,17 @@ export function Instances({sailplane}) {
     () => setAddInstanceMode(false),
     '',
     {
-      placeholder: 'instance name',
+      placeholder: 'drive name',
     },
   );
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <div style={styles.title}>Instances</div>
+        <div style={styles.title}>
+          <FiServer color={primary45} size={16} style={styles.icon} />
+          Drives
+        </div>
         <div style={styles.tools}>
           {!importInstanceMode && !addInstanceMode ? (
             <>
@@ -112,14 +116,14 @@ export function Instances({sailplane}) {
                 className={'addInstance'}
                 onClick={() => setImportInstanceMode(true)}>
                 <FiUpload color={primary4} size={18} style={styles.icon} />
-                <span style={styles.toolTitle}>Import instance</span>
+                <span style={styles.toolTitle}>Import drive</span>
               </div>
               <div
                 style={styles.tools}
                 className={'addInstance'}
                 onClick={() => setAddInstanceMode(true)}>
                 <FiPlusCircle color={primary4} size={18} style={styles.icon} />
-                <span style={styles.toolTitle}>Create instance</span>
+                <span style={styles.toolTitle}>Create drive</span>
               </div>
             </>
           ) : null}
