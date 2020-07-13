@@ -7,7 +7,6 @@ import useIPFS from './hooks/useIPFS';
 import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
 import {LoadingRightBlock} from './LoadingRightBlock';
-import {LoadingInstance} from './LoadingInstance';
 import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
 import {Instances} from './Instances';
@@ -190,7 +189,7 @@ function App({match}) {
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
       return !instanceReady ? (
-        <LoadingInstance />
+        <LoadingRightBlock message={'Looking for instance...'} />
       ) : (
         <FileBlock
           sharedFs={sharedFS}

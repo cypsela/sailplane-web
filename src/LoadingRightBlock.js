@@ -17,12 +17,15 @@ const styles = {
   },
 };
 
-export function LoadingRightBlock({ipfsError}) {
-  console.log('ipfsErr', ipfsError);
+export function LoadingRightBlock({ipfsError, message}) {
+  if (!message) {
+    message = 'Loading...';
+  }
+
   return (
     <div style={styles.container}>
       {isWebRTCSupported && !ipfsError ? (
-        <div>Loading...</div>
+        <div>{message}</div>
       ) : (
         <div>
           This browser does not support WebRTC, iOS users please try Safari.

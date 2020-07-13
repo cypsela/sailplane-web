@@ -163,7 +163,7 @@ export function DownloadPanel({
               )}
             </div>
 
-            {fileInfo && fileInfo.size ? (
+            {fileInfo?.size ? (
               <div style={styles.fileSize}>{humanFileSize(fileInfo.size)}</div>
             ) : null}
 
