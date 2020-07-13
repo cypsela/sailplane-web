@@ -24,9 +24,11 @@ const styles = {
   },
   title: {
     color: primary4,
-    fontSize: 20,
-    fontWeight: 600,
+    fontSize: 16,
+    fontWeight: 400,
     marginBottom: 16,
+    display: 'flex',
+    alignItems: 'center',
   },
   header: {
     display: 'flex',

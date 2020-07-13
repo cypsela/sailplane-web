@@ -18,14 +18,15 @@ export function PanelItem({selected, onClick, title, iconComponent}) {
       padding: 8,
       borderRadius: 4,
       marginBottom: 8,
+      fontFamily: 'Open Sans',
     },
     title: {
       color: selected ? primary4 : '#FFF',
-      userSelect: 'none'
-      // marginRight: 4,
+      userSelect: 'none',
+      fontSize: 15,
     },
     icon: {
-      marginRight: 4,
+      marginRight: 6,
     },
   };
   return (
