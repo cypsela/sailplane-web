@@ -26,7 +26,6 @@ export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
       marginBottom: 6,
       fontFamily: 'Open Sans',
       cursor: 'pointer',
-      fontWeight: selected ? 600 : 400,
     },
     container: {
       display: 'flex',
