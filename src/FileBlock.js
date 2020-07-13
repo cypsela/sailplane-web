@@ -8,6 +8,7 @@ import {ShareDialog} from './ShareDialog';
 import {useIsMobile} from './hooks/useIsMobile';
 import {DraggableFileItem} from './components/DraggableFileItem';
 import {sortDirectoryContents} from './utils/Utils';
+import {DragBlock} from './components/DragBlock';
 
 const styles = {
   container: {
@@ -135,7 +136,7 @@ export function FileBlock({
                     }
                     {...provided.droppableProps}>
                     {!directoryContents.length ? (
-                      <p>drag files to upload</p>
+                      <DragBlock />
                     ) : (
                       <div style={styles.files}>
                         {fullFileList.map((fileItem, index) => (
