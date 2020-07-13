@@ -3,6 +3,7 @@ import {primary45} from '../colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {SmallInstanceItem} from './SmallInstanceItem';
 import {setInstanceIndex} from '../actions/main';
+import {FiHardDrive} from 'react-icons/fi';
 
 export function InstanceSelector({}) {
   const main = useSelector((state) => state.main);
@@ -17,7 +18,8 @@ export function InstanceSelector({}) {
 
   const styles = {
     container: {
-      display: instances.length > 1 ? 'block' : 'none',
+      display: instances.length > 1 ? 'flex' : 'none',
+      alignItems: 'center',
       position: 'relative',
       marginRight: 6,
       backgroundColor: primary45,
@@ -34,6 +36,9 @@ export function InstanceSelector({}) {
       border: `1px solid ${primary45}`,
       color: primary45,
     },
+    icon: {
+      marginRight: 4,
+    }
   };
 
   return (
@@ -44,6 +49,8 @@ export function InstanceSelector({}) {
           setMenuEnabled(!menuEnabled);
         }
       }}>
+      <FiHardDrive color={'#FFF'} size={16} style={styles.icon} />
+
       {currentInstance.name}
       {menuEnabled ? (
         <div style={styles.menu}>
