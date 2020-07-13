@@ -14,18 +14,19 @@ export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
 
   const {name, address} = data;
 
-  let backgroundColor = selected ? primary3 : primary2;
+  let backgroundColor = selected ? primary3 : '#FFF';
 
   const styles = {
     outer: {
       padding: 6,
       backgroundColor: backgroundColor,
-      border: `1px solid ${isHovered ? primary3 : backgroundColor}`,
-      color: selected ? '#FFF' : primary45,
+      border: `1px solid ${primary3}`,
+      color: selected ? '#fff' : primary45,
       borderRadius: 4,
-      marginBottom: 4,
+      marginBottom: 6,
       fontFamily: 'Open Sans',
       cursor: 'pointer',
+      fontWeight: selected ? 600 : 400,
     },
     container: {
       display: 'flex',
@@ -48,7 +49,6 @@ export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
     name: {
       fontSize: 18,
       lineHeight: '19px',
-      // fontWeight: 600,
       display: 'flex',
       alignItems: 'center',
     },
@@ -86,7 +86,7 @@ export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
       <div style={styles.tools}>
         <div style={styles.toolItem}>
           <ToolItem
-            defaultColor={selected ? primary2 : primary45}
+            defaultColor={selected ? '#fff' : primary45}
             iconComponent={FiCopy}
             size={16}
             changeColor={primary}
@@ -96,7 +96,7 @@ export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
         <div style={styles.toolItem}>
           <ToolItem
             className={'instanceDelete'}
-            defaultColor={selected ? primary2 : primary45}
+            defaultColor={selected ? '#fff' : primary45}
             iconComponent={FiTrash}
             size={16}
             changeColor={errorColor}
