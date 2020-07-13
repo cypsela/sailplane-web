@@ -5,6 +5,7 @@ import {
   FaCog,
   FaPaperPlane,
   FaBars,
+  FaServer,
   FaTimes,
 } from 'react-icons/fa';
 import {FiServer} from 'react-icons/fi';
@@ -106,7 +107,7 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
             />
             <PanelItem
               title={'Drives'}
-              iconComponent={FiServer}
+              iconComponent={FaServer}
               selected={currentRightPanel === 'instances'}
               onClick={() => setCurrentRightPanel('instances')}
             />

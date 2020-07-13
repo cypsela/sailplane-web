@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {primary4, primary45} from './colors';
 import {Instance} from './components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
+import {FaServer} from 'react-icons/fa';
 import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {addInstance, removeInstance, setInstanceIndex} from './actions/main';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 import {StatusBar} from './StatusBar';
 import usePrevious from './hooks/usePrevious';
-import {FiServer} from 'react-icons/fi';
 
 const styles = {
   container: {
@@ -105,7 +105,7 @@ export function Instances({sailplane}) {
     <div style={styles.container}>
       <div style={styles.header}>
         <div style={styles.title}>
-          <FiServer color={primary45} size={16} style={styles.icon} />
+          <FaServer color={primary45} size={16} style={styles.icon} />
           Drives
         </div>
         <div style={styles.tools}>
