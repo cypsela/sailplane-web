@@ -1,6 +1,7 @@
 import React from 'react';
 import {primary4} from './colors';
 import {isWebRTCSupported} from './utils/Utils';
+import {FiLoader} from 'react-icons/fi/index';
 
 const styles = {
   container: {
@@ -15,6 +16,9 @@ const styles = {
     color: primary4,
     boxSizing: 'border-box',
   },
+  icon: {
+    marginRight: 4,
+  },
 };
 
 export function LoadingRightBlock({ipfsError, message}) {
@@ -25,7 +29,15 @@ export function LoadingRightBlock({ipfsError, message}) {
   return (
     <div style={styles.container}>
       {isWebRTCSupported && !ipfsError ? (
-        <div>{message}</div>
+        <div>
+          <FiLoader
+            color={primary4}
+            size={16}
+            style={styles.icon}
+            className={'rotating'}
+          />
+          {message}
+        </div>
       ) : (
         <div>
           This browser does not support WebRTC, iOS users please try Safari.
