@@ -51,6 +51,9 @@ const styles = {
   toolTitle: {
     marginRight: 6,
   },
+  instances: {
+    marginTop: 6,
+  },
 };
 
 export function Instances({sailplane}) {
@@ -135,9 +138,10 @@ export function Instances({sailplane}) {
         </div>
       </div>
 
-      <div>
+      <div style={styles.instances}>
         {instances.map((instance, index) => (
           <Instance
+            instanceIndex={index}
             key={instance.address.toString()}
             data={instance}
             selected={instance === instances[instanceIndex]}
