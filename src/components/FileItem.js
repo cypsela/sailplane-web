@@ -331,7 +331,7 @@ export function FileItem({
               {type !== 'dir' && fileInfo ? humanFileSize(fileInfo.size) : null}
             </div>
             <div style={{...styles.flexItem, justifyContent: 'flex-end'}}>
-              {type !== 'dir' && fileInfo && fileInfo.mtime
+              {type !== 'dir' && fileInfo?.mtime
                 ? getFileTime(fileInfo.mtime.secs)
                 : null}
             </div>
