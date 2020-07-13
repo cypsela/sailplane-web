@@ -22,17 +22,19 @@ export function InstanceSelector({}) {
       alignItems: 'center',
       position: 'relative',
       marginRight: 6,
-      backgroundColor: primary45,
-      color: '#FFF',
-      padding: '4px 6px',
+      border: `1px solid ${primary45}`,
+      borderBottomWidth: menuEnabled? 0: 1,
+      color: primary45,
+      padding: '3px 6px',
       borderRadius: `4px 4px ${menuEnabled ? 0 : 4}px ${menuEnabled ? 0 : 4}px`,
       fontSize: 14,
     },
     menu: {
       backgroundColor: '#FFF',
       position: 'absolute',
-      top: 26,
-      left: 0,
+      minWidth: 100,
+      top: 25,
+      left: -1,
       border: `1px solid ${primary45}`,
       color: primary45,
     },
@@ -49,7 +51,7 @@ export function InstanceSelector({}) {
           setMenuEnabled(!menuEnabled);
         }
       }}>
-      <FiHardDrive color={'#FFF'} size={16} style={styles.icon} />
+      <FiHardDrive color={primary45} size={16} style={styles.icon} />
 
       {currentInstance.name}
       {menuEnabled ? (
