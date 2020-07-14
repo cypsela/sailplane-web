@@ -40,6 +40,8 @@ export const Instance = React.memo(
         marginLeft: 10,
         fontSize: 14,
         overflow: 'hidden',
+        width: '40%',
+        textOverflow: 'ellipsis',
       },
       tools: {
         display: 'flex',
