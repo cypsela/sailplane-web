@@ -16,9 +16,9 @@ export function DragBlock() {
     <div style={styles.container}>
       <div>
         <FiFile color={primary45} size={18} style={styles.icon} />
+        <FiFolder color={primary45} size={18} style={styles.icon} />
         <FiMusic color={primary45} size={18} style={styles.icon} />
         <FiVideo color={primary45} size={18} style={styles.icon} />
-        <FiFolder color={primary45} size={18} style={styles.icon} />
       </div>
       <div>drag files to upload</div>
     </div>
