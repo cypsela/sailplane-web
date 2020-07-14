@@ -19,6 +19,7 @@ const styles = {
     width: '80%',
     fontFamily: 'Open Sans',
     zIndex: 10000,
+    boxShadow: '0 0px 14px hsla(0, 0%, 0%, 0.2)',
   },
   header: {
     backgroundColor: primary45,
