@@ -121,7 +121,7 @@ export function DownloadPanel({
       placeholder: 'password',
       isPassword: true,
       isError: doesPasswordFailHashCheck,
-      confirmTitle: 'Enter',
+      confirmTitle: 'Unlock',
     },
   );
 

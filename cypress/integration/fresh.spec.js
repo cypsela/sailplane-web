@@ -202,6 +202,23 @@ describe('App loads', () => {
     cy.contains('Accept').should('have.length', 0);
   });
 
+  it('download encrypted file from share page', () => {
+    cy.contains('pic1.jpg').trigger('mouseover');
+    cy.get('#Share-file').click();
+
+    const input = cy.get('input[type="text"]');
+    input.invoke('val').then((url) => {
+      cy.visit(url);
+      cy.contains('Download now').click();
+
+      const input2 = cy.get('input[placeholder="password"]');
+      input2.type('password1234');
+      cy.contains('Unlock').click();
+      cy.contains('Unlock').should('have.length', 0);
+      cy.visit('http://localhost:3000/');
+    });
+  });
+
   it('delete file', () => {
     cy.contains('pic1.jpg').trigger('mouseover');
     cy.get('#Delete-file').click();
