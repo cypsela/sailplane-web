@@ -21,21 +21,27 @@ const styles = {
   },
 };
 
-export function LoadingRightBlock({ipfsError, message}) {
+export function LoadingRightBlock({ipfsError, message, loading}) {
   if (!message) {
     message = 'Loading...';
   }
+
+  const loader = loading === false
+    ? null
+    : (
+      <FiLoader
+        color={primary4}
+        size={16}
+        style={styles.icon}
+        className={'rotating'}
+      />
+    )
 
   return (
     <div style={styles.container}>
       {isWebRTCSupported && !ipfsError ? (
         <div>
-          <FiLoader
-            color={primary4}
-            size={16}
-            style={styles.icon}
-            className={'rotating'}
-          />
+          {loader}
           {message}
         </div>
       ) : (

@@ -2,15 +2,18 @@ import React from 'react';
 import {errorColor, primary, primary2, primary3, primary45} from '../colors';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
-import {FiCopy, FiTrash} from 'react-icons/fi';
+import {FiShare2, FiCopy, FiTrash} from 'react-icons/fi';
 import {useElementCopy} from '../hooks/useElementCopy';
 import {FiHardDrive} from 'react-icons/fi/index';
 
 export const Instance = React.memo(
   ({data, selected, onClick, onDelete, instanceIndex}) => {
     const [hoverRef, isHovered] = useHover();
-    const [elementToCopy, doCopy] = useElementCopy({
-      message: 'Instance address copied',
+    const [elementToCopy1, doCopy1] = useElementCopy({
+      message: 'Copied drive url',
+    });
+    const [elementToCopy2, doCopy2] = useElementCopy({
+      message: 'Copied drive address',
     });
 
     const {name, address} = data;
@@ -37,7 +40,6 @@ export const Instance = React.memo(
         alignItems: 'center',
       },
       address: {
-        marginLeft: 10,
         fontSize: 14,
         overflow: 'hidden',
         width: '40%',
@@ -84,18 +86,29 @@ export const Instance = React.memo(
             />
             {name}
           </div>
-          <div id={addressId} style={styles.address} ref={elementToCopy}>
-            {shareURL}
+          <div id={addressId} style={styles.address}>
+            <span ref={elementToCopy1}>{shareURL}</span>
+            <br/>
+            <span ref={elementToCopy2}>{address}</span>
           </div>
         </div>
         <div style={styles.tools}>
           <div style={styles.toolItem}>
             <ToolItem
               defaultColor={selected ? '#fff' : primary45}
+              iconComponent={FiShare2}
+              size={16}
+              changeColor={primary}
+              onClick={doCopy1}
+            />
+          </div>
+          <div style={styles.toolItem}>
+            <ToolItem
+              defaultColor={selected ? '#fff' : primary45}
               iconComponent={FiCopy}
               size={16}
               changeColor={primary}
-              onClick={doCopy}
+              onClick={doCopy2}
             />
           </div>
           <div style={styles.toolItem}>
