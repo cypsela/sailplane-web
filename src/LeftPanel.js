@@ -8,7 +8,6 @@ import {
   FaServer,
   FaTimes,
 } from 'react-icons/fa';
-import {FiServer} from 'react-icons/fi';
 import {PanelItem} from './components/PanelItem';
 import {useIsMobile} from './hooks/useIsMobile';
 

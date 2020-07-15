@@ -65,6 +65,9 @@ export async function getFilesFromFolderCID(ipfs, cid, handleUpdate) {
   return await all(ipfs.get(cid));
 }
 
+export const isChrome =
+  /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
 export async function getBlobFromPathCID(cid, path, ipfs, handleUpdate) {
   const struct = await all(ipfs.get(cid));
 

@@ -12,6 +12,7 @@ import {humanFileSize, sortDirectoryContents} from './utils/Utils';
 import {FilePreview} from './components/FilePreview';
 import {FileItem} from './components/FileItem';
 import {useIsMobile} from './hooks/useIsMobile';
+import AudioPlaylist from "./components/AudioPlaylist";
 
 const styles = {
   container: {
@@ -180,10 +181,14 @@ export function DownloadPanel({
                 {displayType === 'image' ? (
                   <ImageGallery files={files} />
                 ) : null}
+
+                {displayType === 'audio' ? (
+                  <AudioPlaylist files={files} ipfs={ipfs}/>
+                ) : null}
               </div>
             ) : null}
 
-            {files ? (
+            {files && displayType !=='audio' ? (
               <div style={styles.fileContainer}>
                 <div style={styles.fileHeader}>
                   <div style={{...styles.fileHeaderItem, paddingLeft: 12}}>

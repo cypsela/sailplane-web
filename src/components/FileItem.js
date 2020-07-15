@@ -34,6 +34,8 @@ export function FileItem({
   ipfs,
   isParent,
   snapshot,
+  forceIcon,
+  onIconClicked,
   readOnly,
 }) {
   const {path, type} = data;
@@ -149,7 +151,9 @@ export function FileItem({
     },
   );
 
-  const iconComponent = getIconForPath(type, isEncrypted, name);
+  const iconComponent = forceIcon
+    ? forceIcon
+    : getIconForPath(type, isEncrypted, name);
 
   const getCID = async () => {
     let tmpCID;
@@ -297,7 +301,7 @@ export function FileItem({
             onClick={async (event) => {
               event.stopPropagation();
 
-              if (editMode) {
+              if (editMode || forceIcon) {
                 return;
               }
 
@@ -316,7 +320,17 @@ export function FileItem({
             }}>
             <div
               style={{...styles.flexItem, maxWidth: isMobile ? null : '25%'}}>
-              <IconComponent color={primary45} size={16} style={styles.icon} />
+              <IconComponent
+                color={primary45}
+                size={16}
+                style={styles.icon}
+                onClick={(event) => {
+                  if (onIconClicked) {
+                    event.stopPropagation();
+                    onIconClicked();
+                  }
+                }}
+              />
               {editMode ? (
                 <>{InputComponent}</>
               ) : isParent ? (
