@@ -23,7 +23,7 @@ describe('App loads', () => {
     cy.contains('drag files to upload');
   });
 
-  it('default drive does not have share button', () => {
+  it('root folder does not have share button', () => {
     cy.get('#folderShare').should('have.length', 0);
   });
 
