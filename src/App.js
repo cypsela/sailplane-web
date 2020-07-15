@@ -22,6 +22,7 @@ import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 function App({match}) {
   const isMobile = useIsMobile();
   const sailplaneRef = useRef(null);
+  const mountQueue = useRef({});
   const [nodeReady, setNodeReady] = useState(false);
   const sharedFS = useRef({});
   const [ipfsError, setIpfsError] = useState(false);
@@ -103,9 +104,15 @@ function App({match}) {
       const sailplane = sailplaneRef.current;
       const address = currentInstance.address;
 
+      const sfsOptions = {autoStart: false}
       const sfs =
-        sailplane.mounted[address.toString()] ||
-        await sailplane.mount(address, {autoStart: false});
+        sailplane.mounted[address] ||
+        await mountQueue.current[address] ||
+        await (() => {
+          return mountQueue.current[address] =
+            sailplane.mount(address, sfsOptions)
+              .finally(() => delete mountQueue.current[address])
+        })()
 
       const onProgress = (key) => (current, max) => {
         dispatch(setStatus({message: `${key} ${getPercent(current, max)}%`}));
