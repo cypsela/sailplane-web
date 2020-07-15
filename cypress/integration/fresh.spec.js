@@ -23,7 +23,7 @@ describe('App loads', () => {
     cy.contains('drag files to upload');
   });
 
-  it('main folder does not have share button', () => {
+  it('default drive does not have share button', () => {
     cy.get('#folderShare').should('have.length', 0);
   });
 
@@ -142,7 +142,7 @@ describe('App loads', () => {
 
   it('drive panel opens', () => {
     cy.contains('Drives').click();
-    cy.contains('main');
+    cy.contains('default');
   });
 
   it('can create drive', () => {
@@ -161,7 +161,7 @@ describe('App loads', () => {
 
   it('drive selector switches drive', () => {
     cy.contains('Drive #2').click();
-    cy.contains('main').click();
+    cy.contains('default').click();
     cy.contains('Folder-renamed');
   });
 

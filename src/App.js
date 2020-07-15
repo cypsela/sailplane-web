@@ -157,7 +157,7 @@ function App({match}) {
   useEffect(() => {
     const handleNewUser = async (sailplane) => {
       const defaultOptions = {meta: 'superdrive'};
-      const defaultAddress = await sailplane.determineAddress('main', defaultOptions);
+      const defaultAddress = await sailplane.determineAddress('default', defaultOptions);
       dispatch(addInstance(defaultAddress.path, defaultAddress.toString()));
       dispatch(setNewUser(false));
     }
