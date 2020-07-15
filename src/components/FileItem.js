@@ -357,7 +357,7 @@ export function FileItem({
                   {!readOnly ? (
                     <>
                       <ToolItem
-                        id={`Edit-${type}`}
+                        id={`Rename-${type}`}
                         iconComponent={FiEdit}
                         changeColor={primary}
                         tooltip={'Rename'}

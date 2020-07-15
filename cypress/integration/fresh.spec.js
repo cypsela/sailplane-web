@@ -33,7 +33,7 @@ describe('App loads', () => {
 
   it('can rename a folder', () => {
     cy.contains('Folder-test').trigger('mouseover');
-    cy.get('#Edit-dir').click();
+    cy.get('#Rename-dir').click();
     const input = cy.get('input[type="text"]');
     input.should('have.attr', 'value', 'Folder-test');
     input.type('Folder-renamed');
@@ -67,12 +67,21 @@ describe('App loads', () => {
   it('can rename file', () => {
     cy.contains('pic1.jpg').trigger('mouseover');
 
-    cy.get('#Edit-file').click();
+    cy.get('#Rename-file').click();
     const input = cy.get('input[type="text"]');
     input.should('have.attr', 'value', 'pic1.jpg');
     input.type('pic1-renamed.jpg');
     cy.contains('Accept').click();
     cy.contains('pic1-renamed.jpg');
+  });
+
+  it('has tooltips on every icon', () => {
+    const toolTips = ['Download', 'Rename', 'Share', 'Delete'];
+    cy.contains('pic1-renamed.jpg').trigger('mouseover');
+    for (let toolTip of toolTips) {
+      cy.get(`#${toolTip}-file`).trigger('mouseover');
+      cy.contains(toolTip);
+    }
   });
 
   it('can share file', () => {
