@@ -44,6 +44,7 @@ export const Instance = React.memo(
         overflow: 'hidden',
         width: '40%',
         textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
       },
       tools: {
         display: 'flex',
