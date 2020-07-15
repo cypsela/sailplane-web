@@ -55,10 +55,10 @@ export function NowPlaying({currentAudio, setPlaying}) {
         <div style={styles.name}>
           {isChrome ? (
             <marquee scrollamount={4} behavior={'scroll'}>
-              {audioInfo.filename}
+              {audioInfo.filename ? audioInfo.filename : 'Not playing'}
             </marquee>
           ) : (
-            <div>{audioInfo.filename}</div>
+            <div>{audioInfo.filename ? audioInfo.filename : 'Not playing'}</div>
           )}
         </div>
       </div>

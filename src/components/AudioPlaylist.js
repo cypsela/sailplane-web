@@ -47,7 +47,7 @@ export default function AudioPlaylist({files, ipfs}) {
   };
 
   const dispatch = useDispatch();
-  const [currentFileIndex, setCurrentFileIndex] = useState(0);
+  const [currentFileIndex, setCurrentFileIndex] = useState(-1);
   const [fileURLS, setFileURLS] = useState(new Array(1000));
   const [playing, setPlaying] = useState(false);
   const prevFileIndex = usePrevious(currentFileIndex);
