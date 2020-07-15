@@ -15,9 +15,11 @@ export function ToolItem({
   className,
 }) {
   const [hoverRef, isHovered] = useHover();
-  const [tooltipRef, tooltipDimenstions] = useDimensions();
+  const [fullDimensionsRef, fullDimensions] = useDimensions();
+
+  const [tooltipRef, tooltipDimensions] = useDimensions();
   const IconComponent = iconComponent;
-  const tooltipWidth = tooltipDimenstions.width ? tooltipDimenstions.width : 0;
+  const tooltipWidth = tooltipDimensions.width ? tooltipDimensions.width : 0;
 
   if (!defaultColor) {
     defaultColor = primary4;
@@ -26,7 +28,6 @@ export function ToolItem({
   if (!changeColor) {
     changeColor = errorColor;
   }
-
   const styles = {
     container: {
       position: 'relative',
@@ -36,16 +37,17 @@ export function ToolItem({
       fontSize: 14,
     },
     popover: {
-      position: 'absolute',
-      top: -30,
+      position: 'fixed',
+      top: fullDimensions.y - 32,
+      left: fullDimensions.x - (tooltipWidth / 2 - 2),
       backgroundColor: primary3,
       color: '#FFF',
       padding: '4px 6px',
       borderRadius: 2,
-      left: -(tooltipWidth / 2) + 8,
       fontSize: 14,
       fontWeight: 400,
       zIndex: 1000,
+      pointerEvents: 'none',
     },
     title: {
       textDecoration: isHovered ? 'underline' : 'none',
@@ -64,6 +66,7 @@ export function ToolItem({
         event.stopPropagation();
         onClick();
       }}>
+      <div ref={fullDimensionsRef} />
       {iconComponent ? (
         <IconComponent
           color={isHovered ? changeColor : defaultColor}
