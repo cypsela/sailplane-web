@@ -39,7 +39,7 @@ export function ToolItem({
     popover: {
       position: 'fixed',
       top: fullDimensions.y - 32,
-      left: fullDimensions.x - (tooltipWidth / 2 - 2),
+      left: fullDimensions.x - (tooltipWidth / 2 - 8),
       backgroundColor: primary3,
       color: '#FFF',
       padding: '4px 6px',
