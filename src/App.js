@@ -11,7 +11,7 @@ import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
 import {Instances} from './Instances';
 import {useDispatch, useSelector} from 'react-redux';
-import {addInstance, setInstanceIndex} from './actions/main';
+import {addInstance, setInstanceIndex, setNewUser} from './actions/main';
 import {setStatus} from './actions/tempData';
 import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
@@ -37,7 +37,7 @@ function App({match}) {
   const cleanImportInstanceAddress = decodeURIComponent(importInstanceAddress);
 
   const dispatch = useDispatch();
-  const {instances, instanceIndex} = useSelector((state) => state.main);
+  const {instances, instanceIndex, newUser} = useSelector((state) => state.main);
   const currentInstance = instances[instanceIndex];
   const prevInstanceIndex = usePrevious(instanceIndex);
   const prevInstanceLength = usePrevious(instances.length);
@@ -50,14 +50,6 @@ function App({match}) {
       height: '100%',
     },
   };
-
-  // Import instance block
-  useEffect(() => {
-    if (prevInstanceLength && prevInstanceLength !== instances.length) {
-      dispatch(setInstanceIndex(instances.length - 1));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [instances.length]);
 
   useEffect(() => {
     function importInstance() {
@@ -102,22 +94,18 @@ function App({match}) {
 
   useEffect(() => {
     const switchInstance = async (doLS) => {
-      dispatch(setStatus({message: 'Looking for drive...'}));
       setInstanceReady(false);
-      let address;
-      const sailplane = sailplaneRef.current;
-
-      if (instances.length) {
-        address = currentInstance.address;
-      } else {
-        const defaultOptions = {meta: 'superdrive'};
-        address = await sailplane.determineAddress('main', defaultOptions);
-        dispatch(addInstance(address.path, address.toString()));
+      if (!instances.length) {
+        return
       }
+      dispatch(setStatus({message: 'Looking for drive...'}));
+
+      const sailplane = sailplaneRef.current;
+      const address = currentInstance.address;
 
       const sfs =
         sailplane.mounted[address.toString()] ||
-        (await sailplane.mount(address, {autoStart: false}));
+        await sailplane.mount(address, {autoStart: false});
 
       const onProgress = (key) => (current, max) => {
         dispatch(setStatus({message: `${key} ${getPercent(current, max)}%`}));
@@ -167,12 +155,21 @@ function App({match}) {
   }, [nodeReady, instanceIndex, instances]);
 
   useEffect(() => {
+    const handleNewUser = async (sailplane) => {
+      const defaultOptions = {meta: 'superdrive'};
+      const defaultAddress = await sailplane.determineAddress('main', defaultOptions);
+      dispatch(addInstance(defaultAddress.path, defaultAddress.toString()));
+      dispatch(setNewUser(false));
+    }
     const connectSailplane = async (ipfs) => {
       dispatch(setStatus({message: 'Connecting'}));
       const orbitdb = await OrbitDB.createInstance(ipfs);
       const sailplane = await Sailplane.create(orbitdb);
-
       sailplaneRef.current = sailplane;
+
+      if (newUser) {
+        await handleNewUser(sailplane)
+      }
       setNodeReady(true);
       dispatch(setStatus({}));
 
@@ -188,8 +185,10 @@ function App({match}) {
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
+      const noDrives = instances.length === 0
+      const message = !noDrives ? 'Looking for drive...' : 'Create a drive'
       return !instanceReady ? (
-        <LoadingRightBlock message={'Looking for drive...'} />
+        <LoadingRightBlock message={message} loading={!noDrives} />
       ) : (
         <FileBlock
           sharedFs={sharedFS}

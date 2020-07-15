@@ -35,3 +35,10 @@ export function removeInstance(index) {
     index,
   };
 }
+
+export function setNewUser(bool) {
+  return {
+    type: main.SET_NEW_USER,
+    bool,
+  }
+}

@@ -5,6 +5,7 @@ const initialState = {
   instances: [],
   instanceIndex: 0,
   encryptionKey: null,
+  newUser: true,
 };
 
 export default function main(state = initialState, action) {
@@ -19,7 +20,7 @@ export default function main(state = initialState, action) {
     case mainTypes.SET_INSTANCE_INDEX: {
       const {index} = action;
       return produce(state, (draftState) => {
-        draftState.instanceIndex = index;
+        draftState.instanceIndex = Math.max(0, index);
       });
     }
 
@@ -52,6 +53,13 @@ export default function main(state = initialState, action) {
           draftState.instanceIndex = 0;
         }
       });
+    }
+
+    case mainTypes.SET_NEW_USER: {
+      const {bool} = action
+      return produce(state, (draftState) => {
+        draftState.newUser = bool
+      })
     }
   }
 
