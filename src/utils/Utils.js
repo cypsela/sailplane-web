@@ -258,3 +258,11 @@ export function sortDirectoryContents(directoryContents) {
   const files = sortedContents.filter((item) => item.type !== 'dir');
   return directories.concat(files);
 }
+
+export const filterImageFiles = (files) =>
+  files
+    ? files.filter((file) => {
+        const ext = getFileExtensionFromFilename(file.name);
+        return isFileExtensionImage(ext);
+      })
+    : null;

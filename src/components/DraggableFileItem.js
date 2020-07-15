@@ -10,6 +10,7 @@ export function DraggableFileItem({
   ipfs,
   fileIndex,
   isParent,
+  onIconClicked,
 }) {
   return (
     <Draggable draggableId={data.path} index={fileIndex}>
@@ -28,6 +29,7 @@ export function DraggableFileItem({
               ipfs={ipfs}
               data={data}
               snapshot={snapshot}
+              onIconClicked={onIconClicked}
             />
           </div>
         );

@@ -1,5 +1,5 @@
 import {DropZone} from './DropZone';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {primary2, primary35} from './colors';
 import {FolderTools} from './FolderTools';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
@@ -7,8 +7,19 @@ import {StatusBar} from './StatusBar';
 import {ShareDialog} from './ShareDialog';
 import {useIsMobile} from './hooks/useIsMobile';
 import {DraggableFileItem} from './components/DraggableFileItem';
-import {sortDirectoryContents} from './utils/Utils';
+import {
+  filterImageFiles,
+  getBlobFromPathCID,
+  getFileExtensionFromFilename,
+  getPercent,
+  isFileExtensionImage,
+  sortDirectoryContents,
+} from './utils/Utils';
 import {DragBlock} from './components/DragBlock';
+import Lightbox from 'react-image-lightbox';
+import {setStatus} from './actions/tempData';
+import {useDispatch} from 'react-redux';
+import usePrevious from './hooks/usePrevious';
 
 const styles = {
   container: {
@@ -62,13 +73,68 @@ export function FileBlock({
   const isMobile = useIsMobile();
   const dropzoneRef = useRef(null);
   const fullFileList = sortDirectoryContents(directoryContents);
-
   const pathSplit = currentDirectory.split('/');
   const parentSplit = pathSplit.slice(0, pathSplit.length - 1);
   const parentPath = parentSplit.join('/');
 
+  const [isImageOpen, setIsImageOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageURLS, setImageURLS] = useState(new Array(1000));
+  const imageFiles = filterImageFiles(fullFileList);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setImageURLS(new Array(1000));
+  }, [currentDirectory]);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      if (imageURLS[0] || !isImageOpen) {
+        return;
+      }
+
+      const imageURLSPromises = imageFiles.map(async (file) => {
+        const cid = await sharedFs.current.read(file.path);
+
+        const blob = await getBlobFromPathCID(
+          cid,
+          file.path,
+          ipfs,
+          (currentIndex, totalCount) => {
+            dispatch(
+              setStatus({
+                message: `[${getPercent(
+                  currentIndex,
+                  totalCount,
+                )}%] Loading previews`,
+              }),
+            );
+          },
+        );
+
+        dispatch(setStatus({}));
+        return window.URL.createObjectURL(blob);
+      });
+
+      const tmpImageURLS = await Promise.all(imageURLSPromises);
+      setImageURLS(tmpImageURLS);
+    };
+
+    loadImages();
+  }, [imageFiles.length, isImageOpen, currentDirectory]);
+
   return (
     <div style={styles.container}>
+      {isImageOpen && imageURLS[currentImageIndex] ? (
+        <Lightbox
+          mainSrc={imageURLS[currentImageIndex]}
+          nextSrc={imageURLS[currentImageIndex + 1]}
+          prevSrc={imageURLS[currentImageIndex - 1]}
+          onMoveNextRequest={() => setCurrentImageIndex(currentImageIndex + 1)}
+          onMovePrevRequest={() => setCurrentImageIndex(currentImageIndex - 1)}
+          onCloseRequest={() => setIsImageOpen(false)}
+        />
+      ) : null}
       <FolderTools
         currentDirectory={currentDirectory}
         sharedFs={sharedFs}
@@ -147,6 +213,20 @@ export function FileBlock({
                             sharedFs={sharedFs}
                             ipfs={ipfs}
                             setCurrentDirectory={setCurrentDirectory}
+                            onIconClicked={
+                              isFileExtensionImage(
+                                getFileExtensionFromFilename(fileItem.name),
+                              )
+                                ? () => {
+                                    const newImageIndex = imageFiles.findIndex(
+                                      (imageFile) =>
+                                        imageFile.name === fileItem.name,
+                                    );
+                                    setCurrentImageIndex(newImageIndex);
+                                    setIsImageOpen(true);
+                                  }
+                                : null
+                            }
                           />
                         ))}
                       </div>

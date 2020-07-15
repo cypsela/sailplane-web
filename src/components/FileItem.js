@@ -11,8 +11,8 @@ import {
   getFileTime,
   getIconForPath,
   humanFileSize,
-  isFileExtensionSupported,
   getPercent,
+  isFileExtensionAudio,
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import useTextInput from '../hooks/useTextInput';
@@ -301,11 +301,8 @@ export function FileItem({
             onClick={async (event) => {
               event.stopPropagation();
 
-              if (forceIcon) {
-                if (onIconClicked) {
-                  onIconClicked();
-                }
-
+              if (onIconClicked) {
+                onIconClicked();
                 return;
               }
 
@@ -316,7 +313,8 @@ export function FileItem({
               if (type === 'dir') {
                 setCurrentDirectory(path);
               } else {
-                if (!fileBlob && isFileExtensionSupported(fileExtension)) {
+                // Only fetch for audio on click now
+                if (!fileBlob && isFileExtensionAudio(fileExtension)) {
                   dispatch(setStatus({message: 'Fetching preview'}));
                   const blob = await getBlob();
                   dispatch(setStatus({}));

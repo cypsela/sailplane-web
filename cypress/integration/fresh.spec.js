@@ -121,7 +121,8 @@ describe('App loads', () => {
 
   it('can preview photos', () => {
     cy.contains('pic2.jpg').click();
-    cy.get('img').should('have.length', 1);
+    cy.get('img').should('have.length', 3);
+    cy.get('.ril-close').click();
   });
 
   it('can create and share a photo gallery folder', () => {

@@ -41,7 +41,6 @@ function App({match}) {
   const {instances, instanceIndex, newUser} = useSelector((state) => state.main);
   const currentInstance = instances[instanceIndex];
   const prevInstanceIndex = usePrevious(instanceIndex);
-  const prevInstanceLength = usePrevious(instances.length);
 
   const styles = {
     container: {
