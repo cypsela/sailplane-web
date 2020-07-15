@@ -301,7 +301,15 @@ export function FileItem({
             onClick={async (event) => {
               event.stopPropagation();
 
-              if (editMode || forceIcon) {
+              if (forceIcon) {
+                if (onIconClicked) {
+                  onIconClicked();
+                }
+
+                return;
+              }
+
+              if (editMode) {
                 return;
               }
 
@@ -320,17 +328,7 @@ export function FileItem({
             }}>
             <div
               style={{...styles.flexItem, maxWidth: isMobile ? null : '25%'}}>
-              <IconComponent
-                color={primary45}
-                size={16}
-                style={styles.icon}
-                onClick={(event) => {
-                  if (onIconClicked) {
-                    event.stopPropagation();
-                    onIconClicked();
-                  }
-                }}
-              />
+              <IconComponent color={primary45} size={16} style={styles.icon} />
               {editMode ? (
                 <>{InputComponent}</>
               ) : isParent ? (

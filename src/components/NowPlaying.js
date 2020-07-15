@@ -9,7 +9,7 @@ export function NowPlaying({currentAudio, setPlaying}) {
       backgroundColor: primary2,
       padding: 18,
       borderRadius: 4,
-      boxShadow: `0px 0px 2px ${primary4}`,
+      boxShadow: `rgb(70, 145, 191) 0px 0px 4px`,
       marginTop: 10,
       marginBottom: 8,
     },
@@ -23,6 +23,7 @@ export function NowPlaying({currentAudio, setPlaying}) {
       justifyContent: 'center',
       marginBottom: 10,
       height: 50,
+      boxShadow: `1px 2px 3px #4691bfad inset`,
     },
     name: {
       fontFamily: 'MuseoModerno',
