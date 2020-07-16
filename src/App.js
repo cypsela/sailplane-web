@@ -38,7 +38,9 @@ function App({match}) {
   const cleanImportInstanceAddress = decodeURIComponent(importInstanceAddress);
 
   const dispatch = useDispatch();
-  const {instances, instanceIndex, newUser} = useSelector((state) => state.main);
+  const {instances, instanceIndex, newUser} = useSelector(
+    (state) => state.main,
+  );
   const currentInstance = instances[instanceIndex];
   const prevInstanceIndex = usePrevious(instanceIndex);
 
@@ -61,7 +63,7 @@ function App({match}) {
           );
 
           if (!sameInstance) {
-            dispatch(addInstance(address.path, address.toString()));
+            dispatch(addInstance(address.path, address.toString(), true));
           }
         }
       }
@@ -96,22 +98,22 @@ function App({match}) {
     const switchInstance = async (doLS) => {
       setInstanceReady(false);
       if (!instances.length) {
-        return
+        return;
       }
       dispatch(setStatus({message: 'Looking for drive...'}));
 
       const sailplane = sailplaneRef.current;
       const address = currentInstance.address;
 
-      const sfsOptions = {autoStart: false}
+      const sfsOptions = {autoStart: false};
       const sfs =
         sailplane.mounted[address] ||
-        await mountQueue.current[address] ||
-        await (() => {
-          return mountQueue.current[address] =
-            sailplane.mount(address, sfsOptions)
-              .finally(() => delete mountQueue.current[address])
-        })()
+        (await mountQueue.current[address]) ||
+        (await (() => {
+          return (mountQueue.current[address] = sailplane
+            .mount(address, sfsOptions)
+            .finally(() => delete mountQueue.current[address]));
+        })());
 
       const onProgress = (key) => (current, max) => {
         dispatch(setStatus({message: `${key} ${getPercent(current, max)}%`}));
@@ -163,10 +165,15 @@ function App({match}) {
   useEffect(() => {
     const handleNewUser = async (sailplane) => {
       const defaultOptions = {meta: 'superdrive'};
-      const defaultAddress = await sailplane.determineAddress('default', defaultOptions);
-      dispatch(addInstance(defaultAddress.path, defaultAddress.toString()));
+      const defaultAddress = await sailplane.determineAddress(
+        'default',
+        defaultOptions,
+      );
+      dispatch(
+        addInstance(defaultAddress.path, defaultAddress.toString(), false),
+      );
       dispatch(setNewUser(false));
-    }
+    };
     const connectSailplane = async (ipfs) => {
       dispatch(setStatus({message: 'Connecting'}));
       const orbitdb = await OrbitDB.createInstance(ipfs);
@@ -174,7 +181,7 @@ function App({match}) {
       sailplaneRef.current = sailplane;
 
       if (newUser) {
-        await handleNewUser(sailplane)
+        await handleNewUser(sailplane);
       }
       setNodeReady(true);
       dispatch(setStatus({}));
@@ -191,8 +198,8 @@ function App({match}) {
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
-      const noDrives = instances.length === 0
-      const message = !noDrives ? 'Looking for drive...' : 'Create a drive'
+      const noDrives = instances.length === 0;
+      const message = !noDrives ? 'Looking for drive...' : 'Create a drive';
       return !instanceReady ? (
         <LoadingRightBlock message={message} loading={!noDrives} />
       ) : (

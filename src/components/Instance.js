@@ -4,7 +4,7 @@ import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FiShare2, FiCopy, FiTrash} from 'react-icons/fi';
 import {useElementCopy} from '../hooks/useElementCopy';
-import {FiHardDrive} from 'react-icons/fi/index';
+import {FiHardDrive, FiUsers} from 'react-icons/fi/index';
 
 export const Instance = React.memo(
   ({data, selected, onClick, onDelete, instanceIndex}) => {
@@ -16,7 +16,7 @@ export const Instance = React.memo(
       message: 'Copied drive address',
     });
 
-    const {name, address} = data;
+    const {name, address, isImported} = data;
 
     let backgroundColor = selected ? primary3 : '#FFF';
 
@@ -81,15 +81,23 @@ export const Instance = React.memo(
         <div style={styles.container}>
           <div style={styles.name}>
             <FiHardDrive
+              className={'shareIcon'}
               color={selected ? '#FFF' : primary45}
               size={16}
               style={styles.icon}
             />
+            {isImported ? (
+              <FiUsers
+                color={selected ? '#FFF' : primary45}
+                size={16}
+                style={styles.icon}
+              />
+            ) : null}
             {name}
           </div>
           <div id={addressId} style={styles.address}>
             <span ref={elementToCopy1}>{shareURL}</span>
-            <br/>
+            <br />
             <span ref={elementToCopy2}>{address}</span>
           </div>
         </div>

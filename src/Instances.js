@@ -75,13 +75,13 @@ export function Instances({sailplane}) {
       meta: 'superdrive',
     });
 
-    dispatch(addInstance(address.path, address.toString()));
+    dispatch(addInstance(address.path, address.toString(), false));
     setAddInstanceMode(false);
   };
   const importInstance = async (address) => {
     if (OrbitDBAddress.isValid(address)) {
       address = OrbitDBAddress.parse(address);
-      dispatch(addInstance(address.path, address.toString()));
+      dispatch(addInstance(address.path, address.toString(), true));
       setImportInstanceMode(false);
     }
   };
