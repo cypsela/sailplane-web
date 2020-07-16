@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {primary4, primary45} from './colors';
+import {primary3, primary4, primary45} from './colors';
 import {Instance} from './components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import {FaServer} from 'react-icons/fa';
@@ -24,7 +24,7 @@ const styles = {
     boxSizing: 'border-box',
   },
   title: {
-    color: primary4,
+    color: primary45,
     fontSize: 16,
     fontWeight: 400,
     marginBottom: 16,
@@ -53,7 +53,6 @@ const styles = {
     marginRight: 6,
   },
   instances: {
-    marginTop: 6,
   },
 };
 
@@ -101,7 +100,7 @@ export function Instances({sailplane}) {
     <div style={styles.container}>
       <div style={styles.header}>
         <div style={styles.title}>
-          <FaServer color={primary45} size={16} style={styles.icon} />
+          <FaServer color={primary3} size={16} style={styles.icon} />
           Drives
         </div>
         <div style={styles.tools}>
@@ -111,14 +110,14 @@ export function Instances({sailplane}) {
                 style={styles.tools}
                 className={'addInstance'}
                 onClick={() => setImportInstanceMode(true)}>
-                <FiUpload color={primary4} size={16} style={styles.icon} />
+                <FiUpload color={primary45} size={16} style={styles.icon} />
                 <span style={styles.toolTitle}>Import drive</span>
               </div>
               <div
                 style={styles.tools}
                 className={'addInstance'}
                 onClick={() => createInstance()}>
-                <FiPlusCircle color={primary4} size={16} style={styles.icon} />
+                <FiPlusCircle color={primary45} size={16} style={styles.icon} />
                 <span style={styles.toolTitle}>Create drive</span>
               </div>
             </>

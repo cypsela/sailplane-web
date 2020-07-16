@@ -22,12 +22,13 @@ export function ToolItem({
   const tooltipWidth = tooltipDimensions.width ? tooltipDimensions.width : 0;
 
   if (!defaultColor) {
-    defaultColor = primary4;
+    defaultColor = primary3;
   }
 
   if (!changeColor) {
     changeColor = errorColor;
   }
+
   const styles = {
     container: {
       position: 'relative',

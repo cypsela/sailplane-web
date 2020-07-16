@@ -20,7 +20,6 @@ import {DragBlock} from './components/DragBlock';
 import Lightbox from 'react-image-lightbox';
 import {setStatus} from './actions/tempData';
 import {useDispatch} from 'react-redux';
-import usePrevious from './hooks/usePrevious';
 
 const styles = {
   container: {
@@ -35,7 +34,7 @@ const styles = {
     height: '100%',
   },
   fileHeader: {
-    marginTop: 20,
+    marginTop: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -166,11 +165,13 @@ export function FileBlock({
           ref={dropzoneRef}>
           <DragDropContext
             onDragEnd={async (draggable) => {
-              const { combine, draggableId } = draggable
+              const {combine, draggableId} = draggable;
               if (combine) {
-                const fileName = sharedFs.current.fs.pathName(draggableId)
-                if (sharedFs.current.fs.content(combine.draggableId) !== 'dir') {
-                  return
+                const fileName = sharedFs.current.fs.pathName(draggableId);
+                if (
+                  sharedFs.current.fs.content(combine.draggableId) !== 'dir'
+                ) {
+                  return;
                 }
 
                 try {
@@ -180,11 +181,13 @@ export function FileBlock({
                     fileName,
                   );
                 } catch (e) {
-                  dispatch(setStatus({
-                    message: `failed to move ${draggable.draggableId}`,
-                    isError: true
-                  }))
-                  delay(2000).then(() => dispatch(setStatus({})))
+                  dispatch(
+                    setStatus({
+                      message: `failed to move ${draggable.draggableId}`,
+                      isError: true,
+                    }),
+                  );
+                  delay(2000).then(() => dispatch(setStatus({})));
                 }
               }
             }}>
@@ -214,7 +217,11 @@ export function FileBlock({
                     }
                     {...provided.droppableProps}>
                     {!directoryContents.length ? (
-                      <DragBlock />
+                      <DragBlock
+                        handleOpenUpload={() => {
+                          dropzoneRef.current.openUpload();
+                        }}
+                      />
                     ) : (
                       <div style={styles.files}>
                         {fullFileList.map((fileItem, index) => (

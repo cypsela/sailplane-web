@@ -7,7 +7,7 @@ import {
   FiUpload,
   FiShare2,
 } from 'react-icons/fi';
-import {errorColor, goodColor, primary} from './colors';
+import {errorColor, goodColor, primary, primary4} from './colors';
 import {Breadcrumb} from './components/Breadcrumb';
 import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
@@ -110,7 +110,7 @@ export function FolderTools({
                   id={'folderShare'}
                   iconComponent={FiShare2}
                   size={18}
-                  changeColor={primary}
+                  changeColor={primary4}
                   onClick={() => {
                     dispatch(
                       setShareData({
@@ -125,7 +125,7 @@ export function FolderTools({
               <ToolItem
                 iconComponent={FiUpload}
                 size={18}
-                changeColor={primary}
+                changeColor={primary4}
                 onClick={() => {
                   handleOpenUpload();
                 }}
@@ -134,7 +134,7 @@ export function FolderTools({
                 id={'addFolder'}
                 iconComponent={FiFolderPlus}
                 size={18}
-                changeColor={primary}
+                changeColor={primary4}
                 onClick={() => setAddFolderMode(true)}
               />
             </>
