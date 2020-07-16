@@ -47,7 +47,7 @@ const styles = {
     justifyContent: 'flex-end',
     alignItems: 'center',
     color: primary4,
-    fontSize: 14,
+    fontSize: 12,
   },
   toolTitle: {
     marginRight: 6,
@@ -111,14 +111,14 @@ export function Instances({sailplane}) {
                 style={styles.tools}
                 className={'addInstance'}
                 onClick={() => setImportInstanceMode(true)}>
-                <FiUpload color={primary4} size={18} style={styles.icon} />
+                <FiUpload color={primary4} size={16} style={styles.icon} />
                 <span style={styles.toolTitle}>Import drive</span>
               </div>
               <div
                 style={styles.tools}
                 className={'addInstance'}
                 onClick={() => createInstance()}>
-                <FiPlusCircle color={primary4} size={18} style={styles.icon} />
+                <FiPlusCircle color={primary4} size={16} style={styles.icon} />
                 <span style={styles.toolTitle}>Create drive</span>
               </div>
             </>

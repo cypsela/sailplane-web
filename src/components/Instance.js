@@ -33,6 +33,7 @@ export const Instance = React.memo(
         paddingTop: 12,
         fontFamily: 'Open Sans',
         cursor: 'pointer',
+        borderRadius: 3,
       },
       container: {
         display: 'flex',
@@ -63,6 +64,10 @@ export const Instance = React.memo(
       icon: {
         marginRight: 4,
       },
+      importedTxt: {
+        marginLeft: 6,
+        fontSize: 14,
+      },
     };
 
     const addressId = `instance-${address}`;
@@ -83,17 +88,13 @@ export const Instance = React.memo(
             <FiHardDrive
               className={'shareIcon'}
               color={selected ? '#FFF' : primary45}
-              size={16}
+              size={15}
               style={styles.icon}
             />
-            {isImported ? (
-              <FiUsers
-                color={selected ? '#FFF' : primary45}
-                size={16}
-                style={styles.icon}
-              />
-            ) : null}
             {name}
+            {isImported ? (
+              <span style={styles.importedTxt}>[imported]</span>
+            ) : null}
           </div>
           <div id={addressId} style={styles.address}>
             <span ref={elementToCopy1}>{shareURL}</span>
@@ -106,7 +107,7 @@ export const Instance = React.memo(
             <ToolItem
               defaultColor={selected ? '#fff' : primary45}
               iconComponent={FiShare2}
-              size={16}
+              size={15}
               changeColor={primary}
               onClick={doCopy1}
             />
@@ -115,7 +116,7 @@ export const Instance = React.memo(
             <ToolItem
               defaultColor={selected ? '#fff' : primary45}
               iconComponent={FiCopy}
-              size={16}
+              size={15}
               changeColor={primary}
               onClick={doCopy2}
             />
@@ -125,7 +126,7 @@ export const Instance = React.memo(
               className={'instanceDelete'}
               defaultColor={selected ? '#fff' : primary45}
               iconComponent={FiTrash}
-              size={16}
+              size={15}
               changeColor={errorColor}
               onClick={() => onDelete()}
             />
