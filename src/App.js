@@ -11,11 +11,11 @@ import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
 import {Instances} from './Instances';
 import {useDispatch, useSelector} from 'react-redux';
-import {addInstance, setInstanceIndex, setNewUser} from './actions/main';
+import {addInstance, setNewUser} from './actions/main';
 import {setStatus} from './actions/tempData';
 import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
-import {delay, getPercent} from './utils/Utils';
+import {delay, getMnemonic, getPercent} from './utils/Utils';
 import all from 'it-all';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 
@@ -166,7 +166,7 @@ function App({match}) {
     const handleNewUser = async (sailplane) => {
       const defaultOptions = {meta: 'superdrive'};
       const defaultAddress = await sailplane.determineAddress(
-        'default',
+        getMnemonic(),
         defaultOptions,
       );
       dispatch(

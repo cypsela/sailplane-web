@@ -9,6 +9,7 @@ import {addInstance, removeInstance, setInstanceIndex} from './actions/main';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 import {StatusBar} from './StatusBar';
 import usePrevious from './hooks/usePrevious';
+import {getMnemonic} from './utils/Utils';
 
 const styles = {
   container: {
@@ -70,8 +71,8 @@ export function Instances({sailplane}) {
     }
   }, [instances.length, prevInstanceLength]);
 
-  const createInstance = async (name) => {
-    const address = await sailplane.determineAddress(name, {
+  const createInstance = async () => {
+    const address = await sailplane.determineAddress(getMnemonic(), {
       meta: 'superdrive',
     });
 
@@ -96,16 +97,6 @@ export function Instances({sailplane}) {
     },
   );
 
-  const CreateInstanceInput = useTextInput(
-    addInstanceMode,
-    (instanceName) => createInstance(instanceName),
-    () => setAddInstanceMode(false),
-    '',
-    {
-      placeholder: 'drive name',
-    },
-  );
-
   return (
     <div style={styles.container}>
       <div style={styles.header}>
@@ -126,7 +117,7 @@ export function Instances({sailplane}) {
               <div
                 style={styles.tools}
                 className={'addInstance'}
-                onClick={() => setAddInstanceMode(true)}>
+                onClick={() => createInstance()}>
                 <FiPlusCircle color={primary4} size={18} style={styles.icon} />
                 <span style={styles.toolTitle}>Create drive</span>
               </div>
@@ -134,7 +125,6 @@ export function Instances({sailplane}) {
           ) : null}
 
           {importInstanceMode ? ImportInstanceInput : null}
-          {addInstanceMode ? CreateInstanceInput : null}
         </div>
       </div>
 

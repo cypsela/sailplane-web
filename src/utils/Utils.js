@@ -11,6 +11,7 @@ import {
 } from 'react-icons/fi';
 import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
+const bip39 = require('bip39')
 
 export async function fileToBlob(file, handleUpdate) {
   const {content, size} = file;
@@ -266,3 +267,7 @@ export const filterImageFiles = (files) =>
         return isFileExtensionImage(ext);
       })
     : null;
+
+export const getMnemonic = () => {
+  return bip39.generateMnemonic().split(' ').slice(0,3).join('-');
+}
