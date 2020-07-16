@@ -14,6 +14,7 @@ import {
   getPercent,
   isFileExtensionImage,
   sortDirectoryContents,
+  delay,
 } from './utils/Utils';
 import {DragBlock} from './components/DragBlock';
 import Lightbox from 'react-image-lightbox';
@@ -165,15 +166,26 @@ export function FileBlock({
           ref={dropzoneRef}>
           <DragDropContext
             onDragEnd={async (draggable) => {
-              if (draggable.combine) {
-                const filePathSplit = draggable.draggableId.split('/');
-                const fileName = filePathSplit[filePathSplit.length - 1];
+              const { combine, draggableId } = draggable
+              if (combine) {
+                const fileName = sharedFs.current.fs.pathName(draggableId)
+                if (sharedFs.current.fs.content(combine.draggableId) !== 'dir') {
+                  return
+                }
 
-                await sharedFs.current.move(
-                  draggable.draggableId,
-                  draggable.combine.draggableId,
-                  fileName,
-                );
+                try {
+                  await sharedFs.current.move(
+                    draggable.draggableId,
+                    draggable.combine.draggableId,
+                    fileName,
+                  );
+                } catch (e) {
+                  dispatch(setStatus({
+                    message: `failed to move ${draggable.draggableId}`,
+                    isError: true
+                  }))
+                  delay(2000).then(() => dispatch(setStatus({})))
+                }
               }
             }}>
             <Droppable
