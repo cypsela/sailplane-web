@@ -77,6 +77,7 @@ export const Instance = React.memo(
 
     return (
       <div
+        className={'drive'}
         style={styles.outer}
         ref={hoverRef}
         onClick={(event) => {

@@ -19,7 +19,11 @@ export function SmallInstanceItem({name, onClick}) {
     },
   };
   return (
-    <div style={styles.container} ref={hoverRef} onClick={onClick}>
+    <div
+      className={'smallInstanceItem'}
+      style={styles.container}
+      ref={hoverRef}
+      onClick={onClick}>
       {name}
     </div>
   );

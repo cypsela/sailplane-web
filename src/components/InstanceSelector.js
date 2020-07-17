@@ -23,7 +23,7 @@ export function InstanceSelector({}) {
       position: 'relative',
       marginRight: 6,
       border: `1px solid ${primary3}`,
-      borderBottomWidth: menuEnabled? 0: 1,
+      borderBottomWidth: menuEnabled ? 0 : 1,
       color: primary45,
       padding: '3px 6px',
       borderRadius: `4px 4px ${menuEnabled ? 0 : 4}px ${menuEnabled ? 0 : 4}px`,
@@ -40,7 +40,7 @@ export function InstanceSelector({}) {
     },
     icon: {
       marginRight: 4,
-    }
+    },
   };
 
   return (
@@ -53,7 +53,7 @@ export function InstanceSelector({}) {
       }}>
       <FiHardDrive color={primary45} size={16} style={styles.icon} />
 
-      {currentInstance.name}
+      <span id={'currentInstanceSelector'}>{currentInstance.name}</span>
       {menuEnabled ? (
         <div style={styles.menu}>
           {filteredInstances.map((instance, index) => (
