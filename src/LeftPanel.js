@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {primary45} from './colors';
+import {primary2, primary45} from './colors';
 import {
   FaFolderOpen,
   FaCog,
@@ -10,6 +10,7 @@ import {
 } from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
 import {useIsMobile} from './hooks/useIsMobile';
+import {FaGithub} from 'react-icons/fa/index';
 
 const styles = {
   container: {
@@ -57,6 +58,19 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  footer: {
+    textAlign: 'center',
+    marginBottom: 8,
+    fontSize: 13,
+    lineHeight: '14px',
+    fontFamily: 'Open Sans',
+  },
+  iconGithub: {
+    cursor: 'pointer',
+  },
+  githubTxt: {
+    fontSize: 10,
+  }
 };
 
 export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
@@ -121,9 +135,19 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
             </div>
           </>
         ) : (
-          <div style={styles.mobilePadding}></div>
+          <div style={styles.mobilePadding} />
         )}
       </div>
+      {!isMobile ? (
+        <div style={styles.footer}>
+          <a
+            href={'https://github.com/cypsela/sailplane-web'}
+            target={'_blank'}>
+            <FaGithub color={primary2} size={20} style={styles.iconGithub} />
+          </a>
+          <div style={styles.githubTxt}>Source</div>
+        </div>
+      ) : null}
     </div>
   );
 }
