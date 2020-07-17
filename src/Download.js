@@ -22,7 +22,9 @@ import {decryptFile, getEncryptionInfoFromFilename} from './utils/encryption';
 function Download({match}) {
   const {cid, path, displayType} = match.params;
   const isMobile = useIsMobile();
-  const ipfsObj = useIPFS();
+  const ipfsObj = useIPFS((error)=> {
+    console.error(error)
+  });
   const [ready, setReady] = useState(false);
   const [files, setFiles] = useState(null);
   const [fileInfo, setFileInfo] = useState(null);

@@ -12,7 +12,7 @@ import {humanFileSize, sortDirectoryContents} from './utils/Utils';
 import {FilePreview} from './components/FilePreview';
 import {FileItem} from './components/FileItem';
 import {useIsMobile} from './hooks/useIsMobile';
-import AudioPlaylist from "./components/AudioPlaylist";
+import AudioPlaylist from './components/AudioPlaylist';
 
 const styles = {
   container: {
@@ -183,12 +183,12 @@ export function DownloadPanel({
                 ) : null}
 
                 {displayType === 'audio' ? (
-                  <AudioPlaylist files={files} ipfs={ipfs}/>
+                  <AudioPlaylist files={files} ipfs={ipfs} />
                 ) : null}
               </div>
             ) : null}
 
-            {files && displayType !=='audio' ? (
+            {sortedFiles.length && displayType !== 'audio' ? (
               <div style={styles.fileContainer}>
                 <div style={styles.fileHeader}>
                   <div style={{...styles.fileHeaderItem, paddingLeft: 12}}>
@@ -207,10 +207,11 @@ export function DownloadPanel({
                     </>
                   ) : null}
 
-                  <div style={styles.fileHeaderItem}></div>
+                  <div style={styles.fileHeaderItem} />
                 </div>
                 {sortedFiles.map((file) => (
                   <FileItem
+                    key={file.name}
                     data={file}
                     setCurrentDirectory={() => {}}
                     readOnly={true}
