@@ -56,7 +56,7 @@ const styles = {
   },
 };
 
-export function Instances({sailplane}) {
+export function Instances({sailplane, ipfs}) {
   const [addInstanceMode, setAddInstanceMode] = useState(false);
   const [importInstanceMode, setImportInstanceMode] = useState(false);
   const dispatch = useDispatch();
@@ -73,6 +73,7 @@ export function Instances({sailplane}) {
   const createInstance = async () => {
     const address = await sailplane.determineAddress(getMnemonic(), {
       meta: 'superdrive',
+      accessController: { type: 'orbitdb' }
     });
 
     dispatch(addInstance(address.path, address.toString(), false));
@@ -81,6 +82,11 @@ export function Instances({sailplane}) {
   const importInstance = async (address) => {
     if (OrbitDBAddress.isValid(address)) {
       address = OrbitDBAddress.parse(address);
+      const manifest = await getManifest(address);
+      const { value: acl } = await ipfs.dag.get(manifest.accessController);
+      if (acl.type !== 'orbitdb') {
+        return
+      }
       dispatch(addInstance(address.path, address.toString(), true));
       setImportInstanceMode(false);
     }

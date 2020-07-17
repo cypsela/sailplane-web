@@ -164,7 +164,10 @@ function App({match}) {
 
   useEffect(() => {
     const handleNewUser = async (sailplane) => {
-      const defaultOptions = {meta: 'superdrive'};
+      const defaultOptions = {
+        meta: 'superdrive',
+        accessController: { type: 'orbitdb' }
+      };
       const defaultAddress = await sailplane.determineAddress(
         getMnemonic(),
         defaultOptions,
@@ -214,7 +217,7 @@ function App({match}) {
     } else if (currentRightPanel === 'settings') {
       return <Settings />;
     } else if (currentRightPanel === 'instances') {
-      return <Instances sailplane={sailplaneRef.current} />;
+      return <Instances sailplane={sailplaneRef.current} ipfs={ipfsObj.ipfs} />;
     }
   };
 
