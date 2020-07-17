@@ -1345,11 +1345,11 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@cypsela/sailplane-node@https://github.com/cypsela/sailplane-node#23d65497b1dad54abebb30fe1d7fc22c37b6fbd0":
-  version "2.1.5"
-  resolved "https://github.com/cypsela/sailplane-node#23d65497b1dad54abebb30fe1d7fc22c37b6fbd0"
+"@cypsela/sailplane-node@https://github.com/cypsela/sailplane-node#e0b6995c769799374874b57c83a0fad9f1d31155":
+  version "2.2.0"
+  resolved "https://github.com/cypsela/sailplane-node#e0b6995c769799374874b57c83a0fad9f1d31155"
   dependencies:
-    "@tabcat/orbit-db-fsstore" "^3.0.2"
+    "@tabcat/orbit-db-fsstore" "^3.1.0"
     it-all "^1.0.2"
     it-last "^1.0.2"
     p-queue "^6.4.0"
@@ -2113,10 +2113,10 @@
     dlv "^1.1.3"
     err-code "^2.0.0"
 
-"@tabcat/orbit-db-fsstore@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@tabcat/orbit-db-fsstore/-/orbit-db-fsstore-3.0.2.tgz#3f8b48af20589847a1b94b670de58068ea0949a0"
-  integrity sha512-BKqufYnWFUBqtK02Txdvi+mQCaqjoQngKkOBeufk5hXh7fHtA6z64IVXVsNLPwAKRce4N+6Ch0TRvfeTpjMzDw==
+"@tabcat/orbit-db-fsstore@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@tabcat/orbit-db-fsstore/-/orbit-db-fsstore-3.1.0.tgz#cabdfe76ca1c33a8fcaff5ceb0de72a4cfccd711"
+  integrity sha512-pOf5nZS8B+2ANCjUPooBVCmqW9hw6SxZAlTQWSGnK1KBb+Tr1Re9vZMCdRlKxd3yXYugNzbwl4IufjKlQNEaRg==
 
 "@testing-library/dom@*":
   version "7.20.0"

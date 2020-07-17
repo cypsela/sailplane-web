@@ -5,7 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@cypress/instrument-cra": "^1.1.1",
-    "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#23d65497b1dad54abebb30fe1d7fc22c37b6fbd0",
+    "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#e0b6995c769799374874b57c83a0fad9f1d31155",
     "@tabcat/file-list-source": "https://github.com/tabcat/file-list-source#fe4abea54a82abe8a1be4edf4be0b6fe1fa9d1fe",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
