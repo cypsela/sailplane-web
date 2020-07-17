@@ -202,7 +202,7 @@ export function DownloadPanel({
                       </div>
                       <div
                         style={{...styles.fileHeaderItem, textAlign: 'right'}}>
-                        {/*Modified*/}
+                        Modified
                       </div>
                     </>
                   ) : null}
