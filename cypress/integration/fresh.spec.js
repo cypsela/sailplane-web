@@ -20,7 +20,7 @@ describe('App loads', () => {
 
     cy.contains('Loading...');
     cy.wait(5000);
-    cy.contains('drag files to upload');
+    cy.contains('Drag files to upload or click here');
   });
 
   it('root folder does not have share button', () => {
@@ -43,7 +43,7 @@ describe('App loads', () => {
 
   it('can open a folder', () => {
     cy.contains('Folder-renamed').click();
-    cy.contains('drag files to upload');
+    cy.contains('Drag files to upload or click here');
   });
 
   it('has parent folder item', () => {
@@ -166,7 +166,7 @@ describe('App loads', () => {
 
   it('should not have any files on fresh drive', () => {
     cy.contains('Files').click();
-    cy.contains('drag files to upload');
+    cy.contains('Drag files to upload or click here');
   });
 
   it('drive selector switches drive', () => {
@@ -241,7 +241,7 @@ describe('App loads', () => {
   //     'http://localhost:3000/#/importInstance/%2Forbitdb%2FzdpuAxHi5JMYYEYEuYRj37aJ98uxFP1QnVSii4o4NZ4q6BiPM%2FTestinstance',
   //   );
   //   cy.contains('Testinstance');
-  //   cy.contains('drag files to upload');
+  //   cy.contains('Drag files to upload or click here');
   // });
 
   // it('can move folders into folders', ()=> {
