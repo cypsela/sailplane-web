@@ -1,10 +1,4 @@
-import {
-  FiFolder,
-  FiFile,
-  FiMusic,
-  FiVideo,
-  FiImage,
-} from 'react-icons/fi/index';
+import {FiFolder, FiMusic, FiVideo, FiImage} from 'react-icons/fi/index';
 import {primary3} from '../colors';
 import React from 'react';
 
@@ -33,16 +27,16 @@ export function DragBlock({handleOpenUpload}) {
     <div style={styles.container} onClick={handleOpenUpload}>
       <div>
         <div style={{...styles.iconContainer, transform: 'rotate(-20deg)'}}>
-          <FiImage color={primary3} size={22} style={{...styles.icon}} />
+          <FiImage color={primary3} size={20} style={{...styles.icon}} />
         </div>
         <div style={{...styles.iconContainer, transform: 'rotate(10deg)'}}>
-          <FiFolder color={primary3} size={22} style={{...styles.icon}} />
+          <FiFolder color={primary3} size={20} style={{...styles.icon}} />
         </div>
         <div style={{...styles.iconContainer, transform: 'rotate(-10deg)'}}>
-          <FiMusic color={primary3} size={22} style={{...styles.icon}} />
+          <FiMusic color={primary3} size={20} style={{...styles.icon}} />
         </div>
         <div style={{...styles.iconContainer, transform: 'rotate(30deg)'}}>
-          <FiVideo color={primary3} size={22} style={{...styles.icon}} />
+          <FiVideo color={primary3} size={20} style={{...styles.icon}} />
         </div>
       </div>
       <div style={styles.dragTitle}>Drag files to upload or click here</div>
