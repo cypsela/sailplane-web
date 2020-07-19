@@ -6,9 +6,11 @@ import {FaServer} from 'react-icons/fa';
 import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {addInstance, removeInstance, setInstanceIndex} from './actions/main';
+import {setStatus} from './actions/tempData';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 import {StatusBar} from './StatusBar';
 import usePrevious from './hooks/usePrevious';
+import {delay} from './utils/Utils';
 import * as sailplaneUtil from './utils/sailplane-util';
 
 const styles = {
@@ -56,7 +58,7 @@ const styles = {
   },
 };
 
-export function Instances({sailplane, ipfs}) {
+export function Instances({sailplane}) {
   const [addInstanceMode, setAddInstanceMode] = useState(false);
   const [importInstanceMode, setImportInstanceMode] = useState(false);
   const dispatch = useDispatch();
@@ -78,16 +80,27 @@ export function Instances({sailplane, ipfs}) {
     setAddInstanceMode(false);
   };
   const importInstance = async (address) => {
+    const handleInvalidAddress = () => {
+      dispatch(setStatus({message: 'invalid', isError: true}));
+      delay(1500).then(() => setStatus());
+    };
     if (OrbitDBAddress.isValid(address)) {
       address = OrbitDBAddress.parse(address);
-      const manifest = await getManifest(address);
-      const { value: acl } = await ipfs.dag.get(manifest.accessController);
-      if (acl.type !== 'orbitdb') {
+      const manifest = await sailplaneUtil.addressManifest(sailplane, address);
+      if (manifest.type !== 'fsstore') {
+        handleInvalidAddress();
         return
       }
-      dispatch(addInstance(address.path, address.toString(), true));
+      const acl = await sailplaneUtil.addressManifestACL(sailplane, address);
+      if (acl.type !== 'orbitdb') {
+        handleInvalidAddress();
+        return
+      }
+      const driveName = sailplaneUtil.driveName(address)
+      dispatch(addInstance(driveName, address.toString(), true));
       setImportInstanceMode(false);
     }
+    handleInvalidAddress();
   };
 
   const ImportInstanceInput = useTextInput(
