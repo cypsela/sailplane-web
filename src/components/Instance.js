@@ -16,17 +16,13 @@ export const Instance = React.memo(
     const styles = {
       outer: {
         backgroundColor: backgroundColor,
-        border: `1px solid ${primary3}`,
-        borderTop: instanceIndex === 0 ? `1px solid ${primary2}` : 0,
-        borderBottom: `1px solid ${primary2}`,
-        borderRight: 0,
-        borderLeft: 0,
+        marginBottom: 8,
         color: selected ? '#fff' : primary45,
         padding: 6,
         paddingTop: 6,
         fontFamily: 'Open Sans',
         cursor: 'pointer',
-        borderRadius: 3,
+        borderRadius: 4,
       },
       container: {
         display: 'flex',
@@ -58,7 +54,7 @@ export const Instance = React.memo(
       },
       importedTxt: {
         marginLeft: 6,
-        fontSize: 14,
+        fontSize: 13,
       },
     };
 
