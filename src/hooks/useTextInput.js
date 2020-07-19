@@ -46,6 +46,8 @@ export default function useTextInput(
       fontSize: 12,
       padding: '3px 5px',
       borderRadius: 2,
+      cursor: 'pointer',
+      zIndex: 2,
     },
   };
 
@@ -68,6 +70,7 @@ export default function useTextInput(
         placeholder={placeholder}
         style={styles.input}
         value={inputString}
+        onClick={(event) => event.stopPropagation()}
         onChange={(event) => setInputString(event.target.value)}
         onKeyPress={(event) => {
           if (event.key === 'Enter') {
@@ -75,7 +78,12 @@ export default function useTextInput(
           }
         }}
       />
-      <div onClick={() => handleDone(inputString)} style={styles.acceptButton}>
+      <div
+        onClick={(event) => {
+          event.stopPropagation();
+          handleDone(inputString);
+        }}
+        style={styles.acceptButton}>
         {confirmTitle ? confirmTitle : 'Accept'}
       </div>
       <ToolItem title={'Cancel'} onClick={() => handleCancel()} />
