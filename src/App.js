@@ -103,7 +103,7 @@ function App({match}) {
       }
       dispatch(setStatus({message: 'Looking for drive...'}));
 
-      const sfs = await sailplaneUtil.mountSFS(
+      const sfs = await sailplaneUtil.mount(
         sailplaneRef.current,
         currentInstance.address,
         sfsQueue.current,
@@ -158,14 +158,9 @@ function App({match}) {
 
   useEffect(() => {
     const handleNewUser = async (sailplane) => {
-      const defaultOptions = {
-        meta: 'superdrive',
-        accessController: { type: 'orbitdb' }
-      };
-      const defaultAddress = await sailplaneUtil.defaultAddress(sailplane);
-      dispatch(
-        addInstance(defaultAddress.path, defaultAddress.toString(), false),
-      );
+      const address = await sailplaneUtil.determineAddress(sailplane);
+      const driveName = sailplaneUtil.driveName(address)
+      dispatch(addInstance(driveName, address.toString(), false));
       dispatch(setNewUser(false));
     };
     const connectSailplane = async (ipfs) => {

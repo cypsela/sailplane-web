@@ -9,7 +9,7 @@ import {addInstance, removeInstance, setInstanceIndex} from './actions/main';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 import {StatusBar} from './StatusBar';
 import usePrevious from './hooks/usePrevious';
-import {getMnemonic} from './utils/Utils';
+import * as sailplaneUtil from './utils/sailplane-util';
 
 const styles = {
   container: {
@@ -71,12 +71,10 @@ export function Instances({sailplane, ipfs}) {
   }, [instances.length, prevInstanceLength]);
 
   const createInstance = async () => {
-    const address = await sailplane.determineAddress(getMnemonic(), {
-      meta: 'superdrive',
-      accessController: { type: 'orbitdb' }
-    });
+    const address = await sailplaneUtil.determineAddress(sailplane);
+    const driveName = sailplaneUtil.driveName(address);
 
-    dispatch(addInstance(address.path, address.toString(), false));
+    dispatch(addInstance(driveName, address.toString(), false));
     setAddInstanceMode(false);
   };
   const importInstance = async (address) => {
