@@ -1,22 +1,28 @@
 import React from 'react';
-import {errorColor, primary, primary3, primary45} from '../colors';
+import {errorColor, primary, primary2, primary3, primary45} from '../colors';
 import {ToolItem} from './ToolItem';
 import {FiShare2, FiCopy, FiTrash} from 'react-icons/fi';
 import {FiHardDrive} from 'react-icons/fi/index';
 import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
+import useHover from "../hooks/useHover";
 
 export const Instance = React.memo(
   ({data, selected, onClick, onDelete, instanceIndex}) => {
     const {name, address, isImported} = data;
     const dispatch = useDispatch();
+    const [hoverRef, isHovered] = useHover();
 
-    const backgroundColor = selected ? primary3 : '#FFF';
+    let backgroundColor = selected ? primary3 : '#FFF';
+
+    if (isHovered && !selected) {
+      backgroundColor = primary2;
+    }
 
     const styles = {
       outer: {
         backgroundColor: backgroundColor,
-        marginBottom: 8,
+        marginBottom: 6,
         color: selected ? '#fff' : primary45,
         padding: 6,
         paddingTop: 6,
@@ -64,6 +70,7 @@ export const Instance = React.memo(
 
     return (
       <div
+        ref={hoverRef}
         className={'drive'}
         style={styles.outer}
         onClick={(event) => {

@@ -288,12 +288,12 @@ export function FileItem({
           }}
           style={{
             ...styles.outer,
-            border:
-              isHovered || fileBlob || snapshot.isDragging
-                ? `1px solid ${primary2}`
-                : '1px solid #FFF',
             backgroundColor:
-              snapshot.combineTargetFor && type === 'dir' ? primary2 : '#FFF',
+              snapshot.combineTargetFor && type === 'dir'
+                ? primary2
+                : isHovered || fileBlob || snapshot.isDragging
+                ? primary2
+                : '#FFF',
           }}>
           <div
             style={styles.container}
