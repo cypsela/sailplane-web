@@ -3,7 +3,7 @@
 function createFolder(name) {
   cy.get('#addFolder').click();
   const input = cy.get('input[type="text"]');
-  input.should('have.attr', 'placeholder', 'new folder');
+  input.should('have.attr', 'placeholder', 'folder name');
   input.type(name);
   cy.contains('Accept').click();
   cy.contains(name);
