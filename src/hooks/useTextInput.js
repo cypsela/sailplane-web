@@ -23,6 +23,7 @@ export default function useTextInput(
     if (isError) {
       checkIfError();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputString]);
 
   const styles = {
@@ -45,7 +46,7 @@ export default function useTextInput(
       fontSize: 12,
       padding: '3px 5px',
       borderRadius: 2,
-    }
+    },
   };
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function useTextInput(
     } else {
       setInputString(initialValue);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
   return (
