@@ -11,11 +11,11 @@ export function StatusBar() {
     container: {
       position: 'fixed',
       bottom: 10,
-      backgroundColor: primary3,
+      backgroundColor: isError ? errorColor : primary3,
       padding: 8,
       borderRadius: 4,
       fontFamily: 'Open Sans',
-      color: isError ? errorColor : '#FFF',
+      color: '#FFF',
       fontSize: 14,
       display: 'flex',
       alignItems: 'center',
@@ -39,7 +39,7 @@ export function StatusBar() {
     <div style={styles.container}>
       {!isInfo ? (
         <IconComponent
-          color={isError ? errorColor : '#FFF'}
+          color={'#FFF'}
           size={16}
           style={styles.icon}
           className={!isError ? 'rotating' : ''}

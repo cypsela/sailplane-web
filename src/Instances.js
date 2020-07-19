@@ -54,8 +54,7 @@ const styles = {
   toolTitle: {
     marginRight: 6,
   },
-  instances: {
-  },
+  instances: {},
 };
 
 export function Instances({sailplane}) {
@@ -70,6 +69,7 @@ export function Instances({sailplane}) {
     if (prevInstanceLength && prevInstanceLength !== instances.length) {
       dispatch(setInstanceIndex(instances.length - 1));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [instances.length, prevInstanceLength]);
 
   const createInstance = async () => {
@@ -79,24 +79,25 @@ export function Instances({sailplane}) {
     dispatch(addInstance(driveName, address.toString(), false));
     setAddInstanceMode(false);
   };
+
   const importInstance = async (address) => {
     const handleInvalidAddress = () => {
-      dispatch(setStatus({message: 'invalid', isError: true}));
-      delay(1500).then(() => setStatus());
+      dispatch(setStatus({message: 'Invalid address', isError: true}));
+      delay(1500).then(() => dispatch(setStatus({})));
     };
     if (OrbitDBAddress.isValid(address)) {
       address = OrbitDBAddress.parse(address);
       const manifest = await sailplaneUtil.addressManifest(sailplane, address);
       if (manifest.type !== 'fsstore') {
         handleInvalidAddress();
-        return
+        return;
       }
       const acl = await sailplaneUtil.addressManifestACL(sailplane, address);
       if (acl.type !== 'orbitdb') {
         handleInvalidAddress();
-        return
+        return;
       }
-      const driveName = sailplaneUtil.driveName(address)
+      const driveName = sailplaneUtil.driveName(address);
       dispatch(addInstance(driveName, address.toString(), true));
       setImportInstanceMode(false);
     }
