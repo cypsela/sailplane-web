@@ -83,7 +83,7 @@ export function Instances({sailplane}) {
   const importInstance = async (address) => {
     const handleInvalidAddress = () => {
       dispatch(setStatus({message: 'Invalid address', isError: true}));
-      delay(1500).then(() => dispatch(setStatus({})));
+      delay(5500).then(() => dispatch(setStatus({})));
     };
     if (OrbitDBAddress.isValid(address)) {
       address = OrbitDBAddress.parse(address);

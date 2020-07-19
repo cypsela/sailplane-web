@@ -17,6 +17,7 @@ export function StatusBar() {
       fontFamily: 'Open Sans',
       color: '#FFF',
       fontSize: 14,
+      lineHeight: 14,
       display: 'flex',
       alignItems: 'center',
       height: 18,
