@@ -1,5 +1,5 @@
 import React from 'react';
-import {errorColor, primary, primary2, primary3, primary45} from '../colors';
+import {errorColor, primary, primary3, primary45} from '../colors';
 import {ToolItem} from './ToolItem';
 import {FiShare2, FiCopy, FiTrash} from 'react-icons/fi';
 import {FiHardDrive} from 'react-icons/fi/index';
