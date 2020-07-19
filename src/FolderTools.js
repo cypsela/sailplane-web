@@ -59,7 +59,7 @@ export function FolderTools({
     () => setAddFolderMode(false),
     '',
     {
-      placeholder: 'new folder',
+      placeholder: 'folder name',
     },
   );
 

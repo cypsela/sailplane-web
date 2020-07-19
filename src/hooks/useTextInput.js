@@ -39,6 +39,13 @@ export default function useTextInput(
       display: 'inline-flex',
       flexGrow: 2,
     },
+    acceptButton: {
+      backgroundColor: primary3,
+      color: '#FFF',
+      fontSize: 12,
+      padding: '3px 5px',
+      borderRadius: 2,
+    }
   };
 
   useEffect(() => {
@@ -54,6 +61,7 @@ export default function useTextInput(
     <>
       <input
         ref={inputRef}
+        className={'textInput'}
         type={isPassword ? 'password' : 'text'}
         placeholder={placeholder}
         style={styles.input}
@@ -65,10 +73,9 @@ export default function useTextInput(
           }
         }}
       />
-      <ToolItem
-        title={confirmTitle ? confirmTitle : 'Accept'}
-        onClick={() => handleDone(inputString)}
-      />
+      <div onClick={() => handleDone(inputString)} style={styles.acceptButton}>
+        {confirmTitle ? confirmTitle : 'Accept'}
+      </div>
       <ToolItem title={'Cancel'} onClick={() => handleCancel()} />
     </>
   );

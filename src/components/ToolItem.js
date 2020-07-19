@@ -1,5 +1,5 @@
 import React from 'react';
-import {errorColor, primary, primary3, primary4} from '../colors';
+import {errorColor, primary3, primary45} from '../colors';
 import useHover from '../hooks/useHover';
 import useDimensions from 'react-use-dimensions';
 
@@ -53,7 +53,7 @@ export function ToolItem({
     title: {
       textDecoration: isHovered ? 'underline' : 'none',
       fontSize: 13,
-      color: primary,
+      color: primary45,
     },
   };
 
