@@ -6,6 +6,7 @@ import {useIsMobile} from './hooks/useIsMobile';
 import useIPFS from './hooks/useIPFS';
 import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
+import * as sailplaneUtil from './utils/sailplane-util'
 import {LoadingRightBlock} from './LoadingRightBlock';
 import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
@@ -15,14 +16,14 @@ import {addInstance, setNewUser} from './actions/main';
 import {setStatus} from './actions/tempData';
 import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
-import {delay, getMnemonic, getPercent} from './utils/Utils';
+import {delay, getPercent} from './utils/Utils';
 import all from 'it-all';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 
 function App({match}) {
   const isMobile = useIsMobile();
   const sailplaneRef = useRef(null);
-  const mountQueue = useRef({});
+  const sfsQueue = useRef({});
   const [nodeReady, setNodeReady] = useState(false);
   const sharedFS = useRef({});
   const [ipfsError, setIpfsError] = useState(false);
@@ -102,18 +103,11 @@ function App({match}) {
       }
       dispatch(setStatus({message: 'Looking for drive...'}));
 
-      const sailplane = sailplaneRef.current;
-      const address = currentInstance.address;
-
-      const sfsOptions = {autoStart: false};
-      const sfs =
-        sailplane.mounted[address] ||
-        (await mountQueue.current[address]) ||
-        (await (() => {
-          return (mountQueue.current[address] = sailplane
-            .mount(address, sfsOptions)
-            .finally(() => delete mountQueue.current[address]));
-        })());
+      const sfs = await sailplaneUtil.mountSFS(
+        sailplaneRef.current,
+        currentInstance.address,
+        sfsQueue.current,
+      );
 
       const onProgress = (key) => (current, max) => {
         dispatch(setStatus({message: `${key} ${getPercent(current, max)}%`}));
@@ -168,10 +162,7 @@ function App({match}) {
         meta: 'superdrive',
         accessController: { type: 'orbitdb' }
       };
-      const defaultAddress = await sailplane.determineAddress(
-        getMnemonic(),
-        defaultOptions,
-      );
+      const defaultAddress = await sailplaneUtil.defaultAddress(sailplane);
       dispatch(
         addInstance(defaultAddress.path, defaultAddress.toString(), false),
       );
