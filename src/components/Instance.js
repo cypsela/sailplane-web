@@ -1,7 +1,7 @@
 import React from 'react';
 import {errorColor, primary, primary2, primary3, primary45} from '../colors';
 import {ToolItem} from './ToolItem';
-import {FiShare2, FiCopy, FiTrash} from 'react-icons/fi';
+import {FiShare2, FiCopy, FiTrash, FiUsers} from 'react-icons/fi';
 import {FiHardDrive} from 'react-icons/fi/index';
 import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
@@ -9,7 +9,7 @@ import useHover from '../hooks/useHover';
 import {driveName} from '../utils/sailplane-util';
 
 export const Instance = React.memo(
-  ({data, selected, onClick, onDelete, instanceIndex}) => {
+  ({data, selected, onClick, onDelete, instanceIndex, onAccess}) => {
     const {address, isImported} = data;
     const dispatch = useDispatch();
     const [hoverRef, isHovered] = useHover();
@@ -51,7 +51,6 @@ export const Instance = React.memo(
         display: 'flex',
         justifyContent: 'flex-end',
       },
-      toolItem: {},
       name: {
         fontSize: 16,
         lineHeight: '19px',
@@ -94,54 +93,56 @@ export const Instance = React.memo(
               ) : null}
             </div>
             <div style={styles.tools}>
-              <div style={styles.toolItem}>
-                <ToolItem
-                  className={'instanceURLCopy'}
-                  defaultColor={iconColor}
-                  iconComponent={FiShare2}
-                  size={15}
-                  changeColor={primary}
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(shareURL);
-                    dispatch(
-                      setStatus({
-                        message: 'Drive URL copied to clipboard',
-                        isInfo: true,
-                      }),
-                    );
-                    setTimeout(() => dispatch(setStatus({})), 1500);
-                  }}
-                />
-              </div>
-              <div style={styles.toolItem}>
-                <ToolItem
-                  className={'instanceAddressCopy'}
-                  defaultColor={iconColor}
-                  iconComponent={FiCopy}
-                  size={15}
-                  changeColor={primary}
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(address);
-                    dispatch(
-                      setStatus({
-                        message: 'Drive address copied to clipboard',
-                        isInfo: true,
-                      }),
-                    );
-                    setTimeout(() => dispatch(setStatus({})), 1500);
-                  }}
-                />
-              </div>
-              <div style={styles.toolItem}>
-                <ToolItem
-                  className={'instanceDelete'}
-                  defaultColor={iconColor}
-                  iconComponent={FiTrash}
-                  size={15}
-                  changeColor={errorColor}
-                  onClick={() => onDelete()}
-                />
-              </div>
+              <ToolItem
+                className={'instanceAccess'}
+                defaultColor={iconColor}
+                iconComponent={FiUsers}
+                size={15}
+                changeColor={primary}
+                onClick={() => onAccess(data)}
+              />
+              <ToolItem
+                className={'instanceURLCopy'}
+                defaultColor={iconColor}
+                iconComponent={FiShare2}
+                size={15}
+                changeColor={primary}
+                onClick={async () => {
+                  await navigator.clipboard.writeText(shareURL);
+                  dispatch(
+                    setStatus({
+                      message: 'Drive URL copied to clipboard',
+                      isInfo: true,
+                    }),
+                  );
+                  setTimeout(() => dispatch(setStatus({})), 1500);
+                }}
+              />
+              <ToolItem
+                className={'instanceAddressCopy'}
+                defaultColor={iconColor}
+                iconComponent={FiCopy}
+                size={15}
+                changeColor={primary}
+                onClick={async () => {
+                  await navigator.clipboard.writeText(address);
+                  dispatch(
+                    setStatus({
+                      message: 'Drive address copied to clipboard',
+                      isInfo: true,
+                    }),
+                  );
+                  setTimeout(() => dispatch(setStatus({})), 1500);
+                }}
+              />
+              <ToolItem
+                className={'instanceDelete'}
+                defaultColor={iconColor}
+                iconComponent={FiTrash}
+                size={15}
+                changeColor={errorColor}
+                onClick={() => onDelete()}
+              />
             </div>
           </div>
         </div>

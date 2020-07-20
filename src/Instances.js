@@ -11,6 +11,8 @@ import {StatusBar} from './StatusBar';
 import usePrevious from './hooks/usePrevious';
 import {delay} from './utils/Utils';
 import * as sailplaneUtil from './utils/sailplane-util';
+import {Dialog} from './Dialog';
+import {driveName} from './utils/sailplane-util';
 
 const styles = {
   container: {
@@ -63,6 +65,7 @@ const styles = {
 export function Instances({sailplane}) {
   const [addInstanceMode, setAddInstanceMode] = useState(false);
   const [importInstanceMode, setImportInstanceMode] = useState(false);
+  const [instanceToModifyAccess, setInstanceToModifyAccess] = useState(null);
   const dispatch = useDispatch();
   const main = useSelector((state) => state.main);
   const {instances, instanceIndex} = main;
@@ -91,8 +94,13 @@ export function Instances({sailplane}) {
     if (await sailplaneUtil.addressValid(sailplane, address)) {
       const driveName = sailplaneUtil.driveName(address);
 
-      if (instances.map(s => s.address).includes(address)) {
-        dispatch(setStatus({message: `Drive [${driveName}] already exists`, isError: true}));
+      if (instances.map((s) => s.address).includes(address)) {
+        dispatch(
+          setStatus({
+            message: `Drive [${driveName}] already exists`,
+            isError: true,
+          }),
+        );
         delay(5500).then(() => dispatch(setStatus({})));
         return;
       }
@@ -158,9 +166,20 @@ export function Instances({sailplane}) {
             onDelete={() => {
               dispatch(removeInstance(index));
             }}
+            onAccess={(instance) => setInstanceToModifyAccess(instance)}
           />
         ))}
       </div>
+      {instanceToModifyAccess ? (
+        <Dialog
+          isVisible={true}
+          title={`User permissions for ${driveName(
+            instanceToModifyAccess.address,
+          )}`}
+          body={<div></div>}
+          onClose={() => setInstanceToModifyAccess(null)}
+        />
+      ) : null}
       <StatusBar />
     </div>
   );
