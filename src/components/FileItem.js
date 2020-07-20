@@ -289,9 +289,10 @@ export function FileItem({
           style={{
             ...styles.outer,
             backgroundColor:
-              snapshot.combineTargetFor && type === 'dir'
-                ? primary2
-                : isHovered || fileBlob || snapshot.isDragging
+              isHovered ||
+              fileBlob ||
+              snapshot.isDragging ||
+              (snapshot.combineTargetFor && type === 'dir')
                 ? primary2
                 : '#FFF',
           }}>
