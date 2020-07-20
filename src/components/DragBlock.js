@@ -24,13 +24,14 @@ const styles = {
   },
 };
 
-export function DragBlock({handleOpenUpload}) {
+export function DragBlock({handleOpenUpload, isActive}) {
   const isMobile = useIsMobile();
   const uploadTitle = isMobile
     ? 'Tap to upload files'
     : 'Drag files to upload or click here';
+
   return (
-    <div style={styles.container} onClick={handleOpenUpload}>
+    <div style={styles.container} onClick={!isActive ? handleOpenUpload : null}>
       <div>
         <div
           className={'jumping'}
@@ -53,7 +54,9 @@ export function DragBlock({handleOpenUpload}) {
           <FiVideo color={primary3} size={20} style={{...styles.icon}} />
         </div>
       </div>
-      <div style={styles.dragTitle}>{uploadTitle}</div>
+      <div style={styles.dragTitle}>
+        {!isActive ? uploadTitle : 'Drop files!'}
+      </div>
     </div>
   );
 }
