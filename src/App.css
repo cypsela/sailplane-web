@@ -61,5 +61,10 @@ input:focus, textarea:focus, select:focus, audio:focus, source:focus {
 
 .jumping {
     position: relative;
-    animation: jumping 2s linear 2s 2;
+    animation: jumping 2s linear 2s 1;
+}
+
+.jumpingDrop {
+    position: relative;
+    animation: jumping 2s linear 2s infinite;
 }

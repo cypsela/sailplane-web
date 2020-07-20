@@ -50,22 +50,22 @@ export function FileDragBlock({handleOpenUpload, isActive}) {
         <div>
           <div>
             <div
-              className={'jumping'}
+              className={isActive ? 'jumpingDrop' : 'jumping'}
               style={{...styles.iconContainer, animationDelay: '.5s'}}>
               <FiImage color={iconColor} size={20} style={{...styles.icon}} />
             </div>
             <div
-              className={'jumping'}
+              className={isActive ? 'jumpingDrop' : 'jumping'}
               style={{...styles.iconContainer, animationDelay: '.75s'}}>
               <FiFolder color={iconColor} size={20} style={{...styles.icon}} />
             </div>
             <div
-              className={'jumping'}
+              className={isActive ? 'jumpingDrop' : 'jumping'}
               style={{...styles.iconContainer, animationDelay: '1s'}}>
               <FiMusic color={iconColor} size={20} style={{...styles.icon}} />
             </div>
             <div
-              className={'jumping'}
+              className={isActive ? 'jumpingDrop' : 'jumping'}
               style={{...styles.iconContainer, animationDelay: '1.25s'}}>
               <FiVideo color={iconColor} size={20} style={{...styles.icon}} />
             </div>
