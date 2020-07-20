@@ -1,6 +1,7 @@
 import {FiFolder, FiMusic, FiVideo, FiImage} from 'react-icons/fi/index';
 import {primary3} from '../colors';
 import React from 'react';
+import {useIsMobile} from '../hooks/useIsMobile';
 
 const styles = {
   container: {
@@ -23,23 +24,27 @@ const styles = {
 };
 
 export function DragBlock({handleOpenUpload}) {
+  const isMobile = useIsMobile();
+  const uploadTitle = isMobile
+    ? 'Tap to upload files'
+    : 'Drag files to upload or click here'
   return (
     <div style={styles.container} onClick={handleOpenUpload}>
       <div>
-        <div style={{...styles.iconContainer, transform: 'rotate(-20deg)'}}>
+        <div className={'jumping'} style={{...styles.iconContainer, animationDelay: '2s'}}>
           <FiImage color={primary3} size={20} style={{...styles.icon}} />
         </div>
-        <div style={{...styles.iconContainer, transform: 'rotate(10deg)'}}>
+        <div className={'jumping'} style={{...styles.iconContainer, animationDelay: '2.25s'}}>
           <FiFolder color={primary3} size={20} style={{...styles.icon}} />
         </div>
-        <div style={{...styles.iconContainer, transform: 'rotate(-10deg)'}}>
+        <div className={'jumping'} style={{...styles.iconContainer, animationDelay: '2.5s'}}>
           <FiMusic color={primary3} size={20} style={{...styles.icon}} />
         </div>
-        <div style={{...styles.iconContainer, transform: 'rotate(30deg)'}}>
+        <div className={'jumping'} style={{...styles.iconContainer, animationDelay: '2.75s'}}>
           <FiVideo color={primary3} size={20} style={{...styles.icon}} />
         </div>
       </div>
-      <div style={styles.dragTitle}>Drag files to upload or click here</div>
+      <div style={styles.dragTitle}>{uploadTitle}</div>
     </div>
   );
 }

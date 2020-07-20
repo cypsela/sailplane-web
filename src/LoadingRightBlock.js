@@ -39,7 +39,7 @@ export function LoadingRightBlock({ipfsError, message, loading}) {
 
   return (
     <div style={styles.container}>
-      {isWebRTCSupported && !ipfsError ? (
+      {isWebRTCSupported() && !ipfsError ? (
         <div>
           {loader}
           {message}

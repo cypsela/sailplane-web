@@ -70,6 +70,7 @@ const styles = {
   },
   githubTxt: {
     fontSize: 10,
+    userSelect: 'none',
   }
 };
 

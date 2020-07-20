@@ -6,10 +6,11 @@ import {FiHardDrive} from 'react-icons/fi/index';
 import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
 import useHover from "../hooks/useHover";
+import {driveName} from '../utils/sailplane-util'
 
 export const Instance = React.memo(
   ({data, selected, onClick, onDelete, instanceIndex}) => {
-    const {name, address, isImported} = data;
+    const {address, isImported} = data;
     const dispatch = useDispatch();
     const [hoverRef, isHovered] = useHover();
 
@@ -85,7 +86,7 @@ export const Instance = React.memo(
               size={15}
               style={styles.icon}
             />
-            {name}
+            {driveName(address)}
             {isImported ? (
               <span style={styles.importedTxt}>[imported]</span>
             ) : null}

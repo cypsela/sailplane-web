@@ -41,6 +41,7 @@ const styles = {
     borderBottom: `1px solid ${primary2}`,
     paddingBottom: 10,
     marginBottom: 4,
+    userSelect: 'none',
   },
   fileHeaderItem: {
     width: '100%',
