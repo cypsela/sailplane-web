@@ -94,6 +94,7 @@ export const Instance = React.memo(
           <div style={styles.tools}>
             <div style={styles.toolItem}>
               <ToolItem
+                className={'instanceURLCopy'}
                 defaultColor={selected ? '#fff' : primary45}
                 iconComponent={FiShare2}
                 size={15}
@@ -112,6 +113,7 @@ export const Instance = React.memo(
             </div>
             <div style={styles.toolItem}>
               <ToolItem
+                className={'instanceAddressCopy'}
                 defaultColor={selected ? '#fff' : primary45}
                 iconComponent={FiCopy}
                 size={15}

@@ -163,6 +163,26 @@ describe('App loads', () => {
     cy.get('.drive').should('have.length', 1);
   });
 
+  it('can copy drive url', () => {
+    cy.window().then((win) => {
+      cy.stub(win.navigator.clipboard, 'writeText').resolves(true).as('writeText')
+    })
+
+    cy.get('.instanceURLCopy').click();
+
+    cy.get('@writeText').should('be.calledWithMatch', /^http.+importInstance/)
+  });
+
+  it('can copy drive address', () => {
+    cy.window().then((win) => {
+      cy.stub(win.navigator.clipboard, 'writeText').resolves(true).as('writeText')
+    })
+
+    cy.get('.instanceAddressCopy').click();
+
+    cy.get('@writeText').should('be.calledWithMatch', /^\/orbitdb/)
+  });
+
   it('can create drive', () => {
     cy.contains('Create drive').click();
     cy.get('.drive').should('have.length', 2);

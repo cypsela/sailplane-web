@@ -11,7 +11,7 @@ body, html {
     color: hsla(205, 49%, 66%, 1);
 }
 
-.addInstance{
+.addInstance {
     cursor: pointer;
 }
 
@@ -27,14 +27,15 @@ body, html {
     text-decoration: underline;
 }
 
-input:focus, textarea:focus, select:focus, audio:focus, source:focus{
+input:focus, textarea:focus, select:focus, audio:focus, source:focus {
     outline: none;
 }
+
 @keyframes rotating {
-    from{
+    from {
         transform: rotate(0deg);
     }
-    to{
+    to {
         transform: rotate(359deg);
     }
 }
