@@ -1,3 +1,4 @@
+import {Buffer} from 'safe-buffer';
 const perms = {
   admin: 'admin',
   write: 'write',
@@ -5,6 +6,14 @@ const perms = {
 
 export function localUserId(sharedFS) {
   return sharedFS.identity.id;
+}
+
+export function userIdValid(userId) {
+  try {
+    return Buffer.from(userId, 'hex').length === 33;
+  } catch (e) {
+    return false;
+  }
 }
 
 export function writers(sharedFS) {
