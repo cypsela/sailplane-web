@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {primary2, primary45} from './colors';
+import {primary2, primary3, primary4, primary45} from './colors';
 import {
   FaFolderOpen,
   FaCog,
@@ -31,19 +31,17 @@ const styles = {
     color: '#FFF',
     fontSize: 24,
     fontWeight: 400,
-    marginBottom: 10,
+    marginBottom: 20,
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     userSelect: 'none',
     cursor: 'pointer',
+    lineHeight: '24px',
   },
   settingsBlock: {
     bottom: 0,
     width: '100%',
-  },
-  icon: {
-    marginRight: 6,
   },
   mobilePadding: {
     paddingBottom: 6,
@@ -71,6 +69,16 @@ const styles = {
   githubTxt: {
     fontSize: 10,
     userSelect: 'none',
+  },
+  logoIconHolder: {
+    display: 'inline-flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    padding: 6,
+    marginRight: 4,
+    borderRadius: 4,
+    boxShadow: `inset 1px 2px 3px #5686a7`,
   }
 };
 
@@ -107,7 +115,9 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
                 window.location.origin + window.location.pathname
               }`;
             }}>
-            <FaPaperPlane color={'#FFF'} size={18} style={styles.icon} />
+            <div style={styles.logoIconHolder}>
+              <FaPaperPlane color={primary45} size={18} style={styles.icon} />
+            </div>
             Sailplane
           </div>
         </div>
