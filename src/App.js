@@ -36,7 +36,7 @@ function App({match}) {
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
   const {importInstanceAddress} = match.params;
-  const cleanImportInstanceAddress = decodeURIComponent(importInstanceAddress);
+  const importAddress = decodeURIComponent(importInstanceAddress);
 
   const dispatch = useDispatch();
   const {instances, instanceIndex, newUser} = useSelector(
@@ -55,15 +55,16 @@ function App({match}) {
   };
 
   useEffect(() => {
-    function importInstance() {
-      if (cleanImportInstanceAddress) {
-        if (OrbitDBAddress.isValid(cleanImportInstanceAddress)) {
+    async function importInstance() {
+      if (importAddress) {
+        const sailplane = sailplaneRef.current;
+        if (await sailplaneUtil.addressValid(sailplane, importAddress)) {
           const sameInstance = instances.find(
-            (instance) => instance.address === address,
+            (instance) => instance.address === importAddress,
           );
-          const driveName = sailplaneUtil.driveName(address);
+          const driveName = sailplaneUtil.driveName(importAddress);
           if (!sameInstance) {
-            dispatch(addInstance(driveName, address, true));
+            dispatch(addInstance(driveName, importAddress, true));
           }
         }
       }
@@ -71,7 +72,7 @@ function App({match}) {
 
     importInstance();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cleanImportInstanceAddress]);
+  }, [importAddress]);
   // End
 
   useEffect(() => {
