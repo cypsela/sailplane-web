@@ -37,6 +37,10 @@ export function LoadingRightBlock({ipfsError, message, loading}) {
       />
     )
 
+  const failMessage = isWebRTCSupported()
+    ? 'Sailplane failed to start network. Try refreshing.'
+    : 'This browser does not support WebRTC, iOS users please try Safari.'
+
   return (
     <div style={styles.container}>
       {isWebRTCSupported() && !ipfsError ? (
@@ -46,7 +50,7 @@ export function LoadingRightBlock({ipfsError, message, loading}) {
         </div>
       ) : (
         <div>
-          This browser does not support WebRTC, iOS users please try Safari.
+          {failMessage}
         </div>
       )}
     </div>
