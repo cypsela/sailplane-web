@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {driveName} from '../utils/sailplane-util';
 import {Dialog} from '../Dialog';
-import SailplaneAccess from '../utils/SailplaneAccess';
+import * as SailplaneAccess from '../utils/sailplaneAccess';
 import Jdenticon from 'react-jdenticon';
 
 export default function InstanceAccessDialog({
