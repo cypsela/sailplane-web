@@ -48,7 +48,6 @@ export const Instance = React.memo(
         justifyContent: 'flex-end',
       },
       toolItem: {
-        marginLeft: 10,
       },
       name: {
         fontSize: 16,

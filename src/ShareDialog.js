@@ -1,38 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {primary, primary3, primary45} from './colors';
 import {useDispatch, useSelector} from 'react-redux';
-import {FaTimes} from 'react-icons/fa';
 import {setShareData} from './actions/tempData';
 import {FiFile, FiImage, FiLoader, FiMusic} from 'react-icons/fi';
 import {SegmentedControl} from './components/SegmentedControl';
 import {getShareTypeFromFolderFiles} from './utils/Utils';
+import {Dialog} from './Dialog';
 
 const styles = {
-  container: {
-    position: 'absolute',
-    backgroundColor: '#FFF',
-    border: `1px solid ${primary45}`,
-    borderRadius: 4,
-    top: 150,
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: '80%',
-    fontFamily: 'Open Sans',
-    zIndex: 10000,
-    boxShadow: '0 0px 14px hsla(0, 0%, 0%, 0.2)',
-  },
-  header: {
-    backgroundColor: primary45,
-    color: '#FFF',
-    padding: 8,
-    fontSize: 14,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  body: {
-    padding: 14,
-  },
   filename: {
     color: primary45,
   },
@@ -49,9 +24,6 @@ const styles = {
   },
   flex: {
     display: 'flex',
-  },
-  xIcon: {
-    cursor: 'pointer',
   },
   link: {
     marginTop: 8,
@@ -73,14 +45,6 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  background: {
-    position: 'fixed',
-    width: '100%',
-    height: '100%',
-    top: 0,
-    left: 0,
-    backgroundColor: '#00000033',
-  }
 };
 
 const shareTypes = [
@@ -159,21 +123,12 @@ export function ShareDialog({sharedFs}) {
   }`;
 
   return (
-    <div style={styles.outer}>
-      <div style={styles.background} onClick={() => dispatch(setShareData({}))}/>
-      <div style={styles.container}>
-        <div style={styles.header}>
-          <div>Share options</div>
-          <FaTimes
-            color={'#FFF'}
-            size={16}
-            style={styles.xIcon}
-            onClick={() => {
-              dispatch(setShareData({}));
-            }}
-          />
-        </div>
-        <div style={styles.body}>
+    <Dialog
+      title={'Share options'}
+      onClose={() => dispatch(setShareData({}))}
+      isVisible={path}
+      body={
+        <>
           <div style={styles.nameHolder}>
             <div style={styles.filename}>{name}</div>
             <div>
@@ -214,8 +169,8 @@ export function ShareDialog({sharedFs}) {
               Loading share link...
             </div>
           )}
-        </div>
-      </div>
-    </div>
+        </>
+      }
+    />
   );
 }
