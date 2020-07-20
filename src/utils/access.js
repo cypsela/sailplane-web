@@ -4,7 +4,7 @@ const perms = {
 };
 
 export function localUserId(sharedFS) {
-  return sharedFS._db.identity.id;
+  return sharedFS.identity.id;
 }
 
 export function writers(sharedFS) {
