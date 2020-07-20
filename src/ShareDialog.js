@@ -73,6 +73,14 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  background: {
+    position: 'fixed',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    backgroundColor: '#00000033',
+  }
 };
 
 const shareTypes = [
@@ -151,59 +159,62 @@ export function ShareDialog({sharedFs}) {
   }`;
 
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <div>Share options</div>
-        <FaTimes
-          color={'#FFF'}
-          size={16}
-          style={styles.xIcon}
-          onClick={() => {
-            dispatch(setShareData({}));
-          }}
-        />
-      </div>
-      <div style={styles.body}>
-        <div style={styles.nameHolder}>
-          <div style={styles.filename}>{name}</div>
-          <div>
-            {pathType === 'dir' ? (
-              <SegmentedControl
-                currentIndex={shareTypeIndex}
-                items={shareTypes}
-                onSelect={(index) => setShareTypeIndex(index)}
-              />
-            ) : null}
-          </div>
+    <div style={styles.outer}>
+      <div style={styles.background} onClick={() => dispatch(setShareData({}))}/>
+      <div style={styles.container}>
+        <div style={styles.header}>
+          <div>Share options</div>
+          <FaTimes
+            color={'#FFF'}
+            size={16}
+            style={styles.xIcon}
+            onClick={() => {
+              dispatch(setShareData({}));
+            }}
+          />
         </div>
-        {loadedCID ? (
-          <div>
-            <div style={styles.flex}>
-              <input
-                ref={inputRef}
-                style={styles.input}
-                type={'text'}
-                value={url}
-                readOnly={true}
+        <div style={styles.body}>
+          <div style={styles.nameHolder}>
+            <div style={styles.filename}>{name}</div>
+            <div>
+              {pathType === 'dir' ? (
+                <SegmentedControl
+                  currentIndex={shareTypeIndex}
+                  items={shareTypes}
+                  onSelect={(index) => setShareTypeIndex(index)}
+                />
+              ) : null}
+            </div>
+          </div>
+          {loadedCID ? (
+            <div>
+              <div style={styles.flex}>
+                <input
+                  ref={inputRef}
+                  style={styles.input}
+                  type={'text'}
+                  value={url}
+                  readOnly={true}
+                />
+              </div>
+              <div style={styles.link}>
+                <a href={url} className={'link'} target={'_blank'}>
+                  Open link
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div style={styles.loading}>
+              <FiLoader
+                color={primary45}
+                size={16}
+                style={styles.icon}
+                className={'rotating'}
               />
+              Loading share link...
             </div>
-            <div style={styles.link}>
-              <a href={url} className={'link'} target={'_blank'}>
-                Open link
-              </a>
-            </div>
-          </div>
-        ) : (
-          <div style={styles.loading}>
-            <FiLoader
-              color={primary45}
-              size={16}
-              style={styles.icon}
-              className={'rotating'}
-            />
-            Loading share link...
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
