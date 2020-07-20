@@ -6,7 +6,7 @@ import {useIsMobile} from './hooks/useIsMobile';
 import useIPFS from './hooks/useIPFS';
 import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
-import * as sailplaneUtil from './utils/sailplane-util'
+import * as sailplaneUtil from './utils/sailplane-util';
 import {LoadingRightBlock} from './LoadingRightBlock';
 import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
@@ -18,7 +18,6 @@ import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
 import {delay, getPercent} from './utils/Utils';
 import all from 'it-all';
-import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 
 function App({match}) {
   const isMobile = useIsMobile();
@@ -159,7 +158,7 @@ function App({match}) {
   useEffect(() => {
     const handleNewUser = async (sailplane) => {
       const address = await sailplaneUtil.determineAddress(sailplane);
-      const driveName = sailplaneUtil.driveName(address)
+      const driveName = sailplaneUtil.driveName(address);
       dispatch(addInstance(driveName, address.toString(), false));
       dispatch(setNewUser(false));
     };
@@ -203,7 +202,13 @@ function App({match}) {
     } else if (currentRightPanel === 'settings') {
       return <Settings />;
     } else if (currentRightPanel === 'instances') {
-      return <Instances sailplane={sailplaneRef.current} ipfs={ipfsObj.ipfs} />;
+      return (
+        <Instances
+          sailplane={sailplaneRef.current}
+          ipfs={ipfsObj.ipfs}
+          sharedFS={sharedFS}
+        />
+      );
     }
   };
 

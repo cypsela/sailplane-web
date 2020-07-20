@@ -11,8 +11,7 @@ import {StatusBar} from './StatusBar';
 import usePrevious from './hooks/usePrevious';
 import {delay} from './utils/Utils';
 import * as sailplaneUtil from './utils/sailplane-util';
-import {Dialog} from './Dialog';
-import {driveName} from './utils/sailplane-util';
+import InstanceAccessDialog from './components/InstanceAccessDialog';
 
 const styles = {
   container: {
@@ -62,7 +61,7 @@ const styles = {
   instances: {},
 };
 
-export function Instances({sailplane}) {
+export function Instances({sailplane, sharedFS}) {
   const [addInstanceMode, setAddInstanceMode] = useState(false);
   const [importInstanceMode, setImportInstanceMode] = useState(false);
   const [instanceToModifyAccess, setInstanceToModifyAccess] = useState(null);
@@ -171,13 +170,10 @@ export function Instances({sailplane}) {
         ))}
       </div>
       {instanceToModifyAccess ? (
-        <Dialog
-          isVisible={true}
-          title={`User permissions for ${driveName(
-            instanceToModifyAccess.address,
-          )}`}
-          body={<div></div>}
+        <InstanceAccessDialog
           onClose={() => setInstanceToModifyAccess(null)}
+          instanceToModifyAccess={instanceToModifyAccess}
+          sharedFS={sharedFS}
         />
       ) : null}
       <StatusBar />
