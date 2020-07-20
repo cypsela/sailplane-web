@@ -7,7 +7,6 @@ import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {addInstance, removeInstance, setInstanceIndex} from './actions/main';
 import {setStatus} from './actions/tempData';
-import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 import {StatusBar} from './StatusBar';
 import usePrevious from './hooks/usePrevious';
 import {delay} from './utils/Utils';
@@ -87,8 +86,7 @@ export function Instances({sailplane}) {
       dispatch(setStatus({message: 'Invalid address', isError: true}));
       delay(5500).then(() => dispatch(setStatus({})));
     };
-    if (OrbitDBAddress.isValid(address)) {
-      address = OrbitDBAddress.parse(address);
+    if (sailplaneUtil.addressValid(address)) {
       const manifest = await sailplaneUtil.addressManifest(sailplane, address);
       if (manifest.type !== 'fsstore') {
         handleInvalidAddress();
@@ -99,11 +97,20 @@ export function Instances({sailplane}) {
         handleInvalidAddress();
         return;
       }
+
       const driveName = sailplaneUtil.driveName(address);
-      dispatch(addInstance(driveName, address.toString(), true));
+
+      if (instances.map(s => s.address).includes(address)) {
+        dispatch(setStatus({message: `Drive [${driveName}] already exists`, isError: true}));
+        delay(5500).then(() => dispatch(setStatus({})));
+        return;
+      }
+
+      dispatch(addInstance(driveName, address, true));
       setImportInstanceMode(false);
+    } else {
+      handleInvalidAddress();
     }
-    handleInvalidAddress();
   };
 
   const ImportInstanceInput = useTextInput(
