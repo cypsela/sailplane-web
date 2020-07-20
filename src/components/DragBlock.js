@@ -31,16 +31,16 @@ export function DragBlock({handleOpenUpload}) {
   return (
     <div style={styles.container} onClick={handleOpenUpload}>
       <div>
-        <div style={{...styles.iconContainer, transform: 'rotate(-20deg)'}}>
+        <div className={'jumping'} style={{...styles.iconContainer, animationDelay: '2s'}}>
           <FiImage color={primary3} size={20} style={{...styles.icon}} />
         </div>
-        <div style={{...styles.iconContainer, transform: 'rotate(10deg)'}}>
+        <div className={'jumping'} style={{...styles.iconContainer, animationDelay: '2.25s'}}>
           <FiFolder color={primary3} size={20} style={{...styles.icon}} />
         </div>
-        <div style={{...styles.iconContainer, transform: 'rotate(-10deg)'}}>
+        <div className={'jumping'} style={{...styles.iconContainer, animationDelay: '2.5s'}}>
           <FiMusic color={primary3} size={20} style={{...styles.icon}} />
         </div>
-        <div style={{...styles.iconContainer, transform: 'rotate(30deg)'}}>
+        <div className={'jumping'} style={{...styles.iconContainer, animationDelay: '2.75s'}}>
           <FiVideo color={primary3} size={20} style={{...styles.icon}} />
         </div>
       </div>

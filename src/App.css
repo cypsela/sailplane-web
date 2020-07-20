@@ -42,3 +42,14 @@ input:focus, textarea:focus, select:focus, audio:focus, source:focus{
 .rotating {
     animation: rotating 2s linear infinite;
 }
+
+@keyframes jumping {
+  0% {bottom: 0px;}
+  15% {bottom: 12px;}
+  30% {bottom: 0px;}
+}
+
+.jumping {
+  position: relative;
+  animation: jumping 2s linear 2s 2;
+}
