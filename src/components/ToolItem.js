@@ -32,7 +32,8 @@ export function ToolItem({
   const styles = {
     container: {
       position: 'relative',
-      display: 'inline-block',
+      display: 'inline-flex',
+      alignItems: 'center',
       cursor: 'pointer',
       padding: 4,
       fontSize: 14,
@@ -51,9 +52,10 @@ export function ToolItem({
       pointerEvents: 'none',
     },
     title: {
+      color: isHovered ? changeColor : defaultColor,
+      marginLeft: 4,
       textDecoration: isHovered ? 'underline' : 'none',
       fontSize: 13,
-      color: primary45,
     },
   };
 

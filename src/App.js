@@ -200,7 +200,7 @@ function App({match}) {
         />
       );
     } else if (currentRightPanel === 'settings') {
-      return <Settings />;
+      return <Settings sharedFS={sharedFS} />;
     } else if (currentRightPanel === 'instances') {
       return (
         <Instances

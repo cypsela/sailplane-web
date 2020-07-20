@@ -12,6 +12,7 @@ import usePrevious from './hooks/usePrevious';
 import {delay} from './utils/Utils';
 import * as sailplaneUtil from './utils/sailplane-util';
 import InstanceAccessDialog from './components/InstanceAccessDialog';
+import {ToolItem} from './components/ToolItem';
 
 const styles = {
   container: {
