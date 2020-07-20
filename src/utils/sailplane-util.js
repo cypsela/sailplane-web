@@ -4,8 +4,18 @@ const bip39 = require('bip39');
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 const { parse } = OrbitDBAddress;
 
-export function addressValid(address) {
-  return OrbitDBAddress.isValid(address)
+export async function addressValid(sailplane, address) {
+  if (OrbitDBAddress.isValid(address)) {
+    const manifest = await addressManifest(sailplane, address);
+    if (manifest.type !== 'fsstore') {
+      return false;
+    }
+    const acl = await addressManifestACL(sailplane, address);
+    if (acl.type !== 'orbitdb') {
+      return false;
+    }
+    return true;
+  } else { return false }
 }
 
 const defaultAddressOptions = () => ({

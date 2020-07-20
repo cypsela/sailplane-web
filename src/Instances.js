@@ -86,18 +86,7 @@ export function Instances({sailplane}) {
       dispatch(setStatus({message: 'Invalid address', isError: true}));
       delay(5500).then(() => dispatch(setStatus({})));
     };
-    if (sailplaneUtil.addressValid(address)) {
-      const manifest = await sailplaneUtil.addressManifest(sailplane, address);
-      if (manifest.type !== 'fsstore') {
-        handleInvalidAddress();
-        return;
-      }
-      const acl = await sailplaneUtil.addressManifestACL(sailplane, address);
-      if (acl.type !== 'orbitdb') {
-        handleInvalidAddress();
-        return;
-      }
-
+    if (await sailplaneUtil.addressValid(sailplane, address)) {
       const driveName = sailplaneUtil.driveName(address);
 
       if (instances.map(s => s.address).includes(address)) {
