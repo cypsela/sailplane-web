@@ -52,6 +52,7 @@ export function FileItem({
   const fileExtension = getFileExtensionFromFilename(name);
   const isMobile = useIsMobile();
   const contextID = `menu-id`;
+  const exists = sharedFs && sharedFs.current.fs.exists(path)
 
   const styles = {
     outer: {
@@ -160,7 +161,7 @@ export function FileItem({
 
     if (data.cid) {
       tmpCID = data.cid;
-    } else {
+    } else if (exists) {
       tmpCID = await sharedFs.current.read(path);
     }
 
@@ -173,7 +174,7 @@ export function FileItem({
   };
 
   useEffect(() => {
-    if (type !== 'dir') {
+    if (exists && type !== 'dir') {
       getCID();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
