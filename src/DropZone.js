@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setStatus} from './actions/tempData';
 import {encryptFile} from './utils/encryption';
 import {delay, getPercent} from './utils/Utils';
-import {DragBlock} from './components/DragBlock';
+import {FileDragBlock} from './components/FileDragBlock';
 
 export function DropZone({children, sharedFs, currentDirectory}, ref) {
   const styles = {
@@ -91,7 +91,7 @@ export function DropZone({children, sharedFs, currentDirectory}, ref) {
   return (
     <div {...getRootProps()} style={styles.container} id={'dropZone'}>
       <input {...getInputProps()} id={'fileUpload'} />
-      {isDragActive ? <DragBlock isActive={true} /> : <div>{children}</div>}
+      {isDragActive ? <FileDragBlock isActive={true} /> : <div>{children}</div>}
     </div>
   );
 }

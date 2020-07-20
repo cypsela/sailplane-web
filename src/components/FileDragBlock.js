@@ -3,7 +3,7 @@ import {primary2, primary3, primary45} from '../colors';
 import React from 'react';
 import {useIsMobile} from '../hooks/useIsMobile';
 
-export function DragBlock({handleOpenUpload, isActive}) {
+export function FileDragBlock({handleOpenUpload, isActive}) {
   const isMobile = useIsMobile();
   const uploadTitle = isMobile
     ? 'Tap to upload files'

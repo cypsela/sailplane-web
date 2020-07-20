@@ -16,7 +16,7 @@ import {
   sortDirectoryContents,
   delay,
 } from './utils/Utils';
-import {DragBlock} from './components/DragBlock';
+import {FileDragBlock} from './components/FileDragBlock';
 import Lightbox from 'react-image-lightbox';
 import {setStatus} from './actions/tempData';
 import {useDispatch} from 'react-redux';
@@ -218,7 +218,7 @@ export function FileBlock({
                     }
                     {...provided.droppableProps}>
                     {!directoryContents.length ? (
-                      <DragBlock
+                      <FileDragBlock
                         handleOpenUpload={() => {
                           dropzoneRef.current.openUpload();
                         }}
