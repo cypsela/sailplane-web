@@ -237,7 +237,7 @@ export function getPercent(numer, denom) {
   return Math.round((numer / denom) * 100);
 }
 
-export const isWebRTCSupported =
+export const isWebRTCSupported = () =>
   navigator.getUserMedia ||
   navigator.webkitGetUserMedia ||
   navigator.mozGetUserMedia ||
