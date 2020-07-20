@@ -1,28 +1,7 @@
 import {FiFolder, FiMusic, FiVideo, FiImage} from 'react-icons/fi/index';
-import {primary3} from '../colors';
+import {primary2, primary3, primary45} from '../colors';
 import React from 'react';
 import {useIsMobile} from '../hooks/useIsMobile';
-
-const styles = {
-  container: {
-    marginTop: 12,
-    border: `2px dashed ${primary3}`,
-    borderRadius: 4,
-    padding: 18,
-  },
-  icon: {
-    padding: '0 6px',
-  },
-  dragTitle: {
-    color: primary3,
-    fontSize: 16,
-    fontWeight: 400,
-    marginTop: 2,
-  },
-  iconContainer: {
-    display: 'inline-block',
-  },
-};
 
 export function DragBlock({handleOpenUpload, isActive}) {
   const isMobile = useIsMobile();
@@ -30,28 +9,52 @@ export function DragBlock({handleOpenUpload, isActive}) {
     ? 'Tap to upload files'
     : 'Drag files to upload or click here';
 
+  const styles = {
+    container: {
+      marginTop: 12,
+      border: `2px dashed ${primary3}`,
+      backgroundColor: isActive ? primary2 : null,
+      borderRadius: 4,
+      padding: 18,
+    },
+    icon: {
+      padding: '0 6px',
+    },
+    dragTitle: {
+      color: isActive ? primary45 : primary3,
+      fontSize: 16,
+      fontWeight: 400,
+      marginTop: 2,
+    },
+    iconContainer: {
+      display: 'inline-block',
+    },
+  };
+
+  const iconColor = isActive ? primary45 : primary3;
+
   return (
     <div style={styles.container} onClick={!isActive ? handleOpenUpload : null}>
       <div>
         <div
           className={'jumping'}
           style={{...styles.iconContainer, animationDelay: '2s'}}>
-          <FiImage color={primary3} size={20} style={{...styles.icon}} />
+          <FiImage color={iconColor} size={20} style={{...styles.icon}} />
         </div>
         <div
           className={'jumping'}
           style={{...styles.iconContainer, animationDelay: '2.25s'}}>
-          <FiFolder color={primary3} size={20} style={{...styles.icon}} />
+          <FiFolder color={iconColor} size={20} style={{...styles.icon}} />
         </div>
         <div
           className={'jumping'}
           style={{...styles.iconContainer, animationDelay: '2.5s'}}>
-          <FiMusic color={primary3} size={20} style={{...styles.icon}} />
+          <FiMusic color={iconColor} size={20} style={{...styles.icon}} />
         </div>
         <div
           className={'jumping'}
           style={{...styles.iconContainer, animationDelay: '2.75s'}}>
-          <FiVideo color={primary3} size={20} style={{...styles.icon}} />
+          <FiVideo color={iconColor} size={20} style={{...styles.icon}} />
         </div>
       </div>
       <div style={styles.dragTitle}>
