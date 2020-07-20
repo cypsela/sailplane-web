@@ -31,6 +31,7 @@ const styles = {
     marginBottom: 10,
     display: 'flex',
     alignItems: 'center',
+    userSelect: 'none',
   },
   header: {
     display: 'flex',
@@ -54,6 +55,7 @@ const styles = {
   },
   toolTitle: {
     marginRight: 6,
+    userSelect: 'none',
   },
   instances: {},
 };
