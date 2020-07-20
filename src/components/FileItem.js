@@ -52,9 +52,13 @@ export function FileItem({
   const fileExtension = getFileExtensionFromFilename(name);
   const isMobile = useIsMobile();
   const contextID = `menu-id`;
-  const exists = sharedFs && sharedFs.current.fs.exists(path)
+  const exists = sharedFs && sharedFs.current.fs.exists(path);
 
   const styles = {
+    paddingContainer: {
+      paddingTop: 3,
+      paddingBottom: 3,
+    },
     outer: {
       borderRadius: 4,
       color: primary5,
@@ -166,7 +170,6 @@ export function FileItem({
     }
 
     const tmpFileInfo = await getFileInfoFromCID(tmpCID, ipfs);
-    console.log('info', tmpFileInfo);
 
     setFileInfo(tmpFileInfo);
     setCID(tmpCID);
@@ -271,7 +274,10 @@ export function FileItem({
     }
 
     return (
-      <div className={`fileItem ${isEncrypted ? 'fileItemEncrypted' : null}`}>
+      <div
+        ref={hoverRef}
+        style={styles.paddingContainer}
+        className={`fileItem ${isEncrypted ? 'fileItemEncrypted' : null}`}>
         <div
           onContextMenu={(event) => {
             event.preventDefault();
@@ -299,7 +305,6 @@ export function FileItem({
           }}>
           <div
             style={styles.container}
-            ref={hoverRef}
             onClick={async (event) => {
               event.stopPropagation();
 

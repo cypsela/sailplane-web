@@ -5,8 +5,8 @@ import {FiShare2, FiCopy, FiTrash} from 'react-icons/fi';
 import {FiHardDrive} from 'react-icons/fi/index';
 import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
-import useHover from "../hooks/useHover";
-import {driveName} from '../utils/sailplane-util'
+import useHover from '../hooks/useHover';
+import {driveName} from '../utils/sailplane-util';
 
 export const Instance = React.memo(
   ({data, selected, onClick, onDelete, instanceIndex}) => {
@@ -20,11 +20,15 @@ export const Instance = React.memo(
       backgroundColor = primary2;
     }
 
+    const iconColor = selected ? '#FFF' : primary45;
     const styles = {
+      paddingContainer: {
+        paddingTop: 3,
+        paddingBottom: 3,
+      },
       outer: {
         backgroundColor: backgroundColor,
-        marginBottom: 6,
-        color: selected ? '#fff' : primary45,
+        color: iconColor,
         padding: 6,
         paddingTop: 6,
         fontFamily: 'Open Sans',
@@ -47,8 +51,7 @@ export const Instance = React.memo(
         display: 'flex',
         justifyContent: 'flex-end',
       },
-      toolItem: {
-      },
+      toolItem: {},
       name: {
         fontSize: 16,
         lineHeight: '19px',
@@ -69,75 +72,76 @@ export const Instance = React.memo(
     }#/importInstance/${encodeURIComponent(address)}`;
 
     return (
-      <div
-        ref={hoverRef}
-        className={'drive'}
-        style={styles.outer}
-        onClick={(event) => {
-          event.stopPropagation();
-          onClick();
-        }}>
-        <div style={styles.container}>
-          <div style={styles.name}>
-            <FiHardDrive
-              className={'shareIcon'}
-              color={selected ? '#FFF' : primary45}
-              size={15}
-              style={styles.icon}
-            />
-            {driveName(address)}
-            {isImported ? (
-              <span style={styles.importedTxt}>[imported]</span>
-            ) : null}
-          </div>
-          <div style={styles.tools}>
-            <div style={styles.toolItem}>
-              <ToolItem
-                className={'instanceURLCopy'}
-                defaultColor={selected ? '#fff' : primary45}
-                iconComponent={FiShare2}
+      <div style={styles.paddingContainer} ref={hoverRef}>
+        <div
+          className={'drive'}
+          style={styles.outer}
+          onClick={(event) => {
+            event.stopPropagation();
+            onClick();
+          }}>
+          <div style={styles.container}>
+            <div style={styles.name}>
+              <FiHardDrive
+                className={'shareIcon'}
+                color={iconColor}
                 size={15}
-                changeColor={primary}
-                onClick={async () => {
-                  await navigator.clipboard.writeText(shareURL);
-                  dispatch(
-                    setStatus({
-                      message: 'Drive URL copied to clipboard',
-                      isInfo: true,
-                    }),
-                  );
-                  setTimeout(() => dispatch(setStatus({})), 1500);
-                }}
+                style={styles.icon}
               />
+              {driveName(address)}
+              {isImported ? (
+                <span style={styles.importedTxt}>[imported]</span>
+              ) : null}
             </div>
-            <div style={styles.toolItem}>
-              <ToolItem
-                className={'instanceAddressCopy'}
-                defaultColor={selected ? '#fff' : primary45}
-                iconComponent={FiCopy}
-                size={15}
-                changeColor={primary}
-                onClick={async () => {
-                  await navigator.clipboard.writeText(address);
-                  dispatch(
-                    setStatus({
-                      message: 'Drive address copied to clipboard',
-                      isInfo: true,
-                    }),
-                  );
-                  setTimeout(() => dispatch(setStatus({})), 1500);
-                }}
-              />
-            </div>
-            <div style={styles.toolItem}>
-              <ToolItem
-                className={'instanceDelete'}
-                defaultColor={selected ? '#fff' : primary45}
-                iconComponent={FiTrash}
-                size={15}
-                changeColor={errorColor}
-                onClick={() => onDelete()}
-              />
+            <div style={styles.tools}>
+              <div style={styles.toolItem}>
+                <ToolItem
+                  className={'instanceURLCopy'}
+                  defaultColor={iconColor}
+                  iconComponent={FiShare2}
+                  size={15}
+                  changeColor={primary}
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(shareURL);
+                    dispatch(
+                      setStatus({
+                        message: 'Drive URL copied to clipboard',
+                        isInfo: true,
+                      }),
+                    );
+                    setTimeout(() => dispatch(setStatus({})), 1500);
+                  }}
+                />
+              </div>
+              <div style={styles.toolItem}>
+                <ToolItem
+                  className={'instanceAddressCopy'}
+                  defaultColor={iconColor}
+                  iconComponent={FiCopy}
+                  size={15}
+                  changeColor={primary}
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(address);
+                    dispatch(
+                      setStatus({
+                        message: 'Drive address copied to clipboard',
+                        isInfo: true,
+                      }),
+                    );
+                    setTimeout(() => dispatch(setStatus({})), 1500);
+                  }}
+                />
+              </div>
+              <div style={styles.toolItem}>
+                <ToolItem
+                  className={'instanceDelete'}
+                  defaultColor={iconColor}
+                  iconComponent={FiTrash}
+                  size={15}
+                  changeColor={errorColor}
+                  onClick={() => onDelete()}
+                />
+              </div>
             </div>
           </div>
         </div>
