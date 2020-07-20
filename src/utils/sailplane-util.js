@@ -1,8 +1,8 @@
 
 import {randomBytes} from 'libp2p-crypto';
-const bip39 = require('bip39');
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 const { parse } = OrbitDBAddress;
+const bip39 = require('bip39');
 
 export async function addressValid(sailplane, address) {
   if (OrbitDBAddress.isValid(address)) {
