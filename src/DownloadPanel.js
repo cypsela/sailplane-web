@@ -30,6 +30,9 @@ const styles = {
     color: primary45,
     fontSize: 20,
     textAlign: 'center',
+    borderBottom: `1px solid ${primary2}`,
+    paddingBottom: 6,
+    marginBottom: 6,
   },
   fileSize: {
     fontSize: 14,
