@@ -1,5 +1,6 @@
 
 import {randomBytes} from 'libp2p-crypto';
+import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 const bip39 = require('bip39');
 
 const defaultAddressOptions = () => ({
@@ -19,6 +20,7 @@ export function determineAddress(sailplane, options = {}) {
 };
 
 export function driveName(address) {
+  address = OrbitDBAddress.parse(address);
   const bytes = new TextEncoder().encode(address.root);
   return bip39.entropyToMnemonic(bytes.slice(-32))
     .split(' ')
