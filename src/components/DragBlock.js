@@ -11,12 +11,13 @@ const styles = {
     padding: 18,
   },
   icon: {
-    padding: 6,
+    padding: '0 6px',
   },
   dragTitle: {
     color: primary3,
     fontSize: 16,
     fontWeight: 400,
+    marginTop: 2,
   },
   iconContainer: {
     display: 'inline-block',
