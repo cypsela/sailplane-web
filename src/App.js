@@ -58,13 +58,12 @@ function App({match}) {
     function importInstance() {
       if (cleanImportInstanceAddress) {
         if (OrbitDBAddress.isValid(cleanImportInstanceAddress)) {
-          const address = OrbitDBAddress.parse(cleanImportInstanceAddress);
           const sameInstance = instances.find(
-            (instance) => instance.address === address.toString(),
+            (instance) => instance.address === address,
           );
-
+          const driveName = sailplaneUtil.driveName(address);
           if (!sameInstance) {
-            dispatch(addInstance(address.path, address.toString(), true));
+            dispatch(addInstance(driveName, address, true));
           }
         }
       }
