@@ -68,7 +68,7 @@ export function Instances({sailplane}) {
   const prevInstanceLength = usePrevious(instances.length);
 
   useEffect(() => {
-    if (prevInstanceLength && prevInstanceLength !== instances.length) {
+    if (prevInstanceLength && prevInstanceLength < instances.length) {
       dispatch(setInstanceIndex(instances.length - 1));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
