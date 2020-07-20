@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {primary3, primary4, primary45} from './colors';
+import {primary2, primary3, primary4, primary45} from './colors';
 import {Instance} from './components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import {FaServer} from 'react-icons/fa';
@@ -29,7 +29,7 @@ const styles = {
     color: primary45,
     fontSize: 16,
     fontWeight: 400,
-    marginBottom: 16,
+    marginBottom: 10,
     display: 'flex',
     alignItems: 'center',
   },
@@ -39,6 +39,8 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'baseline',
     marginTop: 10,
+    borderBottom: `1px solid ${primary2}`,
+    marginBottom: 6,
   },
   icon: {
     cursor: 'pointer',
