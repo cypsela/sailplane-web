@@ -113,7 +113,7 @@ describe('App loads', () => {
   });
 
   it('should have an preview image', () => {
-    cy.get('img').should('have.length', 2);
+    cy.get('img').should('have.length', 1);
 
     cy.visit('http://localhost:3000/');
   });
@@ -129,7 +129,7 @@ describe('App loads', () => {
 
   it('can preview photos', () => {
     cy.contains('pic2.jpg').click();
-    cy.get('img').should('have.length', 4);
+    cy.get('img').should('have.length', 3);
     cy.get('.ril-close').click();
   });
 
