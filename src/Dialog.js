@@ -3,7 +3,7 @@ import {primary45} from './colors';
 import {FaTimes} from 'react-icons/fa';
 import {useIsMobile} from './hooks/useIsMobile';
 
-export function Dialog({isVisible, body, onClose, title}) {
+export function Dialog({isVisible, body, onClose, title, noPadding}) {
   const isMobile = useIsMobile();
 
   if (!isVisible) {
@@ -34,7 +34,7 @@ export function Dialog({isVisible, body, onClose, title}) {
       alignItems: 'center',
     },
     body: {
-      padding: 14,
+      padding: noPadding ? 0 : 14,
     },
     xIcon: {
       cursor: 'pointer',

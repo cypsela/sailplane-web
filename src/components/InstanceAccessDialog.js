@@ -3,7 +3,7 @@ import {driveName} from '../utils/sailplane-util';
 import {Dialog} from '../Dialog';
 import * as sailplaneAccess from '../utils/sailplane-access';
 import Jdenticon from 'react-jdenticon';
-import {primary3, primary4, primary45} from '../colors';
+import {primary2, primary4, primary45} from '../colors';
 import {ToolItem} from './ToolItem';
 import {FiUserPlus} from 'react-icons/fi';
 import useTextInput from '../hooks/useTextInput';
@@ -13,7 +13,7 @@ export default function InstanceAccessDialog({
   onClose,
   sharedFS,
 }) {
-  const [admin, setAdmin] = useState(null);
+  const [admins, setAdmins] = useState(null);
   const [writers, setWriters] = useState(null);
   const [addWriterMode, setAddWriterMode] = useState(false);
   const [myID, setMyID] = useState(null);
@@ -28,8 +28,6 @@ export default function InstanceAccessDialog({
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginLeft: 8,
-      borderBottom: `1px solid ${primary3}`,
       paddingBottom: 6,
     },
     adminLeft: {
@@ -50,20 +48,59 @@ export default function InstanceAccessDialog({
     adminTools: {
       display: 'flex',
       alignItems: 'center',
+      justifyContent: 'flex-end',
     },
     messageText: {
       color: primary45,
       textAlign: 'center',
       marginTop: 12,
-    }
+    },
+    body: {
+      color: primary45,
+    },
+    panels: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    panel: {
+      borderRadius: 4,
+      width: '49%',
+      border: '1px solid #d9e0e4',
+      boxSizing: 'border-box',
+    },
+    panelTitle: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      fontSize: 15,
+      lineHeight: '15px',
+      marginBottom: 4,
+      textAlign: 'center',
+      backgroundColor: primary2,
+      color: primary4,
+      padding: 4,
+      height: 20,
+    },
+    panelBody: {
+      padding: 6,
+    },
+    third: {
+      width: '33.3%',
+      display: 'flex',
+      alignItems: 'center',
+      textAlign: 'center',
+      justifyContent: 'center',
+    },
+    youText: {
+      fontSize: 14,
+    },
   };
-  console.log('users', admin, writers, instanceToModifyAccess?.name);
+
   useEffect(() => {
     const getPerms = async () => {
-      const tmpAdmin = await sailplaneAccess.admin(sharedFS.current);
+      const tmpAdmins = await sailplaneAccess.admin(sharedFS.current);
       const tmpWriters = await sailplaneAccess.writers(sharedFS.current);
       const tmpMyID = await sailplaneAccess.localUserId(sharedFS.current);
-      setAdmin(Array.from(tmpAdmin)[0]);
+      setAdmins(Array.from(tmpAdmins));
       setWriters(Array.from(tmpWriters));
       setMyID(tmpMyID);
     };
@@ -72,6 +109,10 @@ export default function InstanceAccessDialog({
   }, [instanceToModifyAccess.address, sharedFS, lastUpdate]);
 
   const addWriter = async (writerID) => {
+    if (!sailplaneAccess.userIdValid(writerID)) {
+      return;
+    }
+
     await sailplaneAccess.grantWrite(sharedFS.current, writerID);
     setLastUpdate(Date.now());
     setAddWriterMode(false);
@@ -84,11 +125,11 @@ export default function InstanceAccessDialog({
     '',
     {
       placeholder: 'user id',
-      confirmTitle: 'Add user',
+      confirmTitle: 'Add writer',
     },
   );
 
-  if (!admin) {
+  if (!admins) {
     return null;
   }
 
@@ -99,65 +140,110 @@ export default function InstanceAccessDialog({
         instanceToModifyAccess.address,
       )}`}
       body={
-        <div>
-          <div style={styles.userBlock}>
-            <div style={styles.adminLeft}>
-              <div style={styles.iconHolder}>
-                <Jdenticon value={admin} size={34} style={styles.icon} />
+        <div style={styles.body}>
+          <div style={styles.panels}>
+            <div style={styles.panel}>
+              <div style={styles.panelTitle}>
+                <div style={styles.third} />
+                <div style={styles.third}>Admins</div>
+                <div
+                  style={{
+                    ...styles.adminTools,
+                    ...styles.third,
+                    justifyContent: 'flex-end',
+                  }}></div>
               </div>
-              <div style={styles.adminNameHolder}>
-                <div style={styles.adminTitle}>
-                  {myID === admin ? 'Admin [You]' : 'Admin'}
-                </div>
-                <div>{admin.slice(0, 6)}</div>
-              </div>
-            </div>
-            <div style={styles.adminTools}>
-              {!addWriterMode && myID === admin ? (
-                <>
-                  <ToolItem
-                    iconComponent={FiUserPlus}
-                    title={'Add user'}
-                    changeColor={primary4}
-                    defaultColor={primary45}
-                    onClick={() => setAddWriterMode(true)}
-                  />
-                </>
-              ) : null}
-              {addWriterMode ? AddWriterInput : null}
-            </div>
-          </div>
-          <div style={styles.writers}>
-            {writers?.length === 0 ? (
-              <div style={styles.messageText}>Add users to grant write privileges</div>
-            ) : writers === null ? (
-              <div style={styles.messageText}>Loading...</div>
-            ) : (
-              <div>
-                {writers.map((writer) => (
-                  <div
-                    style={{
-                      ...styles.userBlock,
-                      borderBottom: 0,
-                      marginTop: 10,
-                    }}>
+              <div style={styles.panelBody}>
+                {admins.map((admin) => (
+                  <div style={styles.userBlock}>
                     <div style={styles.adminLeft}>
                       <div style={styles.iconHolder}>
                         <Jdenticon
-                          value={writer}
+                          value={admin}
                           size={34}
                           style={styles.icon}
                         />
                       </div>
                       <div style={styles.adminNameHolder}>
-                        <div>{writer.slice(0, 6)}</div>
+                        <div style={styles.adminTitle}></div>
+                        <div>
+                          {admin.slice(0, 6)}{' '}
+                          {myID === admin ? (
+                            <span style={styles.youText}>[You]</span>
+                          ) : (
+                            ''
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div style={styles.adminTools}></div>
                   </div>
                 ))}
               </div>
-            )}
+            </div>
+            <div style={styles.panel}>
+              <div style={styles.panelTitle}>
+                {!addWriterMode ? (
+                  <>
+                    <div style={styles.third} />
+                    <div style={styles.third}>Writers</div>
+                  </>
+                ) : null}
+                <div
+                  style={{
+                    ...styles.adminTools,
+                    ...styles.third,
+                    justifyContent: 'flex-end',
+                    width: addWriterMode ? '100%' : null,
+                  }}>
+                  {!addWriterMode && admins.includes(myID) ? (
+                    <>
+                      <ToolItem
+                        iconComponent={FiUserPlus}
+                        title={'Add writer'}
+                        changeColor={primary4}
+                        defaultColor={primary45}
+                        onClick={() => setAddWriterMode(true)}
+                      />
+                    </>
+                  ) : null}
+                  {addWriterMode ? AddWriterInput : null}
+                </div>
+              </div>
+              <div style={styles.panelBody}>
+                <div style={styles.writers}>
+                  {writers?.length === 0 ? (
+                    <div style={styles.messageText}>
+                      Add users to grant write privileges
+                    </div>
+                  ) : writers === null ? (
+                    <div style={styles.messageText}>Loading...</div>
+                  ) : (
+                    <div>
+                      {writers.map((writer) => (
+                        <div
+                          style={{
+                            ...styles.userBlock,
+                          }}>
+                          <div style={styles.adminLeft}>
+                            <div style={styles.iconHolder}>
+                              <Jdenticon
+                                value={writer}
+                                size={34}
+                                style={styles.icon}
+                              />
+                            </div>
+                            <div style={styles.adminNameHolder}>
+                              <div>{writer.slice(0, 6)}</div>
+                            </div>
+                          </div>
+                          <div style={styles.adminTools}></div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       }
