@@ -5,7 +5,7 @@ import * as SailplaneAccess from '../utils/sailplaneAccess';
 import Jdenticon from 'react-jdenticon';
 import {primary3, primary4, primary45} from '../colors';
 import {ToolItem} from './ToolItem';
-import {FiPlusCircle} from 'react-icons/fi';
+import {FiUserPlus} from 'react-icons/fi';
 import useTextInput from '../hooks/useTextInput';
 
 export default function InstanceAccessDialog({
@@ -111,7 +111,7 @@ export default function InstanceAccessDialog({
               {!addWriterMode ? (
                 <>
                   <ToolItem
-                    iconComponent={FiPlusCircle}
+                    iconComponent={FiUserPlus}
                     title={'Add user'}
                     changeColor={primary4}
                     defaultColor={primary45}
