@@ -52,7 +52,7 @@ export default function InstanceAccessDialog({
       alignItems: 'center',
     },
   };
-  console.log('users', admin, writers);
+  console.log('users', admin, writers, instanceToModifyAccess?.name);
   useEffect(() => {
     const getPerms = async () => {
       const tmpAdmin = await sailplaneAccess.admin(sharedFS.current);
