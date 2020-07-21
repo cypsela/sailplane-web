@@ -2,6 +2,8 @@
 # sailplane-web
 web app for shared folders and files
 
+![homepage](./imgs/homepage.png?raw=true)
+
 > uses [sailplane-node](https://github.com/cypsela/sailplane-node)
 
 live on github pages: [https://cypsela.github.io/sailplane-web/](https://cypsela.github.io/sailplane-web/)
