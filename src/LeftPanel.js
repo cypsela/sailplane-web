@@ -1,13 +1,6 @@
 import React, {useState} from 'react';
-import {primary2, primary3, primary4, primary45} from './colors';
-import {
-  FaFolderOpen,
-  FaCog,
-  FaPaperPlane,
-  FaBars,
-  FaServer,
-  FaTimes,
-} from 'react-icons/fa';
+import {primary2, primary45} from './colors';
+import {FaFolderOpen, FaCog, FaBars, FaServer, FaTimes} from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
 import {useIsMobile} from './hooks/useIsMobile';
 import {FaGithub} from 'react-icons/fa/index';
@@ -70,16 +63,14 @@ const styles = {
     fontSize: 10,
     userSelect: 'none',
   },
-  logoIconHolder: {
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFF',
-    padding: 6,
+  icon: {
+    width: 43.4,
+    height: 20,
     marginRight: 4,
-    borderRadius: 4,
-    boxShadow: `inset 1px 2px 3px #5686a7`,
-  }
+  },
+  logoTitle: {
+    display: 'inline-flex',
+  },
 };
 
 export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
@@ -115,10 +106,8 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
                 window.location.origin + window.location.pathname
               }`;
             }}>
-            <div style={styles.logoIconHolder}>
-              <FaPaperPlane color={primary45} size={18} style={styles.icon} />
-            </div>
-            Sailplane
+            <img src={'/images/origami2.png'} style={styles.icon} width={20} />
+            <div style={styles.logoTitle}>Sailplane</div>
           </div>
         </div>
         {isMobileOpen || !isMobile ? (
