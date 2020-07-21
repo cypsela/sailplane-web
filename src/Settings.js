@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import * as SailplaneAccess from './utils/sailplaneAccess';
+import * as sailplaneAccess from './utils/sailplane-access';
 import {primary3, primary45} from "./colors";
 
 const styles = {
@@ -38,7 +38,7 @@ export function Settings({sharedFS}) {
 
   useEffect(() => {
     const getPerms = async () => {
-      const tmpMyID = await SailplaneAccess.localUserId(sharedFS.current);
+      const tmpMyID = await sailplaneAccess.localUserId(sharedFS.current);
       setMyID(tmpMyID);
     };
 

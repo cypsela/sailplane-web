@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {driveName} from '../utils/sailplane-util';
 import {Dialog} from '../Dialog';
-import * as SailplaneAccess from '../utils/sailplaneAccess';
+import * as sailplaneAccess from '../utils/sailplane-access';
 import Jdenticon from 'react-jdenticon';
 import {primary3, primary4, primary45} from '../colors';
 import {ToolItem} from './ToolItem';
@@ -55,9 +55,9 @@ export default function InstanceAccessDialog({
   console.log('users', admin, writers);
   useEffect(() => {
     const getPerms = async () => {
-      const tmpAdmin = await SailplaneAccess.admin(sharedFS.current);
-      const tmpWriters = await SailplaneAccess.writers(sharedFS.current);
-      const tmpMyID = await SailplaneAccess.localUserId(sharedFS.current);
+      const tmpAdmin = await sailplaneAccess.admin(sharedFS.current);
+      const tmpWriters = await sailplaneAccess.writers(sharedFS.current);
+      const tmpMyID = await sailplaneAccess.localUserId(sharedFS.current);
       setAdmin(Array.from(tmpAdmin)[0]);
       setWriters(Array.from(tmpWriters));
       setMyID(tmpMyID);
@@ -67,7 +67,7 @@ export default function InstanceAccessDialog({
   }, [instanceToModifyAccess.address, sharedFS, lastUpdate]);
 
   const addWriter = async (writerID) => {
-    await SailplaneAccess.grantWrite(sharedFS.current, writerID);
+    await sailplaneAccess.grantWrite(sharedFS.current, writerID);
     setLastUpdate(Date.now());
     setAddWriterMode(false);
   };
