@@ -32,7 +32,7 @@ export function InstanceSelector({}) {
     menu: {
       backgroundColor: '#FFF',
       position: 'absolute',
-      minWidth: 100,
+      minWidth: 196,
       top: 25,
       left: -1,
       border: `1px solid ${primary45}`,

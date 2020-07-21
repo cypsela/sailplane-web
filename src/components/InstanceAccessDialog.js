@@ -113,7 +113,7 @@ export default function InstanceAccessDialog({
               </div>
             </div>
             <div style={styles.adminTools}>
-              {!addWriterMode ? (
+              {!addWriterMode && myID === admin ? (
                 <>
                   <ToolItem
                     iconComponent={FiUserPlus}
