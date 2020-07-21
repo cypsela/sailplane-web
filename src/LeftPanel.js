@@ -64,13 +64,23 @@ const styles = {
     userSelect: 'none',
   },
   icon: {
-    width: 43.4,
-    height: 20,
-    marginRight: 4,
+    width: 35.73,
+    height: 17,
   },
   logoTitle: {
     display: 'inline-flex',
   },
+  logoHolder: {
+    display: 'inline-flex',
+    backgroundColor: primary2,
+    height: 42,
+    width: 42,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    marginRight: 5,
+    boxShadow: `inset 1px 2px 3px #5686a7`,
+  }
 };
 
 export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
@@ -106,7 +116,9 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
                 window.location.origin + window.location.pathname
               }`;
             }}>
-            <img src={'/images/origami2.png'} style={styles.icon} width={20} />
+            <div style={styles.logoHolder}>
+              <img src={'/images/origami3.png'} style={styles.icon} width={20} />
+            </div>
             <div style={styles.logoTitle}>Sailplane</div>
           </div>
         </div>
