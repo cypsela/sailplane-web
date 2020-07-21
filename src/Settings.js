@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import * as sailplaneAccess from './utils/sailplane-access';
-import {primary3, primary45} from "./colors";
+import {primary3, primary45} from './colors';
+import Jdenticon from 'react-jdenticon';
 
 const styles = {
   container: {
@@ -13,24 +14,14 @@ const styles = {
     boxSizing: 'border-box',
   },
   settingItem: {
+    lineHeight: '14px',
     display: 'flex',
     alignItems: 'center',
     color: primary45,
-
   },
-  settingItemTitle: {
-    marginRight: 6,
-    fontSize: 14,
-    color: primary3
-  },
-  input: {
-    color: primary45,
-    fontSize: 16,
-    padding: 4,
-    border: `1px solid ${primary45}`,
-    width: 200,
-    borderRadius: 4,
-  },
+  iconHolder: {
+    marginRight: 4,
+  }
 };
 
 export function Settings({sharedFS}) {
@@ -44,13 +35,19 @@ export function Settings({sharedFS}) {
 
     getPerms();
   }, [sharedFS]);
+
+  if (!myID) {
+    return null;
+  }
+
   return (
     <div style={styles.container}>
       <div style={styles.settingItem}>
-        <div style={styles.settingItemTitle}>My ID:</div>
-        <div>
-          {myID}
+        <div style={styles.iconHolder}>
+          <Jdenticon value={myID} size={34}/>
         </div>
+
+        <div>{myID}</div>
       </div>
     </div>
   );

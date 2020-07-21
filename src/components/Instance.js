@@ -99,7 +99,7 @@ export const Instance = React.memo(
                 iconComponent={FiUsers}
                 size={15}
                 changeColor={primary}
-                onClick={() => onAccess(data)}
+                onClick={() => onAccess()}
               />
               <ToolItem
                 className={'instanceURLCopy'}

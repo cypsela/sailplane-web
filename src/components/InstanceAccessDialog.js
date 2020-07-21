@@ -20,7 +20,7 @@ export default function InstanceAccessDialog({
   const [lastUpdate, setLastUpdate] = useState(null);
 
   const styles = {
-    adminUser: {
+    userBlock: {
       color: primary4,
       fontSize: 18,
       fontFamily: 'Open Sans',
@@ -51,6 +51,11 @@ export default function InstanceAccessDialog({
       display: 'flex',
       alignItems: 'center',
     },
+    messageText: {
+      color: primary45,
+      textAlign: 'center',
+      marginTop: 12,
+    }
   };
   console.log('users', admin, writers, instanceToModifyAccess?.name);
   useEffect(() => {
@@ -95,7 +100,7 @@ export default function InstanceAccessDialog({
       )}`}
       body={
         <div>
-          <div style={styles.adminUser}>
+          <div style={styles.userBlock}>
             <div style={styles.adminLeft}>
               <div style={styles.iconHolder}>
                 <Jdenticon value={admin} size={34} style={styles.icon} />
@@ -123,9 +128,36 @@ export default function InstanceAccessDialog({
             </div>
           </div>
           <div style={styles.writers}>
-            {writers?.length === 0 ? <div>
-              Add some users
-            </div> : <div></div>}
+            {writers?.length === 0 ? (
+              <div style={styles.messageText}>Add users to grant write privileges</div>
+            ) : writers === null ? (
+              <div style={styles.messageText}>Loading...</div>
+            ) : (
+              <div>
+                {writers.map((writer) => (
+                  <div
+                    style={{
+                      ...styles.userBlock,
+                      borderBottom: 0,
+                      marginTop: 10,
+                    }}>
+                    <div style={styles.adminLeft}>
+                      <div style={styles.iconHolder}>
+                        <Jdenticon
+                          value={writer}
+                          size={34}
+                          style={styles.icon}
+                        />
+                      </div>
+                      <div style={styles.adminNameHolder}>
+                        <div>{writer.slice(0, 6)}</div>
+                      </div>
+                    </div>
+                    <div style={styles.adminTools}></div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       }
