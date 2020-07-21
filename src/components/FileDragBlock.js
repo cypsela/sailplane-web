@@ -71,7 +71,7 @@ export function FileDragBlock({handleOpenUpload, isActive}) {
             </div>
           </div>
           <div style={styles.dragTitle}>
-            {!isActive ? uploadTitle : 'Drop your files here!'}
+            {!isActive ? uploadTitle : 'Drop to upload'}
           </div>
         </div>
       </div>
