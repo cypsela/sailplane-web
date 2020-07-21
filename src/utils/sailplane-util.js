@@ -18,9 +18,9 @@ export async function addressValid(sailplane, address) {
   } else { return false }
 }
 
-const defaultAddressOptions = () => ({
+const defaultAddressOptions = ({ iv }) => ({
   meta: {
-    iv: [...randomBytes(16)]
+    iv
   },
   accessController: {
     type: 'orbitdb'
@@ -28,9 +28,10 @@ const defaultAddressOptions = () => ({
 });
 
 export function determineAddress(sailplane, options = {}) {
+  const iv = options.iv || randomBytes(16)
   return sailplane.determineAddress(
-    options.name || 'sailplane-web',
-    {...defaultAddressOptions(), ...options},
+    options.name || `sailplane/drives/${iv.toString('hex')}`,
+    {...defaultAddressOptions({ iv }), ...options},
   );
 };
 
