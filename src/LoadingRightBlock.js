@@ -15,6 +15,7 @@ const styles = {
     fontWeight: '300',
     color: primary4,
     boxSizing: 'border-box',
+    height: '100%',
   },
   icon: {
     marginRight: 4,
