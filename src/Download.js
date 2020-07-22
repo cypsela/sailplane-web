@@ -136,6 +136,7 @@ function Download({match}) {
   return (
     <div style={styles.container}>
       <LeftPanel
+        isDownload={true}
         setCurrentRightPanel={setCurrentRightPanel}
         currentRightPanel={currentRightPanel}
       />

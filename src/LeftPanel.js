@@ -3,7 +3,7 @@ import {primary15, primary2, primary45} from './colors';
 import {FaFolderOpen, FaCog, FaBars, FaServer, FaTimes} from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
 import {useIsMobile} from './hooks/useIsMobile';
-import {FaPaperPlane, FaGithub} from 'react-icons/fa/index';
+import {FaPaperPlane, FaGithub, FaHome} from 'react-icons/fa/index';
 
 const styles = {
   container: {
@@ -82,7 +82,11 @@ const styles = {
   },
 };
 
-export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
+export function LeftPanel({
+  setCurrentRightPanel,
+  currentRightPanel,
+  isDownload,
+}) {
   const isMobile = useIsMobile();
 
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -122,7 +126,7 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
             <div style={styles.logoTitle}>Sailplane</div>
           </div>
         </div>
-        {isMobileOpen || !isMobile ? (
+        {(isMobileOpen || !isMobile) && !isDownload ? (
           <>
             <PanelItem
               title={'Files'}
@@ -149,6 +153,15 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
         ) : (
           <div style={styles.mobilePadding} />
         )}
+        {isDownload ? (
+          <div style={styles.settingsBlock}>
+            <PanelItem
+              title={'Home'}
+              onClick={() => (document.location = '/')}
+              iconComponent={FaHome}
+            />
+          </div>
+        ) : null}
       </div>
       {!isMobile ? (
         <div style={styles.footer}>
