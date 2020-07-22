@@ -3,7 +3,7 @@ import {driveName} from '../utils/sailplane-util';
 import {Dialog} from '../Dialog';
 import * as sailplaneAccess from '../utils/sailplane-access';
 import Jdenticon from 'react-jdenticon';
-import {primary2, primary4, primary45} from '../colors';
+import {cleanBorder, primary2, primary4, primary45} from '../colors';
 import {ToolItem} from './ToolItem';
 import {FiUserPlus} from 'react-icons/fi';
 import useTextInput from '../hooks/useTextInput';
@@ -67,7 +67,7 @@ export default function InstanceAccessDialog({
     panel: {
       borderRadius: 4,
       width: '49%',
-      border: '1px solid #d9e0e4',
+      border: cleanBorder,
       boxSizing: 'border-box',
     },
     panelTitle: {
@@ -102,7 +102,7 @@ export default function InstanceAccessDialog({
       padding: 6,
       borderRadius: 4,
       marginBottom: 6,
-      border: '1px solid #d9e0e4',
+      border: cleanBorder,
     },
   };
 

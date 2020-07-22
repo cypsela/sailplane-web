@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {primary2, primary3, primary4, primary45} from './colors';
+import {cleanBorder, primary2, primary3, primary4, primary45} from './colors';
 import {Instance} from './components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import {FaServer} from 'react-icons/fa';
@@ -13,6 +13,7 @@ import {delay} from './utils/Utils';
 import * as sailplaneUtil from './utils/sailplane-util';
 import InstanceAccessDialog from './components/InstanceAccessDialog';
 import {UserHeader} from './components/UserHeader';
+import {ToolItem} from './components/ToolItem';
 
 const styles = {
   container: {
@@ -25,12 +26,12 @@ const styles = {
     flexDirection: 'column',
     fontFamily: 'Open Sans',
     boxSizing: 'border-box',
+    paddingTop: 6,
   },
   title: {
     color: primary45,
     fontSize: 16,
     fontWeight: 400,
-    marginBottom: 10,
     display: 'flex',
     alignItems: 'center',
     userSelect: 'none',
@@ -38,10 +39,12 @@ const styles = {
   header: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    borderBottom: `1px solid ${primary2}`,
-    marginBottom: 6,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 4,
+    marginBottom: 4,
+    color: primary45,
+    fontSize: 12,
   },
   icon: {
     cursor: 'pointer',
@@ -51,8 +54,12 @@ const styles = {
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    color: primary4,
+    color: primary45,
     fontSize: 12,
+    backgroundColor: primary2,
+    borderRadius: 4,
+    padding: 2,
+    border: cleanBorder,
   },
   toolTitle: {
     marginRight: 6,
@@ -123,29 +130,36 @@ export function Instances({sailplane, sharedFS}) {
 
   return (
     <div style={styles.container}>
-      <UserHeader sharedFS={sharedFS}/>
+      <UserHeader
+        sharedFS={sharedFS}
+        leftSide={
+          <div style={styles.title}>
+            <FaServer color={primary3} size={16} style={styles.icon} />
+            Drives
+          </div>
+        }
+      />
       <div style={styles.header}>
-        <div style={styles.title}>
-          <FaServer color={primary3} size={16} style={styles.icon}/>
-          Drives
-        </div>
         <div style={styles.tools}>
           {!importInstanceMode && !addInstanceMode ? (
             <>
-              <div
-                style={styles.tools}
+              <ToolItem
+                className={'importInstance'}
+                defaultColor={primary45}
+                changeColor={primary4}
+                iconComponent={FiUpload}
+                title={'Import drive'}
+                onClick={() => setImportInstanceMode(true)}
+              />
+
+              <ToolItem
                 className={'addInstance'}
-                onClick={() => setImportInstanceMode(true)}>
-                <FiUpload color={primary45} size={16} style={styles.icon}/>
-                <span style={styles.toolTitle}>Import drive</span>
-              </div>
-              <div
-                style={styles.tools}
-                className={'addInstance'}
-                onClick={() => createInstance()}>
-                <FiPlusCircle color={primary45} size={16} style={styles.icon}/>
-                <span style={styles.toolTitle}>Create drive</span>
-              </div>
+                defaultColor={primary45}
+                changeColor={primary4}
+                iconComponent={FiPlusCircle}
+                title={'Create drive'}
+                onClick={() => createInstance()}
+              />
             </>
           ) : null}
 
@@ -180,7 +194,7 @@ export function Instances({sailplane, sharedFS}) {
           sharedFS={sharedFS}
         />
       ) : null}
-      <StatusBar/>
+      <StatusBar />
     </div>
   );
 }

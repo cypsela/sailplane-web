@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import * as sailplaneAccess from '../utils/sailplane-access';
 import Jdenticon from 'react-jdenticon';
-import {primary3, primary45} from '../colors';
+import {primary2, primary3, primary45} from '../colors';
 import {SmallInstanceItem} from './SmallInstanceItem';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
@@ -10,7 +10,10 @@ const styles = {
   container: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 6,
+    borderBottom: `1px solid ${primary2}`,
+    paddingBottom: 2,
   },
   right: {
     fontSize: 16,
@@ -35,9 +38,13 @@ const styles = {
     border: `1px solid ${primary3}`,
     fontSize: 14,
   },
+  leftSide: {
+    display: 'flex',
+    alignItems: 'center',
+  }
 };
 
-export function UserHeader({sharedFS}) {
+export function UserHeader({sharedFS, leftSide}) {
   const [myID, setMyID] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
@@ -58,11 +65,10 @@ export function UserHeader({sharedFS}) {
 
   return (
     <div style={styles.container}>
-      <div></div>
+      <div style={styles.leftSide}>{leftSide}</div>
       <div style={styles.right}>
         {myID ? (
           <div style={styles.userItem}>
-            {/*<div>{myID.slice(0, 6)}</div>*/}
             <div onClick={() => setMenuOpen(!menuOpen)}>
               <Jdenticon value={myID} size={34} style={styles.icon} />
             </div>

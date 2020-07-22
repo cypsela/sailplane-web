@@ -9,7 +9,6 @@ export const primary46 = '#67a1cb';
 export const primary5 = '#3881ad';
 export const primary6 = '#132b3a';
 
-
 // export const primary = '#666';
 // export const primary2 = '#EEE';
 // export const primary3 = '#CCC';
@@ -19,3 +18,5 @@ export const primary6 = '#132b3a';
 
 export const errorColor = '#ef6565';
 export const goodColor = '#53c171';
+
+export const cleanBorder = '1px solid rgb(208, 227, 239)';
