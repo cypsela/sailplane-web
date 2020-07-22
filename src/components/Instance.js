@@ -107,23 +107,23 @@ export const Instance = React.memo(
                 changeColor={primary}
                 onClick={() => onAccess()}
               />
-              <ToolItem
-                className={'instanceURLCopy'}
-                defaultColor={iconColor}
-                iconComponent={FiShare2}
-                size={15}
-                changeColor={primary}
-                onClick={async () => {
-                  await navigator.clipboard.writeText(shareURL);
-                  dispatch(
-                    setStatus({
-                      message: 'Drive URL copied to clipboard',
-                      isInfo: true,
-                    }),
-                  );
-                  setTimeout(() => dispatch(setStatus({})), 1500);
-                }}
-              />
+              {/*<ToolItem*/}
+              {/*  className={'instanceURLCopy'}*/}
+              {/*  defaultColor={iconColor}*/}
+              {/*  iconComponent={FiShare2}*/}
+              {/*  size={15}*/}
+              {/*  changeColor={primary}*/}
+              {/*  onClick={async () => {*/}
+              {/*    await navigator.clipboard.writeText(shareURL);*/}
+              {/*    dispatch(*/}
+              {/*      setStatus({*/}
+              {/*        message: 'Drive URL copied to clipboard',*/}
+              {/*        isInfo: true,*/}
+              {/*      }),*/}
+              {/*    );*/}
+              {/*    setTimeout(() => dispatch(setStatus({})), 1500);*/}
+              {/*  }}*/}
+              {/*/>*/}
               <ToolItem
                 className={'instanceAddressCopy'}
                 defaultColor={iconColor}
