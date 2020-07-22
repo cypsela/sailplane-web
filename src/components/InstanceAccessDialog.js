@@ -7,6 +7,7 @@ import {primary2, primary4, primary45} from '../colors';
 import {ToolItem} from './ToolItem';
 import {FiUserPlus} from 'react-icons/fi';
 import useTextInput from '../hooks/useTextInput';
+import useDimensions from 'react-use-dimensions';
 
 export default function InstanceAccessDialog({
   instanceToModifyAccess,
@@ -18,6 +19,7 @@ export default function InstanceAccessDialog({
   const [addWriterMode, setAddWriterMode] = useState(false);
   const [myID, setMyID] = useState(null);
   const [lastUpdate, setLastUpdate] = useState(null);
+  const [dialogDimensionsRef, dialogDimensions] = useDimensions();
 
   const styles = {
     userBlock: {
@@ -149,7 +151,7 @@ export default function InstanceAccessDialog({
         instanceToModifyAccess.address,
       )}`}
       body={
-        <div style={styles.body}>
+        <div style={styles.body} ref={dialogDimensionsRef}>
           <div style={styles.alert}>
             {admins.includes(myID)
               ? 'You are an admin of this drive. You have full access.'
@@ -209,13 +211,15 @@ export default function InstanceAccessDialog({
                     ...styles.adminTools,
                     ...styles.third,
                     justifyContent: 'flex-end',
-                    width: addWriterMode ? '100%' : null,
+                    width: addWriterMode ? '100%' : '30%',
                   }}>
                   {!addWriterMode && admins.includes(myID) ? (
                     <>
                       <ToolItem
                         iconComponent={FiUserPlus}
-                        title={'Add writer'}
+                        title={
+                          dialogDimensions?.width > 600 ? 'Add writer' : null
+                        }
                         changeColor={primary4}
                         defaultColor={primary45}
                         onClick={() => setAddWriterMode(true)}
