@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {primary2, primary45} from './colors';
+import {primary15, primary2, primary45} from './colors';
 import {FaFolderOpen, FaCog, FaBars, FaServer, FaTimes} from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
 import {useIsMobile} from './hooks/useIsMobile';
@@ -155,7 +155,7 @@ export function LeftPanel({setCurrentRightPanel, currentRightPanel}) {
           <a
             href={'https://github.com/cypsela/sailplane-web'}
             target={'_blank'}>
-            <FaGithub color={primary2} size={20} style={styles.iconGithub} />
+            <FaGithub color={primary15} size={20} style={styles.iconGithub} />
           </a>
           <div style={styles.githubTxt}>Source</div>
         </div>

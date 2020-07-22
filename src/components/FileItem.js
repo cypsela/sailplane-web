@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {primary, primary2, primary45, primary5} from '../colors';
+import {primary, primary15, primary45, primary5} from '../colors';
 import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
@@ -300,7 +300,7 @@ export function FileItem({
               fileBlob ||
               snapshot.isDragging ||
               (snapshot.combineTargetFor && type === 'dir')
-                ? primary2
+                ? primary15
                 : '#FFF',
           }}>
           <div

@@ -1,8 +1,14 @@
 import React from 'react';
-import {errorColor, primary, primary2, primary3, primary45} from '../colors';
+import {
+  errorColor,
+  primary,
+  primary15,
+  primary3,
+  primary45,
+} from '../colors';
 import {ToolItem} from './ToolItem';
 import {FiShare2, FiCopy, FiTrash, FiUsers} from 'react-icons/fi';
-import {FiHardDrive} from 'react-icons/fi/index';
+import {FiHardDrive} from 'react-icons/fi';
 import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
 import useHover from '../hooks/useHover';
@@ -17,7 +23,7 @@ export const Instance = React.memo(
     let backgroundColor = selected ? primary3 : '#FFF';
 
     if (isHovered && !selected) {
-      backgroundColor = primary2;
+      backgroundColor = primary15;
     }
 
     const iconColor = selected ? '#FFF' : primary45;
