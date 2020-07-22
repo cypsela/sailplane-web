@@ -1,6 +1,13 @@
 import React, {useState} from 'react';
 import {primary15, primary2, primary45} from './colors';
-import {FaFolderOpen, FaCog, FaBars, FaServer, FaTimes} from 'react-icons/fa';
+import {
+  FaFolderOpen,
+  FaCog,
+  FaBars,
+  FaServer,
+  FaTimes,
+  FaDownload,
+} from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
 import {useIsMobile} from './hooks/useIsMobile';
 import {FaPaperPlane, FaGithub, FaHome} from 'react-icons/fa/index';
@@ -154,13 +161,23 @@ export function LeftPanel({
           <div style={styles.mobilePadding} />
         )}
         {isDownload ? (
-          <div style={styles.settingsBlock}>
-            <PanelItem
-              title={'Home'}
-              onClick={() => (document.location = '/')}
-              iconComponent={FaHome}
-            />
-          </div>
+          <>
+            <div style={styles.settingsBlock}>
+              <PanelItem
+                title={'Home'}
+                onClick={() => (document.location = '/')}
+                iconComponent={FaHome}
+              />
+            </div>
+            <div style={styles.settingsBlock}>
+              <PanelItem
+                title={'Downloads'}
+                onClick={() => {}}
+                iconComponent={FaDownload}
+                selected={true}
+              />
+            </div>
+          </>
         ) : null}
       </div>
       {!isMobile ? (
