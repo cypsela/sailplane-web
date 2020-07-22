@@ -7,7 +7,7 @@ import {
   FiUpload,
   FiShare2,
 } from 'react-icons/fi';
-import {errorColor, goodColor, primary, primary4} from './colors';
+import {errorColor, goodColor, primary4} from './colors';
 import {Breadcrumb} from './components/Breadcrumb';
 import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
@@ -21,6 +21,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     fontFamily: 'Open Sans',
+    marginTop: 4,
     marginBottom: 10,
   },
   leftTools: {

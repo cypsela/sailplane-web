@@ -5,6 +5,7 @@ import {primary2, primary3, primary45} from '../colors';
 import {SmallInstanceItem} from './SmallInstanceItem';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
+import {FaServer} from 'react-icons/fa';
 
 const styles = {
   container: {
@@ -37,14 +38,26 @@ const styles = {
     right: 0,
     border: `1px solid ${primary3}`,
     fontSize: 14,
+    zIndex: 2,
   },
   leftSide: {
     display: 'flex',
     alignItems: 'center',
-  }
+  },
+  title: {
+    color: primary45,
+    fontSize: 16,
+    fontWeight: 400,
+    display: 'flex',
+    alignItems: 'center',
+    userSelect: 'none',
+  },
+  headerIcon: {
+    marginRight: 4,
+  },
 };
 
-export function UserHeader({sharedFS, leftSide}) {
+export function UserHeader({sharedFS, title, iconComponent, leftSide}) {
   const [myID, setMyID] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
@@ -63,9 +76,24 @@ export function UserHeader({sharedFS, leftSide}) {
     getID();
   }, [sharedFS]);
 
+  const IconComponent = iconComponent;
+
   return (
     <div style={styles.container}>
-      <div style={styles.leftSide}>{leftSide}</div>
+      <div style={styles.leftSide}>
+        {title ? (
+          <div style={styles.title}>
+            <IconComponent
+              color={primary3}
+              size={16}
+              style={styles.headerIcon}
+            />
+            {title}
+          </div>
+        ) : (
+          leftSide
+        )}
+      </div>
       <div style={styles.right}>
         {myID ? (
           <div style={styles.userItem}>

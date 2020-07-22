@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import * as sailplaneAccess from './utils/sailplane-access';
-import {primary3, primary45} from './colors';
-import Jdenticon from 'react-jdenticon';
+import React from 'react';
+import {primary45} from './colors';
+import {UserHeader} from './components/UserHeader';
+import {FaCog} from 'react-icons/fa';
 
 const styles = {
   container: {
     padding: 10,
+    paddingTop: 6,
     backgroundColor: '#FFF',
     width: '100%',
     overflowY: 'auto',
@@ -19,36 +20,16 @@ const styles = {
     alignItems: 'center',
     color: primary45,
   },
-  iconHolder: {
-    marginRight: 4,
-  }
 };
 
 export function Settings({sharedFS}) {
-  const [myID, setMyID] = useState(null);
-
-  useEffect(() => {
-    const getPerms = async () => {
-      const tmpMyID = await sailplaneAccess.localUserId(sharedFS.current);
-      setMyID(tmpMyID);
-    };
-
-    getPerms();
-  }, [sharedFS]);
-
-  if (!myID) {
-    return null;
-  }
-
   return (
     <div style={styles.container}>
-      <div style={styles.settingItem}>
-        <div style={styles.iconHolder}>
-          <Jdenticon value={myID} size={34}/>
-        </div>
-
-        <div>{myID}</div>
-      </div>
+      <UserHeader
+        sharedFS={sharedFS}
+        title={'Settings'}
+        iconComponent={FaCog}
+      />
     </div>
   );
 }

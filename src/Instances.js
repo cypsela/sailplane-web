@@ -1,5 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {cleanBorder, primary2, primary3, primary4, primary45} from './colors';
+import {
+  cleanBorder,
+  primary15,
+  primary4,
+  primary45,
+} from './colors';
 import {Instance} from './components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import {FaServer} from 'react-icons/fa';
@@ -28,14 +33,6 @@ const styles = {
     boxSizing: 'border-box',
     paddingTop: 6,
   },
-  title: {
-    color: primary45,
-    fontSize: 16,
-    fontWeight: 400,
-    display: 'flex',
-    alignItems: 'center',
-    userSelect: 'none',
-  },
   toolsContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -51,21 +48,17 @@ const styles = {
     marginRight: 4,
   },
   tools: {
+    width: '100%',
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
     color: primary45,
     fontSize: 12,
-    backgroundColor: primary2,
-    borderRadius: 4,
+    backgroundColor: primary15,
+    borderRadius: 2,
     padding: 2,
     border: cleanBorder,
   },
-  toolTitle: {
-    marginRight: 6,
-    userSelect: 'none',
-  },
-  instances: {},
 };
 
 export function Instances({sailplane, sharedFS}) {
@@ -132,12 +125,8 @@ export function Instances({sailplane, sharedFS}) {
     <div style={styles.container}>
       <UserHeader
         sharedFS={sharedFS}
-        leftSide={
-          <div style={styles.title}>
-            <FaServer color={primary3} size={16} style={styles.icon} />
-            Drives
-          </div>
-        }
+        title={'Drives'}
+        iconComponent={FaServer}
       />
       <div style={styles.toolsContainer}>
         <div style={styles.tools}>

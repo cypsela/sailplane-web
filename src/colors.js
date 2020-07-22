@@ -6,6 +6,8 @@ export const primary4 = 'hsl(204,38%,55%)';
 export const primary45 = 'hsl(205,49%,66%)';
 export const primary46 = '#67a1cb';
 
+export const primary15 = 'rgb(241 249 255)';
+
 export const primary5 = '#3881ad';
 export const primary6 = '#132b3a';
 

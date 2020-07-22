@@ -1,9 +1,5 @@
 import React from 'react';
-import {FaChevronRight} from 'react-icons/fa';
 import {primary45} from '../colors';
-import {useSelector} from 'react-redux';
-import * as PropTypes from 'prop-types';
-import {InstanceSelector} from './InstanceSelector';
 import useHover from '../hooks/useHover';
 
 export function SmallInstanceItem({name, onClick}) {
@@ -16,6 +12,7 @@ export function SmallInstanceItem({name, onClick}) {
       padding: '6px 10px',
       display: 'block',
       minWidth: name.length * 7.5,
+      zIndex: 200,
     },
   };
   return (
