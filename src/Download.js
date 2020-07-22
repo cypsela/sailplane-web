@@ -18,10 +18,13 @@ import {
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
 import {decryptFile, getEncryptionInfoFromFilename} from './utils/encryption';
+import {cleanBorder} from "./colors";
+import {useWindowSize} from "./hooks/useWindowSize";
 
 function Download({match}) {
   const {cid, path, displayType} = match.params;
   const isMobile = useIsMobile();
+  const windowSize = useWindowSize();
   const ipfsObj = useIPFS((error)=> {
     console.error(error)
   });
@@ -60,6 +63,9 @@ function Download({match}) {
       display: isMobile ? 'block' : 'flex',
       flexDirection: 'row',
       height: '100%',
+      maxWidth: 1280,
+      margin: '0 auto',
+      border: windowSize.width <= 1280 ? null : cleanBorder,
     },
   };
 
