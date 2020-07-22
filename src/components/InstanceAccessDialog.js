@@ -53,7 +53,7 @@ export default function InstanceAccessDialog({
     messageText: {
       color: primary45,
       textAlign: 'center',
-      marginTop: 12,
+      marginTop: 8,
     },
     body: {
       color: primary45,
@@ -93,6 +93,15 @@ export default function InstanceAccessDialog({
     youText: {
       fontSize: 14,
     },
+    alert: {
+      backgroundColor: primary2,
+      color: primary4,
+      fontSize: 14,
+      padding: 6,
+      borderRadius: 4,
+      marginBottom: 6,
+      border: '1px solid #d9e0e4',
+    },
   };
 
   useEffect(() => {
@@ -129,7 +138,7 @@ export default function InstanceAccessDialog({
     },
   );
 
-  if (!admins) {
+  if (!admins || !writers) {
     return null;
   }
 
@@ -141,6 +150,13 @@ export default function InstanceAccessDialog({
       )}`}
       body={
         <div style={styles.body}>
+          <div style={styles.alert}>
+            {admins.includes(myID)
+              ? 'You are an admin of this drive. You have full access.'
+              : writers.includes(myID)
+              ? 'You are a writer on this drive.'
+              : 'You have read access only.'}
+          </div>
           <div style={styles.panels}>
             <div style={styles.panel}>
               <div style={styles.panelTitle}>
@@ -233,7 +249,14 @@ export default function InstanceAccessDialog({
                               />
                             </div>
                             <div style={styles.adminNameHolder}>
-                              <div>{writer.slice(0, 6)}</div>
+                              <div>
+                                {writer.slice(0, 6)}{' '}
+                                {myID === writer ? (
+                                  <span style={styles.youText}>[You]</span>
+                                ) : (
+                                  ''
+                                )}
+                              </div>
                             </div>
                           </div>
                           <div style={styles.adminTools}></div>

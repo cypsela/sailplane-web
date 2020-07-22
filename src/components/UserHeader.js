@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import * as sailplaneAccess from '../utils/sailplane-access';
 import Jdenticon from 'react-jdenticon';
-import {primary45} from '../colors';
+import {primary3, primary45} from '../colors';
+import {SmallInstanceItem} from './SmallInstanceItem';
+import {setStatus} from '../actions/tempData';
+import {useDispatch} from 'react-redux';
 
 const styles = {
   container: {
@@ -15,6 +18,7 @@ const styles = {
     color: primary45,
   },
   userItem: {
+    position: 'relative',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
@@ -22,10 +26,21 @@ const styles = {
   icon: {
     marginLeft: 2,
   },
+  menu: {
+    position: 'absolute',
+    top: 34,
+    backgroundColor: '#FFF',
+    minWidth: 100,
+    right: 0,
+    border: `1px solid ${primary3}`,
+    fontSize: 14,
+  },
 };
 
 export function UserHeader({sharedFS}) {
   const [myID, setMyID] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getID = async () => {
@@ -42,8 +57,28 @@ export function UserHeader({sharedFS}) {
       <div style={styles.right}>
         {myID ? (
           <div style={styles.userItem}>
-            <div>{myID.slice(0, 6)}</div>
-            <Jdenticon value={myID} size={34} style={styles.icon} />
+            {/*<div>{myID.slice(0, 6)}</div>*/}
+            <div onClick={() => setMenuOpen(!menuOpen)}>
+              <Jdenticon value={myID} size={34} style={styles.icon} />
+            </div>
+            {menuOpen ? (
+              <div style={styles.menu}>
+                <SmallInstanceItem
+                  name={'Copy user ID'}
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(myID);
+                    setMenuOpen(false);
+                    dispatch(
+                      setStatus({
+                        message: 'User ID copied to clipboard',
+                        isInfo: true,
+                      }),
+                    );
+                    setTimeout(() => dispatch(setStatus({})), 1500);
+                  }}
+                />
+              </div>
+            ) : null}
           </div>
         ) : null}
       </div>
