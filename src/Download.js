@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import {LeftPanel} from './LeftPanel';
-import {useIsMobile} from './hooks/useIsMobile';
+import {useIsSmallScreen} from './hooks/useIsSmallScreen';
 import useIPFS from './hooks/useIPFS';
 import {LoadingRightBlock} from './LoadingRightBlock';
 import {hot} from 'react-hot-loader';
@@ -23,7 +23,7 @@ import {useWindowSize} from "./hooks/useWindowSize";
 
 function Download({match}) {
   const {cid, path, displayType} = match.params;
-  const isMobile = useIsMobile();
+  const isSmallScreen = useIsSmallScreen();
   const windowSize = useWindowSize();
   const ipfsObj = useIPFS((error)=> {
     console.error(error)
@@ -60,7 +60,7 @@ function Download({match}) {
 
   const styles = {
     container: {
-      display: isMobile ? 'block' : 'flex',
+      display: isSmallScreen ? 'block' : 'flex',
       flexDirection: 'row',
       height: '100%',
       maxWidth: 1280,

@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {LeftPanel} from './LeftPanel';
 import {FileBlock} from './FileBlock';
-import {useIsMobile} from './hooks/useIsMobile';
+import {useIsSmallScreen} from './hooks/useIsSmallScreen';
 import useIPFS from './hooks/useIPFS';
 import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
@@ -22,7 +22,7 @@ import {cleanBorder} from './colors';
 import {useWindowSize} from './hooks/useWindowSize';
 
 function App({match}) {
-  const isMobile = useIsMobile();
+  const isSmallScreen = useIsSmallScreen();
   const windowSize = useWindowSize();
   const sailplaneRef = useRef(null);
   const sfsQueue = useRef({});
@@ -50,7 +50,7 @@ function App({match}) {
   const styles = {
     container: {
       position: 'relative',
-      display: isMobile ? 'block' : 'flex',
+      display: isSmallScreen ? 'block' : 'flex',
       flexDirection: 'row',
       height: '100%',
       maxWidth: 1280,

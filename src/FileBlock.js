@@ -5,7 +5,7 @@ import {FolderTools} from './FolderTools';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {StatusBar} from './StatusBar';
 import {ShareDialog} from './ShareDialog';
-import {useIsMobile} from './hooks/useIsMobile';
+import {useIsSmallScreen} from './hooks/useIsSmallScreen';
 import {DraggableFileItem} from './components/DraggableFileItem';
 import {
   filterImageFiles,
@@ -71,7 +71,7 @@ export function FileBlock({
   setCurrentDirectory,
   currentDirectory,
 }) {
-  const isMobile = useIsMobile();
+  const isSmallScreen = useIsSmallScreen();
   const dropzoneRef = useRef(null);
   const fullFileList = sortDirectoryContents(directoryContents);
   const pathSplit = currentDirectory.split('/');
@@ -146,7 +146,7 @@ export function FileBlock({
       />
       <div style={styles.fileHeader}>
         <div style={{...styles.fileHeaderItem, paddingLeft: 12}}>Name</div>
-        {!isMobile ? (
+        {!isSmallScreen ? (
           <>
             <div style={{...styles.fileHeaderItem, textAlign: 'right'}}>
               Size

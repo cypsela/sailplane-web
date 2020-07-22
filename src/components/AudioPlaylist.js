@@ -10,7 +10,7 @@ import {
 import {NowPlaying} from './NowPlaying';
 import {FileItem} from './FileItem';
 import {primary2, primary35} from '../colors';
-import {useIsMobile} from '../hooks/useIsMobile';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import usePrevious from '../hooks/usePrevious';
 import produce from 'immer';
 import {useDispatch} from 'react-redux';
@@ -58,7 +58,7 @@ export default function AudioPlaylist({files, ipfs}) {
         return isFileExtensionAudio(ext);
       })
     : null;
-  const isMobile = useIsMobile();
+  const isSmallScreen = useIsSmallScreen();
   const sortedFiles = sortDirectoryContents(filteredFiles);
 
   useEffect(() => {
@@ -117,7 +117,7 @@ export default function AudioPlaylist({files, ipfs}) {
         <div style={styles.fileContainer}>
           <div style={styles.fileHeader}>
             <div style={{...styles.fileHeaderItem, paddingLeft: 12}}>Name</div>
-            {!isMobile ? (
+            {!isSmallScreen ? (
               <>
                 <div style={{...styles.fileHeaderItem, textAlign: 'right'}}>
                   Size

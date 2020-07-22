@@ -11,7 +11,7 @@ import ImageGallery from './components/ImageGallery';
 import {humanFileSize, sortDirectoryContents} from './utils/Utils';
 import {FilePreview} from './components/FilePreview';
 import {FileItem} from './components/FileItem';
-import {useIsMobile} from './hooks/useIsMobile';
+import {useIsSmallScreen} from './hooks/useIsSmallScreen';
 import AudioPlaylist from './components/AudioPlaylist';
 
 const styles = {
@@ -96,7 +96,7 @@ export function DownloadPanel({
   const name = pathSplit[pathSplit.length - 1];
   const [downloadClicked, setDownloadClicked] = useState(false);
   const [enterPasswordMode, setEnterPasswordMode] = useState(false);
-  const isMobile = useIsMobile();
+  const isSmallScreen = useIsSmallScreen();
   const {
     isEncrypted,
     decryptedFilename,
@@ -197,7 +197,7 @@ export function DownloadPanel({
                   <div style={{...styles.fileHeaderItem, paddingLeft: 12}}>
                     Name
                   </div>
-                  {!isMobile ? (
+                  {!isSmallScreen ? (
                     <>
                       <div
                         style={{...styles.fileHeaderItem, textAlign: 'right'}}>

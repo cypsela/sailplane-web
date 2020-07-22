@@ -1,10 +1,10 @@
 import React from 'react';
 import {primary45} from './colors';
 import {FaTimes} from 'react-icons/fa';
-import {useIsMobile} from './hooks/useIsMobile';
+import {useIsSmallScreen} from './hooks/useIsSmallScreen';
 
 export function Dialog({isVisible, body, onClose, title, noPadding}) {
-  const isMobile = useIsMobile();
+  const isSmallScreen = useIsSmallScreen();
 
   if (!isVisible) {
     return null;
@@ -12,7 +12,7 @@ export function Dialog({isVisible, body, onClose, title, noPadding}) {
 
   const styles = {
     container: {
-      position: isMobile ? 'fixed' : 'absolute',
+      position: isSmallScreen ? 'fixed' : 'absolute',
       backgroundColor: '#FFF',
       border: `1px solid ${primary45}`,
       borderRadius: 4,

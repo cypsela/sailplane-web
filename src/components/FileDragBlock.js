@@ -1,11 +1,11 @@
 import {FiFolder, FiMusic, FiVideo, FiImage} from 'react-icons/fi/index';
 import {primary2, primary3, primary45} from '../colors';
 import React from 'react';
-import {useIsMobile} from '../hooks/useIsMobile';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
 export function FileDragBlock({handleOpenUpload, isActive}) {
-  const isMobile = useIsMobile();
-  const uploadTitle = isMobile
+  const isSmallScreen = useIsSmallScreen();
+  const uploadTitle = isSmallScreen
     ? 'Tap to upload files'
     : 'Drag files to upload or click here';
 

@@ -9,7 +9,7 @@ import {
   FaDownload,
 } from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
-import {useIsMobile} from './hooks/useIsMobile';
+import {useIsSmallScreen} from './hooks/useIsSmallScreen';
 import {FaPaperPlane, FaGithub, FaHome} from 'react-icons/fa/index';
 
 const styles = {
@@ -94,7 +94,7 @@ export function LeftPanel({
   currentRightPanel,
   isDownload,
 }) {
-  const isMobile = useIsMobile();
+  const isSmallScreen = useIsSmallScreen();
 
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -107,7 +107,7 @@ export function LeftPanel({
 
   return (
     <div style={styles.container}>
-      {isMobile ? (
+      {isSmallScreen ? (
         <IconComponent
           color={'#FFF'}
           size={24}
@@ -133,7 +133,7 @@ export function LeftPanel({
             <div style={styles.logoTitle}>Sailplane</div>
           </div>
         </div>
-        {(isMobileOpen || !isMobile) && !isDownload ? (
+        {(isMobileOpen || !isSmallScreen) && !isDownload ? (
           <>
             <PanelItem
               title={'Files'}
@@ -180,7 +180,7 @@ export function LeftPanel({
           </>
         ) : null}
       </div>
-      {!isMobile ? (
+      {!isSmallScreen ? (
         <div style={styles.footer}>
           <a
             href={'https://github.com/cypsela/sailplane-web'}

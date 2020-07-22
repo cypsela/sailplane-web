@@ -24,7 +24,7 @@ import {
   getEncryptionInfoFromFilename,
 } from '../utils/encryption';
 import useDoubleClick from '../hooks/useDoubleClick';
-import {useIsMobile} from '../hooks/useIsMobile';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {contextMenu} from 'react-contexify';
 
 export function FileItem({
@@ -50,7 +50,7 @@ export function FileItem({
   const [doubleClickRef] = useDoubleClick(() => setEditMode(true));
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
-  const isMobile = useIsMobile();
+  const isSmallScreen = useIsSmallScreen();
   const contextID = `menu-id`;
   const exists = sharedFs && sharedFs.current.fs.exists(path);
 
@@ -71,7 +71,7 @@ export function FileItem({
     container: {
       display: 'flex',
       flexDirection: 'row',
-      flexWrap: isMobile ? 'wrap' : 'nowrap',
+      flexWrap: isSmallScreen ? 'wrap' : 'nowrap',
       justifyContent: 'space-between',
       cursor: 'pointer',
     },
@@ -82,7 +82,7 @@ export function FileItem({
       justifyContent: 'flex-start',
       alignItems: 'center',
       flexGrow: 2,
-      marginBottom: isMobile ? 10 : 0,
+      marginBottom: isSmallScreen ? 10 : 0,
     },
     icon: {
       marginRight: 4,
@@ -332,7 +332,7 @@ export function FileItem({
               }
             }}>
             <div
-              style={{...styles.flexItem, maxWidth: isMobile ? null : '25%'}}>
+              style={{...styles.flexItem, maxWidth: isSmallScreen ? null : '25%'}}>
               <IconComponent color={primary45} size={16} style={styles.icon} />
               {editMode ? (
                 <>{InputComponent}</>
