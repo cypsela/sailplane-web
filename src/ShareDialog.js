@@ -5,7 +5,7 @@ import {setShareData} from './actions/tempData';
 import {FiFile, FiImage, FiLoader, FiMusic} from 'react-icons/fi';
 import {SegmentedControl} from './components/SegmentedControl';
 import {getShareTypeFromFolderFiles} from './utils/Utils';
-import {Dialog} from './Dialog';
+import {Dialog} from './components/Dialog';
 
 const styles = {
   filename: {

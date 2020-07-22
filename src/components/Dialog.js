@@ -1,7 +1,8 @@
 import React from 'react';
-import {primary45} from './colors';
+import {primary45} from '../colors';
 import {FaTimes} from 'react-icons/fa';
-import {useIsSmallScreen} from './hooks/useIsSmallScreen';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
+import {Modal} from './Modal';
 
 export function Dialog({isVisible, body, onClose, title, noPadding}) {
   const isSmallScreen = useIsSmallScreen();
@@ -11,20 +12,7 @@ export function Dialog({isVisible, body, onClose, title, noPadding}) {
   }
 
   const styles = {
-    container: {
-      position: isSmallScreen ? 'fixed' : 'absolute',
-      backgroundColor: '#FFF',
-      border: `1px solid ${primary45}`,
-      borderRadius: 4,
-      top: 150,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '94%',
-      fontFamily: 'Open Sans',
-      zIndex: 10000,
-      boxShadow: '0 0px 14px hsla(0, 0%, 0%, 0.2)',
-    },
-    header: {
+        header: {
       backgroundColor: primary45,
       color: '#FFF',
       padding: 8,
@@ -39,19 +27,10 @@ export function Dialog({isVisible, body, onClose, title, noPadding}) {
     xIcon: {
       cursor: 'pointer',
     },
-    background: {
-      position: 'fixed',
-      width: '100%',
-      height: '100%',
-      top: 0,
-      left: 0,
-      backgroundColor: '#00000033',
-    },
   };
 
   return (
-    <div style={styles.outer}>
-      <div style={styles.background} onClick={onClose} />
+    <Modal onClose={onClose}>
       <div style={styles.container}>
         <div style={styles.header}>
           <div>{title}</div>
@@ -64,6 +43,6 @@ export function Dialog({isVisible, body, onClose, title, noPadding}) {
         </div>
         <div style={styles.body}>{body}</div>
       </div>
-    </div>
+    </Modal>
   );
 }
