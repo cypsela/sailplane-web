@@ -1,18 +1,15 @@
 import React from 'react';
 import {primary45} from '../colors';
 import {FaTimes} from 'react-icons/fa';
-import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {Modal} from './Modal';
 
 export function Dialog({isVisible, body, onClose, title, noPadding}) {
-  const isSmallScreen = useIsSmallScreen();
-
   if (!isVisible) {
     return null;
   }
 
   const styles = {
-        header: {
+    header: {
       backgroundColor: primary45,
       color: '#FFF',
       padding: 8,
