@@ -18,10 +18,12 @@ import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
 import {delay, getPercent} from './utils/Utils';
 import all from 'it-all';
-import {cleanBorder} from "./colors";
+import {cleanBorder} from './colors';
+import {useWindowSize} from './hooks/useWindowSize';
 
 function App({match}) {
   const isMobile = useIsMobile();
+  const windowSize = useWindowSize();
   const sailplaneRef = useRef(null);
   const sfsQueue = useRef({});
   const [nodeReady, setNodeReady] = useState(false);
@@ -53,7 +55,7 @@ function App({match}) {
       height: '100%',
       maxWidth: 1280,
       margin: '0 auto',
-      border: cleanBorder,
+      border: windowSize.width <= 1280 ? null : cleanBorder,
     },
   };
 
