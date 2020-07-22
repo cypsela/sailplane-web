@@ -11,7 +11,8 @@ import {
 } from 'react-icons/fi';
 import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
-const bip39 = require('bip39')
+
+const bip39 = require('bip39');
 
 export async function fileToBlob(file, handleUpdate) {
   const {content, size} = file;
@@ -269,5 +270,18 @@ export const filterImageFiles = (files) =>
     : null;
 
 export const getMnemonic = () => {
-  return bip39.generateMnemonic().split(' ').slice(0,3).join('-');
-}
+  return bip39.generateMnemonic().split(' ').slice(0, 3).join('-');
+};
+
+export const jdenticonConfig = {
+  hues: [211],
+  lightness: {
+    color: [0.4, 0.8],
+    grayscale: [0.3, 0.9],
+  },
+  saturation: {
+    color: 0.39,
+    grayscale: 0.0,
+  },
+  backColor: '#86444400',
+};

@@ -12,6 +12,7 @@ import usePrevious from './hooks/usePrevious';
 import {delay} from './utils/Utils';
 import * as sailplaneUtil from './utils/sailplane-util';
 import InstanceAccessDialog from './components/InstanceAccessDialog';
+import {UserHeader} from './components/UserHeader';
 
 const styles = {
   container: {
@@ -39,7 +40,6 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    marginTop: 10,
     borderBottom: `1px solid ${primary2}`,
     marginBottom: 6,
   },
@@ -123,9 +123,10 @@ export function Instances({sailplane, sharedFS}) {
 
   return (
     <div style={styles.container}>
+      <UserHeader sharedFS={sharedFS}/>
       <div style={styles.header}>
         <div style={styles.title}>
-          <FaServer color={primary3} size={16} style={styles.icon} />
+          <FaServer color={primary3} size={16} style={styles.icon}/>
           Drives
         </div>
         <div style={styles.tools}>
@@ -135,14 +136,14 @@ export function Instances({sailplane, sharedFS}) {
                 style={styles.tools}
                 className={'addInstance'}
                 onClick={() => setImportInstanceMode(true)}>
-                <FiUpload color={primary45} size={16} style={styles.icon} />
+                <FiUpload color={primary45} size={16} style={styles.icon}/>
                 <span style={styles.toolTitle}>Import drive</span>
               </div>
               <div
                 style={styles.tools}
                 className={'addInstance'}
                 onClick={() => createInstance()}>
-                <FiPlusCircle color={primary45} size={16} style={styles.icon} />
+                <FiPlusCircle color={primary45} size={16} style={styles.icon}/>
                 <span style={styles.toolTitle}>Create drive</span>
               </div>
             </>
@@ -179,7 +180,7 @@ export function Instances({sailplane, sharedFS}) {
           sharedFS={sharedFS}
         />
       ) : null}
-      <StatusBar />
+      <StatusBar/>
     </div>
   );
 }

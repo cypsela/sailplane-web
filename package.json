@@ -26,7 +26,7 @@
     "react-dropzone": "^11.0.1",
     "react-icons": "^3.10.0",
     "react-image-lightbox": "^5.1.1",
-    "react-jdenticon": "^0.0.8",
+    "react-jdenticon": "https://github.com/slavik0329/react-jdenticon#2d785c94a5948402d0d800a096aa7243fe5ec036",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
