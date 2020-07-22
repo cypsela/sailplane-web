@@ -51,7 +51,7 @@ function App({match}) {
       display: isMobile ? 'block' : 'flex',
       flexDirection: 'row',
       height: '100%',
-      maxWidth: 1200,
+      maxWidth: 1280,
       margin: '0 auto',
       border: cleanBorder,
     },
