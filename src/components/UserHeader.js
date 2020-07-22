@@ -44,8 +44,13 @@ export function UserHeader({sharedFS}) {
 
   useEffect(() => {
     const getID = async () => {
-      const tmpMyID = await sailplaneAccess.localUserId(sharedFS.current);
-      setMyID(tmpMyID);
+      try {
+        const tmpMyID = await sailplaneAccess.localUserId(sharedFS.current);
+
+        setMyID(tmpMyID);
+      } catch (e) {
+        console.log('err', e);
+      }
     };
 
     getID();
