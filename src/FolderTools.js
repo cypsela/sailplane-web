@@ -21,6 +21,11 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     fontFamily: 'Open Sans',
+    marginBottom: 10,
+  },
+  leftTools: {
+    display: 'flex',
+    alignItems: 'center',
   },
   rightTools: {
     display: 'flex',

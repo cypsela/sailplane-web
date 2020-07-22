@@ -9,7 +9,6 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     fontSize: 16,
-    marginBottom: 10,
     color: primary45,
     fontFamily: 'Open Sans',
     fontWeight: 600,
