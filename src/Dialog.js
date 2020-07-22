@@ -19,7 +19,7 @@ export function Dialog({isVisible, body, onClose, title, noPadding}) {
       top: 150,
       left: '50%',
       transform: 'translateX(-50%)',
-      width: '80%',
+      width: '90%',
       fontFamily: 'Open Sans',
       zIndex: 10000,
       boxShadow: '0 0px 14px hsla(0, 0%, 0%, 0.2)',
