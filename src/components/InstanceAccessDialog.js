@@ -218,7 +218,7 @@ export default function InstanceAccessDialog({
                       <ToolItem
                         iconComponent={FiUserPlus}
                         title={
-                          dialogDimensions?.width > 600 ? 'Add writer' : null
+                          dialogDimensions?.width > 540 ? 'Add writer' : null
                         }
                         changeColor={primary4}
                         defaultColor={primary45}
