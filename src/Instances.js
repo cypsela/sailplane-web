@@ -36,12 +36,12 @@ const styles = {
     alignItems: 'center',
     userSelect: 'none',
   },
-  header: {
+  toolsContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 4,
+    marginTop: 2,
     marginBottom: 4,
     color: primary45,
     fontSize: 12,
@@ -139,7 +139,7 @@ export function Instances({sailplane, sharedFS}) {
           </div>
         }
       />
-      <div style={styles.header}>
+      <div style={styles.toolsContainer}>
         <div style={styles.tools}>
           {!importInstanceMode && !addInstanceMode ? (
             <>
