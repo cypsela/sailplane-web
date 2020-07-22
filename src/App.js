@@ -18,6 +18,7 @@ import usePrevious from './hooks/usePrevious';
 import {ContextMenu} from './ContextMenu';
 import {delay, getPercent} from './utils/Utils';
 import all from 'it-all';
+import {cleanBorder} from "./colors";
 
 function App({match}) {
   const isMobile = useIsMobile();
@@ -50,6 +51,9 @@ function App({match}) {
       display: isMobile ? 'block' : 'flex',
       flexDirection: 'row',
       height: '100%',
+      maxWidth: 1200,
+      margin: '0 auto',
+      border: cleanBorder,
     },
   };
 
