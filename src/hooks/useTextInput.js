@@ -44,7 +44,7 @@ export default function useTextInput(
       backgroundColor: primary3,
       color: '#FFF',
       fontSize: 12,
-      padding: '3px 5px',
+      padding: '4px 5px',
       borderRadius: 2,
       cursor: 'pointer',
       zIndex: 2,

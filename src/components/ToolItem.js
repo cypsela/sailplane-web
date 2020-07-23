@@ -56,7 +56,7 @@ export function ToolItem({
       marginLeft: 4,
       textDecoration: isHovered ? 'underline' : 'none',
       fontSize: 13,
-      lineHeight: '13px',
+      lineHeight: '16px',
       whiteSpace: 'nowrap',
     },
   };
