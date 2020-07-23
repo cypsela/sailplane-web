@@ -28,6 +28,7 @@ export function InstanceSelector({}) {
       padding: '3px 6px',
       borderRadius: `4px 4px ${menuEnabled ? 0 : 4}px ${menuEnabled ? 0 : 4}px`,
       fontSize: 14,
+      fontWeight: 400,
     },
     menu: {
       backgroundColor: '#FFF',

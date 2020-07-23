@@ -11,7 +11,7 @@ const styles = {
     fontSize: 16,
     color: primary45,
     fontFamily: 'Open Sans',
-    fontWeight: 600,
+    fontWeight: 400,
     userSelect: 'none',
     flexWrap: 'wrap',
   },
@@ -23,7 +23,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    fontWeight: 600,
+    fontWeight: 400,
   },
   folderIcon: {
     marginLeft: 4,
