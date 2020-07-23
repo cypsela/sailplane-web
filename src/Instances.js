@@ -1,10 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  cleanBorder,
-  primary15,
-  primary4,
-  primary45,
-} from './colors';
+import {lightBorder, primary15, primary4, primary45} from './colors';
 import {Instance} from './components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import {FaServer} from 'react-icons/fa';
@@ -57,7 +52,7 @@ const styles = {
     backgroundColor: primary15,
     borderRadius: 2,
     padding: 2,
-    border: cleanBorder,
+    border: `1px solid ${lightBorder}`,
   },
 };
 
