@@ -46,6 +46,7 @@ function App({match}) {
   );
   const currentInstance = instances[instanceIndex];
   const prevInstanceIndex = usePrevious(instanceIndex);
+  const prevInstance = usePrevious(currentInstance);
 
   const styles = {
     container: {
@@ -102,12 +103,15 @@ function App({match}) {
 
   useEffect(() => {
     const switchInstance = async (doLS) => {
-      setInstanceReady(false);
-      if (!instances.length) {
+      if (
+        !instances.length ||
+        (prevInstance === currentInstance && instanceReady === true)
+      ) {
         return;
       }
-      dispatch(setStatus({message: 'Looking for drive...'}));
 
+      setInstanceReady(false);
+      dispatch(setStatus({message: 'Looking for drive...'}));
       const sfs = await sailplaneUtil.mount(
         sailplaneRef.current,
         currentInstance.address,
