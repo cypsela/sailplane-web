@@ -20,6 +20,7 @@ export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
       height: '100%',
       border: `1px solid ${forceColor || primary3}`,
       borderRadius: 4,
+      boxShadow: '1px 2px 3px #e8e8e8',
     },
     title: {
       fontSize: 16,
