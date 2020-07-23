@@ -26,6 +26,8 @@ import {
 import useDoubleClick from '../hooks/useDoubleClick';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {contextMenu} from 'react-contexify';
+import useIsTouchDevice from 'is-touch-device';
+import {MobileActionsDialog} from './MobileActionsDialog';
 
 export function FileItem({
   data,
@@ -45,6 +47,7 @@ export function FileItem({
   const [CID, setCID] = useState(null);
   const [fileInfo, setFileInfo] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const [enterPasswordMode, setEnterPasswordMode] = useState(false);
   const [doubleClickRef] = useDoubleClick(() => setEditMode(true));
@@ -53,6 +56,7 @@ export function FileItem({
   const isSmallScreen = useIsSmallScreen();
   const contextID = `menu-id`;
   const exists = sharedFs && sharedFs.current.fs.exists(path);
+  const isTouchDevice = useIsTouchDevice();
 
   const styles = {
     paddingContainer: {
@@ -90,7 +94,7 @@ export function FileItem({
       flexShrink: 0,
     },
     tools: {
-      display: 'flex',
+      display: isTouchDevice ? 'none' : 'flex',
       justifyContent: 'flex-end',
       width: '100%',
       opacity:
@@ -234,6 +238,8 @@ export function FileItem({
   };
 
   const handleShare = () => {
+    setMobileActionsVisible(false);
+
     dispatch(
       setShareData({
         name,
@@ -245,6 +251,8 @@ export function FileItem({
   };
 
   const handleDownload = async () => {
+    setMobileActionsVisible(false);
+
     if (isEncrypted) {
       setEnterPasswordMode(true);
       return;
@@ -255,10 +263,14 @@ export function FileItem({
   };
 
   const handleEdit = async () => {
+    setMobileActionsVisible(false);
+
     setEditMode(true);
   };
 
   const handleDelete = async () => {
+    setMobileActionsVisible(false);
+
     dispatch(
       setStatus({
         message: `Deleting ${type === 'dir' ? 'folder' : 'file'}`,
@@ -273,11 +285,54 @@ export function FileItem({
       snapshot = {};
     }
 
+    const handleClick = async (event) => {
+      event.stopPropagation();
+
+      if (isTouchDevice) {
+        setMobileActionsVisible(true);
+
+        return;
+      }
+
+      if (onIconClicked) {
+        onIconClicked();
+        return;
+      }
+
+      if (editMode) {
+        return;
+      }
+
+      if (type === 'dir') {
+        setCurrentDirectory(path);
+      } else {
+        // Only fetch for audio on click now
+        if (!fileBlob && isFileExtensionAudio(fileExtension)) {
+          dispatch(setStatus({message: 'Fetching preview'}));
+          const blob = await getBlob();
+          dispatch(setStatus({}));
+          setFileBlob(blob);
+        } else {
+          setFileBlob(null);
+        }
+      }
+    };
+
     return (
       <div
         ref={hoverRef}
         style={styles.paddingContainer}
         className={`fileItem ${isEncrypted ? 'fileItemEncrypted' : null}`}>
+        <MobileActionsDialog
+          isVisible={mobileActionsVisible}
+          name={name}
+          fileIcon={iconComponent}
+          onClose={() => setMobileActionsVisible(false)}
+          onDelete={handleDelete}
+          onDownload={handleDownload}
+          onShare={handleShare}
+          onEdit={handleEdit}
+        />
         <div
           onContextMenu={(event) => {
             event.preventDefault();
@@ -303,36 +358,12 @@ export function FileItem({
                 ? primary15
                 : '#FFF',
           }}>
-          <div
-            style={styles.container}
-            onClick={async (event) => {
-              event.stopPropagation();
-
-              if (onIconClicked) {
-                onIconClicked();
-                return;
-              }
-
-              if (editMode) {
-                return;
-              }
-
-              if (type === 'dir') {
-                setCurrentDirectory(path);
-              } else {
-                // Only fetch for audio on click now
-                if (!fileBlob && isFileExtensionAudio(fileExtension)) {
-                  dispatch(setStatus({message: 'Fetching preview'}));
-                  const blob = await getBlob();
-                  dispatch(setStatus({}));
-                  setFileBlob(blob);
-                } else {
-                  setFileBlob(null);
-                }
-              }
-            }}>
+          <div style={styles.container} onClick={handleClick}>
             <div
-              style={{...styles.flexItem, maxWidth: isSmallScreen ? null : '25%'}}>
+              style={{
+                ...styles.flexItem,
+                maxWidth: isSmallScreen ? null : '25%',
+              }}>
               <IconComponent color={primary45} size={16} style={styles.icon} />
               {editMode ? (
                 <>{InputComponent}</>
