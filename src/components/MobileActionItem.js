@@ -22,7 +22,7 @@ export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
       borderRadius: 4,
     },
     title: {
-      fontSize: 18,
+      fontSize: 16,
       color: forceColor || primary45,
       marginTop: 4,
     },
@@ -33,7 +33,7 @@ export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
   return (
     <div style={styles.container}>
       <div style={styles.inner} onClick={onClick}>
-        <IconComponent color={forceColor || primary3} size={24} style={styles.icon} />
+        <IconComponent color={forceColor || primary3} size={22} style={styles.icon} />
         <div style={styles.title}>{title}</div>
       </div>
     </div>

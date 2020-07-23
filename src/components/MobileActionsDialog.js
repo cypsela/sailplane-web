@@ -22,7 +22,6 @@ export function MobileActionsDialog({
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      fontSize: 16,
       marginTop: 8,
       padding: 6,
       backgroundColor: primary15,

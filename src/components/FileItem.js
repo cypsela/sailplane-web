@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {errorColor, primary, primary15, primary45, primary5} from '../colors';
+import {lightErrorColor, primary, primary15, primary45, primary5} from '../colors';
 import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
 import {FaFolderOpen} from 'react-icons/fa';
 import useHover from '../hooks/useHover';
@@ -338,7 +338,7 @@ export function FileItem({
       title: 'Delete',
       onClick: handleDelete,
       iconComponent: FiTrash,
-      forceColor: errorColor,
+      forceColor: lightErrorColor,
     },
   ];
 
