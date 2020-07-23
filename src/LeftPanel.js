@@ -71,21 +71,13 @@ const styles = {
     userSelect: 'none',
   },
   icon: {
+    position: 'relative',
+    top: 6,
+    width: 30,
     marginRight: 4,
   },
   logoTitle: {
     display: 'inline-flex',
-  },
-  logoHolder: {
-    display: 'inline-flex',
-    backgroundColor: primary2,
-    height: 42,
-    width: 42,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    marginRight: 5,
-    boxShadow: `inset 1px 2px 3px #5686a7`,
   },
 };
 
@@ -126,10 +118,7 @@ export function LeftPanel({
                 window.location.origin + window.location.pathname
               }`;
             }}>
-            {/*<div style={styles.logoHolder}>*/}
-            {/*<img src={'/images/origami3.png'} style={styles.icon} width={20} />*/}
-            {/*</div>*/}
-            <FaPaperPlane color={'#FFF'} size={17} style={styles.icon} />
+            <img src={'/images/logo-new.png'} style={styles.icon} />
             <div style={styles.logoTitle}>Sailplane</div>
           </div>
         </div>
