@@ -118,7 +118,7 @@ export function LeftPanel({
                 window.location.origin + window.location.pathname
               }`;
             }}>
-            <img src={'/images/logo-3.png'} style={styles.icon} />
+            <img src={'/images/logo-5.png'} style={styles.icon} />
             <div style={styles.logoTitle}>Sailplane</div>
           </div>
         </div>
