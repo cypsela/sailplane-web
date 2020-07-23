@@ -13,7 +13,7 @@ export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
     },
     inner: {
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
@@ -24,9 +24,18 @@ export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
     },
     title: {
       fontSize: 16,
+      lineHeight: '16px',
       color: forceColor || primary45,
       marginTop: 4,
     },
+    icon: {
+      width: 40
+    },
+    body: {
+      display: 'flex',
+      alignItems: 'center',
+      width: 140,
+    }
   };
 
   const IconComponent = iconComponent;
@@ -34,8 +43,10 @@ export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
   return (
     <div style={styles.container}>
       <div style={styles.inner} onClick={onClick}>
-        <IconComponent color={forceColor || primary3} size={22} style={styles.icon} />
-        <div style={styles.title}>{title}</div>
+        <div style={styles.body}>
+          <IconComponent color={forceColor || primary3} size={19} style={styles.icon} />
+          <div style={styles.title}>{title}</div>
+        </div>
       </div>
     </div>
   );
