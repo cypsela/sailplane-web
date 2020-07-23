@@ -37,6 +37,7 @@ export function InstanceSelector({}) {
       left: -1,
       border: `1px solid ${primary45}`,
       color: primary45,
+      zIndex: 2,
     },
     icon: {
       marginRight: 4,

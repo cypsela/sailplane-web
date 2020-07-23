@@ -33,7 +33,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
 };
 
