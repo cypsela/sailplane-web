@@ -11,6 +11,7 @@ import {
 import {PanelItem} from './components/PanelItem';
 import {useIsSmallScreen} from './hooks/useIsSmallScreen';
 import {FaPaperPlane, FaGithub, FaHome} from 'react-icons/fa/index';
+import logo from './logo.png';
 
 const styles = {
   container: {
@@ -119,7 +120,7 @@ export function LeftPanel({
               }`;
             }}>
             <img
-              src={'https://cypsela.github.io/sailplane-web/images/logo-6.png'}
+              src={logo}
               style={styles.icon}
             />
             <div style={styles.logoTitle}>Sailplane</div>
