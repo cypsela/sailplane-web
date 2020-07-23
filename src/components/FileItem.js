@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {primary, primary15, primary45, primary5} from '../colors';
+import {errorColor, primary, primary15, primary45, primary5} from '../colors';
 import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
@@ -318,6 +318,30 @@ export function FileItem({
       }
     };
 
+    const mobileActionItems = [
+      {
+        title: 'Share',
+        onClick: handleShare,
+        iconComponent: FiShare2,
+      },
+      {
+        title: 'Download',
+        onClick: handleDownload,
+        iconComponent: FiDownload,
+      },
+      {
+        title: 'Rename',
+        onClick: handleEdit,
+        iconComponent: FiEdit,
+      },
+      {
+        title: 'Delete',
+        onClick: handleDelete,
+        iconComponent: FiTrash,
+        forceColor: errorColor,
+      },
+    ];
+
     return (
       <div
         ref={hoverRef}
@@ -328,10 +352,7 @@ export function FileItem({
           name={name}
           fileIcon={iconComponent}
           onClose={() => setMobileActionsVisible(false)}
-          onDelete={handleDelete}
-          onDownload={handleDownload}
-          onShare={handleShare}
-          onEdit={handleEdit}
+          items={mobileActionItems}
         />
         <div
           onContextMenu={(event) => {
@@ -351,10 +372,11 @@ export function FileItem({
           style={{
             ...styles.outer,
             backgroundColor:
-              isHovered ||
-              fileBlob ||
-              snapshot.isDragging ||
-              (snapshot.combineTargetFor && type === 'dir')
+              (isHovered ||
+                fileBlob ||
+                snapshot.isDragging ||
+                (snapshot.combineTargetFor && type === 'dir')) &&
+              !isTouchDevice
                 ? primary15
                 : '#FFF',
           }}>

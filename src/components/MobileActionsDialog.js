@@ -1,18 +1,14 @@
 import React from 'react';
-import {errorColor, primary45} from '../colors';
+import {primary15, primary45} from '../colors';
 import {Modal} from './Modal';
 import {MobileActionItem} from './MobileActionItem';
-import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
 
 export function MobileActionsDialog({
   name,
   isVisible,
-  onClose,
-  onShare,
-  onDownload,
-  onEdit,
-  onDelete,
   fileIcon,
+  items,
+  onClose,
 }) {
   if (!isVisible) {
     return null;
@@ -28,18 +24,21 @@ export function MobileActionsDialog({
       alignItems: 'center',
       fontSize: 16,
       marginTop: 8,
-
+      padding: 6,
+      backgroundColor: primary15,
+      margin: 8,
     },
     icon: {
-      height: 16,
-      width: 16,
+      height: 20,
+      width: 20,
+      marginRight: 4,
     },
     nameText: {
+      fontSize: 16,
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
-      width: '100%',
       overflow: 'hidden',
-    }
+    },
   };
 
   const FileIcon = fileIcon;
@@ -47,31 +46,18 @@ export function MobileActionsDialog({
   return (
     <Modal onClose={onClose}>
       <div style={styles.name}>
-        <FileIcon color={primary45} size={16} style={styles.icon} />
+        <FileIcon color={primary45} size={20} style={styles.icon} />
         <span style={styles.nameText}>{name}</span>
       </div>
       <div style={styles.container}>
-        <MobileActionItem
-          iconComponent={FiShare2}
-          title={'Share'}
-          onClick={onShare}
-        />
-        <MobileActionItem
-          iconComponent={FiDownload}
-          title={'Download'}
-          onClick={onDownload}
-        />
-        <MobileActionItem
-          iconComponent={FiEdit}
-          title={'Rename'}
-          onClick={onEdit}
-        />
-        <MobileActionItem
-          iconComponent={FiTrash}
-          title={'Delete'}
-          forceColor={errorColor}
-          onClick={onDelete}
-        />
+        {items.map((item) => (
+          <MobileActionItem
+            iconComponent={item.iconComponent}
+            title={item.title}
+            onClick={item.onClick}
+            forceColor={item.forceColor}
+          />
+        ))}
       </div>
     </Modal>
   );
