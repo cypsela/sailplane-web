@@ -25,7 +25,7 @@ export function MobileActionsDialog({
       marginTop: 8,
       padding: 6,
       backgroundColor: primary15,
-      border: cleanBorder,
+      boxShadow: 'inset 1px 1px 3px #adcadf',
       borderRadius: 4,
       margin: 8,
     },

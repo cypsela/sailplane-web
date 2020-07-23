@@ -1,5 +1,5 @@
 import React from 'react';
-import {primary3, primary45} from '../colors';
+import {lightBorder, primary3, primary45} from '../colors';
 
 export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
   const styles = {
@@ -18,7 +18,7 @@ export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
       alignItems: 'center',
       width: '100%',
       height: '100%',
-      border: `1px solid ${forceColor || primary3}`,
+      border: `1px solid ${forceColor || lightBorder}`,
       borderRadius: 4,
       boxShadow: '1px 2px 3px #e8e8e8',
     },
@@ -29,13 +29,13 @@ export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
       marginTop: 4,
     },
     icon: {
-      width: 40
+      width: 40,
     },
     body: {
       display: 'flex',
       alignItems: 'center',
       width: 140,
-    }
+    },
   };
 
   const IconComponent = iconComponent;
@@ -44,7 +44,11 @@ export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
     <div style={styles.container}>
       <div style={styles.inner} onClick={onClick}>
         <div style={styles.body}>
-          <IconComponent color={forceColor || primary3} size={19} style={styles.icon} />
+          <IconComponent
+            color={forceColor || primary3}
+            size={19}
+            style={styles.icon}
+          />
           <div style={styles.title}>{title}</div>
         </div>
       </div>

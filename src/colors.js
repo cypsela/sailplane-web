@@ -23,3 +23,4 @@ export const lightErrorColor = '#ef9c9c';
 export const goodColor = '#53c171';
 
 export const cleanBorder = '1px solid rgb(208, 227, 239)';
+export const lightBorder = 'hsl(203 51% 80% / 1)';

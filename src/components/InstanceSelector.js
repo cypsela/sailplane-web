@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {primary3, primary45} from '../colors';
+import {lightBorder, primary3, primary45} from '../colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {SmallInstanceItem} from './SmallInstanceItem';
 import {setInstanceIndex} from '../actions/main';
@@ -22,7 +22,7 @@ export function InstanceSelector({}) {
       alignItems: 'center',
       position: 'relative',
       marginRight: 6,
-      border: `1px solid ${primary3}`,
+      border: `1px solid ${lightBorder}`,
       borderBottomWidth: menuEnabled ? 0 : 1,
       color: primary45,
       padding: '3px 6px',
@@ -35,7 +35,7 @@ export function InstanceSelector({}) {
       minWidth: 196,
       top: 25,
       left: -1,
-      border: `1px solid ${primary45}`,
+      border: `1px solid ${lightBorder}`,
       color: primary45,
       zIndex: 2,
     },
