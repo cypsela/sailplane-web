@@ -13,13 +13,14 @@ import useTextInput from './hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearEncryptionKey, setEncryptionKey} from './actions/main';
 import {setShareData} from './actions/tempData';
+import {useIsSmallScreen} from './hooks/useIsSmallScreen';
 
 const styles = {
   tools: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     fontFamily: 'Open Sans',
     marginTop: 4,
     marginBottom: 10,
@@ -32,7 +33,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
 };
 
@@ -48,6 +49,7 @@ export function FolderTools({
   const encryptionKey = useSelector((state) => state.main.encryptionKey);
   const pathSplit = currentDirectory.split('/');
   const folderName = pathSplit[pathSplit.length - 1];
+  const isSmallScreen = useIsSmallScreen();
 
   const createFolder = async (newFolderName) => {
     try {
@@ -89,10 +91,12 @@ export function FolderTools({
     <div>
       <div style={styles.tools}>
         <div style={styles.leftTools}>
-          <Breadcrumb
-            currentDirectory={currentDirectory}
-            setCurrentDirectory={setCurrentDirectory}
-          />
+          {isSmallScreen && (securePanelOpen || addFolderMode) ? null : (
+            <Breadcrumb
+              currentDirectory={currentDirectory}
+              setCurrentDirectory={setCurrentDirectory}
+            />
+          )}
         </div>
         <div style={styles.rightTools}>
           {!addFolderMode && !securePanelOpen ? (

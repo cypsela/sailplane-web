@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {errorColor, primary, primary15, primary45, primary5} from '../colors';
 import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
+import {FaFolderOpen} from 'react-icons/fa';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
@@ -280,67 +281,95 @@ export function FileItem({
     dispatch(setStatus({}));
   };
 
+  const fetchPreview = async () => {
+    // Only fetch for audio on click now
+    if (!fileBlob && isFileExtensionAudio(fileExtension)) {
+      dispatch(setStatus({message: 'Fetching preview'}));
+      const blob = await getBlob();
+      dispatch(setStatus({}));
+      setFileBlob(blob);
+    } else {
+      setFileBlob(null);
+    }
+  };
+
+  const handleClick = async (event) => {
+    event.stopPropagation();
+
+    if (isTouchDevice) {
+      setMobileActionsVisible(true);
+
+      return;
+    }
+
+    if (onIconClicked) {
+      onIconClicked();
+      return;
+    }
+
+    if (editMode) {
+      return;
+    }
+
+    if (type === 'dir') {
+      setCurrentDirectory(path);
+    } else {
+      await fetchPreview();
+    }
+  };
+
+  let mobileActionItems = [
+    {
+      title: 'Share',
+      onClick: handleShare,
+      iconComponent: FiShare2,
+    },
+    {
+      title: 'Download',
+      onClick: handleDownload,
+      iconComponent: FiDownload,
+    },
+    {
+      title: 'Rename',
+      onClick: handleEdit,
+      iconComponent: FiEdit,
+    },
+    {
+      title: 'Delete',
+      onClick: handleDelete,
+      iconComponent: FiTrash,
+      forceColor: errorColor,
+    },
+  ];
+
+  if (type === 'dir') {
+    mobileActionItems.unshift({
+      title: 'Open folder',
+      onClick: () => setCurrentDirectory(path),
+      iconComponent: FaFolderOpen,
+    });
+  } else {
+    if ((!fileBlob && isFileExtensionAudio(fileExtension)) || onIconClicked) {
+      mobileActionItems.unshift({
+        title: 'Open preview',
+        onClick: () => {
+          setMobileActionsVisible(false);
+
+          if (onIconClicked) {
+            onIconClicked();
+          } else {
+            fetchPreview();
+          }
+        },
+        iconComponent: iconComponent,
+      });
+    }
+  }
+
   const getContent = () => {
     if (!snapshot) {
       snapshot = {};
     }
-
-    const handleClick = async (event) => {
-      event.stopPropagation();
-
-      if (isTouchDevice) {
-        setMobileActionsVisible(true);
-
-        return;
-      }
-
-      if (onIconClicked) {
-        onIconClicked();
-        return;
-      }
-
-      if (editMode) {
-        return;
-      }
-
-      if (type === 'dir') {
-        setCurrentDirectory(path);
-      } else {
-        // Only fetch for audio on click now
-        if (!fileBlob && isFileExtensionAudio(fileExtension)) {
-          dispatch(setStatus({message: 'Fetching preview'}));
-          const blob = await getBlob();
-          dispatch(setStatus({}));
-          setFileBlob(blob);
-        } else {
-          setFileBlob(null);
-        }
-      }
-    };
-
-    const mobileActionItems = [
-      {
-        title: 'Share',
-        onClick: handleShare,
-        iconComponent: FiShare2,
-      },
-      {
-        title: 'Download',
-        onClick: handleDownload,
-        iconComponent: FiDownload,
-      },
-      {
-        title: 'Rename',
-        onClick: handleEdit,
-        iconComponent: FiEdit,
-      },
-      {
-        title: 'Delete',
-        onClick: handleDelete,
-        iconComponent: FiTrash,
-        forceColor: errorColor,
-      },
-    ];
 
     return (
       <div

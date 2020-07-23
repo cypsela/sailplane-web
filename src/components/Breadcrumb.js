@@ -13,6 +13,7 @@ const styles = {
     fontFamily: 'Open Sans',
     fontWeight: 600,
     userSelect: 'none',
+    flexWrap: 'wrap',
   },
   icon: {
     marginRight: 4,
