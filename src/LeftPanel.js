@@ -118,7 +118,10 @@ export function LeftPanel({
                 window.location.origin + window.location.pathname
               }`;
             }}>
-            <img src={'/images/logo-6.png'} style={styles.icon} />
+            <img
+              src={'https://cypsela.github.io/sailplane-web/images/logo-6.png'}
+              style={styles.icon}
+            />
             <div style={styles.logoTitle}>Sailplane</div>
           </div>
         </div>
