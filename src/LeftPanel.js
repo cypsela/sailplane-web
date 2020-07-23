@@ -75,7 +75,6 @@ const styles = {
     position: 'relative',
     top: 6,
     width: 30,
-    marginRight: 4,
   },
   logoTitle: {
     display: 'inline-flex',
