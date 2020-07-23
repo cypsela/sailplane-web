@@ -1,5 +1,5 @@
 import React from 'react';
-import {primary15, primary3} from '../colors';
+import {cleanBorder, primary15, primary3} from '../colors';
 import {Modal} from './Modal';
 import {MobileActionItem} from './MobileActionItem';
 
@@ -25,6 +25,8 @@ export function MobileActionsDialog({
       marginTop: 8,
       padding: 6,
       backgroundColor: primary15,
+      border: cleanBorder,
+      borderRadius: 4,
       margin: 8,
     },
     icon: {
