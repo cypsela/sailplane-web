@@ -23,7 +23,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    fontWeight: 400,
+    fontWeight: 600,
   },
   folderIcon: {
     marginLeft: 4,
