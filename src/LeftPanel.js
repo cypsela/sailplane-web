@@ -10,7 +10,7 @@ import {
 } from 'react-icons/fa';
 import {PanelItem} from './components/PanelItem';
 import {useIsSmallScreen} from './hooks/useIsSmallScreen';
-import {FaPaperPlane, FaGithub, FaHome} from 'react-icons/fa/index';
+import {FaGithub, FaHome} from 'react-icons/fa/index';
 import logo from './logo.png';
 
 const styles = {
@@ -141,14 +141,14 @@ export function LeftPanel({
               onClick={() => setCurrentRightPanel('instances')}
             />
 
-            <div style={styles.settingsBlock}>
-              <PanelItem
-                title={'Settings'}
-                selected={currentRightPanel === 'settings'}
-                onClick={() => setCurrentRightPanel('settings')}
-                iconComponent={FaCog}
-              />
-            </div>
+            {/*<div style={styles.settingsBlock}>*/}
+            {/*  <PanelItem*/}
+            {/*    title={'Settings'}*/}
+            {/*    selected={currentRightPanel === 'settings'}*/}
+            {/*    onClick={() => setCurrentRightPanel('settings')}*/}
+            {/*    iconComponent={FaCog}*/}
+            {/*  />*/}
+            {/*</div>*/}
           </>
         ) : (
           <div style={styles.mobilePadding} />
