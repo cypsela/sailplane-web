@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {lightErrorColor, primary, primary15, primary45, primary5} from '../colors';
+import {
+  lightErrorColor,
+  primary,
+  primary15,
+  primary45,
+  primary5,
+} from '../colors';
 import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
 import {FaFolderOpen} from 'react-icons/fa';
 import useHover from '../hooks/useHover';
@@ -296,7 +302,7 @@ export function FileItem({
   const handleClick = async (event) => {
     event.stopPropagation();
 
-    if (isTouchDevice) {
+    if (isTouchDevice && type !== 'dir') {
       setMobileActionsVisible(true);
 
       return;
