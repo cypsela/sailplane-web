@@ -11,7 +11,7 @@ export function Modal({onClose, children}) {
       backgroundColor: '#FFF',
       border: `1px solid ${primary45}`,
       borderRadius: 4,
-      top: 150,
+      top: isSmallScreen ? 60 : 150,
       left: '50%',
       transform: 'translateX(-50%)',
       width: '94%',
