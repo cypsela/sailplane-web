@@ -5675,6 +5675,11 @@ detective@^5.2.0:
     defined "^1.0.0"
     minimist "^1.1.1"
 
+device-detector-js@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/device-detector-js/-/device-detector-js-2.2.1.tgz#c6409cb56001923fd1b40ca11fcaf932000462e0"
+  integrity sha512-1Gt0n8+1ppJNfrpUIWvmLnAG+fMMh5EVbMaWAs3a2D81tJBs0NHMRD6iScjL0pPCZSeAyIFNNMe6qvhDa+gEcQ==
+
 diff-match-patch@^1.0.0:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/diff-match-patch/-/diff-match-patch-1.0.5.tgz#abb584d5f10cd1196dfc55aa03701592ae3f7b37"

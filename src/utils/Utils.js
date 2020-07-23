@@ -11,6 +11,7 @@ import {
 } from 'react-icons/fi';
 import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
+import DeviceDetector from 'device-detector-js';
 
 const bip39 = require('bip39');
 
@@ -239,11 +240,12 @@ export function getPercent(numer, denom) {
 }
 
 export const isWebRTCSupported = () =>
-  navigator.getUserMedia ||
-  navigator.webkitGetUserMedia ||
-  navigator.mozGetUserMedia ||
-  navigator.msGetUserMedia ||
-  window.RTCPeerConnection;
+         (navigator.getUserMedia ||
+           navigator.webkitGetUserMedia ||
+           navigator.mozGetUserMedia ||
+           navigator.msGetUserMedia ||
+           window.RTCPeerConnection) &&
+         !isIOSShitBrowser();
 
 export function sortDirectoryContents(directoryContents) {
   const sortedContents = directoryContents
@@ -284,4 +286,11 @@ export const jdenticonConfig = {
     grayscale: 0.0,
   },
   backColor: '#86444400',
+};
+
+export const isIOSShitBrowser = () => {
+  const deviceDetector = new DeviceDetector();
+  const device = deviceDetector.parse(window.navigator.userAgent);
+
+  return device?.os?.name === 'iOS' && !device?.client?.name.match(/Safari/);
 };

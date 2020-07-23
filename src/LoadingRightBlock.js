@@ -11,7 +11,7 @@ const styles = {
     width: '100%',
     paddingTop: 100,
     fontSize: 20,
-    fontFamily: 'MuseoModerno',
+    fontFamily: 'Open Sans',
     fontWeight: '300',
     color: primary4,
     boxSizing: 'border-box',
