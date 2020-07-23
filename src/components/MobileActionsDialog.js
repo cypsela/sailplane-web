@@ -1,5 +1,5 @@
 import React from 'react';
-import {primary15, primary45} from '../colors';
+import {primary15, primary3} from '../colors';
 import {Modal} from './Modal';
 import {MobileActionItem} from './MobileActionItem';
 
@@ -46,7 +46,7 @@ export function MobileActionsDialog({
   return (
     <Modal onClose={onClose}>
       <div style={styles.name}>
-        <FileIcon color={primary45} size={20} style={styles.icon} />
+        <FileIcon color={primary3} size={20} style={styles.icon} />
         <span style={styles.nameText}>{name}</span>
       </div>
       <div style={styles.container}>
