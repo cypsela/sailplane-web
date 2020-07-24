@@ -240,12 +240,12 @@ export function getPercent(numer, denom) {
 }
 
 export const isWebRTCSupported = () =>
-         (navigator.getUserMedia ||
-           navigator.webkitGetUserMedia ||
-           navigator.mozGetUserMedia ||
-           navigator.msGetUserMedia ||
-           window.RTCPeerConnection) &&
-         !isIOSShitBrowser();
+  (navigator.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.msGetUserMedia ||
+    window.RTCPeerConnection) &&
+  !isIOSShitBrowser();
 
 export function sortDirectoryContents(directoryContents) {
   const sortedContents = directoryContents
