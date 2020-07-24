@@ -1,5 +1,5 @@
 import React from 'react';
-import {errorColor, primary3, primary45} from '../colors';
+import {cleanBorder, errorColor, primary3, primary45} from '../colors';
 import useHover from '../hooks/useHover';
 import useDimensions from 'react-use-dimensions';
 
@@ -45,6 +45,7 @@ export function ToolItem({
       backgroundColor: primary3,
       color: '#FFF',
       padding: '4px 6px',
+      border: cleanBorder,
       borderRadius: 2,
       fontSize: 14,
       fontWeight: 400,

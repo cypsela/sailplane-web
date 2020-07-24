@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  errorColor,
-  primary,
-  primary15,
-  primary3,
-  primary45,
-} from '../colors';
+import {errorColor, primary, primary15, primary3, primary45} from '../colors';
 import {ToolItem} from './ToolItem';
 import {FiShare2, FiCopy, FiTrash, FiUsers} from 'react-icons/fi';
 import {FiHardDrive} from 'react-icons/fi';
@@ -106,6 +100,7 @@ export const Instance = React.memo(
                 size={15}
                 changeColor={primary}
                 onClick={() => onAccess()}
+                tooltip={'Manage users'}
               />
               {/*<ToolItem*/}
               {/*  className={'instanceURLCopy'}*/}
@@ -130,6 +125,7 @@ export const Instance = React.memo(
                 iconComponent={FiCopy}
                 size={15}
                 changeColor={primary}
+                tooltip={'Copy'}
                 onClick={async () => {
                   await navigator.clipboard.writeText(address);
                   dispatch(
@@ -145,6 +141,7 @@ export const Instance = React.memo(
                 className={'instanceDelete'}
                 defaultColor={iconColor}
                 iconComponent={FiTrash}
+                tooltip={'Delete'}
                 size={15}
                 changeColor={errorColor}
                 onClick={() => onDelete()}
