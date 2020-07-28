@@ -12,6 +12,7 @@ import {
 import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
 import DeviceDetector from 'device-detector-js';
+import detectIt from 'detect-it';
 
 const bip39 = require('bip39');
 
@@ -294,3 +295,5 @@ export const isIOSShitBrowser = () => {
 
   return device?.os?.name === 'iOS' && !device?.client?.name.match(/Safari/);
 };
+
+export const hasMouse = detectIt.hasMouse === true;

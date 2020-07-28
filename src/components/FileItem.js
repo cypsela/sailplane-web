@@ -20,6 +20,7 @@ import {
   humanFileSize,
   getPercent,
   isFileExtensionAudio,
+  hasMouse,
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import useTextInput from '../hooks/useTextInput';
@@ -63,7 +64,7 @@ export function FileItem({
   const isSmallScreen = useIsSmallScreen();
   const contextID = `menu-id`;
   const exists = sharedFs && sharedFs.current.fs.exists(path);
-  const isTouchDevice = useIsTouchDevice() && isSmallScreen;
+  const isTouchDevice = !hasMouse;
 
   const styles = {
     paddingContainer: {

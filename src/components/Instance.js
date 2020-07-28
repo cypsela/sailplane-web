@@ -17,6 +17,7 @@ import {driveName} from '../utils/sailplane-util';
 import {MobileActionsDialog} from './MobileActionsDialog';
 import useIsTouchDevice from 'is-touch-device';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
+import {hasMouse} from "../utils/Utils";
 
 export const Instance = ({
   data,
@@ -30,8 +31,7 @@ export const Instance = ({
   const dispatch = useDispatch();
   const [hoverRef, isHovered] = useHover();
   const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
-  const isSmallScreen = useIsSmallScreen();
-  const isTouchDevice = useIsTouchDevice() && isSmallScreen;
+  const isTouchDevice = !hasMouse;
 
   let backgroundColor = selected ? primary3 : '#FFF';
 
