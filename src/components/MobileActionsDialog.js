@@ -25,6 +25,7 @@ export function MobileActionsDialog({
       marginTop: 8,
       padding: 6,
       backgroundColor: primary15,
+      color: primary3,
       boxShadow: 'inset 1px 1px 3px #adcadf',
       borderRadius: 4,
       margin: 8,
@@ -47,12 +48,15 @@ export function MobileActionsDialog({
   return (
     <Modal onClose={onClose}>
       <div style={styles.name}>
-        <FileIcon color={primary3} size={20} style={styles.icon} />
+        {fileIcon ? (
+          <FileIcon color={primary3} size={20} style={styles.icon} />
+        ) : null}
         <span style={styles.nameText}>{name}</span>
       </div>
       <div style={styles.container}>
-        {items.map((item) => (
+        {items.map((item, index) => (
           <MobileActionItem
+            key={index}
             iconComponent={item.iconComponent}
             title={item.title}
             onClick={item.onClick}

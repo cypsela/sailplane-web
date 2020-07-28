@@ -27,6 +27,7 @@ export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
       lineHeight: '16px',
       color: forceColor || primary45,
       marginTop: 4,
+      whiteSpace: 'nowrap'
     },
     icon: {
       width: 40,

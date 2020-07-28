@@ -98,7 +98,7 @@ export function UserHeader({sharedFS, title, iconComponent, leftSide}) {
         {myID ? (
           <div style={styles.userItem}>
             <div onClick={() => setMenuOpen(!menuOpen)}>
-              <Jdenticon value={myID} size={34} style={styles.icon} />
+              <Jdenticon value={myID} size={'34'} style={styles.icon} />
             </div>
             {menuOpen ? (
               <div style={styles.menu}>
