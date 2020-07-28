@@ -1,5 +1,5 @@
 import React from 'react';
-import {cleanBorder, errorColor, primary3, primary45} from '../colors';
+import {cleanBorder, errorColor, primary3, primary45} from '../utils/colors';
 import useHover from '../hooks/useHover';
 import useDimensions from 'react-use-dimensions';
 

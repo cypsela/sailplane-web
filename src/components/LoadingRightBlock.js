@@ -1,6 +1,6 @@
 import React from 'react';
-import {primary4} from './colors';
-import {isWebRTCSupported} from './utils/Utils';
+import {primary4} from '../utils/colors';
+import {isWebRTCSupported} from '../utils/Utils';
 import {FiLoader} from 'react-icons/fi/index';
 
 const styles = {

@@ -1,12 +1,12 @@
 import React, {forwardRef, useCallback, useImperativeHandle} from 'react';
 import {useDropzone} from 'react-dropzone';
-import {primary5} from './colors';
+import {primary5} from '../utils/colors';
 import fileListSource from '@tabcat/file-list-source';
 import {useDispatch, useSelector} from 'react-redux';
-import {setStatus} from './actions/tempData';
-import {encryptFile} from './utils/encryption';
-import {delay, getPercent} from './utils/Utils';
-import {FileDragBlock} from './components/FileDragBlock';
+import {setStatus} from '../actions/tempData';
+import {encryptFile} from '../utils/encryption';
+import {delay, getPercent} from '../utils/Utils';
+import {FileDragBlock} from './FileDragBlock';
 
 export function DropZone({children, sharedFs, currentDirectory}, ref) {
   const styles = {

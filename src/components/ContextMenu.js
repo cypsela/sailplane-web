@@ -1,7 +1,7 @@
 import {Item, Menu, Separator} from 'react-contexify';
 import React from 'react';
 import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
-import './context.css';
+import '../context.css';
 
 const styles = {
   menuItem: {

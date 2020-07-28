@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {fileToBlob, getPercent} from '../utils/Utils';
-import {primary45} from '../colors';
+import {primary45} from '../utils/colors';
 
 export function ImageGalleryBlock({file, onLoadURL, fileIndex, onClick}) {
   const [url, setURL] = useState(null);

@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import {StatusBar} from './StatusBar';
-import {primary2, primary35, primary45} from './colors';
+import {StatusBar} from '../components/StatusBar';
+import {primary2, primary35, primary45} from '../utils/colors';
 import {
   doesPasswordMatchHash,
   getEncryptionInfoFromFilename,
-} from './utils/encryption';
+} from '../utils/encryption';
 import {FiLock} from 'react-icons/fi';
-import useTextInput from './hooks/useTextInput';
-import ImageGallery from './components/ImageGallery';
-import {humanFileSize, sortDirectoryContents} from './utils/Utils';
-import {FilePreview} from './components/FilePreview';
-import {FileItem} from './components/FileItem';
-import {useIsSmallScreen} from './hooks/useIsSmallScreen';
-import AudioPlaylist from './components/AudioPlaylist';
+import useTextInput from '../hooks/useTextInput';
+import ImageGallery from '../components/ImageGallery';
+import {humanFileSize, sortDirectoryContents} from '../utils/Utils';
+import {FilePreview} from '../components/FilePreview';
+import {FileItem} from '../components/FileItem';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
+import AudioPlaylist from '../components/AudioPlaylist';
 
 const styles = {
   container: {

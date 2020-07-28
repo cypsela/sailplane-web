@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {lightBorder, primary15, primary4, primary45} from './colors';
-import {Instance} from './components/Instance';
+import {lightBorder, primary15, primary4, primary45} from '../utils/colors';
+import {Instance} from '../components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import {FaServer} from 'react-icons/fa';
-import useTextInput from './hooks/useTextInput';
+import useTextInput from '../hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
-import {addInstance, removeInstance, setInstanceIndex} from './actions/main';
-import {setStatus} from './actions/tempData';
-import {StatusBar} from './StatusBar';
-import usePrevious from './hooks/usePrevious';
-import {delay} from './utils/Utils';
-import * as sailplaneUtil from './utils/sailplane-util';
-import InstanceAccessDialog from './components/InstanceAccessDialog';
-import {UserHeader} from './components/UserHeader';
-import {ToolItem} from './components/ToolItem';
+import {addInstance, removeInstance, setInstanceIndex} from '../actions/main';
+import {setStatus} from '../actions/tempData';
+import {StatusBar} from '../components/StatusBar';
+import usePrevious from '../hooks/usePrevious';
+import {delay} from '../utils/Utils';
+import * as sailplaneUtil from '../utils/sailplane-util';
+import InstanceAccessDialog from '../components/InstanceAccessDialog';
+import {UserHeader} from '../components/UserHeader';
+import {ToolItem} from '../components/ToolItem';
 
 const styles = {
   container: {

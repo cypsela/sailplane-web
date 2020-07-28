@@ -1,5 +1,5 @@
 import React from 'react';
-import {lightBorder, primary3, primary45} from '../colors';
+import {lightBorder, primary3, primary45} from '../utils/colors';
 
 export function MobileActionItem({iconComponent, title, onClick, forceColor}) {
   const styles = {

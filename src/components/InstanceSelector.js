@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {lightBorder, primary3, primary45} from '../colors';
+import {lightBorder, primary3, primary45} from '../utils/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {SmallInstanceItem} from './SmallInstanceItem';
 import {setInstanceIndex} from '../actions/main';

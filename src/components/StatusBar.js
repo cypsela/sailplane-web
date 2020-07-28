@@ -1,5 +1,5 @@
 import React from 'react';
-import {errorColor, primary3} from './colors';
+import {errorColor, primary3} from '../utils/colors';
 import {FiLoader, FiAlertTriangle} from 'react-icons/fi';
 import {useSelector} from 'react-redux';
 

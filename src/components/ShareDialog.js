@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {primary, primary3, primary45} from './colors';
+import {primary, primary3, primary45} from '../utils/colors';
 import {useDispatch, useSelector} from 'react-redux';
-import {setShareData} from './actions/tempData';
+import {setShareData} from '../actions/tempData';
 import {FiFile, FiImage, FiLoader, FiMusic} from 'react-icons/fi';
-import {SegmentedControl} from './components/SegmentedControl';
-import {getShareTypeFromFolderFiles} from './utils/Utils';
-import {Dialog} from './components/Dialog';
+import {SegmentedControl} from './SegmentedControl';
+import {getShareTypeFromFolderFiles} from '../utils/Utils';
+import {Dialog} from './Dialog';
 
 const styles = {
   filename: {

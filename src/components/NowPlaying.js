@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import {isChrome} from '../utils/Utils';
-import {primary2, primary3, primary4} from '../colors';
+import {primary2, primary3, primary4} from '../utils/colors';
 
 export function NowPlaying({currentAudio, setPlaying}) {
   const styles = {

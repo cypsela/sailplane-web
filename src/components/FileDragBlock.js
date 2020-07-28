@@ -1,5 +1,5 @@
 import {FiFolder, FiMusic, FiVideo, FiImage} from 'react-icons/fi/index';
-import {primary2, primary3, primary45} from '../colors';
+import {primary2, primary3, primary45} from '../utils/colors';
 import React from 'react';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 

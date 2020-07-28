@@ -1,5 +1,5 @@
 import React from 'react';
-import {primary4, primary45, primary46} from '../colors';
+import {primary4, primary45, primary46} from '../utils/colors';
 import useHover from '../hooks/useHover';
 
 export function PanelItem({selected, onClick, title, iconComponent}) {

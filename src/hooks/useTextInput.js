@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {ToolItem} from '../components/ToolItem';
-import {errorColor, goodColor, primary, primary3, primary4} from '../colors';
+import {errorColor, goodColor, primary, primary3, primary4} from '../utils/colors';
 
 export default function useTextInput(
   visible,

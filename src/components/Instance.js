@@ -6,7 +6,7 @@ import {
   primary15,
   primary3,
   primary45,
-} from '../colors';
+} from '../utils/colors';
 import {ToolItem} from './ToolItem';
 import {FiShare2, FiCopy, FiTrash, FiUsers} from 'react-icons/fi';
 import {FiHardDrive} from 'react-icons/fi';

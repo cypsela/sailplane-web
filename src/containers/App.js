@@ -1,25 +1,25 @@
 import React, {useEffect, useRef, useState} from 'react';
-import './App.css';
+import '../App.css';
 import {LeftPanel} from './LeftPanel';
-import {FileBlock} from './FileBlock';
-import {useIsSmallScreen} from './hooks/useIsSmallScreen';
-import useIPFS from './hooks/useIPFS';
+import {FileBlock} from '../components/FileBlock';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
+import useIPFS from '../hooks/useIPFS';
 import OrbitDB from 'orbit-db';
 import Sailplane from '@cypsela/sailplane-node';
-import * as sailplaneUtil from './utils/sailplane-util';
-import {LoadingRightBlock} from './LoadingRightBlock';
+import * as sailplaneUtil from '../utils/sailplane-util';
+import {LoadingRightBlock} from '../components/LoadingRightBlock';
 import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
 import {Instances} from './Instances';
 import {useDispatch, useSelector} from 'react-redux';
-import {addInstance, setNewUser} from './actions/main';
-import {setStatus} from './actions/tempData';
-import usePrevious from './hooks/usePrevious';
-import {ContextMenu} from './ContextMenu';
-import {delay, getPercent} from './utils/Utils';
+import {addInstance, setNewUser} from '../actions/main';
+import {setStatus} from '../actions/tempData';
+import usePrevious from '../hooks/usePrevious';
+import {ContextMenu} from '../components/ContextMenu';
+import {delay, getPercent} from '../utils/Utils';
 import all from 'it-all';
-import {cleanBorder} from './colors';
-import {useWindowSize} from './hooks/useWindowSize';
+import {cleanBorder} from '../utils/colors';
+import {useWindowSize} from '../hooks/useWindowSize';
 
 function App({match}) {
   const isSmallScreen = useIsSmallScreen();

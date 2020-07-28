@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {primary15, primary2, primary45} from './colors';
+import {primary15, primary2, primary45} from '../utils/colors';
 import {
   FaFolderOpen,
   FaCog,
@@ -8,10 +8,10 @@ import {
   FaTimes,
   FaDownload,
 } from 'react-icons/fa';
-import {PanelItem} from './components/PanelItem';
-import {useIsSmallScreen} from './hooks/useIsSmallScreen';
+import {PanelItem} from '../components/PanelItem';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {FaGithub, FaHome} from 'react-icons/fa/index';
-import logo from './logo.png';
+import logo from '../logo.png';
 
 export function LeftPanel({
   setCurrentRightPanel,

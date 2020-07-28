@@ -9,7 +9,7 @@ import {
 } from '../utils/Utils';
 import {NowPlaying} from './NowPlaying';
 import {FileItem} from './FileItem';
-import {primary2, primary35} from '../colors';
+import {primary2, primary35} from '../utils/colors';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import usePrevious from '../hooks/usePrevious';
 import produce from 'immer';

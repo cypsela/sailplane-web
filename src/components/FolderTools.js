@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ToolItem} from './components/ToolItem';
+import {ToolItem} from './ToolItem';
 import {
   FiFolderPlus,
   FiUnlock,
@@ -7,13 +7,13 @@ import {
   FiUpload,
   FiShare2,
 } from 'react-icons/fi';
-import {errorColor, goodColor, primary4} from './colors';
-import {Breadcrumb} from './components/Breadcrumb';
-import useTextInput from './hooks/useTextInput';
+import {errorColor, goodColor, primary4} from '../utils/colors';
+import {Breadcrumb} from './Breadcrumb';
+import useTextInput from '../hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
-import {clearEncryptionKey, setEncryptionKey} from './actions/main';
-import {setShareData} from './actions/tempData';
-import {useIsSmallScreen} from './hooks/useIsSmallScreen';
+import {clearEncryptionKey, setEncryptionKey} from '../actions/main';
+import {setShareData} from '../actions/tempData';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
 const styles = {
   tools: {

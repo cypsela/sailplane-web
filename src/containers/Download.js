@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import './App.css';
+import '../App.css';
 import {LeftPanel} from './LeftPanel';
-import {useIsSmallScreen} from './hooks/useIsSmallScreen';
-import useIPFS from './hooks/useIPFS';
-import {LoadingRightBlock} from './LoadingRightBlock';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
+import useIPFS from '../hooks/useIPFS';
+import {LoadingRightBlock} from '../components/LoadingRightBlock';
 import {hot} from 'react-hot-loader';
 import {useDispatch} from 'react-redux';
-import {setStatus} from './actions/tempData';
+import {setStatus} from '../actions/tempData';
 import {
   getBlobFromPathCID,
   getFileExtensionFromFilename,
@@ -14,12 +14,12 @@ import {
   getFilesFromFolderCID,
   isFileExtensionSupported,
   getPercent,
-} from './utils/Utils';
+} from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
-import {decryptFile, getEncryptionInfoFromFilename} from './utils/encryption';
-import {cleanBorder} from "./colors";
-import {useWindowSize} from "./hooks/useWindowSize";
+import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
+import {cleanBorder} from "../utils/colors";
+import {useWindowSize} from "../hooks/useWindowSize";
 
 function Download({match}) {
   const {cid, path, displayType} = match.params;

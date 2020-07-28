@@ -1,12 +1,12 @@
 import {DropZone} from './DropZone';
 import React, {useEffect, useRef, useState} from 'react';
-import {primary2, primary35} from './colors';
+import {primary2, primary35} from '../utils/colors';
 import {FolderTools} from './FolderTools';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {StatusBar} from './StatusBar';
 import {ShareDialog} from './ShareDialog';
-import {useIsSmallScreen} from './hooks/useIsSmallScreen';
-import {DraggableFileItem} from './components/DraggableFileItem';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
+import {DraggableFileItem} from './DraggableFileItem';
 import {
   filterImageFiles,
   getBlobFromPathCID,
@@ -15,10 +15,10 @@ import {
   isFileExtensionImage,
   sortDirectoryContents,
   delay,
-} from './utils/Utils';
-import {FileDragBlock} from './components/FileDragBlock';
+} from '../utils/Utils';
+import {FileDragBlock} from './FileDragBlock';
 import Lightbox from 'react-image-lightbox';
-import {setStatus} from './actions/tempData';
+import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
 
 const styles = {

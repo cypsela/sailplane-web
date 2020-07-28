@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {FiImage, FiFile} from 'react-icons/fi';
-import {primary45} from '../colors';
+import {primary45} from '../utils/colors';
 
 export function SegmentedControl({onSelect, items, currentIndex}) {
   const styles = {

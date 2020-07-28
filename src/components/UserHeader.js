@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import * as sailplaneAccess from '../utils/sailplane-access';
 import Jdenticon from 'react-jdenticon';
-import {primary2, primary3, primary45} from '../colors';
+import {primary2, primary3, primary45} from '../utils/colors';
 import {SmallInstanceItem} from './SmallInstanceItem';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';

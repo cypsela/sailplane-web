@@ -5,7 +5,7 @@ import {
   primary15,
   primary45,
   primary5,
-} from '../colors';
+} from '../utils/colors';
 import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
 import {FaFolderOpen} from 'react-icons/fa';
 import useHover from '../hooks/useHover';

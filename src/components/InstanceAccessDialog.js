@@ -3,7 +3,7 @@ import {driveName} from '../utils/sailplane-util';
 import {Dialog} from './Dialog';
 import * as sailplaneAccess from '../utils/sailplane-access';
 import Jdenticon from 'react-jdenticon';
-import {cleanBorder, primary15, primary2, primary4, primary45} from '../colors';
+import {cleanBorder, primary15, primary2, primary4, primary45} from '../utils/colors';
 import {ToolItem} from './ToolItem';
 import {FiUserPlus} from 'react-icons/fi';
 import useTextInput from '../hooks/useTextInput';

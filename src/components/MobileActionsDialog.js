@@ -1,5 +1,5 @@
 import React from 'react';
-import {cleanBorder, primary15, primary3} from '../colors';
+import {cleanBorder, primary15, primary3} from '../utils/colors';
 import {Modal} from './Modal';
 import {MobileActionItem} from './MobileActionItem';
 

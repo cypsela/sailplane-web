@@ -1,6 +1,6 @@
 import React from 'react';
-import {primary45} from './colors';
-import {UserHeader} from './components/UserHeader';
+import {primary45} from '../utils/colors';
+import {UserHeader} from '../components/UserHeader';
 import {FaCog} from 'react-icons/fa';
 
 const styles = {
