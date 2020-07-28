@@ -63,7 +63,7 @@ export function FileItem({
   const isSmallScreen = useIsSmallScreen();
   const contextID = `menu-id`;
   const exists = sharedFs && sharedFs.current.fs.exists(path);
-  const isTouchDevice = useIsTouchDevice();
+  const isTouchDevice = useIsTouchDevice() && isSmallScreen;
 
   const styles = {
     paddingContainer: {

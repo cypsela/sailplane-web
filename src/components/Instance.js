@@ -16,6 +16,7 @@ import useHover from '../hooks/useHover';
 import {driveName} from '../utils/sailplane-util';
 import {MobileActionsDialog} from './MobileActionsDialog';
 import useIsTouchDevice from 'is-touch-device';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
 export const Instance = ({
   data,
@@ -29,7 +30,8 @@ export const Instance = ({
   const dispatch = useDispatch();
   const [hoverRef, isHovered] = useHover();
   const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
-  const isTouchDevice = useIsTouchDevice();
+  const isSmallScreen = useIsSmallScreen();
+  const isTouchDevice = useIsTouchDevice() && isSmallScreen;
 
   let backgroundColor = selected ? primary3 : '#FFF';
 
