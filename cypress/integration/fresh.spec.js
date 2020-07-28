@@ -40,7 +40,7 @@ describe('App loads', () => {
   });
 
   it('can rename a folder', () => {
-    cy.contains('Folder-test').trigger('mouseover');
+    cy.contains('Folder-test').trigger('mouseenter');
     cy.get('#Rename-dir').click();
     const input = cy.get('input[type="text"]');
     input.should('have.attr', 'value', 'Folder-test');
@@ -73,7 +73,7 @@ describe('App loads', () => {
   });
 
   it('can rename file', () => {
-    cy.contains('pic1.jpg').trigger('mouseover');
+    cy.contains('pic1.jpg').trigger('mouseenter');
 
     cy.get('#Rename-file').click();
     const input = cy.get('input[type="text"]');
@@ -85,15 +85,15 @@ describe('App loads', () => {
 
   it('has tooltips on every icon', () => {
     const toolTips = ['Download', 'Rename', 'Share', 'Delete'];
-    cy.contains('pic1-renamed.jpg').trigger('mouseover');
+    cy.contains('pic1-renamed.jpg').trigger('mouseenter');
     for (let toolTip of toolTips) {
-      cy.get(`#${toolTip}-file`).trigger('mouseover');
+      cy.get(`#${toolTip}-file`).trigger('mouseenter');
       cy.contains(toolTip);
     }
   });
 
   it('can share file', () => {
-    cy.contains('pic1-renamed.jpg').trigger('mouseover');
+    cy.contains('pic1-renamed.jpg').trigger('mouseenter');
     cy.get('#Share-file').click();
     cy.contains('Share options');
     const input = cy.get('input[type="text"]');
@@ -135,7 +135,7 @@ describe('App loads', () => {
 
   it('can create and share a photo gallery folder', () => {
     cy.contains('. . /').click();
-    cy.contains('Folder-renamed').trigger('mouseover');
+    cy.contains('Folder-renamed').trigger('mouseenter');
     cy.get('#Share-dir').click();
 
     const input = cy.get('input[type="text"]');
@@ -220,7 +220,7 @@ describe('App loads', () => {
   });
 
   it('download encrypted file', () => {
-    cy.contains('pic1.jpg').trigger('mouseover');
+    cy.contains('pic1.jpg').trigger('mouseenter');
     cy.get('#Download-file').click();
     const input = cy.get('input[placeholder="password"]');
     input.type('password1234');
@@ -229,7 +229,7 @@ describe('App loads', () => {
   });
 
   it('download encrypted file from share page', () => {
-    cy.contains('pic1.jpg').trigger('mouseover');
+    cy.contains('pic1.jpg').trigger('mouseenter');
     cy.get('#Share-file').click();
 
     const input = cy.get('input[type="text"]');
@@ -246,7 +246,7 @@ describe('App loads', () => {
   });
 
   it('delete file', () => {
-    cy.contains('pic1.jpg').trigger('mouseover');
+    cy.contains('pic1.jpg').trigger('mouseenter');
     cy.get('#Delete-file').click();
     cy.contains('pic1.jpg').should('have.length', 0);
   });
