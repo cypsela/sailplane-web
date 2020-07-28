@@ -38,6 +38,7 @@
     "redux-persist": "^6.0.0"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-app-rewired start",
     "startCoverage": "react-scripts -r @cypress/instrument-cra start",
     "e2e": "cypress open",
@@ -78,7 +79,8 @@
     "prettier": "^2.0.5",
     "react-app-rewire-hot-loader": "^2.0.1",
     "react-app-rewired": "^2.1.6",
-    "react-hot-loader": "^4.12.21"
+    "react-hot-loader": "^4.12.21",
+    "source-map-explorer": "^2.4.2"
   },
   "resolutions": {
     "libp2p-interfaces": "0.3.2",

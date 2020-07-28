@@ -1,6 +1,5 @@
 import all from 'it-all';
 import first from 'it-first';
-import JSZip from 'jszip';
 import {
   FiArchive,
   FiFile,
@@ -34,6 +33,7 @@ export async function fileToBlob(file, handleUpdate) {
 }
 
 async function dirToBlob(path, struct, handleUpdate) {
+  const JSZip = await import('jszip');
   const zip = new JSZip();
   const root = path.split('/')[path.split('/').length - 1];
 

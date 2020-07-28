@@ -1,7 +1,7 @@
 import React from 'react';
 import {primary4} from '../utils/colors';
 import {isWebRTCSupported} from '../utils/Utils';
-import {FiLoader} from 'react-icons/fi/index';
+import {FiLoader} from 'react-icons/fi';
 
 const styles = {
   container: {

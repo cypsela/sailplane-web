@@ -10,7 +10,7 @@ import {
 } from 'react-icons/fa';
 import {PanelItem} from '../components/PanelItem';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
-import {FaGithub, FaHome} from 'react-icons/fa/index';
+import {FaGithub, FaHome} from 'react-icons/fa';
 import logo from '../logo.png';
 
 export function LeftPanel({
