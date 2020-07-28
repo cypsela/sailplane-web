@@ -52,6 +52,8 @@ const styles = {
     marginRight: 4,
   },
   passwordContainer: {
+    display: 'inline-flex',
+    alignItems: 'center',
     marginTop: 10,
   },
   downloadButtonHolder: {
