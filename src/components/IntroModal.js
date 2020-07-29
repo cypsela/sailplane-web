@@ -13,7 +13,6 @@ export function IntroModal({isVisible, onClose}) {
     container: {
       display: isSmallScreen ? 'block' : 'flex',
       justifyContent: 'space-between',
-      backgroundColor: primary15,
       color: primary4,
       fontFamily: 'Open Sans',
       padding: 12,
@@ -44,6 +43,8 @@ export function IntroModal({isVisible, onClose}) {
     },
     modal: {
       maxWidth: 800,
+      backgroundColor: primary15,
+      borderRadius: 8,
     },
     bold: {
       fontWeight: 600,
