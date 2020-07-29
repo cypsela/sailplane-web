@@ -20,7 +20,7 @@ import {delay, getPercent} from '../utils/Utils';
 import all from 'it-all';
 import {cleanBorder} from '../utils/colors';
 import {useWindowSize} from '../hooks/useWindowSize';
-import {IntroModal} from "../components/IntroModal";
+import {IntroModal} from '../components/IntroModal';
 
 function App({match}) {
   const isSmallScreen = useIsSmallScreen();
@@ -33,6 +33,7 @@ function App({match}) {
   const ipfsObj = useIPFS(() => {
     setIpfsError(true);
   });
+  const [introScreenVisible, setIntroScreenVisible] = useState(false);
   const [instanceReady, setInstanceReady] = useState(false);
   const [directoryContents, setDirectoryContents] = useState([]);
   const [currentDirectory, setCurrentDirectory] = useState('/r');
@@ -172,6 +173,7 @@ function App({match}) {
       const driveName = sailplaneUtil.driveName(address);
       dispatch(addInstance(driveName, address.toString(), false));
       dispatch(setNewUser(false));
+      setIntroScreenVisible(true);
     };
     const connectSailplane = async (ipfs) => {
       dispatch(setStatus({message: 'Connecting'}));
@@ -225,7 +227,10 @@ function App({match}) {
 
   return (
     <div style={styles.container}>
-      <IntroModal isVisible={true}/>
+      <IntroModal
+        isVisible={introScreenVisible}
+        onClose={() => setIntroScreenVisible(false)}
+      />
       <LeftPanel
         setCurrentRightPanel={setCurrentRightPanel}
         currentRightPanel={currentRightPanel}

@@ -4,11 +4,14 @@ import {primary15, primary4} from '../utils/colors';
 import intro1 from '../imgs/intro1-2.png';
 import InfoItem from './InfoItem';
 import {BigButton} from './BigButton';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
 export function IntroModal({isVisible, onClose}) {
+  const isSmallScreen = useIsSmallScreen();
+
   const styles = {
     container: {
-      display: 'flex',
+      display: isSmallScreen ? 'block' : 'flex',
       justifyContent: 'space-between',
       backgroundColor: primary15,
       color: primary4,
@@ -30,6 +33,7 @@ export function IntroModal({isVisible, onClose}) {
       boxShadow: '0 0px 14px hsla(0, 0%, 0%, 0.2)',
     },
     imageContainer: {
+      display: isSmallScreen ? 'none' : null,
       position: 'relative',
       height: 300,
       width: 300,

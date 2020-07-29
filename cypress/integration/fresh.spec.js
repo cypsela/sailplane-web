@@ -18,7 +18,7 @@ describe('App loads', () => {
     cy.saveLocalStorageCache();
   });
 
-  it('shows loading and eventually the drag text', () => {
+  it('shows loading', () => {
     window.indexedDB.databases().then((r) => {
       for (var i = 0; i < r.length; i++)
         window.indexedDB.deleteDatabase(r[i].name);
@@ -27,6 +27,13 @@ describe('App loads', () => {
     cy.visit('http://localhost:3000/');
 
     cy.contains('Loading...');
+  });
+
+  it('shows intro screen on first load', () => {
+    cy.contains('Start sharing').click();
+  });
+
+  it('eventually shows the drag text', () => {
     cy.wait(5000);
     cy.contains('Drag files to upload or click here');
   });
@@ -175,12 +182,14 @@ describe('App loads', () => {
 
   it('can copy drive address', () => {
     cy.window().then((win) => {
-      cy.stub(win.navigator.clipboard, 'writeText').resolves(true).as('writeText')
-    })
+      cy.stub(win.navigator.clipboard, 'writeText')
+        .resolves(true)
+        .as('writeText');
+    });
 
     cy.get('.instanceAddressCopy').click();
 
-    cy.get('@writeText').should('be.calledWithMatch', /^\/orbitdb/)
+    cy.get('@writeText').should('be.calledWithMatch', /^\/orbitdb/);
   });
 
   it('can create drive', () => {
