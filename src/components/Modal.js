@@ -2,7 +2,7 @@ import React from 'react';
 import {primary45} from '../utils/colors';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
-export function Modal({onClose, children, isVisible}) {
+export function Modal({onClose, children, isVisible, style}) {
   const isSmallScreen = useIsSmallScreen();
 
   const styles = {
@@ -37,7 +37,7 @@ export function Modal({onClose, children, isVisible}) {
   return (
     <div style={styles.outer}>
       <div style={styles.background} onClick={onClose} />
-      <div style={styles.container}>{children}</div>
+      <div style={{...styles.container, ...style}}>{children}</div>
     </div>
   );
 }
