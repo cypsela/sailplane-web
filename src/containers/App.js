@@ -20,6 +20,7 @@ import {delay, getPercent} from '../utils/Utils';
 import all from 'it-all';
 import {cleanBorder} from '../utils/colors';
 import {useWindowSize} from '../hooks/useWindowSize';
+import {IntroModal} from "../components/IntroModal";
 
 function App({match}) {
   const isSmallScreen = useIsSmallScreen();
@@ -224,6 +225,7 @@ function App({match}) {
 
   return (
     <div style={styles.container}>
+      <IntroModal isVisible={true}/>
       <LeftPanel
         setCurrentRightPanel={setCurrentRightPanel}
         currentRightPanel={currentRightPanel}

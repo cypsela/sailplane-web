@@ -27,7 +27,7 @@ export function Dialog({isVisible, body, onClose, title, noPadding}) {
   };
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} isVisible={isVisible}>
       <div style={styles.container}>
         <div style={styles.header}>
           <div>{title}</div>

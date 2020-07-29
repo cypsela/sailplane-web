@@ -1,5 +1,5 @@
 import React from 'react';
-import {cleanBorder, primary15, primary3} from '../utils/colors';
+import {primary15, primary3} from '../utils/colors';
 import {Modal} from './Modal';
 import {MobileActionItem} from './MobileActionItem';
 
@@ -46,7 +46,7 @@ export function MobileActionsDialog({
   const FileIcon = fileIcon;
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} isVisible={isVisible}>
       <div style={styles.name}>
         {fileIcon ? (
           <FileIcon color={primary3} size={20} style={styles.icon} />

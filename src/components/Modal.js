@@ -2,7 +2,7 @@ import React from 'react';
 import {primary45} from '../utils/colors';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
-export function Modal({onClose, children}) {
+export function Modal({onClose, children, isVisible}) {
   const isSmallScreen = useIsSmallScreen();
 
   const styles = {
@@ -26,8 +26,13 @@ export function Modal({onClose, children}) {
       top: 0,
       left: 0,
       backgroundColor: '#00000033',
+      zIndex: 5000,
     },
   };
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
     <div style={styles.outer}>
