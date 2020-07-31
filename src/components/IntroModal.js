@@ -58,20 +58,28 @@ export function IntroModal({isVisible, onClose}) {
     <Modal isVisible={isVisible} style={styles.modal}>
       <div style={styles.container}>
         <div style={styles.left}>
-          <div style={styles.title}>Share files for free. <br/> No sign up needed :)</div>
+          <div style={styles.title}>
+            Share files for free. <br /> No sign up needed :)
+          </div>
           <div style={styles.subTitle}>
-            Upload files to private file <span style={styles.bold}>drives</span>.
-            Share drive access with friends so they can upload too!
+            Upload files to private file <span style={styles.bold}>drives</span>
+            . Share drive access with friends so they can upload too!
           </div>
           <div style={styles.items}>
             <InfoItem title={'Upload any type of file'} />
             <InfoItem title={'Collaborate with others in shared drives'} />
-            <InfoItem title={'Create multiple drives for different occasions'} />
-            <InfoItem title={'Files are stored in, and shared directly between browsers'} />
+            <InfoItem
+              title={'Create multiple drives for different occasions'}
+            />
+            <InfoItem
+              title={
+                'Files are stored in, and shared directly between browsers'
+              }
+            />
             <InfoItem title={'Works best with small to medium sized files'} />
           </div>
           <div style={styles.buttons}>
-            <BigButton title={'Open Drive'} onClick={onClose} />
+            <BigButton title={'Open drive'} onClick={onClose} />
           </div>
         </div>
         <div style={styles.imageContainer}>

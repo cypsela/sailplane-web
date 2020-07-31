@@ -30,7 +30,7 @@ describe('App loads', () => {
   });
 
   it('shows intro screen on first load', () => {
-    cy.contains('Start sharing').click();
+    cy.contains('Open drive').click();
   });
 
   it('eventually shows the drag text', () => {
