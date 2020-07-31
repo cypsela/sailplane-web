@@ -19,12 +19,12 @@ export function IntroModal({isVisible, onClose}) {
       overflow: 'hidden',
     },
     title: {
-      fontSize: 22,
+      fontSize: 23,
       fontWeight: 600,
-      lineHeight: '24px'
+
     },
     subTitle: {
-      marginTop: 12,
+      marginTop: 8,
       marginBottom: 12,
     },
     image: {
@@ -35,12 +35,11 @@ export function IntroModal({isVisible, onClose}) {
     imageContainer: {
       display: isSmallScreen ? 'none' : null,
       position: 'relative',
-      height: 292,
+      height: 300,
       width: 300,
-      paddingTop: 3,
     },
     left: {
-      padding: '8px 10px',
+      padding: '4px 10px',
       paddingRight: 40,
     },
     modal: {
@@ -52,7 +51,7 @@ export function IntroModal({isVisible, onClose}) {
       fontWeight: 600,
     },
     buttons: {
-      marginTop: 20,
+      marginTop: 18,
     },
   };
 
@@ -61,7 +60,7 @@ export function IntroModal({isVisible, onClose}) {
       <div style={styles.container}>
         <div style={styles.left}>
           <div style={styles.title}>
-            Share files for free. No sign up needed.
+            Share files for free. <br /> No sign up needed :)
           </div>
           <div style={styles.subTitle}>
             Upload files to private file <span style={styles.bold}>drives</span>
