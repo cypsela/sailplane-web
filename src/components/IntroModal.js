@@ -59,7 +59,7 @@ export function IntroModal({isVisible, onClose}) {
       <div style={styles.container}>
         <div style={styles.left}>
           <div style={styles.title}>
-            Share files for free. <br /> No sign up needed :)
+            Share files for free. <br /> No sign up needed.
           </div>
           <div style={styles.subTitle}>
             Upload files to private file <span style={styles.bold}>drives</span>
