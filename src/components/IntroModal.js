@@ -19,8 +19,9 @@ export function IntroModal({isVisible, onClose}) {
       overflow: 'hidden',
     },
     title: {
-      fontSize: 24,
+      fontSize: 20,
       fontWeight: 600,
+      lineHeight: '26px',
     },
     subTitle: {
       marginTop: 8,
@@ -34,7 +35,7 @@ export function IntroModal({isVisible, onClose}) {
     imageContainer: {
       display: isSmallScreen ? 'none' : null,
       position: 'relative',
-      height: 300,
+      height: 290,
       width: 300,
     },
     left: {
@@ -50,7 +51,7 @@ export function IntroModal({isVisible, onClose}) {
       fontWeight: 600,
     },
     buttons: {
-      marginTop: 30,
+      marginTop: 20,
     },
   };
 
@@ -59,7 +60,7 @@ export function IntroModal({isVisible, onClose}) {
       <div style={styles.container}>
         <div style={styles.left}>
           <div style={styles.title}>
-            Share files for free. <br /> No sign up needed.
+            Share files for free. No sign up needed.
           </div>
           <div style={styles.subTitle}>
             Upload files to private file <span style={styles.bold}>drives</span>
