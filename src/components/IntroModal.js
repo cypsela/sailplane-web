@@ -19,12 +19,12 @@ export function IntroModal({isVisible, onClose}) {
       overflow: 'hidden',
     },
     title: {
-      fontSize: 20,
+      fontSize: 22,
       fontWeight: 600,
-      lineHeight: '26px',
+      lineHeight: '24px'
     },
     subTitle: {
-      marginTop: 8,
+      marginTop: 12,
       marginBottom: 12,
     },
     image: {
@@ -35,11 +35,12 @@ export function IntroModal({isVisible, onClose}) {
     imageContainer: {
       display: isSmallScreen ? 'none' : null,
       position: 'relative',
-      height: 290,
+      height: 292,
       width: 300,
+      paddingTop: 3,
     },
     left: {
-      padding: 10,
+      padding: '8px 10px',
       paddingRight: 40,
     },
     modal: {
