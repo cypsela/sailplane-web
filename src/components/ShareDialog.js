@@ -132,13 +132,13 @@ export function ShareDialog({sharedFs}) {
           <div style={styles.nameHolder}>
             <div style={styles.filename}>{name}</div>
             <div>
-              {pathType === 'dir' ? (
-                <SegmentedControl
-                  currentIndex={shareTypeIndex}
-                  items={shareTypes}
-                  onSelect={(index) => setShareTypeIndex(index)}
-                />
-              ) : null}
+              {/*{pathType === 'dir' ? (*/}
+              {/*  <SegmentedControl*/}
+              {/*    currentIndex={shareTypeIndex}*/}
+              {/*    items={shareTypes}*/}
+              {/*    onSelect={(index) => setShareTypeIndex(index)}*/}
+              {/*  />*/}
+              {/*) : null}*/}
             </div>
           </div>
           {loadedCID ? (
