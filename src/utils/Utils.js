@@ -33,7 +33,7 @@ export async function fileToBlob(file, handleUpdate) {
 }
 
 async function dirToBlob(path, struct, handleUpdate) {
-  const JSZip = await import('jszip');
+  const { default: JSZip } = await import('jszip');
   const zip = new JSZip();
   const root = path.split('/')[path.split('/').length - 1];
 
