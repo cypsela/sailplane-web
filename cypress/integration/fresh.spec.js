@@ -34,7 +34,6 @@ describe('App loads', () => {
   });
 
   it('eventually shows the drag text', () => {
-    cy.wait(5000);
     cy.contains('Drag files to upload or click here');
   });
 
@@ -129,7 +128,6 @@ describe('App loads', () => {
     cy.contains('Folder-renamed').click();
 
     cy.get('#fileUpload').attachFile('pic2.jpg').attachFile('pic3.jpg');
-    cy.wait(1000);
     cy.contains('pic2.jpg');
     cy.contains('pic3.jpg');
   });
@@ -199,7 +197,6 @@ describe('App loads', () => {
 
   it('should not have any files on fresh drive', () => {
     cy.contains('Files').click();
-    cy.wait(1000);
     cy.contains('Drag files to upload or click here');
   });
 
@@ -269,21 +266,4 @@ describe('App loads', () => {
     cy.contains('Accept').click();
     cy.contains('Accept').should('have.length', 0);
   });
-
-  // it('imports from instance URL', () => {
-  //   cy.visit(
-  //     'http://localhost:3000/#/importInstance/%2Forbitdb%2FzdpuAxHi5JMYYEYEuYRj37aJ98uxFP1QnVSii4o4NZ4q6BiPM%2FTestinstance',
-  //   );
-  //   cy.contains('Testinstance');
-  //   cy.contains('Drag files to upload or click here');
-  // });
-
-  // it('can move folders into folders', ()=> {
-  //   cy.wait(1000);
-  //
-  //   createFolder('newParentFolder');
-  //
-  //   const dragFolder = cy.get(".fileItem :last-child");
-  //   dragFolder.drag('.fileItem :first-child', {force: true});
-  // });
 });
