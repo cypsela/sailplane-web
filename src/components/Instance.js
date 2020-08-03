@@ -8,16 +8,14 @@ import {
   primary45,
 } from '../utils/colors';
 import {ToolItem} from './ToolItem';
-import {FiShare2, FiCopy, FiTrash, FiUsers} from 'react-icons/fi';
+import {FiCopy, FiTrash, FiUsers} from 'react-icons/fi';
 import {FiHardDrive} from 'react-icons/fi';
 import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
 import useHover from '../hooks/useHover';
 import {driveName} from '../utils/sailplane-util';
 import {MobileActionsDialog} from './MobileActionsDialog';
-import useIsTouchDevice from 'is-touch-device';
-import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
-import {hasMouse} from "../utils/Utils";
+import {hasMouse} from '../utils/Utils';
 
 export const Instance = ({
   data,
