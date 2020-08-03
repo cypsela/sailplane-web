@@ -63,7 +63,7 @@ function Download({match}) {
       display: isSmallScreen ? 'block' : 'flex',
       flexDirection: 'row',
       height: '100%',
-      maxWidth: 1280,
+      maxWidth: 1920,
       margin: '0 auto',
       border: windowSize.width <= 1280 ? null : cleanBorder,
     },
