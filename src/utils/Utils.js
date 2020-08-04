@@ -33,7 +33,7 @@ export async function fileToBlob(file, handleUpdate) {
 }
 
 async function dirToBlob(path, struct, handleUpdate) {
-  const { default: JSZip } = await import('jszip');
+  const {default: JSZip} = await import('jszip');
   const zip = new JSZip();
   const root = path.split('/')[path.split('/').length - 1];
 
@@ -237,6 +237,10 @@ export function getShareTypeFromFolderFiles(files) {
 }
 
 export function getPercent(numer, denom) {
+  if (!denom) {
+    return 0;
+  }
+
   return Math.round((numer / denom) * 100);
 }
 
