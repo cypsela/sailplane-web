@@ -19,6 +19,8 @@ import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
 import {cleanBorder} from '../utils/colors';
 import {useWindowSize} from '../hooks/useWindowSize';
+import {catCid} from '@cypsela/sailplane-node/src/util';
+import Crypter from '@tabcat/aes-gcm-crypter';
 
 function Download({match}) {
   const {cid, path, displayType, iv, key} = match.params;
@@ -95,6 +97,13 @@ function Download({match}) {
 
     if (fileBlob) {
       blob = fileBlob;
+    } else if (key) {
+      const tmpBlob = await catCid(ipfsObj.ipfs, cleanCID, {Crypter, key, iv});
+      blob = new Blob(tmpBlob);
+      console.log('tmpBlob', tmpBlob);
+      console.log('blog', blob);
+
+      setFileBlob(blob);
     } else {
       blob = await getBlobFromPathCID(
         cleanCID,
@@ -144,7 +153,6 @@ function Download({match}) {
           fileInfo={fileInfo}
           fileBlob={fileBlob}
           ipfs={ipfsObj.ipfs}
-          keys={{iv, key}}
         />
       ) : (
         <LoadingRightBlock />

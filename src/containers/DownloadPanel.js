@@ -7,8 +7,6 @@ import {FilePreview} from '../components/FilePreview';
 import {FileItem} from '../components/FileItem';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import AudioPlaylist from '../components/AudioPlaylist';
-import {catCid} from '@cypsela/sailplane-node/src/util';
-import Crypter from '@tabcat/aes-gcm-crypter';
 
 const styles = {
   container: {
@@ -89,7 +87,6 @@ export function DownloadPanel({
   fileInfo,
   fileBlob,
   ipfs,
-  keys,
 }) {
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
