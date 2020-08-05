@@ -97,11 +97,14 @@ function Download({match}) {
   async function getBlob() {
     let blob;
 
+    console.log(cleanKey)
+    console.log(cleanIV)
+
     if (fileBlob) {
       blob = fileBlob;
     } else if (key) {
       const tmpBlob = await catCid(ipfsObj.ipfs, cleanCID, {Crypter, key: cleanKey, iv: cleanIV});
-      blob = new Blob(tmpBlob);
+      blob = new Blob(Array.from([tmpBlob.buffer]));
       console.log('tmpBlob', tmpBlob);
       console.log('blog', blob);
 
