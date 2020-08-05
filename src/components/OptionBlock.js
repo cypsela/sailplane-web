@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  primary16,
-  primary2,
-  primary3,
-  primary4,
-  primary45,
-} from '../utils/colors';
+import {primary16, primary3, primary4} from '../utils/colors';
 import InfoItem from './InfoItem';
 import {BigButton} from './BigButton';
 
@@ -14,6 +8,7 @@ export function OptionBlock({title, infos, onClick}) {
     container: {
       padding: 8,
       width: '100%',
+      boxSizing: 'border-box',
     },
     inner: {
       overflow: 'hidden',
@@ -34,7 +29,7 @@ export function OptionBlock({title, infos, onClick}) {
       padding: 12,
     },
     infos: {
-      height: infos ? 90 : null,
+      marginBottom: 16,
     },
   };
 

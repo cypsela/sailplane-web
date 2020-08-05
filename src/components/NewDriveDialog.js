@@ -16,7 +16,7 @@ export default function NewDriveDialog({
   const styles = {
     container: {},
     options: {
-      display: 'flex',
+      display: isSmallScreen ? 'block' : 'flex',
       justifyContent: 'space-between',
     },
   };
@@ -27,7 +27,7 @@ export default function NewDriveDialog({
       infos: [
         'Everything is encrypted by default',
         'Add other users to view or modify drives',
-        'AES 256 Encryption',
+        'AES 128 Encryption',
       ],
       onClick: onPrivate,
     },
@@ -36,6 +36,7 @@ export default function NewDriveDialog({
       infos: [
         'Everything is not encrypted by default',
         'Easily share files with many people',
+        'Can still encrypt individual files',
       ],
       onClick: onPublic,
     },
@@ -44,6 +45,7 @@ export default function NewDriveDialog({
   return (
     <Dialog
       onClose={onClose}
+      noPadding={isSmallScreen ? true : false}
       title={'Create a new drive'}
       body={
         <div style={styles.container}>
@@ -51,7 +53,7 @@ export default function NewDriveDialog({
             {driveTypes.map((type) => (
               <OptionBlock
                 title={type.title}
-                infos={!isSmallScreen ? type.infos : null}
+                infos={type.infos}
                 onClick={type.onClick}
               />
             ))}
