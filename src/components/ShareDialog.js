@@ -3,7 +3,7 @@ import {primary, primary3, primary45} from '../utils/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {setShareData} from '../actions/tempData';
 import {FiFile, FiImage, FiLoader, FiMusic} from 'react-icons/fi';
-import {SegmentedControl} from './SegmentedControl';
+// import {SegmentedControl} from './SegmentedControl';
 import {getShareTypeFromFolderFiles} from '../utils/Utils';
 import {Dialog} from './Dialog';
 
@@ -69,7 +69,8 @@ export function ShareDialog({sharedFs}) {
   const {CID, path, name, pathType} = shareData;
   const [shareTypeIndex, setShareTypeIndex] = useState(0);
   const [loadedCID, setLoadedCID] = useState(CID);
-
+  const [keys, setKeys] = useState(null);
+console.log('keys22', keys)
   useEffect(() => {
     if (!name) {
       setLoadedCID(null);
@@ -82,6 +83,12 @@ export function ShareDialog({sharedFs}) {
   useEffect(() => {
     const getCID = async () => {
       const cid = await sharedFs.current.read(path);
+
+      if (sharedFs.current.crypting && pathType !== 'dir') {
+        const {key, iv} = sharedFs.current.fs.read(path);
+
+        setKeys({key, iv});
+      }
       setLoadedCID(cid);
 
       if (pathType === 'dir') {
@@ -116,11 +123,20 @@ export function ShareDialog({sharedFs}) {
     return null;
   }
 
-  const url = `${
+  let url = `${
     window.location.origin + window.location.pathname
   }#/download/${encodeURIComponent(loadedCID)}/${encodeURIComponent(path)}/${
     shareTypes[shareTypeIndex].name
   }`;
+
+  if (keys?.key) {
+    url = `${
+      window.location.origin + window.location.pathname
+    }#/download/${encodeURIComponent(loadedCID)}/${encodeURIComponent(
+      keys.iv,
+    )}/${encodeURIComponent(keys.key)}/${encodeURIComponent(path)}`;
+    // console.log('keyur', url)
+  }
 
   return (
     <Dialog

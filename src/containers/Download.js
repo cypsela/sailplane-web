@@ -18,15 +18,15 @@ import {
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
 import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
-import {cleanBorder} from "../utils/colors";
-import {useWindowSize} from "../hooks/useWindowSize";
+import {cleanBorder} from '../utils/colors';
+import {useWindowSize} from '../hooks/useWindowSize';
 
 function Download({match}) {
-  const {cid, path, displayType} = match.params;
+  const {cid, path, displayType, iv, key} = match.params;
   const isSmallScreen = useIsSmallScreen();
   const windowSize = useWindowSize();
-  const ipfsObj = useIPFS((error)=> {
-    console.error(error)
+  const ipfsObj = useIPFS((error) => {
+    console.error(error);
   });
   const [ready, setReady] = useState(false);
   const [files, setFiles] = useState(null);
@@ -153,6 +153,7 @@ function Download({match}) {
           fileInfo={fileInfo}
           fileBlob={fileBlob}
           ipfs={ipfsObj.ipfs}
+          keys={{iv, key}}
         />
       ) : (
         <LoadingRightBlock />
