@@ -2,7 +2,6 @@ import React from 'react';
 import {Dialog} from './Dialog';
 import {primary15} from '../utils/colors';
 import {OptionBlock} from './OptionBlock';
-import InfoItem from './InfoItem';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
 export default function NewDriveDialog({
@@ -25,7 +24,7 @@ export default function NewDriveDialog({
     {
       title: 'Private',
       infos: [
-        'Everything is encrypted by default',
+        'End-to-end encrypted drive data',
         'Add other users to view or modify drives',
         'AES 128 Encryption',
       ],
@@ -36,7 +35,7 @@ export default function NewDriveDialog({
       infos: [
         'Everything is not encrypted by default',
         'Easily share files with many people',
-        'Can still encrypt individual files',
+        'Host content publicly on IPFS',
       ],
       onClick: onPublic,
     },
@@ -45,7 +44,7 @@ export default function NewDriveDialog({
   return (
     <Dialog
       onClose={onClose}
-      noPadding={isSmallScreen ? true : false}
+      noPadding={isSmallScreen}
       title={'Create a new drive'}
       body={
         <div style={styles.container}>

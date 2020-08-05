@@ -82,7 +82,7 @@ export function Instances({sailplane, sharedFS}) {
     });
     const driveName = sailplaneUtil.driveName(address);
 
-    dispatch(addInstance(driveName, address.toString(), false));
+    dispatch(addInstance(driveName, address.toString(), false, isEncrypted));
     setAddInstanceMode(false);
   };
 
