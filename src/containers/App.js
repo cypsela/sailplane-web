@@ -153,7 +153,7 @@ function App({}) {
         enc: true,
       });
       const driveName = sailplaneUtil.driveName(address);
-      dispatch(addInstance(driveName, address.toString(), false));
+      dispatch(addInstance(driveName, address.toString(), false, true));
       dispatch(setNewUser(false));
       setIntroScreenVisible(true);
     };
