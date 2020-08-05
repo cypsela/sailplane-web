@@ -1,0 +1,62 @@
+import React from 'react';
+import {
+  primary16,
+  primary2,
+  primary3,
+  primary4,
+  primary45,
+} from '../utils/colors';
+import InfoItem from './InfoItem';
+import {BigButton} from './BigButton';
+
+export function OptionBlock({title, infos, onClick}) {
+  const styles = {
+    container: {
+      padding: 8,
+      width: '100%',
+    },
+    inner: {
+      overflow: 'hidden',
+      border: `1px solid ${primary3}`,
+      borderRadius: 4,
+    },
+    title: {
+      backgroundColor: primary16,
+      padding: 8,
+      color: primary4,
+      fontWeight: 400,
+      textAlign: 'center',
+      borderBottom: `1px solid ${primary3}`,
+      marginBottom: 8,
+    },
+    body: {
+      color: primary4,
+      padding: 12,
+    },
+    infos: {
+      height: infos ? 90 : null,
+    },
+  };
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.inner}>
+        <div style={styles.title}>{title}</div>
+        <div style={styles.body}>
+          <div style={styles.infos}>
+            {infos?.map((info) => (
+              <InfoItem title={info} />
+            ))}
+          </div>
+
+          <BigButton
+            title={`Create ${title} drive`}
+            inverted={true}
+            fullWidth={true}
+            onClick={onClick}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

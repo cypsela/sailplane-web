@@ -18,6 +18,8 @@ export const primary6 = '#132b3a';
 // export const primary5 = '#888';
 // export const primary6 = '#333';
 
+export const primary16 = 'hsl(208 100% 96% / 1)';
+
 export const errorColor = '#ef6565';
 export const lightErrorColor = '#ef9c9c';
 export const goodColor = '#53c171';

@@ -14,6 +14,7 @@ import * as sailplaneUtil from '../utils/sailplane-util';
 import InstanceAccessDialog from '../components/InstanceAccessDialog';
 import {UserHeader} from '../components/UserHeader';
 import {ToolItem} from '../components/ToolItem';
+import NewDriveDialog from '../components/NewDriveDialog';
 
 const styles = {
   container: {
@@ -59,6 +60,7 @@ const styles = {
 export function Instances({sailplane, sharedFS}) {
   const [addInstanceMode, setAddInstanceMode] = useState(false);
   const [importInstanceMode, setImportInstanceMode] = useState(false);
+  const [isCreateDialogVisible, setIsCreateDialogVisible] = useState(false);
   const [instanceToModifyAccess, setInstanceToModifyAccess] = useState(null);
   const dispatch = useDispatch();
   const main = useSelector((state) => state.main);
@@ -72,9 +74,12 @@ export function Instances({sailplane, sharedFS}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [instances.length, prevInstanceLength]);
 
-  const createInstance = async () => {
-    const isEncrypted = true;
-    const address = await sailplaneUtil.determineAddress(sailplane, { enc: isEncrypted });
+  const createInstance = async (isEncrypted) => {
+    setIsCreateDialogVisible(false);
+
+    const address = await sailplaneUtil.determineAddress(sailplane, {
+      enc: isEncrypted,
+    });
     const driveName = sailplaneUtil.driveName(address);
 
     dispatch(addInstance(driveName, address.toString(), false));
@@ -143,7 +148,7 @@ export function Instances({sailplane, sharedFS}) {
                 changeColor={primary4}
                 iconComponent={FiPlusCircle}
                 title={'Create drive'}
-                onClick={() => createInstance()}
+                onClick={() => setIsCreateDialogVisible(true)}
               />
             </>
           ) : null}
@@ -179,6 +184,12 @@ export function Instances({sailplane, sharedFS}) {
           sharedFS={sharedFS}
         />
       ) : null}
+      <NewDriveDialog
+        isVisible={isCreateDialogVisible}
+        onClose={() => setIsCreateDialogVisible(false)}
+        onPrivate={() => createInstance(true)}
+        onPublic={() => createInstance(false)}
+      />
       <StatusBar />
     </div>
   );
