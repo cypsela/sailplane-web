@@ -1,5 +1,12 @@
 import React from 'react';
-import {cleanBorder, errorColor, primary3, primary45} from '../utils/colors';
+import {
+  cleanBorder,
+  errorColor,
+  primary2,
+  primary3,
+  primary35,
+  primary45,
+} from '../utils/colors';
 import useHover from '../hooks/useHover';
 import useDimensions from 'react-use-dimensions';
 
@@ -13,6 +20,7 @@ export function ToolItem({
   defaultColor,
   id,
   className,
+  disabled,
 }) {
   const [hoverRef, isHovered] = useHover();
   const [fullDimensionsRef, fullDimensions] = useDimensions();
@@ -27,6 +35,10 @@ export function ToolItem({
 
   if (!changeColor) {
     changeColor = errorColor;
+  }
+
+  if (disabled) {
+    defaultColor = '#DDD';
   }
 
   const styles = {
@@ -70,7 +82,10 @@ export function ToolItem({
       ref={hoverRef}
       onClick={(event) => {
         event.stopPropagation();
-        onClick();
+
+        if (!disabled) {
+          onClick();
+        }
       }}>
       <div ref={fullDimensionsRef} />
       {iconComponent ? (

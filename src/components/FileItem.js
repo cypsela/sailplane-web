@@ -34,7 +34,6 @@ import {
 import useDoubleClick from '../hooks/useDoubleClick';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {contextMenu} from 'react-contexify';
-import useIsTouchDevice from 'is-touch-device';
 import {MobileActionsDialog} from './MobileActionsDialog';
 
 export function FileItem({
@@ -378,6 +377,8 @@ export function FileItem({
       snapshot = {};
     }
 
+    const isUnsharable = sharedFs.current.crypting && type === 'dir';
+
     return (
       <div
         ref={hoverRef}
@@ -448,8 +449,13 @@ export function FileItem({
                     id={`Share-${type}`}
                     iconComponent={FiShare2}
                     changeColor={primary}
-                    tooltip={'Share'}
+                    tooltip={
+                      isUnsharable
+                        ? 'No encrypted folder sharing yet!'
+                        : 'Share'
+                    }
                     onClick={handleShare}
+                    disabled={isUnsharable}
                   />
 
                   <ToolItem
