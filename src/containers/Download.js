@@ -38,6 +38,8 @@ function Download({match}) {
   const [fileBlob, setFileBlob] = useState(null);
   const cleanPath = decodeURIComponent(path);
   const cleanCID = decodeURIComponent(cid);
+  const cleanKey = decodeURIComponent(key);
+  const cleanIV = decodeURIComponent(iv);
   const dispatch = useDispatch();
   const pathSplit = cleanPath.split('/');
   const name = pathSplit[pathSplit.length - 1];
@@ -98,7 +100,7 @@ function Download({match}) {
     if (fileBlob) {
       blob = fileBlob;
     } else if (key) {
-      const tmpBlob = await catCid(ipfsObj.ipfs, cleanCID, {Crypter, key, iv});
+      const tmpBlob = await catCid(ipfsObj.ipfs, cleanCID, {Crypter, key: cleanKey, iv: cleanIV});
       blob = new Blob(tmpBlob);
       console.log('tmpBlob', tmpBlob);
       console.log('blog', blob);
