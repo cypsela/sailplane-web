@@ -168,7 +168,7 @@ export const Instance = ({
               style={styles.icon}
             />
             <Pill
-              title={isEncrypted ? 'Private' : 'Public'}
+              title={isEncrypted ? 'private' : 'public'}
               inverted={selected}
             />
             {thisDriveName}
