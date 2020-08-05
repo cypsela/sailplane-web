@@ -23,7 +23,7 @@ import {useWindowSize} from '../hooks/useWindowSize';
 import {IntroModal} from '../components/IntroModal';
 import Crypter from '@tabcat/aes-gcm-crypter';
 
-function App({match}) {
+function App({}) {
   const isSmallScreen = useIsSmallScreen();
   const windowSize = useWindowSize();
   const sailplaneRef = useRef(null);
@@ -41,8 +41,6 @@ function App({match}) {
   const [currentDirectory, setCurrentDirectory] = useState('/r');
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
-  const {importInstanceAddress} = match.params;
-  const importAddress = decodeURIComponent(importInstanceAddress);
 
   const dispatch = useDispatch();
   const {instances, instanceIndex, newUser} = useSelector(
@@ -63,27 +61,6 @@ function App({match}) {
       border: windowSize.width <= 1280 ? null : cleanBorder,
     },
   };
-
-  useEffect(() => {
-    async function importInstance() {
-      if (importAddress) {
-        const sailplane = sailplaneRef.current;
-        if (await sailplaneUtil.addressValid(sailplane, importAddress)) {
-          const sameInstance = instances.find(
-            (instance) => instance.address === importAddress,
-          );
-          const driveName = sailplaneUtil.driveName(importAddress);
-          if (!sameInstance) {
-            dispatch(addInstance(driveName, importAddress, true));
-          }
-        }
-      }
-    }
-
-    importInstance();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [importAddress]);
-  // End
 
   useEffect(() => {
     const rootLS = async () => {
