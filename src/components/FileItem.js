@@ -62,8 +62,10 @@ export function FileItem({
   const fileExtension = getFileExtensionFromFilename(name);
   const isSmallScreen = useIsSmallScreen();
   const contextID = `menu-id`;
+  const contextNoShareID = `menu-id-no-share`;
   const exists = sharedFs && sharedFs.current.fs.exists(path);
   const isTouchDevice = !hasMouse;
+  const isUnsharable = sharedFs.current.crypting && type === 'dir';
 
   const styles = {
     paddingContainer: {
@@ -326,11 +328,6 @@ export function FileItem({
 
   let mobileActionItems = [
     {
-      title: 'Share',
-      onClick: handleShare,
-      iconComponent: FiShare2,
-    },
-    {
       title: 'Download',
       onClick: handleDownload,
       iconComponent: FiDownload,
@@ -347,6 +344,14 @@ export function FileItem({
       forceColor: lightErrorColor,
     },
   ];
+
+  if (!isUnsharable) {
+    mobileActionItems.unshift({
+      title: 'Share',
+      onClick: handleShare,
+      iconComponent: FiShare2,
+    });
+  }
 
   if (type === 'dir') {
     mobileActionItems.unshift({
@@ -377,8 +382,6 @@ export function FileItem({
       snapshot = {};
     }
 
-    const isUnsharable = sharedFs.current.crypting && type === 'dir';
-
     return (
       <div
         ref={hoverRef}
@@ -397,7 +400,7 @@ export function FileItem({
 
             contextMenu.show({
               event,
-              id: contextID,
+              id: isUnsharable ? contextNoShareID : contextID,
               props: {
                 handleDelete,
                 handleDownload,
