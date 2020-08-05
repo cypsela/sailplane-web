@@ -101,20 +101,20 @@ export function FolderTools({
         <div style={styles.rightTools}>
           {!addFolderMode && !securePanelOpen ? (
             <>
-              <ToolItem
-                id={'togglePassword'}
-                iconComponent={encryptionKey ? FiLock : FiUnlock}
-                size={18}
-                defaultColor={encryptionKey ? goodColor : null}
-                changeColor={encryptionKey ? errorColor : goodColor}
-                onClick={() => {
-                  if (encryptionKey) {
-                    dispatch(clearEncryptionKey());
-                  } else {
-                    setSecurePanelOpen(true);
-                  }
-                }}
-              />
+              {/*<ToolItem*/}
+              {/*  id={'togglePassword'}*/}
+              {/*  iconComponent={encryptionKey ? FiLock : FiUnlock}*/}
+              {/*  size={18}*/}
+              {/*  defaultColor={encryptionKey ? goodColor : null}*/}
+              {/*  changeColor={encryptionKey ? errorColor : goodColor}*/}
+              {/*  onClick={() => {*/}
+              {/*    if (encryptionKey) {*/}
+              {/*      dispatch(clearEncryptionKey());*/}
+              {/*    } else {*/}
+              {/*      setSecurePanelOpen(true);*/}
+              {/*    }*/}
+              {/*  }}*/}
+              {/*/>*/}
               {currentDirectory !== '/r' ? (
                 <ToolItem
                   id={'folderShare'}
