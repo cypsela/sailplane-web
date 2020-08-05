@@ -97,9 +97,6 @@ function Download({match}) {
   async function getBlob() {
     let blob;
 
-    console.log(cleanKey)
-    console.log(cleanIV)
-
     if (fileBlob) {
       blob = fileBlob;
     } else if (key) {
