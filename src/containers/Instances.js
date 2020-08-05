@@ -73,7 +73,8 @@ export function Instances({sailplane, sharedFS}) {
   }, [instances.length, prevInstanceLength]);
 
   const createInstance = async () => {
-    const address = await sailplaneUtil.determineAddress(sailplane);
+    const isEncrypted = true;
+    const address = await sailplaneUtil.determineAddress(sailplane, { enc: isEncrypted });
     const driveName = sailplaneUtil.driveName(address);
 
     dispatch(addInstance(driveName, address.toString(), false));

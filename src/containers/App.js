@@ -21,6 +21,7 @@ import all from 'it-all';
 import {cleanBorder} from '../utils/colors';
 import {useWindowSize} from '../hooks/useWindowSize';
 import {IntroModal} from '../components/IntroModal';
+import Crypter from '@tabcat/aes-gcm-crypter';
 
 function App({match}) {
   const isSmallScreen = useIsSmallScreen();
@@ -118,6 +119,7 @@ function App({match}) {
         sailplaneRef.current,
         currentInstance.address,
         sfsQueue.current,
+        { Crypter }
       );
 
       const onProgress = (key) => (current, max) => {
@@ -169,7 +171,7 @@ function App({match}) {
 
   useEffect(() => {
     const handleNewUser = async (sailplane) => {
-      const address = await sailplaneUtil.determineAddress(sailplane);
+      const address = await sailplaneUtil.determineAddress(sailplane, { enc: true });
       const driveName = sailplaneUtil.driveName(address);
       dispatch(addInstance(driveName, address.toString(), false));
       dispatch(setNewUser(false));
