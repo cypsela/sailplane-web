@@ -31,7 +31,8 @@ function App({match}) {
   const [nodeReady, setNodeReady] = useState(false);
   const sharedFS = useRef({});
   const [ipfsError, setIpfsError] = useState(false);
-  const ipfsObj = useIPFS(() => {
+  const ipfsObj = useIPFS((err) => {
+    console.log('IPFS error: ' + err);
     setIpfsError(true);
   });
   const [introScreenVisible, setIntroScreenVisible] = useState(false);
@@ -119,7 +120,7 @@ function App({match}) {
         sailplaneRef.current,
         currentInstance.address,
         sfsQueue.current,
-        { Crypter }
+        {Crypter},
       );
 
       const onProgress = (key) => (current, max) => {
@@ -171,7 +172,9 @@ function App({match}) {
 
   useEffect(() => {
     const handleNewUser = async (sailplane) => {
-      const address = await sailplaneUtil.determineAddress(sailplane, { enc: true });
+      const address = await sailplaneUtil.determineAddress(sailplane, {
+        enc: true,
+      });
       const driveName = sailplaneUtil.driveName(address);
       dispatch(addInstance(driveName, address.toString(), false));
       dispatch(setNewUser(false));
