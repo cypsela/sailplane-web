@@ -8,14 +8,14 @@ import {
   primary45,
 } from '../utils/colors';
 import {ToolItem} from './ToolItem';
-import {FiCopy, FiTrash, FiUsers} from 'react-icons/fi';
-import {FiHardDrive} from 'react-icons/fi';
+import {FiCopy, FiHardDrive, FiTrash, FiUsers} from 'react-icons/fi';
 import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
 import useHover from '../hooks/useHover';
 import {driveName} from '../utils/sailplane-util';
 import {MobileActionsDialog} from './MobileActionsDialog';
 import {hasMouse} from '../utils/Utils';
+import {Pill} from './Pill';
 
 export const Instance = ({
   data,
@@ -25,7 +25,7 @@ export const Instance = ({
   instanceIndex,
   onAccess,
 }) => {
-  const {address, isImported} = data;
+  const {address, isEncrypted} = data;
   const dispatch = useDispatch();
   const [hoverRef, isHovered] = useHover();
   const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
@@ -167,10 +167,11 @@ export const Instance = ({
               size={15}
               style={styles.icon}
             />
+            <Pill
+              title={isEncrypted ? 'Private' : 'Public'}
+              inverted={selected}
+            />
             {thisDriveName}
-            {isImported ? (
-              <span style={styles.importedTxt}>[imported]</span>
-            ) : null}
           </div>
           {!isTouchDevice ? (
             <div style={styles.tools}>
