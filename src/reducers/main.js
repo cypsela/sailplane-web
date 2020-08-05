@@ -4,7 +4,6 @@ import produce from 'immer';
 const initialState = {
   instances: [],
   instanceIndex: 0,
-  encryptionKey: null,
   newUser: true,
 };
 
@@ -24,23 +23,6 @@ export default function main(state = initialState, action) {
       });
     }
 
-    case mainTypes.SET_ENCRYPTION_KEY: {
-      const {key, keyType} = action;
-      return produce(state, (draftState) => {
-        draftState.encryptionKey = {
-          key,
-          type: keyType,
-        };
-      });
-    }
-
-    case mainTypes.CLEAR_ENCRYPTION_KEY: {
-      const {key, keyType} = action;
-      return produce(state, (draftState) => {
-        draftState.encryptionKey = null;
-      });
-    }
-
     case mainTypes.REMOVE_INSTANCE: {
       const {index} = action;
       return produce(state, (draftState) => {
@@ -56,10 +38,10 @@ export default function main(state = initialState, action) {
     }
 
     case mainTypes.SET_NEW_USER: {
-      const {bool} = action
+      const {bool} = action;
       return produce(state, (draftState) => {
-        draftState.newUser = bool
-      })
+        draftState.newUser = bool;
+      });
     }
   }
 

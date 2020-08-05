@@ -17,7 +17,6 @@ import {
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
-import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
 import {cleanBorder} from '../utils/colors';
 import {useWindowSize} from '../hooks/useWindowSize';
 
@@ -55,8 +54,6 @@ function Download({match}) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupportedPreviewType, ready, fileBlob, cleanCID, path, displayType]);
-
-  const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(name);
 
   const styles = {
     container: {
@@ -123,13 +120,7 @@ function Download({match}) {
     dispatch(setStatus({message: 'Fetching file'}));
     let blob = await getBlob();
 
-    if (isEncrypted) {
-      dispatch(setStatus({message: 'Decrypting file'}));
-      blob = await decryptFile(blob, password);
-      dispatch(setStatus({}));
-    }
-
-    saveAs(blob, decryptedFilename);
+    saveAs(blob, name);
     setDownloadComplete(true);
   };
 

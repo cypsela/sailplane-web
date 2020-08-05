@@ -10,14 +10,6 @@ export function addInstance(name, address, isImported, isEncrypted) {
   };
 }
 
-export function setEncryptionKey(key, keyType) {
-  return {
-    type: main.SET_ENCRYPTION_KEY,
-    key,
-    keyType,
-  };
-}
-
 export function clearEncryptionKey() {
   return {
     type: main.CLEAR_ENCRYPTION_KEY,

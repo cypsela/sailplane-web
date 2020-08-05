@@ -103,9 +103,6 @@ describe('App loads', () => {
     cy.get('#Share-file').click();
     cy.contains('Share options');
     const input = cy.get('input[type="text"]');
-    // input
-    //   .should('have.attr', 'value')
-    //   .and('match', /QmXETG1AE738nUSFNgFMFhujUugKZyWNTqvZTZJB14TFVg/);
   });
 
   it('can open a share link', () => {
@@ -168,16 +165,6 @@ describe('App loads', () => {
     cy.get('.drive').should('have.length', 1);
   });
 
-  // it('can copy drive url', () => {
-  //   cy.window().then((win) => {
-  //     cy.stub(win.navigator.clipboard, 'writeText').resolves(true).as('writeText')
-  //   })
-  //
-  //   cy.get('.instanceURLCopy').click();
-  //
-  //   cy.get('@writeText').should('be.calledWithMatch', /^http.+importInstance/)
-  // });
-
   it('can copy drive address', () => {
     cy.window().then((win) => {
       cy.stub(win.navigator.clipboard, 'writeText')
@@ -213,49 +200,6 @@ describe('App loads', () => {
     cy.contains('Files').click();
   });
 
-  it('upload encrypted file', () => {
-    cy.get('#togglePassword').click();
-    const input = cy.get('input[placeholder="secure password"]');
-    input.type('password1234');
-    cy.contains('Accept').click();
-
-    cy.get('#fileUpload').attachFile('pic1.jpg');
-    cy.contains('pic1.jpg');
-    cy.get('.fileItemEncrypted').should('have.length', 1);
-    cy.get('#togglePassword').click();
-  });
-
-  it('download encrypted file', () => {
-    cy.contains('pic1.jpg').trigger('mouseenter');
-    cy.get('#Download-file').click();
-    const input = cy.get('input[placeholder="password"]');
-    input.type('password1234');
-    cy.contains('Accept').click();
-    cy.contains('Accept').should('have.length', 0);
-  });
-
-  it('download encrypted file from share page', () => {
-    cy.contains('pic1.jpg').trigger('mouseenter');
-    cy.get('#Share-file').click();
-
-    const input = cy.get('input[type="text"]');
-    input.invoke('val').then((url) => {
-      cy.visit(url);
-      cy.contains('Download now').click();
-
-      const input2 = cy.get('input[placeholder="password"]');
-      input2.type('password1234');
-      cy.contains('Unlock').click();
-      cy.contains('Unlock').should('have.length', 0);
-      cy.visit('http://localhost:3000/');
-    });
-  });
-
-  it('delete file', () => {
-    cy.contains('pic1.jpg').trigger('mouseenter');
-    cy.get('#Delete-file').click();
-    cy.contains('pic1.jpg').should('have.length', 0);
-  });
 
   it('context menu rename works', () => {
     cy.contains('Folder-renamed').trigger('contextmenu');
