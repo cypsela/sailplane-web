@@ -51,7 +51,7 @@ export default function NewDriveDialog({
           <div style={styles.options}>
             {driveTypes.map((type) => (
               <OptionBlock
-                key={title}
+                key={type.title}
                 title={type.title}
                 infos={type.infos}
                 onClick={type.onClick}

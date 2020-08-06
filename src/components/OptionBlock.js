@@ -40,7 +40,7 @@ export function OptionBlock({title, infos, onClick}) {
         <div style={styles.body}>
           <div style={styles.infos}>
             {infos?.map((info) => (
-              <InfoItem title={info} />
+              <InfoItem title={info} key={info} />
             ))}
           </div>
 
