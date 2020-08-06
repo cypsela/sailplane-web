@@ -5,7 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@cypress/instrument-cra": "^1.1.1",
-    "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#1903eae3ecf7996438c41df21d0ed7557595d966",
+    "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#c8170387d39c3ca51e4820d90c238773e6ad26f6",
     "@tabcat/aes-gcm-crypter": "https://github.com/tabcat/aes-gcm-crypter#9d619008e0e5bef747bae9a97a96aa7c8be5c293",
     "@tabcat/file-list-source": "https://github.com/tabcat/file-list-source#fe4abea54a82abe8a1be4edf4be0b6fe1fa9d1fe",
     "@testing-library/jest-dom": "^4.2.4",

@@ -1345,9 +1345,9 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@cypsela/sailplane-node@https://github.com/cypsela/sailplane-node#1903eae3ecf7996438c41df21d0ed7557595d966":
+"@cypsela/sailplane-node@https://github.com/cypsela/sailplane-node#c8170387d39c3ca51e4820d90c238773e6ad26f6":
   version "2.2.2"
-  resolved "https://github.com/cypsela/sailplane-node#1903eae3ecf7996438c41df21d0ed7557595d966"
+  resolved "https://github.com/cypsela/sailplane-node#c8170387d39c3ca51e4820d90c238773e6ad26f6"
   dependencies:
     "@tabcat/orbit-db-fsstore" "^3.1.4"
     is-blob "^2.1.0"
