@@ -3,7 +3,12 @@ import {driveName} from '../utils/sailplane-util';
 import {Dialog} from './Dialog';
 import * as sailplaneAccess from '../utils/sailplane-access';
 import Jdenticon from 'react-jdenticon';
-import {cleanBorder, primary15, primary2, primary4, primary45} from '../utils/colors';
+import {
+  cleanBorder,
+  primary15,
+  primary4,
+  primary45,
+} from '../utils/colors';
 import {ToolItem} from './ToolItem';
 import {FiUserPlus} from 'react-icons/fi';
 import useTextInput from '../hooks/useTextInput';
@@ -16,7 +21,9 @@ export default function InstanceAccessDialog({
 }) {
   const [admins, setAdmins] = useState(null);
   const [writers, setWriters] = useState(null);
+  const [readers, setReaders] = useState(null);
   const [addWriterMode, setAddWriterMode] = useState(false);
+  const [addReaderMode, setAddReaderMode] = useState(false);
   const [myID, setMyID] = useState(null);
   const [lastUpdate, setLastUpdate] = useState(null);
   const [dialogDimensionsRef, dialogDimensions] = useDimensions();
@@ -110,9 +117,11 @@ export default function InstanceAccessDialog({
     const getPerms = async () => {
       const tmpAdmins = await sailplaneAccess.admin(sharedFS.current);
       const tmpWriters = await sailplaneAccess.writers(sharedFS.current);
+      const tmpReaders = await sailplaneAccess.readers(sharedFS.current);
       const tmpMyID = await sailplaneAccess.localUserId(sharedFS.current);
       setAdmins(Array.from(tmpAdmins));
       setWriters(Array.from(tmpWriters));
+      setReaders(Array.from(tmpReaders));
       setMyID(tmpMyID);
     };
 
@@ -140,6 +149,17 @@ export default function InstanceAccessDialog({
     },
   );
 
+  const AddReaderInput = useTextInput(
+    addReaderMode,
+    (readerID) => addWriter(readerID),
+    () => setAddReaderMode(false),
+    '',
+    {
+      placeholder: 'user id',
+      confirmTitle: 'Add reader',
+    },
+  );
+
   if (!admins || !writers) {
     return null;
   }
@@ -160,7 +180,7 @@ export default function InstanceAccessDialog({
               : 'You have read access only.'}
           </div>
           <div style={styles.panels}>
-            <div style={styles.panel}>
+            <div style={styles.panel} id={'adminPanel'}>
               <div style={styles.panelTitle}>
                 <div style={styles.third} />
                 <div style={styles.third}>Admins</div>
@@ -198,7 +218,8 @@ export default function InstanceAccessDialog({
                 ))}
               </div>
             </div>
-            <div style={styles.panel}>
+
+            <div style={styles.panel} id={'writerPanel'}>
               <div style={styles.panelTitle}>
                 {!addWriterMode ? (
                   <>
@@ -256,6 +277,80 @@ export default function InstanceAccessDialog({
                               <div>
                                 {writer.slice(0, 6)}{' '}
                                 {myID === writer ? (
+                                  <span style={styles.youText}>[You]</span>
+                                ) : (
+                                  ''
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div style={styles.adminTools}></div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div style={styles.panel} id={'readerPanel'}>
+              <div style={styles.panelTitle}>
+                {!addReaderMode ? (
+                  <>
+                    <div style={styles.third} />
+                    <div style={styles.third}>Readers</div>
+                  </>
+                ) : null}
+                <div
+                  style={{
+                    ...styles.adminTools,
+                    ...styles.third,
+                    justifyContent: 'flex-end',
+                    width: addReaderMode ? '100%' : '30%',
+                  }}>
+                  {!addReaderMode && admins?.includes(myID) ? (
+                    <>
+                      <ToolItem
+                        iconComponent={FiUserPlus}
+                        // title={
+                        //   dialogDimensions?.width > 540 ? 'Add writer' : null
+                        // }
+                        changeColor={primary4}
+                        defaultColor={primary4}
+                        onClick={() => setAddReaderMode(true)}
+                      />
+                    </>
+                  ) : null}
+                  {addReaderMode ? AddReaderInput : null}
+                </div>
+              </div>
+              <div style={styles.panelBody}>
+                <div style={styles.writers}>
+                  {readers?.length === 0 ? (
+                    <div style={styles.messageText}>
+                      Add users to grant read privileges
+                    </div>
+                  ) : readers === null ? (
+                    <div style={styles.messageText}>Loading...</div>
+                  ) : (
+                    <div>
+                      {readers.map((reader) => (
+                        <div
+                          style={{
+                            ...styles.userBlock,
+                          }}>
+                          <div style={styles.adminLeft}>
+                            <div style={styles.iconHolder}>
+                              <Jdenticon
+                                value={reader}
+                                size={34}
+                                style={styles.icon}
+                              />
+                            </div>
+                            <div style={styles.adminNameHolder}>
+                              <div>
+                                {reader.slice(0, 6)}{' '}
+                                {myID === reader ? (
                                   <span style={styles.youText}>[You]</span>
                                 ) : (
                                   ''
