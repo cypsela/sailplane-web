@@ -9,7 +9,14 @@ function createFolder(name) {
   cy.contains(name);
 }
 
-describe('App loads', () => {
+describe('Fresh app public drive', () => {
+  before(() => {
+    window.indexedDB.databases().then((r) => {
+      for (var i = 0; i < r.length; i++)
+        window.indexedDB.deleteDatabase(r[i].name);
+    });
+  });
+
   beforeEach(() => {
     cy.restoreLocalStorageCache();
   });
@@ -19,11 +26,6 @@ describe('App loads', () => {
   });
 
   it('shows loading', () => {
-    window.indexedDB.databases().then((r) => {
-      for (var i = 0; i < r.length; i++)
-        window.indexedDB.deleteDatabase(r[i].name);
-    });
-
     cy.visit('http://localhost:3000/');
 
     cy.contains('Loading...');
@@ -37,7 +39,22 @@ describe('App loads', () => {
     cy.contains('Drag files to upload or click here');
   });
 
+  it('can delete main drive', () => {
+    cy.contains('Drives').click();
+    cy.get('.instanceDelete').last().click();
+    cy.get('.drive').should('have.length', 0);
+  });
+
+  it('can create a public drive', () => {
+    cy.contains('Create drive').click();
+    cy.contains('Create public drive').click();
+    cy.get('.drive').should('have.length', 1);
+    cy.contains('public').should('have.length', 1);
+  });
+
   it('root folder does not have share button', () => {
+    cy.contains('Files').click();
+
     cy.get('#folderShare').should('have.length', 0);
   });
 
@@ -177,9 +194,12 @@ describe('App loads', () => {
     cy.get('@writeText').should('be.calledWithMatch', /^\/orbitdb/);
   });
 
-  it('can create drive', () => {
+  it('can create a private drive', () => {
     cy.contains('Create drive').click();
+    cy.contains('Create private drive').click();
     cy.get('.drive').should('have.length', 2);
+    cy.contains('private').should('have.length', 1);
+    cy.contains('public').should('have.length', 1);
   });
 
   it('should not have any files on fresh drive', () => {
@@ -199,7 +219,6 @@ describe('App loads', () => {
     cy.get('.drive').should('have.length', 1);
     cy.contains('Files').click();
   });
-
 
   it('context menu rename works', () => {
     cy.contains('Folder-renamed').trigger('contextmenu');

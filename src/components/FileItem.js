@@ -66,7 +66,7 @@ export function FileItem({
   const contextNoShareID = `menu-id-no-share`;
   const exists = sharedFs && sharedFs.current.fs.exists(path);
   const isTouchDevice = !hasMouse;
-  const isUnsharable = sharedFs.current.crypting && type === 'dir';
+  const isUnsharable = sharedFs?.current.crypting && type === 'dir';
 
   const styles = {
     paddingContainer: {

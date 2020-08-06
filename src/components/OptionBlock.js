@@ -45,7 +45,7 @@ export function OptionBlock({title, infos, onClick}) {
           </div>
 
           <BigButton
-            title={`Create ${title} drive`}
+            title={`Create ${title.toLowerCase()} drive`}
             inverted={true}
             fullWidth={true}
             onClick={onClick}
