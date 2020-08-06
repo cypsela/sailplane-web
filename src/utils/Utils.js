@@ -12,6 +12,8 @@ import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
 import DeviceDetector from 'device-detector-js';
 import detectIt from 'detect-it';
+import * as sailplaneAccess from './sailplane-access';
+import secp256k1 from 'secp256k1';
 
 const bip39 = require('bip39');
 
@@ -75,13 +77,12 @@ export async function filePathToBlob(sharedFs, path, handleUpdate) {
 }
 
 async function dirPathToBlob(sharedFs, path, handleUpdate) {
-  const struct = sharedFs.fs.tree(path)
-    .map(path => {
-      return {
-        path,
-        content: sharedFs.fs.content(path) !== 'dir' && sharedFs.cat(path)
-      }
-    });
+  const struct = sharedFs.fs.tree(path).map((path) => {
+    return {
+      path,
+      content: sharedFs.fs.content(path) !== 'dir' && sharedFs.cat(path),
+    };
+  });
 
   const {default: JSZip} = await import('jszip');
   const zip = new JSZip();
@@ -339,3 +340,25 @@ export const isIOSShitBrowser = () => {
 };
 
 export const hasMouse = detectIt.hasMouse === true;
+
+export function compressKey(uncompressedKey) {
+  return secp256k1
+    .publicKeyConvert(Buffer.from(uncompressedKey, 'hex'), true)
+    .toString('hex');
+}
+
+// export function getUserID(sharedFS) {
+//   const localUserPub = sailplaneAccess.localUserPub(sharedFS);
+//
+//   return `${sailplaneAccess.localUserId(sharedFS)}_${compressKey(
+//     localUserPub,
+//   )}`;
+// }
+//
+// export function parseUserID(userID) {
+//   const [id, pubKey] = userID ? userID.split('_') : [null, null];
+//   return {id, pubKey};
+// }
+
+// 03f5f9a830863acfec823397185dc79510aff72436c966f7ecebbdcc9782d49672_046fb35f124a204301a18937f0081e7acd263ba79008c0e4c4136a4a0c9b64b068dce68b5e0f838245fd6cb65064bbab97133c220c784a6fad7038b5b64c267c43
+//03f5f9a830863acfec823397185dc79510aff72436c966f7ecebbdcc9782d49672_036fb35f124a204301a18937f0081e7acd263ba79008c0e4c4136a4a0c9b64b068

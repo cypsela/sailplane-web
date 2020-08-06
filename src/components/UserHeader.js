@@ -65,7 +65,7 @@ export function UserHeader({sharedFS, title, iconComponent, leftSide}) {
   useEffect(() => {
     const getID = () => {
       try {
-        const tmpMyID = sailplaneAccess.localUserId(sharedFS.current);
+        const tmpMyID = sailplaneAccess.localUserPub(sharedFS.current);
 
         setMyID(tmpMyID);
       } catch (e) {
@@ -105,9 +105,6 @@ export function UserHeader({sharedFS, title, iconComponent, leftSide}) {
                 <SmallInstanceItem
                   name={'Copy user ID'}
                   onClick={async () => {
-
-
-
                     await navigator.clipboard.writeText(myID);
                     setMenuOpen(false);
                     dispatch(

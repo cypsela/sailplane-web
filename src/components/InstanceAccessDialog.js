@@ -114,11 +114,12 @@ export default function InstanceAccessDialog({
   };
 
   useEffect(() => {
-    const getPerms = async () => {
-      const tmpAdmins = await sailplaneAccess.admin(sharedFS.current);
-      const tmpWriters = await sailplaneAccess.writers(sharedFS.current);
-      const tmpReaders = await sailplaneAccess.readers(sharedFS.current);
-      const tmpMyID = await sailplaneAccess.localUserId(sharedFS.current);
+    const getPerms = () => {
+      const tmpAdmins = sailplaneAccess.admin(sharedFS.current);
+      const tmpWriters = sailplaneAccess.writers(sharedFS.current);
+      const tmpReaders = sailplaneAccess.readers(sharedFS.current);
+      const tmpMyID = sailplaneAccess.localUserPub(sharedFS.current);
+
       setAdmins(Array.from(tmpAdmins));
       setWriters(Array.from(tmpWriters));
       setReaders(Array.from(tmpReaders));

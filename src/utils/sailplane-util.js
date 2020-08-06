@@ -26,7 +26,7 @@ const defaultAddressOptions = ({ iv, enc, identity }) => ({
   },
   accessController: {
     type: 'orbitdb',
-    admin: [identity.id, identity.publicKey]
+    admin: [identity.publicKey],
   },
 });
 
