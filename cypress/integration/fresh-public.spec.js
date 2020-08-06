@@ -26,6 +26,8 @@ describe('Fresh app public drive', () => {
   });
 
   it('shows loading', () => {
+    cy.clearLocalStorageCache();
+
     cy.visit('http://localhost:3000/');
 
     cy.contains('Loading...');

@@ -14,6 +14,12 @@ Cypress.Commands.add('restoreLocalStorageCache', () => {
     localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key]);
   });
 });
+
+Cypress.Commands.add('clearLocalStorageCache', () => {
+  Object.keys(LOCAL_STORAGE_MEMORY).forEach((key) => {
+    localStorage.clear();
+  });
+});
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
