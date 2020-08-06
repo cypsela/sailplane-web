@@ -12,6 +12,7 @@ import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
 import {
+  getBlobFromPath,
   getBlobFromPathCID,
   getFileExtensionFromFilename,
   getFileInfoFromCID,
@@ -213,24 +214,7 @@ export function FileItem({
 
     if (!fileBlob) {
       dispatch(setStatus({message: 'Fetching download'}));
-      let tmpCID = CID;
-
-      if (!CID) {
-        tmpCID = await getCID();
-      }
-
-      blob = await getBlobFromPathCID(
-        tmpCID,
-        path,
-        ipfs,
-        (currentIndex, totalCount) => {
-          dispatch(
-            setStatus({
-              message: `[${getPercent(currentIndex, totalCount)}%] Downloading`,
-            }),
-          );
-        },
-      );
+      blob = await getBlobFromPath(sharedFs.current, path);
       dispatch(setStatus({}));
     } else {
       blob = fileBlob;

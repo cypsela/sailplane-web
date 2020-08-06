@@ -56,13 +56,51 @@ export async function getFileInfoFromCID(cid, ipfs) {
   return await first(ipfs.get(cid));
 }
 
-export async function getBlobFromPath(sharedFs, path, ipfs, handleUpdate) {
-  const cid = await sharedFs.current.read(path);
-  const struct = await all(ipfs.get(cid));
+export async function filePathToBlob(sharedFs, path, handleUpdate) {
+  // const {content, size} = file;
+  // let chunks = [];
+  // let i = 0;
+  // const totalCount = Math.round(size / 250000);
+  //
+  // for await (const chunk of content) {
+  //   if (handleUpdate) {
+  //     handleUpdate(i, totalCount);
+  //   }
+  //   chunks.push(chunk);
+  //   i++;
+  // }
+  const chunks = await sharedFs.cat(path).data();
+  // eslint-disable-next-line no-undef
+  return new Blob([chunks]);
+}
 
-  return struct[0].type === 'dir'
-    ? dirToBlob(path, struct, handleUpdate)
-    : fileToBlob(struct[0], handleUpdate);
+async function dirPathToBlob(sharedFs, path, handleUpdate) {
+  const struct = sharedFs.fs.tree(path)
+    .map(path => {
+      return {
+        path,
+        content: sharedFs.fs.content(path) !== 'dir' && sharedFs.cat(path)
+      }
+    });
+
+  const {default: JSZip} = await import('jszip');
+  const zip = new JSZip();
+
+  await Promise.all(
+    struct.map(async (item) => {
+      const isDir = !item.content;
+      const blob = isDir ? undefined : new Blob([await item.content.data()]);
+
+      zip.file(item.path.replace(path + '/', ''), blob, {dir: isDir});
+    }),
+  );
+  return await zip.generateAsync({type: 'blob'});
+}
+
+export async function getBlobFromPath(sharedFs, path, ipfs, handleUpdate) {
+  return sharedFs.fs.content(path) === 'dir'
+    ? dirPathToBlob(sharedFs, path, handleUpdate)
+    : filePathToBlob(sharedFs, path, handleUpdate);
 }
 
 export async function getFilesFromFolderCID(ipfs, cid, handleUpdate) {
