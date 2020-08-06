@@ -19,21 +19,23 @@ export async function addressValid(sailplane, address) {
   } else { return false }
 }
 
-const defaultAddressOptions = ({ iv, enc }) => ({
+const defaultAddressOptions = ({ iv, enc, identity }) => ({
   meta: {
     iv,
     enc
   },
   accessController: {
-    type: 'orbitdb'
+    type: 'orbitdb',
+    admin: [identity.id, identity.publicKey]
   },
 });
 
 export async function determineAddress(sailplane, options = {}) {
   const iv = options.iv || randomBytes(16)
+  const identity = options.identity || sailplane._orbitdb.identity
   const address = await sailplane.determineAddress(
     options.name || `sailplane/drives/${iv.toString('hex')}`,
-    {...defaultAddressOptions({ iv, enc: options.enc }), ...options},
+    {...defaultAddressOptions({ iv, enc: options.enc, identity }), ...options},
   );
   if (options.enc) {
     // initializing encryption key and persisting it to the store
