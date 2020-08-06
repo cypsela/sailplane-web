@@ -70,7 +70,7 @@ export function ShareDialog({sharedFs}) {
   const [shareTypeIndex, setShareTypeIndex] = useState(0);
   const [loadedCID, setLoadedCID] = useState(CID);
   const [keys, setKeys] = useState(null);
-console.log('keys22', keys)
+
   useEffect(() => {
     if (!name) {
       setLoadedCID(null);
@@ -134,8 +134,9 @@ console.log('keys22', keys)
       window.location.origin + window.location.pathname
     }#/download/${encodeURIComponent(loadedCID)}/${encodeURIComponent(
       keys.iv,
-    )}/${encodeURIComponent(keys.key)}/${encodeURIComponent(path)}`;
-    // console.log('keyur', url)
+    )}/${encodeURIComponent(keys.key)}/${encodeURIComponent(path)}/${
+      shareTypes[shareTypeIndex].name
+    }`;
   }
 
   return (

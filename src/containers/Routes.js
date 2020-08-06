@@ -8,7 +8,7 @@ export default function Routes() {
     <Router>
       <Route exact path="/" component={App} />
       <Route exact path="/download/:cid/:path" component={Download} />
-      <Route exact path="/download/:cid/:iv/:key/:path" component={Download} />
+      <Route exact path="/download/:cid/:iv/:key/:path/:displayType" component={Download} />
       <Route
         exact
         path="/download/:cid/:path/:displayType"

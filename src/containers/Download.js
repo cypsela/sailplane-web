@@ -100,7 +100,11 @@ function Download({match}) {
     if (fileBlob) {
       blob = fileBlob;
     } else if (key) {
-      const tmpBlob = await catCid(ipfsObj.ipfs, cleanCID, {Crypter, key: cleanKey, iv: cleanIV});
+      const tmpBlob = await catCid(ipfsObj.ipfs, cleanCID, {
+        Crypter,
+        key: cleanKey,
+        iv: cleanIV,
+      });
       blob = new Blob(Array.from([tmpBlob.buffer]));
       console.log('tmpBlob', tmpBlob);
       console.log('blog', blob);
@@ -120,9 +124,10 @@ function Download({match}) {
         },
       );
 
-      dispatch(setStatus({}));
       setFileBlob(blob);
     }
+
+    dispatch(setStatus({}));
 
     return blob;
   }
