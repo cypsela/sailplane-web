@@ -9,6 +9,7 @@ import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {DraggableFileItem} from './DraggableFileItem';
 import {
   filterImageFiles,
+  getBlobFromPath,
   getBlobFromPathCID,
   getFileExtensionFromFilename,
   getPercent,
@@ -95,24 +96,23 @@ export function FileBlock({
       }
 
       const imageURLSPromises = imageFiles.map(async (file) => {
-        const cid = await sharedFs.current.read(file.path);
-
-        const blob = await getBlobFromPathCID(
-          cid,
-          file.path,
-          ipfs,
-          (currentIndex, totalCount) => {
-            dispatch(
-              setStatus({
-                message: `[${getPercent(
-                  currentIndex,
-                  totalCount,
-                )}%] Loading previews`,
-              }),
-            );
-          },
-        );
-
+        // const cid = await sharedFs.current.read(file.path);
+        // const blob = await getBlobFromPathCID(
+        //   cid,
+        //   file.path,
+        //   ipfs,
+        //   (currentIndex, totalCount) => {
+        //     dispatch(
+        //       setStatus({
+        //         message: `[${getPercent(
+        //           currentIndex,
+        //           totalCount,
+        //         )}%] Loading previews`,
+        //       }),
+        //     );
+        //   },
+        // );
+        const blob = await getBlobFromPath(sharedFs.current, file.path);
         dispatch(setStatus({}));
         return window.URL.createObjectURL(blob);
       });
