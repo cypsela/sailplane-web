@@ -347,6 +347,12 @@ export function compressKey(uncompressedKey) {
     .toString('hex');
 }
 
+export function decompressKey(compressedKey) {
+  return secp256k1
+    .publicKeyConvert(Buffer.from(compressedKey, 'hex'), false)
+    .toString('hex');
+}
+
 // export function getUserID(sharedFS) {
 //   const localUserPub = sailplaneAccess.localUserPub(sharedFS);
 //

@@ -15,6 +15,7 @@ import InstanceAccessDialog from '../components/InstanceAccessDialog';
 import {UserHeader} from '../components/UserHeader';
 import {ToolItem} from '../components/ToolItem';
 import NewDriveDialog from '../components/NewDriveDialog';
+import {addressManifest} from "../utils/sailplane-util";
 
 const styles = {
   container: {
@@ -94,6 +95,9 @@ export function Instances({sailplane, sharedFS}) {
     if (await sailplaneUtil.addressValid(sailplane, address)) {
       const driveName = sailplaneUtil.driveName(address);
 
+      const manifest = await addressManifest(sailplane, address);
+      console.log('manifest', manifest)
+
       if (instances.map((s) => s.address).includes(address)) {
         dispatch(
           setStatus({
@@ -105,7 +109,7 @@ export function Instances({sailplane, sharedFS}) {
         return;
       }
 
-      dispatch(addInstance(driveName, address, true));
+      dispatch(addInstance(driveName, address, true, manifest.meta.enc === true));
       setImportInstanceMode(false);
     } else {
       handleInvalidAddress();

@@ -6,6 +6,7 @@ import {SmallInstanceItem} from './SmallInstanceItem';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
 import {FaServer} from 'react-icons/fa';
+import {compressKey} from "../utils/Utils";
 
 const styles = {
   container: {
@@ -65,7 +66,7 @@ export function UserHeader({sharedFS, title, iconComponent, leftSide}) {
   useEffect(() => {
     const getID = () => {
       try {
-        const tmpMyID = sailplaneAccess.localUserPub(sharedFS.current);
+        const tmpMyID = compressKey(sailplaneAccess.localUserPub(sharedFS.current));
 
         setMyID(tmpMyID);
       } catch (e) {

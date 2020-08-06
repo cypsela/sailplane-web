@@ -3,16 +3,13 @@ import {driveName} from '../utils/sailplane-util';
 import {Dialog} from './Dialog';
 import * as sailplaneAccess from '../utils/sailplane-access';
 import Jdenticon from 'react-jdenticon';
-import {
-  cleanBorder,
-  primary15,
-  primary4,
-  primary45,
-} from '../utils/colors';
+import {cleanBorder, primary15, primary4, primary45} from '../utils/colors';
 import {ToolItem} from './ToolItem';
-import {FiUserPlus} from 'react-icons/fi';
+import {FiPlusCircle} from 'react-icons/fi';
 import useTextInput from '../hooks/useTextInput';
 import useDimensions from 'react-use-dimensions';
+import {compressKey, decompressKey} from '../utils/Utils';
+import UserItem from './UserItem';
 
 export default function InstanceAccessDialog({
   instanceToModifyAccess,
@@ -29,31 +26,6 @@ export default function InstanceAccessDialog({
   const [dialogDimensionsRef, dialogDimensions] = useDimensions();
 
   const styles = {
-    userBlock: {
-      color: primary4,
-      fontSize: 18,
-      fontFamily: 'Open Sans',
-      lineHeight: '16px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingBottom: 6,
-    },
-    adminLeft: {
-      display: 'flex',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-    },
-    iconHolder: {
-      marginRight: 8,
-    },
-    adminTitle: {
-      fontSize: 12,
-      lineHeight: '12px',
-      textAlign: 'center',
-      color: primary45,
-      marginBottom: 3,
-    },
     adminTools: {
       display: 'flex',
       alignItems: 'center',
@@ -62,18 +34,19 @@ export default function InstanceAccessDialog({
     messageText: {
       color: primary45,
       textAlign: 'center',
-      marginTop: 8,
+      marginBottom: 4,
     },
     body: {
       color: primary45,
     },
     panels: {
-      display: 'flex',
-      justifyContent: 'space-between',
+      // display: 'flex',
+      // justifyContent: 'space-between',
     },
     panel: {
       borderRadius: 4,
-      width: '49%',
+      // width: '49%',
+      marginBottom: 8,
       border: cleanBorder,
       boxSizing: 'border-box',
     },
@@ -99,30 +72,36 @@ export default function InstanceAccessDialog({
       textAlign: 'center',
       justifyContent: 'center',
     },
-    youText: {
-      fontSize: 14,
-    },
     alert: {
       backgroundColor: primary15,
       color: primary4,
       fontSize: 14,
       padding: 6,
       borderRadius: 4,
-      marginBottom: 6,
+      marginBottom: 8,
       border: cleanBorder,
     },
   };
 
   useEffect(() => {
     const getPerms = () => {
-      const tmpAdmins = sailplaneAccess.admin(sharedFS.current);
-      const tmpWriters = sailplaneAccess.writers(sharedFS.current);
-      const tmpReaders = sailplaneAccess.readers(sharedFS.current);
-      const tmpMyID = sailplaneAccess.localUserPub(sharedFS.current);
+      let tmpAdmins = sailplaneAccess.admin(sharedFS.current);
+      let tmpWriters = sailplaneAccess.writers(sharedFS.current);
+      let tmpMyID = compressKey(sailplaneAccess.localUserPub(sharedFS.current));
 
-      setAdmins(Array.from(tmpAdmins));
-      setWriters(Array.from(tmpWriters));
-      setReaders(Array.from(tmpReaders));
+      let tmpReaders = sailplaneAccess.readers(sharedFS.current);
+
+      tmpAdmins = Array.from(tmpAdmins).map((key) => compressKey(key));
+      tmpWriters = Array.from(tmpWriters).map((key) => compressKey(key));
+
+      setAdmins(tmpAdmins);
+      setWriters(tmpWriters);
+
+      tmpReaders = Array.from(tmpReaders)
+        .map((key) => compressKey(key))
+        .filter((key) => !tmpAdmins.includes(key));
+
+      setReaders(tmpReaders);
       setMyID(tmpMyID);
     };
 
@@ -130,13 +109,23 @@ export default function InstanceAccessDialog({
   }, [instanceToModifyAccess.address, sharedFS, lastUpdate]);
 
   const addWriter = async (writerID) => {
-    if (!sailplaneAccess.userIdValid(writerID)) {
+    if (!sailplaneAccess.userPubValid(writerID)) {
       return;
     }
 
-    await sailplaneAccess.grantWrite(sharedFS.current, writerID);
+    await sailplaneAccess.grantWrite(sharedFS.current, decompressKey(writerID));
     setLastUpdate(Date.now());
     setAddWriterMode(false);
+  };
+
+  const addReader = async (readerID) => {
+    if (!sailplaneAccess.userPubValid(readerID)) {
+      return;
+    }
+
+    await sailplaneAccess.grantRead(sharedFS.current, decompressKey(readerID));
+    setLastUpdate(Date.now());
+    setAddReaderMode(false);
   };
 
   const AddWriterInput = useTextInput(
@@ -152,7 +141,7 @@ export default function InstanceAccessDialog({
 
   const AddReaderInput = useTextInput(
     addReaderMode,
-    (readerID) => addWriter(readerID),
+    (readerID) => addReader(readerID),
     () => setAddReaderMode(false),
     '',
     {
@@ -190,32 +179,13 @@ export default function InstanceAccessDialog({
                     ...styles.adminTools,
                     ...styles.third,
                     justifyContent: 'flex-end',
-                  }}></div>
+                    width: addWriterMode ? '100%' : '30%',
+                  }}
+                />
               </div>
               <div style={styles.panelBody}>
                 {admins.map((admin) => (
-                  <div style={styles.userBlock}>
-                    <div style={styles.adminLeft}>
-                      <div style={styles.iconHolder}>
-                        <Jdenticon
-                          value={admin}
-                          size={34}
-                          style={styles.icon}
-                        />
-                      </div>
-                      <div style={styles.adminNameHolder}>
-                        <div style={styles.adminTitle}></div>
-                        <div>
-                          {admin.slice(0, 6)}{' '}
-                          {myID === admin ? (
-                            <span style={styles.youText}>[You]</span>
-                          ) : (
-                            ''
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <UserItem pubKey={admin} myID={myID} />
                 ))}
               </div>
             </div>
@@ -238,10 +208,8 @@ export default function InstanceAccessDialog({
                   {!addWriterMode && admins.includes(myID) ? (
                     <>
                       <ToolItem
-                        iconComponent={FiUserPlus}
-                        // title={
-                        //   dialogDimensions?.width > 540 ? 'Add writer' : null
-                        // }
+                        iconComponent={FiPlusCircle}
+                        title={'Add writer'}
                         changeColor={primary4}
                         defaultColor={primary4}
                         onClick={() => setAddWriterMode(true)}
@@ -262,31 +230,7 @@ export default function InstanceAccessDialog({
                   ) : (
                     <div>
                       {writers.map((writer) => (
-                        <div
-                          style={{
-                            ...styles.userBlock,
-                          }}>
-                          <div style={styles.adminLeft}>
-                            <div style={styles.iconHolder}>
-                              <Jdenticon
-                                value={writer}
-                                size={34}
-                                style={styles.icon}
-                              />
-                            </div>
-                            <div style={styles.adminNameHolder}>
-                              <div>
-                                {writer.slice(0, 6)}{' '}
-                                {myID === writer ? (
-                                  <span style={styles.youText}>[You]</span>
-                                ) : (
-                                  ''
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                          <div style={styles.adminTools}></div>
-                        </div>
+                        <UserItem pubKey={writer} myID={myID} />
                       ))}
                     </div>
                   )}
@@ -312,10 +256,8 @@ export default function InstanceAccessDialog({
                   {!addReaderMode && admins?.includes(myID) ? (
                     <>
                       <ToolItem
-                        iconComponent={FiUserPlus}
-                        // title={
-                        //   dialogDimensions?.width > 540 ? 'Add writer' : null
-                        // }
+                        iconComponent={FiPlusCircle}
+                        title={'Add reader'}
                         changeColor={primary4}
                         defaultColor={primary4}
                         onClick={() => setAddReaderMode(true)}
@@ -336,31 +278,7 @@ export default function InstanceAccessDialog({
                   ) : (
                     <div>
                       {readers.map((reader) => (
-                        <div
-                          style={{
-                            ...styles.userBlock,
-                          }}>
-                          <div style={styles.adminLeft}>
-                            <div style={styles.iconHolder}>
-                              <Jdenticon
-                                value={reader}
-                                size={34}
-                                style={styles.icon}
-                              />
-                            </div>
-                            <div style={styles.adminNameHolder}>
-                              <div>
-                                {reader.slice(0, 6)}{' '}
-                                {myID === reader ? (
-                                  <span style={styles.youText}>[You]</span>
-                                ) : (
-                                  ''
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                          <div style={styles.adminTools}></div>
-                        </div>
+                        <UserItem pubKey={reader} myID={myID} />
                       ))}
                     </div>
                   )}
