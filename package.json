@@ -82,5 +82,8 @@
     "react-app-rewired": "^2.1.6",
     "react-hot-loader": "^4.12.21",
     "source-map-explorer": "^2.4.2"
+  },
+  "resolutions": {
+    "orbit-db-access-controllers": "https://github.com/slavik0329/orbit-db-access-controllers#5abb4f32438d8277ce4f814f6d8528eda15cd96c"
   }
 }

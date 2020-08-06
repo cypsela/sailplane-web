@@ -12811,10 +12811,9 @@ optionator@^0.8.1, optionator@^0.8.3:
     type-check "~0.3.2"
     word-wrap "~1.2.3"
 
-orbit-db-access-controllers@^0.2.2:
+orbit-db-access-controllers@^0.2.2, "orbit-db-access-controllers@https://github.com/slavik0329/orbit-db-access-controllers#5abb4f32438d8277ce4f814f6d8528eda15cd96c":
   version "0.2.5"
-  resolved "https://registry.yarnpkg.com/orbit-db-access-controllers/-/orbit-db-access-controllers-0.2.5.tgz#8fd37666f1595c56ba4ae32744b61614fffb69e3"
-  integrity sha512-wMwRv3MquukJPkAsuybbsn6rwXOol92fE+fIcA4QYTIpGQZWgCes2IIrilHGEFUNLxpkocRqWTy1GfPl//Zosw==
+  resolved "https://github.com/slavik0329/orbit-db-access-controllers#5abb4f32438d8277ce4f814f6d8528eda15cd96c"
   dependencies:
     orbit-db-io "^0.2.0"
     p-map-series "^1.0.0"
