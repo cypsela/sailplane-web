@@ -129,7 +129,7 @@ export function Instances({sailplane, sharedFS}) {
   return (
     <div style={styles.container}>
       <UserHeader
-        sharedFS={sharedFS}
+        sailplane={sailplane}
         title={'Drives'}
         iconComponent={FaServer}
       />

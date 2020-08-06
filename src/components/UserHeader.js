@@ -58,15 +58,18 @@ const styles = {
   },
 };
 
-export function UserHeader({sharedFS, title, iconComponent, leftSide}) {
+export function UserHeader({sailplane, title, iconComponent, leftSide}) {
   const [myID, setMyID] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
 
+  console.log(sailplane)
+
   useEffect(() => {
     const getID = () => {
       try {
-        const tmpMyID = compressKey(sailplaneAccess.localUserPub(sharedFS.current));
+        console.log(sailplane)
+        const tmpMyID = compressKey(sailplane._orbitdb.identity.publicKey);
 
         setMyID(tmpMyID);
       } catch (e) {
@@ -74,8 +77,10 @@ export function UserHeader({sharedFS, title, iconComponent, leftSide}) {
       }
     };
 
-    getID();
-  }, [sharedFS]);
+    if (sailplane) {
+      getID();
+    }
+  }, [sailplane]);
 
   const IconComponent = iconComponent;
 
