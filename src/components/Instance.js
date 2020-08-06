@@ -175,15 +175,17 @@ export const Instance = ({
           </div>
           {!isTouchDevice ? (
             <div style={styles.tools}>
-              <ToolItem
-                className={'instanceAccess'}
-                defaultColor={iconColor}
-                iconComponent={FiUsers}
-                size={15}
-                changeColor={primary}
-                onClick={() => onAccess()}
-                tooltip={'Manage users'}
-              />
+              {isEncrypted ? (
+                <ToolItem
+                  className={'instanceAccess'}
+                  defaultColor={iconColor}
+                  iconComponent={FiUsers}
+                  size={15}
+                  changeColor={primary}
+                  onClick={() => onAccess()}
+                  tooltip={'Manage users'}
+                />
+              ) : null}
               {/*<ToolItem*/}
               {/*  className={'instanceURLCopy'}*/}
               {/*  defaultColor={iconColor}*/}
