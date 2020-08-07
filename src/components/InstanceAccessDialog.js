@@ -241,53 +241,55 @@ export default function InstanceAccessDialog({
               </div>
             </div>
 
-            <div style={styles.panel} id={'readerPanel'}>
-              <div style={styles.panelTitle}>
-                {!addReaderMode ? (
-                  <>
-                    <div style={styles.third} />
-                    <div style={styles.third}>Readers</div>
-                  </>
-                ) : null}
-                <div
-                  style={{
-                    ...styles.adminTools,
-                    ...styles.third,
-                    justifyContent: 'flex-end',
-                    width: addReaderMode ? '100%' : '30%',
-                  }}>
-                  {!addReaderMode && admins?.includes(myID) ? (
+            {instanceToModifyAccess.isEncrypted ? (
+              <div style={styles.panel} id={'readerPanel'}>
+                <div style={styles.panelTitle}>
+                  {!addReaderMode ? (
                     <>
-                      <ToolItem
-                        iconComponent={FiPlusCircle}
-                        title={'Add reader'}
-                        changeColor={primary4}
-                        defaultColor={primary4}
-                        onClick={() => setAddReaderMode(true)}
-                      />
+                      <div style={styles.third} />
+                      <div style={styles.third}>Readers</div>
                     </>
                   ) : null}
-                  {addReaderMode ? AddReaderInput : null}
+                  <div
+                    style={{
+                      ...styles.adminTools,
+                      ...styles.third,
+                      justifyContent: 'flex-end',
+                      width: addReaderMode ? '100%' : '30%',
+                    }}>
+                    {!addReaderMode && admins?.includes(myID) ? (
+                      <>
+                        <ToolItem
+                          iconComponent={FiPlusCircle}
+                          title={'Add reader'}
+                          changeColor={primary4}
+                          defaultColor={primary4}
+                          onClick={() => setAddReaderMode(true)}
+                        />
+                      </>
+                    ) : null}
+                    {addReaderMode ? AddReaderInput : null}
+                  </div>
+                </div>
+                <div style={styles.panelBody}>
+                  <div style={styles.writers}>
+                    {readers?.length === 0 ? (
+                      <div style={styles.messageText}>
+                        Add users to grant read privileges
+                      </div>
+                    ) : readers === null ? (
+                      <div style={styles.messageText}>Loading...</div>
+                    ) : (
+                      <div>
+                        {readers.map((reader) => (
+                          <UserItem pubKey={reader} myID={myID} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div style={styles.panelBody}>
-                <div style={styles.writers}>
-                  {readers?.length === 0 ? (
-                    <div style={styles.messageText}>
-                      Add users to grant read privileges
-                    </div>
-                  ) : readers === null ? (
-                    <div style={styles.messageText}>Loading...</div>
-                  ) : (
-                    <div>
-                      {readers.map((reader) => (
-                        <UserItem pubKey={reader} myID={myID} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+            ) : null}
           </div>
         </div>
       }
