@@ -172,7 +172,8 @@ export function LeftPanel({
         <div style={styles.footer}>
           <a
             href={'https://github.com/cypsela/sailplane-web'}
-            target={'_blank'}>
+            target={'_blank'}
+            rel={'noopener'}>
             <FaGithub color={primary15} size={20} style={styles.iconGithub} />
           </a>
           <div style={styles.githubTxt}>Source</div>
