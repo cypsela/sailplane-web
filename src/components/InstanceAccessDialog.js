@@ -99,7 +99,8 @@ export default function InstanceAccessDialog({
 
       tmpReaders = Array.from(tmpReaders)
         .map((key) => compressKey(key))
-        .filter((key) => !tmpAdmins.includes(key));
+        .filter((key) => !tmpAdmins.includes(key))
+        .filter((key) => !tmpWriters.includes(key));
 
       setReaders(tmpReaders);
       setMyID(tmpMyID);
@@ -114,6 +115,8 @@ export default function InstanceAccessDialog({
     }
 
     await sailplaneAccess.grantWrite(sharedFS.current, decompressKey(writerID));
+    await sailplaneAccess.grantRead(sharedFS.current, decompressKey(writerID));
+
     setLastUpdate(Date.now());
     setAddWriterMode(false);
   };
