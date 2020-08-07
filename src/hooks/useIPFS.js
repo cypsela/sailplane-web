@@ -34,6 +34,7 @@ export default function useIpfsFactory(onError) {
           });
           console.timeEnd('IPFS Started');
         } catch (error) {
+          console.error(error)
           onError(error);
           ipfs = null;
           setIpfsInitError(error);
