@@ -188,7 +188,7 @@ export default function InstanceAccessDialog({
               </div>
               <div style={styles.panelBody}>
                 {admins.map((admin) => (
-                  <UserItem pubKey={admin} myID={myID} />
+                  <UserItem key={admin} pubKey={admin} myID={myID} />
                 ))}
               </div>
             </div>
@@ -233,7 +233,7 @@ export default function InstanceAccessDialog({
                   ) : (
                     <div>
                       {writers.map((writer) => (
-                        <UserItem pubKey={writer} myID={myID} />
+                        <UserItem key={writer} pubKey={writer} myID={myID} />
                       ))}
                     </div>
                   )}
@@ -282,7 +282,7 @@ export default function InstanceAccessDialog({
                     ) : (
                       <div>
                         {readers.map((reader) => (
-                          <UserItem pubKey={reader} myID={myID} />
+                          <UserItem key={reader} pubKey={reader} myID={myID} />
                         ))}
                       </div>
                     )}

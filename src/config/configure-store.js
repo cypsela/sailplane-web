@@ -18,8 +18,8 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 let middleware = [];
 
 // if (__DEV__) {
-  const logger = createLogger();
-  middleware.push(logger);
+//   const logger = createLogger();
+//   middleware.push(logger);
 // }
 
 export default function configureStore(initialState) {

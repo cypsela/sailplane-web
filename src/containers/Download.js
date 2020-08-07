@@ -71,9 +71,11 @@ function Download({match}) {
   };
 
   const getFileList = async () => {
-    const tmpFiles = await getFilesFromFolderCID(ipfsObj.ipfs, cleanCID, () => {
-      console.log('updateping');
-    });
+    const tmpFiles = await getFilesFromFolderCID(
+      ipfsObj.ipfs,
+      cleanCID,
+      () => {},
+    );
 
     setFiles(tmpFiles.slice(1));
   };
@@ -106,8 +108,6 @@ function Download({match}) {
         iv: cleanIV,
       });
       blob = new Blob(Array.from([tmpBlob.buffer]));
-      console.log('tmpBlob', tmpBlob);
-      console.log('blog', blob);
 
       setFileBlob(blob);
     } else {

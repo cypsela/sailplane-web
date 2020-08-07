@@ -38,7 +38,7 @@ export default function UserItem({pubKey, myID}) {
     <div style={styles.userBlock}>
       <div style={styles.adminLeft}>
         <div style={styles.iconHolder}>
-          <Jdenticon value={pubKey} size={34} style={styles.icon} />
+          <Jdenticon value={pubKey} size={'34'} style={styles.icon} />
         </div>
         <div style={styles.adminNameHolder}>
           <div style={styles.adminTitle}></div>

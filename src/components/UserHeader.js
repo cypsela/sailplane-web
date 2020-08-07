@@ -6,7 +6,7 @@ import {SmallInstanceItem} from './SmallInstanceItem';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
 import {FaServer} from 'react-icons/fa';
-import {compressKey} from "../utils/Utils";
+import {compressKey} from '../utils/Utils';
 
 const styles = {
   container: {
@@ -63,12 +63,9 @@ export function UserHeader({sailplane, title, iconComponent, leftSide}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
 
-  console.log(sailplane)
-
   useEffect(() => {
     const getID = () => {
       try {
-        console.log(sailplane)
         const tmpMyID = compressKey(sailplane._orbitdb.identity.publicKey);
 
         setMyID(tmpMyID);
