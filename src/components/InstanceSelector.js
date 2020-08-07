@@ -58,7 +58,7 @@ export function InstanceSelector({}) {
       <FiHardDrive color={primary45} size={16} style={styles.icon} />
       <LockComponent color={primary45} size={14} style={styles.icon} />
 
-      <span id={'currentInstanceSelector'}>{currentInstance.name}</span>
+      <span id={'currentInstanceSelector'}>{currentInstance?.name}</span>
       {menuEnabled ? (
         <div style={styles.menu}>
           {filteredInstances.map((instance, index) => (

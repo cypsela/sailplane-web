@@ -183,7 +183,7 @@ function App({}) {
     if (currentRightPanel === 'files') {
       const noDrives = instances.length === 0;
       const message = !noDrives ? 'Looking for drive...' : 'Create a drive';
-      return !instanceReady ? (
+      return !instanceReady || noDrives ? (
         <LoadingRightBlock message={message} loading={!noDrives} />
       ) : (
         <FileBlock
