@@ -38,8 +38,13 @@ export function LoadingRightBlock({ipfsError, message, loading}) {
       />
     )
 
+  const networkFail = <>
+    Sailplane failed to start network. Try refreshing. <br/>
+    If the problem persists you can try <a target="blank" href="https://intercom.help/scoutpad/en/articles/3478364-how-to-clear-local-storage-of-web-browser">clearing browser cache</a>.
+  </>
+
   const failMessage = isWebRTCSupported()
-    ? 'Sailplane failed to start network. Try refreshing.'
+    ?  networkFail
     : 'This browser does not support WebRTC, iOS users please try Safari.'
 
   return (
