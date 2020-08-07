@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {primary, primary3, primary45} from '../utils/colors';
 import {useDispatch, useSelector} from 'react-redux';
-import {setShareData} from '../actions/tempData';
+import {setShareData, setStatus} from '../actions/tempData';
 import {FiFile, FiImage, FiLoader, FiMusic} from 'react-icons/fi';
 // import {SegmentedControl} from './SegmentedControl';
 import {getShareTypeFromFolderFiles} from '../utils/Utils';
@@ -139,6 +139,17 @@ export function ShareDialog({sharedFs}) {
     }`;
   }
 
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(url);
+    dispatch(
+      setStatus({
+        message: 'Share link copied to clipboard',
+        isInfo: true,
+      }),
+    );
+    setTimeout(() => dispatch(setStatus({})), 1500);
+  };
+
   return (
     <Dialog
       title={'Share options'}
@@ -170,8 +181,8 @@ export function ShareDialog({sharedFs}) {
                 />
               </div>
               <div style={styles.link}>
-                <a href={url} className={'link'} target={'_blank'}>
-                  Open link
+                <a href={'#'} className={'link'} onClick={handleCopy}>
+                  Copy link
                 </a>
               </div>
             </div>
