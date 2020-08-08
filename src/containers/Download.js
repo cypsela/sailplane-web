@@ -100,8 +100,6 @@ function Download({match}) {
     let blob;
 
     const handleUpdate = (currentIndex, totalCount) => {
-      console.log(currentIndex)
-      console.log(totalCount)
       dispatch(
         setStatus({
           message: `[${getPercent(
