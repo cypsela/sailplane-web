@@ -214,7 +214,17 @@ export function FileItem({
 
     if (!fileBlob) {
       dispatch(setStatus({message: 'Fetching download'}));
-      blob = await getBlobFromPath(sharedFs.current, path);
+      const handleUpdate = (currentIndex, totalCount) => {
+        dispatch(
+          setStatus({
+            message: `[${getPercent(
+              currentIndex,
+              totalCount,
+            )}%] Downloading`,
+          }),
+        );
+      }
+      blob = await getBlobFromPath(sharedFs.current, path, handleUpdate);
       dispatch(setStatus({}));
     } else {
       blob = fileBlob;

@@ -112,7 +112,17 @@ export function FileBlock({
         //     );
         //   },
         // );
-        const blob = await getBlobFromPath(sharedFs.current, file.path);
+        const handleUpdate = (currentIndex, totalCount) => {
+          dispatch(
+            setStatus({
+              message: `[${getPercent(
+                currentIndex,
+                totalCount,
+              )}%] Loading previews`,
+            }),
+          );
+        }
+        const blob = await getBlobFromPath(sharedFs.current, file.path, handleUpdate);
         dispatch(setStatus({}));
         return window.URL.createObjectURL(blob);
       });

@@ -71,7 +71,7 @@ export async function filePathToBlob(sharedFs, path, handleUpdate) {
   //   chunks.push(chunk);
   //   i++;
   // }
-  const chunks = await sharedFs.cat(path).data();
+  const chunks = await sharedFs.cat(path, { handleUpdate }).data();
   // eslint-disable-next-line no-undef
   return new Blob([chunks]);
 }
@@ -80,7 +80,7 @@ async function dirPathToBlob(sharedFs, path, handleUpdate) {
   const struct = sharedFs.fs.tree(path).map((path) => {
     return {
       path,
-      content: sharedFs.fs.content(path) !== 'dir' && sharedFs.cat(path),
+      content: sharedFs.fs.content(path) !== 'dir' && sharedFs.cat(path, { handleUpdate }),
     };
   });
 
@@ -98,7 +98,7 @@ async function dirPathToBlob(sharedFs, path, handleUpdate) {
   return await zip.generateAsync({type: 'blob'});
 }
 
-export async function getBlobFromPath(sharedFs, path, ipfs, handleUpdate) {
+export async function getBlobFromPath(sharedFs, path, handleUpdate) {
   return sharedFs.fs.content(path) === 'dir'
     ? dirPathToBlob(sharedFs, path, handleUpdate)
     : filePathToBlob(sharedFs, path, handleUpdate);

@@ -99,6 +99,19 @@ function Download({match}) {
   async function getBlob() {
     let blob;
 
+    const handleUpdate = (currentIndex, totalCount) => {
+      console.log(currentIndex)
+      console.log(totalCount)
+      dispatch(
+        setStatus({
+          message: `[${getPercent(
+            currentIndex,
+            totalCount,
+          )}%] Downloading`,
+        }),
+      );
+    }
+
     if (fileBlob) {
       blob = fileBlob;
     } else if (key) {
@@ -106,6 +119,7 @@ function Download({match}) {
         Crypter,
         key: cleanKey,
         iv: cleanIV,
+        handleUpdate,
       });
       blob = new Blob(Array.from([tmpBlob.buffer]));
 
@@ -115,13 +129,7 @@ function Download({match}) {
         cleanCID,
         cleanPath,
         ipfsObj.ipfs,
-        (currentIndex, totalCount) => {
-          dispatch(
-            setStatus({
-              message: `[${getPercent(currentIndex, totalCount)}%] Downloading`,
-            }),
-          );
-        },
+        onUpdate
       );
 
       setFileBlob(blob);
