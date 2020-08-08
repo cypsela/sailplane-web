@@ -21,8 +21,9 @@ import all from 'it-all';
 import {cleanBorder} from '../utils/colors';
 import {useWindowSize} from '../hooks/useWindowSize';
 import {IntroModal} from '../components/IntroModal';
+import Crypter from '@tabcat/aes-gcm-crypter';
 
-function App({match}) {
+function App({}) {
   const isSmallScreen = useIsSmallScreen();
   const windowSize = useWindowSize();
   const sailplaneRef = useRef(null);
@@ -30,17 +31,16 @@ function App({match}) {
   const [nodeReady, setNodeReady] = useState(false);
   const sharedFS = useRef({});
   const [ipfsError, setIpfsError] = useState(false);
-  const ipfsObj = useIPFS(() => {
+  const ipfsObj = useIPFS((err) => {
+    console.log('IPFS error: ' + err);
     setIpfsError(true);
   });
-  const [introScreenVisible, setIntroScreenVisible] = useState(false);
   const [instanceReady, setInstanceReady] = useState(false);
   const [directoryContents, setDirectoryContents] = useState([]);
   const [currentDirectory, setCurrentDirectory] = useState('/r');
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
-  const {importInstanceAddress} = match.params;
-  const importAddress = decodeURIComponent(importInstanceAddress);
+  const [wasNewUser, setWasNewUser] = useState(false);
 
   const dispatch = useDispatch();
   const {instances, instanceIndex, newUser} = useSelector(
@@ -61,27 +61,6 @@ function App({match}) {
       border: windowSize.width <= 1280 ? null : cleanBorder,
     },
   };
-
-  useEffect(() => {
-    async function importInstance() {
-      if (importAddress) {
-        const sailplane = sailplaneRef.current;
-        if (await sailplaneUtil.addressValid(sailplane, importAddress)) {
-          const sameInstance = instances.find(
-            (instance) => instance.address === importAddress,
-          );
-          const driveName = sailplaneUtil.driveName(importAddress);
-          if (!sameInstance) {
-            dispatch(addInstance(driveName, importAddress, true));
-          }
-        }
-      }
-    }
-
-    importInstance();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [importAddress]);
-  // End
 
   useEffect(() => {
     const rootLS = async () => {
@@ -118,6 +97,7 @@ function App({match}) {
         sailplaneRef.current,
         currentInstance.address,
         sfsQueue.current,
+        {Crypter},
       );
 
       const onProgress = (key) => (current, max) => {
@@ -169,11 +149,11 @@ function App({match}) {
 
   useEffect(() => {
     const handleNewUser = async (sailplane) => {
-      const address = await sailplaneUtil.determineAddress(sailplane);
+      const address = await sailplaneUtil.determineAddress(sailplane, {
+        enc: true,
+      });
       const driveName = sailplaneUtil.driveName(address);
-      dispatch(addInstance(driveName, address.toString(), false));
-      dispatch(setNewUser(false));
-      setIntroScreenVisible(true);
+      dispatch(addInstance(driveName, address.toString(), false, true));
     };
     const connectSailplane = async (ipfs) => {
       dispatch(setStatus({message: 'Connecting'}));
@@ -181,7 +161,7 @@ function App({match}) {
       const sailplane = await Sailplane.create(orbitdb);
       sailplaneRef.current = sailplane;
 
-      if (newUser) {
+      if ((newUser || wasNewUser) && instances.length === 0) {
         await handleNewUser(sailplane);
       }
       setNodeReady(true);
@@ -201,7 +181,7 @@ function App({match}) {
     if (currentRightPanel === 'files') {
       const noDrives = instances.length === 0;
       const message = !noDrives ? 'Looking for drive...' : 'Create a drive';
-      return !instanceReady ? (
+      return !instanceReady || noDrives ? (
         <LoadingRightBlock message={message} loading={!noDrives} />
       ) : (
         <FileBlock
@@ -225,11 +205,16 @@ function App({match}) {
     }
   };
 
+  const handleNewUser = () => {
+    dispatch(setNewUser(false))
+    setWasNewUser(true)
+  }
+
   return (
     <div style={styles.container}>
       <IntroModal
-        isVisible={introScreenVisible}
-        onClose={() => setIntroScreenVisible(false)}
+        isVisible={newUser}
+        onClose={() => handleNewUser()}
       />
       <LeftPanel
         setCurrentRightPanel={setCurrentRightPanel}

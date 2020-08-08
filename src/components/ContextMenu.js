@@ -12,32 +12,52 @@ const styles = {
 
 export const ContextMenu = () => {
   return (
-    <Menu id={'menu-id'}>
-      <Item className={'MenuItem'} onClick={(obj) => obj.props.handleDownload()}>
-        <FiDownload size={16} style={styles.icon} />
-        <span style={{...styles.menuItem}}>Download</span>
-      </Item>
+    <>
+      <Menu id={'menu-id'}>
+        <Item
+          className={'MenuItem'}
+          onClick={(obj) => obj.props.handleDownload()}>
+          <FiDownload size={16} style={styles.icon} />
+          <span style={{...styles.menuItem}}>Download</span>
+        </Item>
 
-      <Item className={'MenuItem'} onClick={(obj) => obj.props.handleEdit()}>
-        <FiEdit size={16} style={styles.icon} />
-        <span style={{...styles.menuItem}}>Rename</span>
-      </Item>
+        <Item className={'MenuItem'} onClick={(obj) => obj.props.handleEdit()}>
+          <FiEdit size={16} style={styles.icon} />
+          <span style={{...styles.menuItem}}>Rename</span>
+        </Item>
 
-      <Item className={'MenuItem'} onClick={(obj) => obj.props.handleShare()}>
-        <FiShare2 size={16} style={styles.icon} />
-        <span style={{...styles.menuItem}}>Share</span>
-      </Item>
+        <Item className={'MenuItem'} onClick={(obj) => obj.props.handleShare()}>
+          <FiShare2 size={16} style={styles.icon} />
+          <span style={{...styles.menuItem}}>Share</span>
+        </Item>
 
-      <Separator />
+        <Separator />
 
-      <Item className={'MenuItem delete'} onClick={(obj) => obj.props.handleDelete()}>
-        <FiTrash size={16} style={styles.icon} />
-        <span style={{...styles.menuItem}}>Delete</span>
-      </Item>
-      {/*<Submenu label="Foobar">*/}
-      {/*  <Item onClick={onClick}>Foo</Item>*/}
-      {/*  <Item onClick={onClick}>Bar</Item>*/}
-      {/*</Submenu>*/}
-    </Menu>
+        <Item
+          className={'MenuItem delete'}
+          onClick={(obj) => obj.props.handleDelete()}>
+          <FiTrash size={16} style={styles.icon} />
+          <span style={{...styles.menuItem}}>Delete</span>
+        </Item>
+      </Menu>
+      <Menu id={'menu-id-no-share'}>
+        <Item className={'MenuItem'} onClick={(obj) => obj.props.handleDownload()}>
+          <FiDownload size={16} style={styles.icon} />
+          <span style={{...styles.menuItem}}>Download</span>
+        </Item>
+
+        <Item className={'MenuItem'} onClick={(obj) => obj.props.handleEdit()}>
+          <FiEdit size={16} style={styles.icon} />
+          <span style={{...styles.menuItem}}>Rename</span>
+        </Item>
+
+        <Separator />
+
+        <Item className={'MenuItem delete'} onClick={(obj) => obj.props.handleDelete()}>
+          <FiTrash size={16} style={styles.icon} />
+          <span style={{...styles.menuItem}}>Delete</span>
+        </Item>
+      </Menu>
+    </>
   );
 };

@@ -11,6 +11,9 @@ const styles = {
   },
   icon: {
     marginRight: 8,
+    width: 16,
+    height: 16,
+    flexShrink: 0,
   }
 };
 

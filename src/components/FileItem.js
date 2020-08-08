@@ -12,6 +12,7 @@ import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
 import {
+  getBlobFromPath,
   getBlobFromPathCID,
   getFileExtensionFromFilename,
   getFileInfoFromCID,
@@ -34,7 +35,6 @@ import {
 import useDoubleClick from '../hooks/useDoubleClick';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {contextMenu} from 'react-contexify';
-import useIsTouchDevice from 'is-touch-device';
 import {MobileActionsDialog} from './MobileActionsDialog';
 
 export function FileItem({
@@ -63,8 +63,10 @@ export function FileItem({
   const fileExtension = getFileExtensionFromFilename(name);
   const isSmallScreen = useIsSmallScreen();
   const contextID = `menu-id`;
+  const contextNoShareID = `menu-id-no-share`;
   const exists = sharedFs && sharedFs.current.fs.exists(path);
   const isTouchDevice = !hasMouse;
+  const isUnsharable = sharedFs?.current.crypting && type === 'dir';
 
   const styles = {
     paddingContainer: {
@@ -212,24 +214,17 @@ export function FileItem({
 
     if (!fileBlob) {
       dispatch(setStatus({message: 'Fetching download'}));
-      let tmpCID = CID;
-
-      if (!CID) {
-        tmpCID = await getCID();
+      const handleUpdate = (currentIndex, totalCount) => {
+        dispatch(
+          setStatus({
+            message: `[${getPercent(
+              currentIndex,
+              totalCount,
+            )}%] Downloading`,
+          }),
+        );
       }
-
-      blob = await getBlobFromPathCID(
-        tmpCID,
-        path,
-        ipfs,
-        (currentIndex, totalCount) => {
-          dispatch(
-            setStatus({
-              message: `[${getPercent(currentIndex, totalCount)}%] Downloading`,
-            }),
-          );
-        },
-      );
+      blob = await getBlobFromPath(sharedFs.current, path, handleUpdate);
       dispatch(setStatus({}));
     } else {
       blob = fileBlob;
@@ -327,11 +322,6 @@ export function FileItem({
 
   let mobileActionItems = [
     {
-      title: 'Share',
-      onClick: handleShare,
-      iconComponent: FiShare2,
-    },
-    {
       title: 'Download',
       onClick: handleDownload,
       iconComponent: FiDownload,
@@ -348,6 +338,14 @@ export function FileItem({
       forceColor: lightErrorColor,
     },
   ];
+
+  if (!isUnsharable) {
+    mobileActionItems.unshift({
+      title: 'Share',
+      onClick: handleShare,
+      iconComponent: FiShare2,
+    });
+  }
 
   if (type === 'dir') {
     mobileActionItems.unshift({
@@ -396,7 +394,7 @@ export function FileItem({
 
             contextMenu.show({
               event,
-              id: contextID,
+              id: isUnsharable ? contextNoShareID : contextID,
               props: {
                 handleDelete,
                 handleDownload,
@@ -448,8 +446,13 @@ export function FileItem({
                     id={`Share-${type}`}
                     iconComponent={FiShare2}
                     changeColor={primary}
-                    tooltip={'Share'}
+                    tooltip={
+                      isUnsharable
+                        ? 'No encrypted folder sharing yet!'
+                        : 'Share'
+                    }
                     onClick={handleShare}
+                    disabled={isUnsharable}
                   />
 
                   <ToolItem

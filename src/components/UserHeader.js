@@ -6,6 +6,7 @@ import {SmallInstanceItem} from './SmallInstanceItem';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
 import {FaServer} from 'react-icons/fa';
+import {compressKey} from '../utils/Utils';
 
 const styles = {
   container: {
@@ -57,15 +58,15 @@ const styles = {
   },
 };
 
-export function UserHeader({sharedFS, title, iconComponent, leftSide}) {
+export function UserHeader({sailplane, title, iconComponent, leftSide}) {
   const [myID, setMyID] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getID = async () => {
+    const getID = () => {
       try {
-        const tmpMyID = await sailplaneAccess.localUserId(sharedFS.current);
+        const tmpMyID = compressKey(sailplane._orbitdb.identity.publicKey);
 
         setMyID(tmpMyID);
       } catch (e) {
@@ -73,8 +74,10 @@ export function UserHeader({sharedFS, title, iconComponent, leftSide}) {
       }
     };
 
-    getID();
-  }, [sharedFS]);
+    if (sailplane) {
+      getID();
+    }
+  }, [sailplane]);
 
   const IconComponent = iconComponent;
 

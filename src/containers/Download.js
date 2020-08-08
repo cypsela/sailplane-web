@@ -17,16 +17,17 @@ import {
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import {DownloadPanel} from './DownloadPanel';
-import {decryptFile, getEncryptionInfoFromFilename} from '../utils/encryption';
-import {cleanBorder} from "../utils/colors";
-import {useWindowSize} from "../hooks/useWindowSize";
+import {cleanBorder} from '../utils/colors';
+import {useWindowSize} from '../hooks/useWindowSize';
+import {catCid} from '@cypsela/sailplane-node/src/util';
+import Crypter from '@tabcat/aes-gcm-crypter';
 
 function Download({match}) {
-  const {cid, path, displayType} = match.params;
+  const {cid, path, displayType, iv, key} = match.params;
   const isSmallScreen = useIsSmallScreen();
   const windowSize = useWindowSize();
-  const ipfsObj = useIPFS((error)=> {
-    console.error(error)
+  const ipfsObj = useIPFS((error) => {
+    console.error(error);
   });
   const [ready, setReady] = useState(false);
   const [files, setFiles] = useState(null);
@@ -37,6 +38,8 @@ function Download({match}) {
   const [fileBlob, setFileBlob] = useState(null);
   const cleanPath = decodeURIComponent(path);
   const cleanCID = decodeURIComponent(cid);
+  const cleanKey = decodeURIComponent(key);
+  const cleanIV = decodeURIComponent(iv);
   const dispatch = useDispatch();
   const pathSplit = cleanPath.split('/');
   const name = pathSplit[pathSplit.length - 1];
@@ -56,8 +59,6 @@ function Download({match}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupportedPreviewType, ready, fileBlob, cleanCID, path, displayType]);
 
-  const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(name);
-
   const styles = {
     container: {
       display: isSmallScreen ? 'block' : 'flex',
@@ -70,9 +71,11 @@ function Download({match}) {
   };
 
   const getFileList = async () => {
-    const tmpFiles = await getFilesFromFolderCID(ipfsObj.ipfs, cleanCID, () => {
-      console.log('updateping');
-    });
+    const tmpFiles = await getFilesFromFolderCID(
+      ipfsObj.ipfs,
+      cleanCID,
+      () => {},
+    );
 
     setFiles(tmpFiles.slice(1));
   };
@@ -96,25 +99,41 @@ function Download({match}) {
   async function getBlob() {
     let blob;
 
+    const handleUpdate = (currentIndex, totalCount) => {
+      dispatch(
+        setStatus({
+          message: `[${getPercent(
+            currentIndex,
+            totalCount,
+          )}%] Downloading`,
+        }),
+      );
+    }
+
     if (fileBlob) {
       blob = fileBlob;
+    } else if (key) {
+      const tmpBlob = await catCid(ipfsObj.ipfs, cleanCID, {
+        Crypter,
+        key: cleanKey,
+        iv: cleanIV,
+        handleUpdate,
+      });
+      blob = new Blob(Array.from([tmpBlob.buffer]));
+
+      setFileBlob(blob);
     } else {
       blob = await getBlobFromPathCID(
         cleanCID,
         cleanPath,
         ipfsObj.ipfs,
-        (currentIndex, totalCount) => {
-          dispatch(
-            setStatus({
-              message: `[${getPercent(currentIndex, totalCount)}%] Downloading`,
-            }),
-          );
-        },
+        handleUpdate
       );
 
-      dispatch(setStatus({}));
       setFileBlob(blob);
     }
+
+    dispatch(setStatus({}));
 
     return blob;
   }
@@ -123,13 +142,7 @@ function Download({match}) {
     dispatch(setStatus({message: 'Fetching file'}));
     let blob = await getBlob();
 
-    if (isEncrypted) {
-      dispatch(setStatus({message: 'Decrypting file'}));
-      blob = await decryptFile(blob, password);
-      dispatch(setStatus({}));
-    }
-
-    saveAs(blob, decryptedFilename);
+    saveAs(blob, name);
     setDownloadComplete(true);
   };
 

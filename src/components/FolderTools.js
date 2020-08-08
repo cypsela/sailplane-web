@@ -1,17 +1,10 @@
 import React, {useState} from 'react';
 import {ToolItem} from './ToolItem';
-import {
-  FiFolderPlus,
-  FiUnlock,
-  FiLock,
-  FiUpload,
-  FiShare2,
-} from 'react-icons/fi';
-import {errorColor, goodColor, primary4} from '../utils/colors';
+import {FiFolderPlus, FiUpload, FiShare2} from 'react-icons/fi';
+import {primary4} from '../utils/colors';
 import {Breadcrumb} from './Breadcrumb';
 import useTextInput from '../hooks/useTextInput';
-import {useDispatch, useSelector} from 'react-redux';
-import {clearEncryptionKey, setEncryptionKey} from '../actions/main';
+import {useDispatch} from 'react-redux';
 import {setShareData} from '../actions/tempData';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
@@ -44,9 +37,7 @@ export function FolderTools({
   handleOpenUpload,
 }) {
   const [addFolderMode, setAddFolderMode] = useState(false);
-  const [securePanelOpen, setSecurePanelOpen] = useState(false);
   const dispatch = useDispatch();
-  const encryptionKey = useSelector((state) => state.main.encryptionKey);
   const pathSplit = currentDirectory.split('/');
   const folderName = pathSplit[pathSplit.length - 1];
   const isSmallScreen = useIsSmallScreen();
@@ -71,27 +62,11 @@ export function FolderTools({
     },
   );
 
-  const setSecure = (password) => {
-    dispatch(setEncryptionKey(password, 'string'));
-    setSecurePanelOpen(false);
-  };
-
-  const SecureInputComponent = useTextInput(
-    securePanelOpen,
-    (password) => setSecure(password),
-    () => setSecurePanelOpen(false),
-    '',
-    {
-      placeholder: 'secure password',
-      isPassword: true,
-    },
-  );
-
   return (
     <div>
       <div style={styles.tools}>
         <div style={styles.leftTools}>
-          {isSmallScreen && (securePanelOpen || addFolderMode) ? null : (
+          {isSmallScreen && addFolderMode ? null : (
             <Breadcrumb
               currentDirectory={currentDirectory}
               setCurrentDirectory={setCurrentDirectory}
@@ -99,22 +74,8 @@ export function FolderTools({
           )}
         </div>
         <div style={styles.rightTools}>
-          {!addFolderMode && !securePanelOpen ? (
+          {!addFolderMode ? (
             <>
-              <ToolItem
-                id={'togglePassword'}
-                iconComponent={encryptionKey ? FiLock : FiUnlock}
-                size={18}
-                defaultColor={encryptionKey ? goodColor : null}
-                changeColor={encryptionKey ? errorColor : goodColor}
-                onClick={() => {
-                  if (encryptionKey) {
-                    dispatch(clearEncryptionKey());
-                  } else {
-                    setSecurePanelOpen(true);
-                  }
-                }}
-              />
               {currentDirectory !== '/r' ? (
                 <ToolItem
                   id={'folderShare'}
@@ -151,8 +112,6 @@ export function FolderTools({
           ) : null}
 
           {addFolderMode ? <>{InputComponent}</> : null}
-
-          {securePanelOpen ? <>{SecureInputComponent}</> : null}
         </div>
       </div>
     </div>

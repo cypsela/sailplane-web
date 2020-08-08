@@ -3,7 +3,14 @@ import {primary45} from '../utils/colors';
 import {FaTimes} from 'react-icons/fa';
 import {Modal} from './Modal';
 
-export function Dialog({isVisible, body, onClose, title, noPadding}) {
+export function Dialog({
+  isVisible,
+  body,
+  onClose,
+  title,
+  noPadding,
+  backgroundColor,
+}) {
   if (!isVisible) {
     return null;
   }
@@ -20,6 +27,7 @@ export function Dialog({isVisible, body, onClose, title, noPadding}) {
     },
     body: {
       padding: noPadding ? 0 : 14,
+      backgroundColor: backgroundColor ? backgroundColor : '#FFF',
     },
     xIcon: {
       cursor: 'pointer',

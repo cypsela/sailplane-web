@@ -9,7 +9,14 @@ function createFolder(name) {
   cy.contains(name);
 }
 
-describe('App loads', () => {
+describe('Fresh app private drive', () => {
+  before(() => {
+    window.indexedDB.databases().then((r) => {
+      for (var i = 0; i < r.length; i++)
+        window.indexedDB.deleteDatabase(r[i].name);
+    });
+  });
+
   beforeEach(() => {
     cy.restoreLocalStorageCache();
   });
@@ -19,14 +26,10 @@ describe('App loads', () => {
   });
 
   it('shows loading', () => {
-    window.indexedDB.databases().then((r) => {
-      for (var i = 0; i < r.length; i++)
-        window.indexedDB.deleteDatabase(r[i].name);
-    });
-
     cy.visit('http://localhost:3000/');
 
     cy.contains('Loading...');
+    cy.wait(5000)
   });
 
   it('shows intro screen on first load', () => {
@@ -103,9 +106,6 @@ describe('App loads', () => {
     cy.get('#Share-file').click();
     cy.contains('Share options');
     const input = cy.get('input[type="text"]');
-    // input
-    //   .should('have.attr', 'value')
-    //   .and('match', /QmXETG1AE738nUSFNgFMFhujUugKZyWNTqvZTZJB14TFVg/);
   });
 
   it('can open a share link', () => {
@@ -138,45 +138,17 @@ describe('App loads', () => {
     cy.get('.ril-close').click();
   });
 
-  it('can create and share a photo gallery folder', () => {
+  it('cannot share encrypted folder', () => {
     cy.contains('. . /').click();
     cy.contains('Folder-renamed').trigger('mouseenter');
-    cy.get('#Share-dir').click();
-
-    const input = cy.get('input[type="text"]');
-    input.invoke('val').then((url) => {
-      // Should automatically know to be in image mode
-      expect(url).to.match(/image/);
-      cy.visit(url);
-      cy.contains('Download now');
-      cy.get('.imageGalleryBlock').should('have.length', 3);
-      cy.contains('pic1-renamed.jpg');
-      cy.contains('pic2.jpg');
-      cy.contains('pic3.jpg');
-    });
-  });
-
-  it('gallery images open big', () => {
-    cy.get('.imageGalleryBlock').first().click();
-    cy.get('.ril-image-current');
-    cy.get('.ril-close').click();
-    cy.visit('http://localhost:3000/');
+    cy.get('#Share-dir').trigger('mouseenter');
+    cy.contains('No encrypted folder sharing');
   });
 
   it('drive panel opens', () => {
     cy.contains('Drives').click();
     cy.get('.drive').should('have.length', 1);
   });
-
-  // it('can copy drive url', () => {
-  //   cy.window().then((win) => {
-  //     cy.stub(win.navigator.clipboard, 'writeText').resolves(true).as('writeText')
-  //   })
-  //
-  //   cy.get('.instanceURLCopy').click();
-  //
-  //   cy.get('@writeText').should('be.calledWithMatch', /^http.+importInstance/)
-  // });
 
   it('can copy drive address', () => {
     cy.window().then((win) => {
@@ -190,9 +162,12 @@ describe('App loads', () => {
     cy.get('@writeText').should('be.calledWithMatch', /^\/orbitdb/);
   });
 
-  it('can create drive', () => {
+  it('can create a public drive', () => {
     cy.contains('Create drive').click();
+    cy.contains('Create public drive').click();
     cy.get('.drive').should('have.length', 2);
+    cy.contains('private').should('have.length', 1);
+    cy.contains('public').should('have.length', 1);
   });
 
   it('should not have any files on fresh drive', () => {
@@ -211,50 +186,6 @@ describe('App loads', () => {
     cy.get('.instanceDelete').last().click();
     cy.get('.drive').should('have.length', 1);
     cy.contains('Files').click();
-  });
-
-  it('upload encrypted file', () => {
-    cy.get('#togglePassword').click();
-    const input = cy.get('input[placeholder="secure password"]');
-    input.type('password1234');
-    cy.contains('Accept').click();
-
-    cy.get('#fileUpload').attachFile('pic1.jpg');
-    cy.contains('pic1.jpg');
-    cy.get('.fileItemEncrypted').should('have.length', 1);
-    cy.get('#togglePassword').click();
-  });
-
-  it('download encrypted file', () => {
-    cy.contains('pic1.jpg').trigger('mouseenter');
-    cy.get('#Download-file').click();
-    const input = cy.get('input[placeholder="password"]');
-    input.type('password1234');
-    cy.contains('Accept').click();
-    cy.contains('Accept').should('have.length', 0);
-  });
-
-  it('download encrypted file from share page', () => {
-    cy.contains('pic1.jpg').trigger('mouseenter');
-    cy.get('#Share-file').click();
-
-    const input = cy.get('input[type="text"]');
-    input.invoke('val').then((url) => {
-      cy.visit(url);
-      cy.contains('Download now').click();
-
-      const input2 = cy.get('input[placeholder="password"]');
-      input2.type('password1234');
-      cy.contains('Unlock').click();
-      cy.contains('Unlock').should('have.length', 0);
-      cy.visit('http://localhost:3000/');
-    });
-  });
-
-  it('delete file', () => {
-    cy.contains('pic1.jpg').trigger('mouseenter');
-    cy.get('#Delete-file').click();
-    cy.contains('pic1.jpg').should('have.length', 0);
   });
 
   it('context menu rename works', () => {

@@ -5,7 +5,8 @@
   "homepage": ".",
   "dependencies": {
     "@cypress/instrument-cra": "^1.1.1",
-    "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#61e9b2ca2b1355f0f96c68a8f9ad4d5686ff775e",
+    "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#82d2974b9e425ccab54cf4f32d8285e29e3914e0",
+    "@tabcat/aes-gcm-crypter": "https://github.com/tabcat/aes-gcm-crypter#9d619008e0e5bef747bae9a97a96aa7c8be5c293",
     "@tabcat/file-list-source": "https://github.com/tabcat/file-list-source#fe4abea54a82abe8a1be4edf4be0b6fe1fa9d1fe",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -16,7 +17,7 @@
     "device-detector-js": "^2.2.1",
     "file-saver": "^2.0.2",
     "immer": "^7.0.5",
-    "ipfs": "0.47",
+    "ipfs": "^0.48.2",
     "is-touch-device": "^1.0.1",
     "it-all": "^1.0.2",
     "it-first": "^1.0.2",
@@ -83,9 +84,6 @@
     "source-map-explorer": "^2.4.2"
   },
   "resolutions": {
-    "libp2p-interfaces": "0.3.2",
-    "libp2p-pubsub": "0.5.6",
-    "libp2p-gossipsub": "0.4.6",
-    "libp2p": "0.28.7"
+    "orbit-db-access-controllers": "https://github.com/slavik0329/orbit-db-access-controllers#636355bc4ba04fff3a571468c681661e8837c850"
   }
 }

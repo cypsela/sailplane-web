@@ -1,12 +1,6 @@
 import React, {useState} from 'react';
 import {StatusBar} from '../components/StatusBar';
 import {primary2, primary35, primary45} from '../utils/colors';
-import {
-  doesPasswordMatchHash,
-  getEncryptionInfoFromFilename,
-} from '../utils/encryption';
-import {FiLock} from 'react-icons/fi';
-import useTextInput from '../hooks/useTextInput';
 import ImageGallery from '../components/ImageGallery';
 import {humanFileSize, sortDirectoryContents} from '../utils/Utils';
 import {FilePreview} from '../components/FilePreview';
@@ -97,39 +91,7 @@ export function DownloadPanel({
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
   const [downloadClicked, setDownloadClicked] = useState(false);
-  const [enterPasswordMode, setEnterPasswordMode] = useState(false);
   const isSmallScreen = useIsSmallScreen();
-  const {
-    isEncrypted,
-    decryptedFilename,
-    passHash,
-  } = getEncryptionInfoFromFilename(name);
-
-  const doesPasswordFailHashCheck = async (text) => {
-    return await doesPasswordMatchHash(text, passHash);
-  };
-
-  const setDecryptPassword = async (password) => {
-    let doesNotMatchHash = await doesPasswordFailHashCheck(password);
-    if (!doesNotMatchHash) {
-      setEnterPasswordMode(false);
-
-      handleDownload(password);
-    }
-  };
-
-  const PasswordInputComponent = useTextInput(
-    enterPasswordMode,
-    (password) => setDecryptPassword(password),
-    () => setEnterPasswordMode(false),
-    '',
-    {
-      placeholder: 'password',
-      isPassword: true,
-      isError: doesPasswordFailHashCheck,
-      confirmTitle: 'Unlock',
-    },
-  );
 
   const sortedFiles = sortDirectoryContents(files);
 
@@ -138,35 +100,18 @@ export function DownloadPanel({
       <div>
         {ready ? (
           <div>
-            <div style={styles.filename}>
-              {isEncrypted ? (
-                <FiLock color={primary45} size={16} style={styles.icon} />
-              ) : null}
-
-              {decryptedFilename}
-            </div>
+            <div style={styles.filename}>{name}</div>
             <div style={styles.downloadButtonHolder}>
-              {!enterPasswordMode ? (
-                <div
-                  style={styles.downloadButton}
-                  onClick={() => {
-                    if (isEncrypted) {
-                      setEnterPasswordMode(true);
-                      return;
-                    }
-
-                    setDownloadClicked(true);
-                    handleDownload();
-                  }}>
-                  {downloadClicked && !downloadComplete
-                    ? 'Fetching download...'
-                    : 'Download now'}
-                </div>
-              ) : (
-                <div style={styles.passwordContainer}>
-                  {PasswordInputComponent}
-                </div>
-              )}
+              <div
+                style={styles.downloadButton}
+                onClick={() => {
+                  setDownloadClicked(true);
+                  handleDownload();
+                }}>
+                {downloadClicked && !downloadComplete
+                  ? 'Fetching download...'
+                  : 'Download now'}
+              </div>
             </div>
 
             {fileInfo?.size ? (

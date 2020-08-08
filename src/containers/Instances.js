@@ -14,6 +14,8 @@ import * as sailplaneUtil from '../utils/sailplane-util';
 import InstanceAccessDialog from '../components/InstanceAccessDialog';
 import {UserHeader} from '../components/UserHeader';
 import {ToolItem} from '../components/ToolItem';
+import NewDriveDialog from '../components/NewDriveDialog';
+import {addressManifest} from '../utils/sailplane-util';
 
 const styles = {
   container: {
@@ -59,6 +61,7 @@ const styles = {
 export function Instances({sailplane, sharedFS}) {
   const [addInstanceMode, setAddInstanceMode] = useState(false);
   const [importInstanceMode, setImportInstanceMode] = useState(false);
+  const [isCreateDialogVisible, setIsCreateDialogVisible] = useState(false);
   const [instanceToModifyAccess, setInstanceToModifyAccess] = useState(null);
   const dispatch = useDispatch();
   const main = useSelector((state) => state.main);
@@ -72,11 +75,15 @@ export function Instances({sailplane, sharedFS}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [instances.length, prevInstanceLength]);
 
-  const createInstance = async () => {
-    const address = await sailplaneUtil.determineAddress(sailplane);
+  const createInstance = async (isEncrypted) => {
+    setIsCreateDialogVisible(false);
+
+    const address = await sailplaneUtil.determineAddress(sailplane, {
+      enc: isEncrypted,
+    });
     const driveName = sailplaneUtil.driveName(address);
 
-    dispatch(addInstance(driveName, address.toString(), false));
+    dispatch(addInstance(driveName, address.toString(), false, isEncrypted));
     setAddInstanceMode(false);
   };
 
@@ -87,6 +94,9 @@ export function Instances({sailplane, sharedFS}) {
     };
     if (await sailplaneUtil.addressValid(sailplane, address)) {
       const driveName = sailplaneUtil.driveName(address);
+
+      const manifest = await addressManifest(sailplane, address);
+      console.log('manifest', manifest);
 
       if (instances.map((s) => s.address).includes(address)) {
         dispatch(
@@ -99,7 +109,9 @@ export function Instances({sailplane, sharedFS}) {
         return;
       }
 
-      dispatch(addInstance(driveName, address, true));
+      dispatch(
+        addInstance(driveName, address, true, manifest.meta.enc === true),
+      );
       setImportInstanceMode(false);
     } else {
       handleInvalidAddress();
@@ -119,7 +131,7 @@ export function Instances({sailplane, sharedFS}) {
   return (
     <div style={styles.container}>
       <UserHeader
-        sharedFS={sharedFS}
+        sailplane={sailplane}
         title={'Drives'}
         iconComponent={FaServer}
       />
@@ -142,7 +154,7 @@ export function Instances({sailplane, sharedFS}) {
                 changeColor={primary4}
                 iconComponent={FiPlusCircle}
                 title={'Create drive'}
-                onClick={() => createInstance()}
+                onClick={() => setIsCreateDialogVisible(true)}
               />
             </>
           ) : null}
@@ -178,6 +190,12 @@ export function Instances({sailplane, sharedFS}) {
           sharedFS={sharedFS}
         />
       ) : null}
+      <NewDriveDialog
+        isVisible={isCreateDialogVisible}
+        onClose={() => setIsCreateDialogVisible(false)}
+        onPrivate={() => createInstance(true)}
+        onPublic={() => createInstance(false)}
+      />
       <StatusBar />
     </div>
   );

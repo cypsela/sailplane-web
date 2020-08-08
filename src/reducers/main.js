@@ -4,16 +4,15 @@ import produce from 'immer';
 const initialState = {
   instances: [],
   instanceIndex: 0,
-  encryptionKey: null,
   newUser: true,
 };
 
 export default function main(state = initialState, action) {
   switch (action.type) {
     case mainTypes.ADD_INSTANCE: {
-      const {name, address, isImported} = action;
+      const {name, address, isImported, isEncrypted} = action;
       return produce(state, (draftState) => {
-        draftState.instances.push({name, address, isImported});
+        draftState.instances.push({name, address, isImported, isEncrypted});
       });
     }
 
@@ -21,23 +20,6 @@ export default function main(state = initialState, action) {
       const {index} = action;
       return produce(state, (draftState) => {
         draftState.instanceIndex = Math.max(0, index);
-      });
-    }
-
-    case mainTypes.SET_ENCRYPTION_KEY: {
-      const {key, keyType} = action;
-      return produce(state, (draftState) => {
-        draftState.encryptionKey = {
-          key,
-          type: keyType,
-        };
-      });
-    }
-
-    case mainTypes.CLEAR_ENCRYPTION_KEY: {
-      const {key, keyType} = action;
-      return produce(state, (draftState) => {
-        draftState.encryptionKey = null;
       });
     }
 
@@ -56,10 +38,10 @@ export default function main(state = initialState, action) {
     }
 
     case mainTypes.SET_NEW_USER: {
-      const {bool} = action
+      const {bool} = action;
       return produce(state, (draftState) => {
-        draftState.newUser = bool
-      })
+        draftState.newUser = bool;
+      });
     }
   }
 

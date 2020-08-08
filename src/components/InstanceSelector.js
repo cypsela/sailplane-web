@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {lightBorder, primary3, primary45} from '../utils/colors';
+import {lightBorder, primary45} from '../utils/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {SmallInstanceItem} from './SmallInstanceItem';
 import {setInstanceIndex} from '../actions/main';
-import {FiHardDrive} from 'react-icons/fi';
+import {FiHardDrive, FiLock, FiUnlock} from 'react-icons/fi';
 
 export function InstanceSelector({}) {
   const main = useSelector((state) => state.main);
@@ -45,6 +45,8 @@ export function InstanceSelector({}) {
     },
   };
 
+  const LockComponent = currentInstance?.isEncrypted ? FiLock : FiUnlock;
+
   return (
     <span
       style={styles.container}
@@ -54,8 +56,9 @@ export function InstanceSelector({}) {
         }
       }}>
       <FiHardDrive color={primary45} size={16} style={styles.icon} />
+      <LockComponent color={primary45} size={14} style={styles.icon} />
 
-      <span id={'currentInstanceSelector'}>{currentInstance.name}</span>
+      <span id={'currentInstanceSelector'}>{currentInstance?.name}</span>
       {menuEnabled ? (
         <div style={styles.menu}>
           {filteredInstances.map((instance, index) => (

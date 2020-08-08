@@ -1,5 +1,6 @@
 
 import {randomBytes} from 'libp2p-crypto';
+import Crypter from '@tabcat/aes-gcm-crypter';
 import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 const { parse } = OrbitDBAddress;
 const bip39 = require('bip39');
@@ -18,21 +19,32 @@ export async function addressValid(sailplane, address) {
   } else { return false }
 }
 
-const defaultAddressOptions = ({ iv }) => ({
+const defaultAddressOptions = ({ iv, enc, identity }) => ({
   meta: {
-    iv
+    iv,
+    enc
   },
   accessController: {
-    type: 'orbitdb'
+    type: 'orbitdb',
+    admin: [identity.publicKey],
   },
 });
 
-export function determineAddress(sailplane, options = {}) {
+export async function determineAddress(sailplane, options = {}) {
   const iv = options.iv || randomBytes(16)
-  return sailplane.determineAddress(
+  const identity = options.identity || sailplane._orbitdb.identity
+  const address = await sailplane.determineAddress(
     options.name || `sailplane/drives/${iv.toString('hex')}`,
-    {...defaultAddressOptions({ iv }), ...options},
+    {...defaultAddressOptions({ iv, enc: options.enc, identity }), ...options},
   );
+  if (options.enc) {
+    // initializing encryption key and persisting it to the store
+    const cryptoKey = options.cryptoKey || await Crypter.generateKey()
+    const crypter = await Crypter.create(cryptoKey)
+    const drive = await sailplane.mount(address, { crypter, Crypter })
+    await drive.stop()
+  }
+  return address;
 };
 
 export function driveName(address) {

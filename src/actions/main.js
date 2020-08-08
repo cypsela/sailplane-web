@@ -1,19 +1,12 @@
 import {main} from './actionTypes';
 
-export function addInstance(name, address, isImported) {
+export function addInstance(name, address, isImported, isEncrypted) {
   return {
     type: main.ADD_INSTANCE,
     name,
     address,
     isImported,
-  };
-}
-
-export function setEncryptionKey(key, keyType) {
-  return {
-    type: main.SET_ENCRYPTION_KEY,
-    key,
-    keyType,
+    isEncrypted,
   };
 }
 
