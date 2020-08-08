@@ -24,18 +24,18 @@ export default function NewDriveDialog({
     {
       title: 'Private',
       infos: [
-        'End-to-end encrypted drive data',
-        'Add other users to view or modify drives',
+        'End-to-end encrypted file data',
         'AES 128 Encryption',
+        'Granted read access',
       ],
       onClick: onPrivate,
     },
     {
       title: 'Public',
       infos: [
-        'Everything is not encrypted by default',
-        'Easily share files with many people',
         'Host content publicly on IPFS',
+        'Files are not encrypted',
+        'Everyone has read access',
       ],
       onClick: onPublic,
     },

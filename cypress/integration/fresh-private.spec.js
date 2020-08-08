@@ -29,6 +29,7 @@ describe('Fresh app private drive', () => {
     cy.visit('http://localhost:3000/');
 
     cy.contains('Loading...');
+    cy.wait(5000)
   });
 
   it('shows intro screen on first load', () => {
