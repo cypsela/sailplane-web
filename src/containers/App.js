@@ -35,12 +35,12 @@ function App({}) {
     console.log('IPFS error: ' + err);
     setIpfsError(true);
   });
-  const [introScreenVisible, setIntroScreenVisible] = useState(false);
   const [instanceReady, setInstanceReady] = useState(false);
   const [directoryContents, setDirectoryContents] = useState([]);
   const [currentDirectory, setCurrentDirectory] = useState('/r');
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
   const [currentRightPanel, setCurrentRightPanel] = useState('files');
+  const [wasNewUser, setWasNewUser] = useState(false);
 
   const dispatch = useDispatch();
   const {instances, instanceIndex, newUser} = useSelector(
@@ -154,8 +154,6 @@ function App({}) {
       });
       const driveName = sailplaneUtil.driveName(address);
       dispatch(addInstance(driveName, address.toString(), false, true));
-      dispatch(setNewUser(false));
-      setIntroScreenVisible(true);
     };
     const connectSailplane = async (ipfs) => {
       dispatch(setStatus({message: 'Connecting'}));
@@ -163,7 +161,7 @@ function App({}) {
       const sailplane = await Sailplane.create(orbitdb);
       sailplaneRef.current = sailplane;
 
-      if (newUser) {
+      if ((newUser || wasNewUser) && instances.length === 0) {
         await handleNewUser(sailplane);
       }
       setNodeReady(true);
@@ -207,11 +205,16 @@ function App({}) {
     }
   };
 
+  const handleNewUser = () => {
+    dispatch(setNewUser(false))
+    setWasNewUser(true)
+  }
+
   return (
     <div style={styles.container}>
       <IntroModal
-        isVisible={introScreenVisible}
-        onClose={() => setIntroScreenVisible(false)}
+        isVisible={newUser}
+        onClose={() => handleNewUser()}
       />
       <LeftPanel
         setCurrentRightPanel={setCurrentRightPanel}
