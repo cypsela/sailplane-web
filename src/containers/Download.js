@@ -129,7 +129,7 @@ function Download({match}) {
         cleanCID,
         cleanPath,
         ipfsObj.ipfs,
-        onUpdate
+        handleUpdate
       );
 
       setFileBlob(blob);
