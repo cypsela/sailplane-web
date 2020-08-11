@@ -71,7 +71,7 @@ export async function filePathToBlob(sharedFs, path, handleUpdate) {
   //   chunks.push(chunk);
   //   i++;
   // }
-  const chunks = await sharedFs.cat(path, { handleUpdate }).data();
+  const chunks = await sharedFs.cat(path, {handleUpdate}).data();
   // eslint-disable-next-line no-undef
   return new Blob([chunks]);
 }
@@ -80,7 +80,9 @@ async function dirPathToBlob(sharedFs, path, handleUpdate) {
   const struct = sharedFs.fs.tree(path).map((path) => {
     return {
       path,
-      content: sharedFs.fs.content(path) !== 'dir' && sharedFs.cat(path, { handleUpdate }),
+      content:
+        sharedFs.fs.content(path) !== 'dir' &&
+        sharedFs.cat(path, {handleUpdate}),
     };
   });
 
@@ -284,12 +286,11 @@ export function getPercent(numer, denom) {
 }
 
 export const isWebRTCSupported = () =>
-  (navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.msGetUserMedia ||
-    window.RTCPeerConnection) &&
-  !isIOSShitBrowser();
+  navigator.getUserMedia ||
+  navigator.webkitGetUserMedia ||
+  navigator.mozGetUserMedia ||
+  navigator.msGetUserMedia ||
+  window.RTCPeerConnection;
 
 export function sortDirectoryContents(directoryContents) {
   const sortedContents = directoryContents
@@ -330,13 +331,6 @@ export const jdenticonConfig = {
     grayscale: 0.0,
   },
   backColor: '#86444400',
-};
-
-export const isIOSShitBrowser = () => {
-  const deviceDetector = new DeviceDetector();
-  const device = deviceDetector.parse(window.navigator.userAgent);
-
-  return device?.os?.name === 'iOS' && !device?.client?.name.match(/Safari/);
 };
 
 export const hasMouse = detectIt.hasMouse === true;

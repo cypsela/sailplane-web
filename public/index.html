@@ -19,6 +19,9 @@
       (function () {
         File.prototype.arrayBuffer = File.prototype.arrayBuffer || myArrayBuffer;
         Blob.prototype.arrayBuffer = Blob.prototype.arrayBuffer || myArrayBuffer;
+        if (!navigator.mediaDevices) {
+          navigator.mediaDevices = {getUserMedia};
+        }
 
         function myArrayBuffer() {
           // this: File or Blob
@@ -28,6 +31,12 @@
               resolve(fr.result);
             };
             fr.readAsArrayBuffer(this);
+          })
+        }
+
+        function getUserMedia() {
+          return new Promise((resolve) => {
+            resolve({});
           })
         }
       })();
