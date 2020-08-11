@@ -15,7 +15,23 @@
     <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@200;300;400;500;600;700&display=swap"
           rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script type="application/javascript">
+      (function () {
+        File.prototype.arrayBuffer = File.prototype.arrayBuffer || myArrayBuffer;
+        Blob.prototype.arrayBuffer = Blob.prototype.arrayBuffer || myArrayBuffer;
 
+        function myArrayBuffer() {
+          // this: File or Blob
+          return new Promise((resolve) => {
+            let fr = new FileReader();
+            fr.onload = () => {
+              resolve(fr.result);
+            };
+            fr.readAsArrayBuffer(this);
+          })
+        }
+      })();
+    </script>
     <!--    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />-->
     <!--
       manifest.json provides metadata used when your web app is installed on a
