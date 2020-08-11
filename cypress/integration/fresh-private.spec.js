@@ -1,4 +1,6 @@
 /* eslint-disable */
+const rootURL = 'http://localhost:3000/';
+// const rootURL = 'https://alpha.sailplane.io/';
 
 function createFolder(name) {
   cy.get('#addFolder').click();
@@ -26,7 +28,7 @@ describe('Fresh app private drive', () => {
   });
 
   it('shows loading', () => {
-    cy.visit('http://localhost:3000/');
+    cy.visit(rootURL);
 
     cy.contains('Loading...');
     cy.wait(5000)
@@ -121,7 +123,7 @@ describe('Fresh app private drive', () => {
   it('should have an preview image', () => {
     cy.get('img').should('have.length', 2);
 
-    cy.visit('http://localhost:3000/');
+    cy.visit(rootURL);
   });
 
   it('can add multiple files', () => {

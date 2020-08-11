@@ -1,4 +1,6 @@
 /* eslint-disable */
+const rootURL = 'http://localhost:3000/';
+// const rootURL = 'https://alpha.sailplane.io/';
 
 function createFolder(name) {
   cy.get('#addFolder').click();
@@ -28,7 +30,7 @@ describe('Fresh app public drive', () => {
   it('shows loading', () => {
     cy.clearLocalStorageCache();
 
-    cy.visit('http://localhost:3000/');
+    cy.visit(rootURL);
 
     cy.contains('Loading...');
     cy.wait(5000)
@@ -138,7 +140,7 @@ describe('Fresh app public drive', () => {
   it('should have an preview image', () => {
     cy.get('img').should('have.length', 2);
 
-    cy.visit('http://localhost:3000/');
+    cy.visit(rootURL);
   });
 
   it('can add multiple files', () => {
@@ -177,7 +179,7 @@ describe('Fresh app public drive', () => {
     cy.get('.imageGalleryBlock').first().click();
     cy.get('.ril-image-current');
     cy.get('.ril-close').click();
-    cy.visit('http://localhost:3000/');
+    cy.visit(rootURL);
   });
 
   it('drive panel opens', () => {
