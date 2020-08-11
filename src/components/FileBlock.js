@@ -71,6 +71,7 @@ export function FileBlock({
   directoryContents,
   setCurrentDirectory,
   currentDirectory,
+  isEncrypted,
 }) {
   const isSmallScreen = useIsSmallScreen();
   const dropzoneRef = useRef(null);
@@ -121,8 +122,12 @@ export function FileBlock({
               )}%] Loading previews`,
             }),
           );
-        }
-        const blob = await getBlobFromPath(sharedFs.current, file.path, handleUpdate);
+        };
+        const blob = await getBlobFromPath(
+          sharedFs.current,
+          file.path,
+          handleUpdate,
+        );
         dispatch(setStatus({}));
         return window.URL.createObjectURL(blob);
       });
@@ -150,6 +155,7 @@ export function FileBlock({
         currentDirectory={currentDirectory}
         sharedFs={sharedFs}
         setCurrentDirectory={setCurrentDirectory}
+        isEncrypted={isEncrypted}
         handleOpenUpload={() => {
           dropzoneRef.current.openUpload();
         }}

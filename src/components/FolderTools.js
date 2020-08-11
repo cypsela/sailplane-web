@@ -35,6 +35,7 @@ export function FolderTools({
   sharedFs,
   setCurrentDirectory,
   handleOpenUpload,
+  isEncrypted,
 }) {
   const [addFolderMode, setAddFolderMode] = useState(false);
   const dispatch = useDispatch();
@@ -79,9 +80,10 @@ export function FolderTools({
               {currentDirectory !== '/r' ? (
                 <ToolItem
                   id={'folderShare'}
+                  disabled={isEncrypted}
                   iconComponent={FiShare2}
                   size={18}
-                  changeColor={primary4}
+                  changeColor={isEncrypted?'#DDD':primary4}
                   onClick={() => {
                     dispatch(
                       setShareData({

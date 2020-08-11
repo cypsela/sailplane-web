@@ -185,6 +185,7 @@ function App({}) {
         <LoadingRightBlock message={message} loading={!noDrives} />
       ) : (
         <FileBlock
+          isEncrypted={currentInstance.isEncrypted}
           sharedFs={sharedFS}
           ipfs={ipfsObj.ipfs}
           directoryContents={directoryContents}
