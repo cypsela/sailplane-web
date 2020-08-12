@@ -189,7 +189,7 @@ export const Instance = ({
             />
             {thisDriveName}
             {label ? <span style={styles.label}> [{label}]</span> : null}
-            {isHovered && !displayOnly ? (
+            {isHovered && !displayOnly && !isTouchDevice ? (
               <ToolItem
                 iconComponent={FiEdit}
                 changeColor={primary}
