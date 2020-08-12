@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {driveName} from '../utils/sailplane-util';
 import {Dialog} from './Dialog';
 import * as sailplaneAccess from '../utils/sailplane-access';
-import Jdenticon from 'react-jdenticon';
 import {cleanBorder, primary15, primary4, primary45} from '../utils/colors';
 import {ToolItem} from './ToolItem';
 import {FiPlusCircle} from 'react-icons/fi';
@@ -10,6 +9,7 @@ import useTextInput from '../hooks/useTextInput';
 import useDimensions from 'react-use-dimensions';
 import {compressKey, decompressKey} from '../utils/Utils';
 import UserItem from './UserItem';
+import Well from './Well';
 
 export default function InstanceAccessDialog({
   instanceToModifyAccess,
@@ -71,15 +71,6 @@ export default function InstanceAccessDialog({
       alignItems: 'center',
       textAlign: 'center',
       justifyContent: 'center',
-    },
-    alert: {
-      backgroundColor: primary15,
-      color: primary4,
-      fontSize: 14,
-      padding: 6,
-      borderRadius: 4,
-      marginBottom: 8,
-      border: cleanBorder,
     },
   };
 
@@ -165,13 +156,13 @@ export default function InstanceAccessDialog({
       )}`}
       body={
         <div style={styles.body} ref={dialogDimensionsRef}>
-          <div style={styles.alert}>
+          <Well>
             {admins.includes(myID)
               ? 'You are an admin of this drive. You have full access.'
               : writers.includes(myID)
               ? 'You are a writer on this drive.'
               : 'You have read access only.'}
-          </div>
+          </Well>
           <div style={styles.panels}>
             <div style={styles.panel} id={'adminPanel'}>
               <div style={styles.panelTitle}>

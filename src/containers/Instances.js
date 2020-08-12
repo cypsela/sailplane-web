@@ -16,6 +16,7 @@ import {UserHeader} from '../components/UserHeader';
 import {ToolItem} from '../components/ToolItem';
 import NewDriveDialog from '../components/NewDriveDialog';
 import {addressManifest} from '../utils/sailplane-util';
+import ImportDriveDialog from '../components/ImportDriveDialog';
 
 const styles = {
   container: {
@@ -59,8 +60,7 @@ const styles = {
 };
 
 export function Instances({sailplane, sharedFS}) {
-  const [addInstanceMode, setAddInstanceMode] = useState(false);
-  const [importInstanceMode, setImportInstanceMode] = useState(false);
+  const [isImportDialogVisible, setIsImportDialogVisible] = useState(true);
   const [isCreateDialogVisible, setIsCreateDialogVisible] = useState(false);
   const [instanceToModifyAccess, setInstanceToModifyAccess] = useState(null);
   const dispatch = useDispatch();
@@ -84,49 +84,7 @@ export function Instances({sailplane, sharedFS}) {
     const driveName = sailplaneUtil.driveName(address);
 
     dispatch(addInstance(driveName, address.toString(), false, isEncrypted));
-    setAddInstanceMode(false);
   };
-
-  const importInstance = async (address) => {
-    const handleInvalidAddress = () => {
-      dispatch(setStatus({message: 'Invalid address', isError: true}));
-      delay(5500).then(() => dispatch(setStatus({})));
-    };
-    if (await sailplaneUtil.addressValid(sailplane, address)) {
-      const driveName = sailplaneUtil.driveName(address);
-
-      const manifest = await addressManifest(sailplane, address);
-      console.log('manifest', manifest);
-
-      if (instances.map((s) => s.address).includes(address)) {
-        dispatch(
-          setStatus({
-            message: `Drive [${driveName}] already exists`,
-            isError: true,
-          }),
-        );
-        delay(5500).then(() => dispatch(setStatus({})));
-        return;
-      }
-
-      dispatch(
-        addInstance(driveName, address, true, manifest.meta.enc === true),
-      );
-      setImportInstanceMode(false);
-    } else {
-      handleInvalidAddress();
-    }
-  };
-
-  const ImportInstanceInput = useTextInput(
-    importInstanceMode,
-    (instanceAddress) => importInstance(instanceAddress),
-    () => setImportInstanceMode(false),
-    '',
-    {
-      placeholder: 'drive address',
-    },
-  );
 
   return (
     <div style={styles.container}>
@@ -135,31 +93,28 @@ export function Instances({sailplane, sharedFS}) {
         title={'Drives'}
         iconComponent={FaServer}
       />
+
       <div style={styles.toolsContainer}>
         <div style={styles.tools}>
-          {!importInstanceMode && !addInstanceMode ? (
-            <>
-              <ToolItem
-                className={'importInstance'}
-                defaultColor={primary45}
-                changeColor={primary4}
-                iconComponent={FiUpload}
-                title={'Import drive'}
-                onClick={() => setImportInstanceMode(true)}
-              />
+          <>
+            <ToolItem
+              className={'importInstance'}
+              defaultColor={primary45}
+              changeColor={primary4}
+              iconComponent={FiUpload}
+              title={'Import drive'}
+              onClick={() => setIsImportDialogVisible(true)}
+            />
 
-              <ToolItem
-                className={'addInstance'}
-                defaultColor={primary45}
-                changeColor={primary4}
-                iconComponent={FiPlusCircle}
-                title={'Create drive'}
-                onClick={() => setIsCreateDialogVisible(true)}
-              />
-            </>
-          ) : null}
-
-          {importInstanceMode ? ImportInstanceInput : null}
+            <ToolItem
+              className={'addInstance'}
+              defaultColor={primary45}
+              changeColor={primary4}
+              iconComponent={FiPlusCircle}
+              title={'Create drive'}
+              onClick={() => setIsCreateDialogVisible(true)}
+            />
+          </>
         </div>
       </div>
 
@@ -183,6 +138,7 @@ export function Instances({sailplane, sharedFS}) {
           />
         ))}
       </div>
+
       {instanceToModifyAccess ? (
         <InstanceAccessDialog
           onClose={() => setInstanceToModifyAccess(null)}
@@ -190,12 +146,24 @@ export function Instances({sailplane, sharedFS}) {
           sharedFS={sharedFS}
         />
       ) : null}
+
       <NewDriveDialog
         isVisible={isCreateDialogVisible}
         onClose={() => setIsCreateDialogVisible(false)}
         onPrivate={() => createInstance(true)}
         onPublic={() => createInstance(false)}
       />
+
+      {isImportDialogVisible ? (
+        <ImportDriveDialog
+          sharedFS={sharedFS}
+          onClose={() => setIsImportDialogVisible(false)}
+          isVisible={isImportDialogVisible}
+          sailplane={sailplane}
+          instances={instances}
+        />
+      ) : null}
+
       <StatusBar />
     </div>
   );
