@@ -8,7 +8,7 @@ import {
   primary45,
 } from '../utils/colors';
 import {ToolItem} from './ToolItem';
-import {FiCopy, FiHardDrive, FiTrash, FiUsers} from 'react-icons/fi';
+import {FiCopy, FiHardDrive, FiTrash, FiUsers, FiEdit} from 'react-icons/fi';
 import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
 import useHover from '../hooks/useHover';
@@ -16,6 +16,7 @@ import {driveName} from '../utils/sailplane-util';
 import {MobileActionsDialog} from './MobileActionsDialog';
 import {hasMouse} from '../utils/Utils';
 import {Pill} from './Pill';
+import LabelDriveDialog from './LabelDriveDialog';
 
 export const Instance = ({
   data,
@@ -30,6 +31,7 @@ export const Instance = ({
   const dispatch = useDispatch();
   const [hoverRef, isHovered] = useHover();
   const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
+  const [isLabelDialogVisible, setIsLabelDialogVisible] = useState(false);
   const isTouchDevice = !hasMouse;
 
   let backgroundColor = selected ? primary3 : '#FFF';
@@ -71,6 +73,7 @@ export const Instance = ({
     },
     name: {
       fontSize: 16,
+      height: 24,
       lineHeight: '19px',
       display: 'flex',
       alignItems: 'center',
@@ -85,7 +88,7 @@ export const Instance = ({
     label: {
       marginLeft: 4,
       fontWeight: 600,
-    }
+    },
   };
 
   // const shareURL = `${
@@ -177,7 +180,15 @@ export const Instance = ({
               inverted={selected}
             />
             {thisDriveName}
-            {label?<span style={styles.label}> [{label}]</span>:null}
+            {label ? <span style={styles.label}> [{label}]</span> : null}
+            {isHovered && !displayOnly ? (
+              <ToolItem
+                iconComponent={FiEdit}
+                changeColor={primary}
+                tooltip={'Set nickname'}
+                onClick={() => setIsLabelDialogVisible(true)}
+              />
+            ) : null}
           </div>
           {!isTouchDevice ? (
             <div style={styles.tools}>
@@ -212,6 +223,12 @@ export const Instance = ({
           ) : null}
         </div>
       </div>
+      <LabelDriveDialog
+        isVisible={isLabelDialogVisible}
+        onClose={() => setIsLabelDialogVisible(false)}
+        instance={data}
+        instanceIndex={instanceIndex}
+      />
     </div>
   );
 };

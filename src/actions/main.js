@@ -24,6 +24,14 @@ export function setInstanceIndex(index) {
   };
 }
 
+export function setInstanceLabel(index, label) {
+  return {
+    type: main.SET_INSTANCE_LABEL,
+    index,
+    label,
+  };
+}
+
 export function removeInstance(index) {
   return {
     type: main.REMOVE_INSTANCE,

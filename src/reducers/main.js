@@ -23,6 +23,13 @@ export default function main(state = initialState, action) {
       });
     }
 
+    case mainTypes.SET_INSTANCE_LABEL: {
+      const {index, label} = action;
+      return produce(state, (draftState) => {
+        draftState.instances[index].label = label;
+      });
+    }
+
     case mainTypes.REMOVE_INSTANCE: {
       const {index} = action;
       return produce(state, (draftState) => {
