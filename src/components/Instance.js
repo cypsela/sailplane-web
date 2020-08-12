@@ -96,7 +96,7 @@ export const Instance = ({
       justifyContent: 'center',
       lineHeight: '18px',
       position: 'relative',
-      top: -2,
+      top: label ? -2 : null,
     },
   };
 
