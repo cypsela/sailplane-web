@@ -73,7 +73,7 @@ export default function LabelDriveDialog({
       title={`Set nickname for ${driveName(instance.address)}`}
       body={
         <div style={styles.body}>
-          <div style={styles.title}>Name this drive:</div>
+          <div style={styles.title}>Nickname:</div>
 
           <input
             ref={inputRef}
