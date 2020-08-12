@@ -127,13 +127,19 @@ export function LeftPanel({
               title={'Files'}
               iconComponent={FaFolderOpen}
               selected={currentRightPanel === 'files'}
-              onClick={() => setCurrentRightPanel('files')}
+              onClick={() => {
+                setIsMobileOpen(false);
+                setCurrentRightPanel('files')
+              }}
             />
             <PanelItem
               title={'Drives'}
               iconComponent={FaServer}
               selected={currentRightPanel === 'instances'}
-              onClick={() => setCurrentRightPanel('instances')}
+              onClick={() => {
+                setIsMobileOpen(false);
+                setCurrentRightPanel('instances')
+              }}
             />
 
             {/*<div style={styles.settingsBlock}>*/}
