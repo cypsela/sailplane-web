@@ -17,7 +17,6 @@ import {MobileActionsDialog} from './MobileActionsDialog';
 import {copyToClipboard, hasMouse} from '../utils/Utils';
 import {Pill} from './Pill';
 import LabelDriveDialog from './LabelDriveDialog';
-import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
 export const Instance = ({
   data,
@@ -34,7 +33,6 @@ export const Instance = ({
   const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
   const [isLabelDialogVisible, setIsLabelDialogVisible] = useState(false);
   const isTouchDevice = !hasMouse;
-  const isSmallScreen = useIsSmallScreen();
 
   let backgroundColor = selected ? primary3 : '#FFF';
 
@@ -75,7 +73,7 @@ export const Instance = ({
     },
     name: {
       fontSize: 16,
-      height: isSmallScreen ? 38 : 24,
+      height: 38,
       lineHeight: '19px',
       display: 'flex',
       alignItems: 'center',
@@ -89,13 +87,16 @@ export const Instance = ({
       fontSize: 13,
     },
     label: {
-      marginLeft: isSmallScreen ? 0 : 4,
       fontWeight: 600,
     },
     nameHolder: {
-      display: isSmallScreen ? 'block' : 'flex',
-      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
       lineHeight: '18px',
+      position: 'relative',
+      top: -2,
     },
   };
 
