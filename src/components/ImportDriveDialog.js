@@ -26,6 +26,7 @@ export default function ImportDriveDialog({
   const styles = {
     addressInput: {
       display: 'flex',
+      alignItems: 'center',
     },
     title: {
       fontSize: 16,
