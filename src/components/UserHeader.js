@@ -8,8 +8,6 @@ import {
   primary4,
   primary45,
 } from '../utils/colors';
-import {setStatus} from '../actions/tempData';
-import {useDispatch} from 'react-redux';
 import {compressKey} from '../utils/Utils';
 
 const styles = {
@@ -72,7 +70,7 @@ const styles = {
 
 export function UserHeader({sailplane, title, iconComponent, leftSide}) {
   const [myID, setMyID] = useState(null);
-  const dispatch = useDispatch();
+  const [copied, setCopied] = useState(null);
 
   useEffect(() => {
     const getID = () => {
@@ -114,16 +112,12 @@ export function UserHeader({sailplane, title, iconComponent, leftSide}) {
             <div
               onClick={async () => {
                 await navigator.clipboard.writeText(myID);
-                dispatch(
-                  setStatus({
-                    message: 'User ID copied to clipboard',
-                    isInfo: true,
-                  }),
-                );
-                setTimeout(() => dispatch(setStatus({})), 1500);
+                setCopied(true);
+
+                setTimeout(() => setCopied(false), 1500);
               }}
               style={styles.idContainer}>
-              <div style={styles.myID}>Copy ID</div>
+              <div style={styles.myID}>{copied ? 'Copied!' : 'Copy ID'}</div>
               <Jdenticon value={myID} size={'34'} style={styles.icon} />
             </div>
           </div>
