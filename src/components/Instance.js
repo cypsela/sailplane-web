@@ -116,6 +116,14 @@ export const Instance = ({
       iconComponent: FiHardDrive,
     },
     {
+      title: 'Set nickname',
+      onClick: () => {
+        setIsLabelDialogVisible(true);
+        setMobileActionsVisible(false);
+      },
+      iconComponent: FiEdit,
+    },
+    {
       title: 'Manage users',
       onClick: () => {
         onAccess();
