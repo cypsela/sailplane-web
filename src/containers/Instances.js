@@ -3,19 +3,15 @@ import {lightBorder, primary15, primary4, primary45} from '../utils/colors';
 import {Instance} from '../components/Instance';
 import {FiPlusCircle, FiUpload} from 'react-icons/fi';
 import {FaServer} from 'react-icons/fa';
-import useTextInput from '../hooks/useTextInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {addInstance, removeInstance, setInstanceIndex} from '../actions/main';
-import {setStatus} from '../actions/tempData';
 import {StatusBar} from '../components/StatusBar';
 import usePrevious from '../hooks/usePrevious';
-import {delay} from '../utils/Utils';
 import * as sailplaneUtil from '../utils/sailplane-util';
 import InstanceAccessDialog from '../components/InstanceAccessDialog';
 import {UserHeader} from '../components/UserHeader';
 import {ToolItem} from '../components/ToolItem';
 import NewDriveDialog from '../components/NewDriveDialog';
-import {addressManifest} from '../utils/sailplane-util';
 import ImportDriveDialog from '../components/ImportDriveDialog';
 
 const styles = {
@@ -30,6 +26,7 @@ const styles = {
     fontFamily: 'Open Sans',
     boxSizing: 'border-box',
     paddingTop: 6,
+    height: '100%',
   },
   toolsContainer: {
     display: 'flex',
@@ -57,6 +54,9 @@ const styles = {
     padding: 2,
     border: `1px solid ${lightBorder}`,
   },
+  instances: {
+    height: '100%',
+  }
 };
 
 export function Instances({sailplane, sharedFS}) {

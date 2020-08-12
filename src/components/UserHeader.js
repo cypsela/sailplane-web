@@ -8,7 +8,7 @@ import {
   primary4,
   primary45,
 } from '../utils/colors';
-import {compressKey} from '../utils/Utils';
+import {compressKey, copyToClipboard} from '../utils/Utils';
 
 const styles = {
   container: {
@@ -111,7 +111,7 @@ export function UserHeader({sailplane, title, iconComponent, leftSide}) {
           <div style={styles.userItem}>
             <div
               onClick={async () => {
-                await navigator.clipboard.writeText(myID);
+                await copyToClipboard(myID);
                 setCopied(true);
 
                 setTimeout(() => setCopied(false), 1500);

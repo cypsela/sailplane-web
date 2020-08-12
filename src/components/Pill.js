@@ -12,6 +12,7 @@ export function Pill({title, inverted}) {
       width: 46,
       textAlign: 'center',
       color: inverted ? primary3 : '#FFF',
+      flexShrink: 0,
     },
   };
   return <div style={styles.container}>{title}</div>;

@@ -10,10 +10,9 @@ import {
 } from 'react-icons/fi';
 import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
-import DeviceDetector from 'device-detector-js';
 import detectIt from 'detect-it';
-import * as sailplaneAccess from './sailplane-access';
 import secp256k1 from 'secp256k1';
+import * as copy from 'copy-to-clipboard';
 
 const bip39 = require('bip39');
 
@@ -347,18 +346,7 @@ export function decompressKey(compressedKey) {
     .toString('hex');
 }
 
-// export function getUserID(sharedFS) {
-//   const localUserPub = sailplaneAccess.localUserPub(sharedFS);
-//
-//   return `${sailplaneAccess.localUserId(sharedFS)}_${compressKey(
-//     localUserPub,
-//   )}`;
-// }
-//
-// export function parseUserID(userID) {
-//   const [id, pubKey] = userID ? userID.split('_') : [null, null];
-//   return {id, pubKey};
-// }
-
-// 03f5f9a830863acfec823397185dc79510aff72436c966f7ecebbdcc9782d49672_046fb35f124a204301a18937f0081e7acd263ba79008c0e4c4136a4a0c9b64b068dce68b5e0f838245fd6cb65064bbab97133c220c784a6fad7038b5b64c267c43
-//03f5f9a830863acfec823397185dc79510aff72436c966f7ecebbdcc9782d49672_036fb35f124a204301a18937f0081e7acd263ba79008c0e4c4136a4a0c9b64b068
+export async function copyToClipboard(text) {
+  copy(text);
+  // await navigator.clipboard.writeText(text);
+}

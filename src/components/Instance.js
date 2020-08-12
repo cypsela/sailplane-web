@@ -14,7 +14,7 @@ import {setStatus} from '../actions/tempData';
 import useHover from '../hooks/useHover';
 import {driveName} from '../utils/sailplane-util';
 import {MobileActionsDialog} from './MobileActionsDialog';
-import {hasMouse} from '../utils/Utils';
+import {copyToClipboard, hasMouse} from '../utils/Utils';
 import {Pill} from './Pill';
 import LabelDriveDialog from './LabelDriveDialog';
 
@@ -80,6 +80,7 @@ export const Instance = ({
     },
     icon: {
       marginRight: 4,
+      flexShrink: 0,
     },
     importedTxt: {
       marginLeft: 6,
@@ -91,12 +92,8 @@ export const Instance = ({
     },
   };
 
-  // const shareURL = `${
-  //   window.location.origin + window.location.pathname
-  // }#/importInstance/${encodeURIComponent(address)}`;
-
   const handleAddressCopy = async () => {
-    await navigator.clipboard.writeText(address);
+    await copyToClipboard(address);
     dispatch(
       setStatus({
         message: 'Drive address copied to clipboard',

@@ -3,8 +3,7 @@ import {primary, primary3, primary45} from '../utils/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {setShareData, setStatus} from '../actions/tempData';
 import {FiFile, FiImage, FiLoader, FiMusic} from 'react-icons/fi';
-// import {SegmentedControl} from './SegmentedControl';
-import {getShareTypeFromFolderFiles} from '../utils/Utils';
+import {copyToClipboard, getShareTypeFromFolderFiles} from '../utils/Utils';
 import {Dialog} from './Dialog';
 
 const styles = {
@@ -140,7 +139,7 @@ export function ShareDialog({sharedFs}) {
   }
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(url);
+    await copyToClipboard(url);
     dispatch(
       setStatus({
         message: 'Share link copied to clipboard',
