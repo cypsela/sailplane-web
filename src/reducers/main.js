@@ -10,9 +10,9 @@ const initialState = {
 export default function main(state = initialState, action) {
   switch (action.type) {
     case mainTypes.ADD_INSTANCE: {
-      const {name, address, isImported, isEncrypted} = action;
+      const {name, address, isImported, isEncrypted, label} = action;
       return produce(state, (draftState) => {
-        draftState.instances.push({name, address, isImported, isEncrypted});
+        draftState.instances.push({name, address, isImported, isEncrypted, label});
       });
     }
 

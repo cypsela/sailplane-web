@@ -60,7 +60,7 @@ const styles = {
 };
 
 export function Instances({sailplane, sharedFS}) {
-  const [isImportDialogVisible, setIsImportDialogVisible] = useState(true);
+  const [isImportDialogVisible, setIsImportDialogVisible] = useState(false);
   const [isCreateDialogVisible, setIsCreateDialogVisible] = useState(false);
   const [instanceToModifyAccess, setInstanceToModifyAccess] = useState(null);
   const dispatch = useDispatch();

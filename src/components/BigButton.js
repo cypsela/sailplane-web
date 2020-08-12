@@ -2,22 +2,32 @@ import React from 'react';
 import {primary45} from '../utils/colors';
 import useHover from '../hooks/useHover';
 
-export function BigButton({title, onClick, inverted, fullWidth}) {
+export function BigButton({
+  title,
+  onClick,
+  inverted,
+  fullWidth,
+  customFillColor,
+  customWhiteColor,
+  style,
+  noHover,
+}) {
   const [hoverRef, isHovered] = useHover();
 
+  const fillColor = customFillColor || primary45;
+  const whiteColor = customWhiteColor || '#FFF';
 
   let initialBg = null;
-  let hoverBg = primary45;
+  let hoverBg = fillColor;
 
-  let initialColor = null;
-  let hoverColor = '#FFF';
-
+  let initialColor = fillColor;
+  let hoverColor = whiteColor;
 
   if (inverted) {
-    initialBg = primary45;
+    initialBg = fillColor;
     hoverBg = null;
-    initialColor = '#FFF';
-    hoverColor = null;
+    initialColor = whiteColor;
+    hoverColor = fillColor;
   }
 
   const styles = {
@@ -25,20 +35,23 @@ export function BigButton({title, onClick, inverted, fullWidth}) {
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: fullWidth? '100%': null,
-      backgroundColor: isHovered ? hoverBg : initialBg,
-      color: isHovered ? hoverColor : initialColor,
+      width: fullWidth ? '100%' : null,
+      backgroundColor: isHovered && !noHover ? hoverBg : initialBg,
+      color: isHovered && !noHover ? hoverColor : initialColor,
       borderRadius: 4,
       padding: '6px 8px',
-      border: `1px solid ${primary45}`,
+      border: `1px solid ${fillColor}`,
       cursor: 'pointer',
       userSelect: 'none',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
     },
   };
 
   return (
-    <div ref={hoverRef} style={styles.container} onClick={onClick}>
+    <div
+      ref={hoverRef}
+      style={{...styles.container, ...style}}
+      onClick={onClick}>
       {title}
     </div>
   );

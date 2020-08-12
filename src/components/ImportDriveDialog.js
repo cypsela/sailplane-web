@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Dialog} from './Dialog';
-import {primary15, primary45} from '../utils/colors';
+import {primary, primary15, primary3, primary45} from '../utils/colors';
 import * as sailplaneUtil from '../utils/sailplane-util';
 import {addressManifest} from '../utils/sailplane-util';
 import {addInstance} from '../actions/main';
@@ -8,6 +8,8 @@ import useTextInput from '../hooks/useTextInput';
 import {useDispatch} from 'react-redux';
 import Well from './Well';
 import {FiLoader} from 'react-icons/fi';
+import {Instance} from './Instance';
+import {BigButton} from './BigButton';
 
 export default function ImportDriveDialog({
   onClose,
@@ -18,6 +20,8 @@ export default function ImportDriveDialog({
   const dispatch = useDispatch();
   const [isAddressSet, setIsAddressSet] = useState(false);
   const [error, setError] = useState(null);
+  const [nickname, setNickname] = useState('');
+  const [driveData, setDriveData] = useState(null);
 
   const styles = {
     addressInput: {
@@ -36,11 +40,41 @@ export default function ImportDriveDialog({
     icon: {
       marginLeft: 4,
     },
+    confirmBlock: {
+      marginTop: 14,
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    cancel: {
+      marginRight: 8,
+    },
+    labelTitle: {
+      marginTop: 12,
+      marginBottom: 4,
+    },
+    optional: {
+      position: 'relative',
+      top: -8,
+      left: 4,
+      fontSize: 13,
+    },
+    input: {
+      border: `1px solid ${primary3}`,
+      borderRadius: 4,
+      color: primary,
+      fontSize: 14,
+      fontWeight: 200,
+      padding: 4,
+      marginRight: 4,
+      display: 'inline-flex',
+      width: '100%',
+      boxSizing: 'border-box',
+    },
   };
 
   const ImportInstanceInput = useTextInput(
     !isAddressSet,
-    (instanceAddress) => importInstance(instanceAddress),
+    (instanceAddress) => getManifest(instanceAddress),
     null,
     '',
     {
@@ -53,27 +87,42 @@ export default function ImportDriveDialog({
     return null;
   }
 
-  const importInstance = async (address) => {
+  const importInstance = async () => {
+    const {address, manifest} = driveData;
+    const driveName = sailplaneUtil.driveName(address);
+
+    dispatch(
+      addInstance(
+        driveName,
+        address,
+        true,
+        manifest.meta.enc === true,
+        nickname,
+      ),
+    );
+
+    onClose();
+  };
+
+  const getManifest = async (address) => {
     const handleInvalidAddress = () => {
       setError('Invalid address!');
     };
+
     if (await sailplaneUtil.addressValid(sailplane, address)) {
       setIsAddressSet(true);
 
-      const driveName = sailplaneUtil.driveName(address);
-      const manifest = await addressManifest(sailplane, address);
-
       if (instances.map((s) => s.address).includes(address)) {
+        const driveName = sailplaneUtil.driveName(address);
+
         setError(`Drive '${driveName}' already exists!`);
         setIsAddressSet(false);
         return;
       }
 
-      dispatch(
-        addInstance(driveName, address, true, manifest.meta.enc === true),
-      );
+      const manifest = await addressManifest(sailplane, address);
 
-      onClose();
+      setDriveData({address, manifest});
     } else {
       handleInvalidAddress();
     }
@@ -98,7 +147,7 @@ export default function ImportDriveDialog({
                 {!isAddressSet ? ImportInstanceInput : null}
               </div>
             </div>
-          ) : (
+          ) : !driveData ? (
             <div style={styles.loading}>
               Looking for drive
               <FiLoader
@@ -107,6 +156,51 @@ export default function ImportDriveDialog({
                 style={styles.icon}
                 className={'rotating'}
               />
+            </div>
+          ) : (
+            <div>
+              <div style={styles.title}>Drive has been located!</div>
+              <div style={styles.loadedDrive}>
+                <Instance
+                  displayOnly={true}
+                  selected={true}
+                  data={{
+                    address: driveData.address,
+                    isEncrypted: driveData.manifest.meta?.enc,
+                  }}
+                />
+              </div>
+
+              <div style={{...styles.title, ...styles.labelTitle}}>
+                Nickname
+                <span style={styles.optional}>(optional)</span>
+              </div>
+
+              <input
+                type={'text'}
+                onChange={(event) => setNickname(event.target.value)}
+                autoCorrect={'off'}
+                style={styles.input}
+                placeholder={`(ex: Work sketches)`}
+                className={'textInput'}
+              />
+
+              <div style={styles.confirmBlock}>
+                <BigButton
+                  title={'Cancel'}
+                  inverted={false}
+                  noHover={true}
+                  customWhiteColor={primary15}
+                  style={styles.cancel}
+                  onClick={onClose}
+                />
+                <BigButton
+                  title={'Confirm'}
+                  onClick={importInstance}
+                  inverted={true}
+                  customWhiteColor={primary15}
+                />
+              </div>
             </div>
           )}
         </div>

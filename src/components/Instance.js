@@ -24,8 +24,9 @@ export const Instance = ({
   onDelete,
   instanceIndex,
   onAccess,
+  displayOnly,
 }) => {
-  const {address, isEncrypted} = data;
+  const {address, isEncrypted, label} = data;
   const dispatch = useDispatch();
   const [hoverRef, isHovered] = useHover();
   const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
@@ -65,7 +66,7 @@ export const Instance = ({
       whiteSpace: 'nowrap',
     },
     tools: {
-      display: 'flex',
+      display: displayOnly ? 'none' : 'flex',
       justifyContent: 'flex-end',
     },
     name: {
@@ -81,6 +82,10 @@ export const Instance = ({
       marginLeft: 6,
       fontSize: 13,
     },
+    label: {
+      marginLeft: 4,
+      fontWeight: 600,
+    }
   };
 
   // const shareURL = `${
@@ -172,6 +177,7 @@ export const Instance = ({
               inverted={selected}
             />
             {thisDriveName}
+            {label?<span style={styles.label}> [{label}]</span>:null}
           </div>
           {!isTouchDevice ? (
             <div style={styles.tools}>
@@ -184,23 +190,6 @@ export const Instance = ({
                 onClick={() => onAccess()}
                 tooltip={'Manage users'}
               />
-              {/*<ToolItem*/}
-              {/*  className={'instanceURLCopy'}*/}
-              {/*  defaultColor={iconColor}*/}
-              {/*  iconComponent={FiShare2}*/}
-              {/*  size={15}*/}
-              {/*  changeColor={primary}*/}
-              {/*  onClick={async () => {*/}
-              {/*    await navigator.clipboard.writeText(shareURL);*/}
-              {/*    dispatch(*/}
-              {/*      setStatus({*/}
-              {/*        message: 'Drive URL copied to clipboard',*/}
-              {/*        isInfo: true,*/}
-              {/*      }),*/}
-              {/*    );*/}
-              {/*    setTimeout(() => dispatch(setStatus({})), 1500);*/}
-              {/*  }}*/}
-              {/*/>*/}
               <ToolItem
                 className={'instanceAddressCopy'}
                 defaultColor={iconColor}
