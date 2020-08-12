@@ -94,6 +94,8 @@ export const Instance = ({
     },
     nameHolder: {
       display: isSmallScreen ? 'block' : 'flex',
+      alignItems: 'center',
+      lineHeight: '18px',
     },
   };
 
