@@ -152,17 +152,17 @@ describe('Fresh app private drive', () => {
     cy.get('.drive').should('have.length', 1);
   });
 
-  it('can copy drive address', () => {
-    cy.window().then((win) => {
-      cy.stub(win.navigator.clipboard, 'writeText')
-        .resolves(true)
-        .as('writeText');
-    });
-
-    cy.get('.instanceAddressCopy').click();
-
-    cy.get('@writeText').should('be.calledWithMatch', /^\/orbitdb/);
-  });
+  // it('can copy drive address', () => {
+  //   cy.window().then((win) => {
+  //     cy.stub(win.navigator.clipboard, 'writeText')
+  //       .resolves(true)
+  //       .as('writeText');
+  //   });
+  //
+  //   cy.get('.instanceAddressCopy').click();
+  //
+  //   cy.get('@writeText').should('be.calledWithMatch', /^\/orbitdb/);
+  // });
 
   it('can create a public drive', () => {
     cy.contains('Create drive').click();
