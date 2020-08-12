@@ -1,11 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import * as sailplaneAccess from '../utils/sailplane-access';
 import Jdenticon from 'react-jdenticon';
-import {primary2, primary3, primary45} from '../utils/colors';
-import {SmallInstanceItem} from './SmallInstanceItem';
+import {
+  cleanBorder,
+  primary15,
+  primary2,
+  primary3,
+  primary4,
+  primary45,
+} from '../utils/colors';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
-import {FaServer} from 'react-icons/fa';
 import {compressKey} from '../utils/Utils';
 
 const styles = {
@@ -31,16 +35,6 @@ const styles = {
   icon: {
     marginLeft: 2,
   },
-  menu: {
-    position: 'absolute',
-    top: 34,
-    backgroundColor: '#FFF',
-    minWidth: 100,
-    right: 0,
-    border: `1px solid ${primary3}`,
-    fontSize: 14,
-    zIndex: 2,
-  },
   leftSide: {
     display: 'flex',
     alignItems: 'center',
@@ -56,11 +50,28 @@ const styles = {
   headerIcon: {
     marginRight: 4,
   },
+  myID: {
+    fontSize: 12,
+    marginRight: 4,
+    color: primary4,
+  },
+  idContainer: {
+    cursor: 'pointer',
+    borderRadius: 4,
+    border: cleanBorder,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+    backgroundColor: primary15,
+    marginBottom: 4,
+    userSelect: 'none',
+  },
 };
 
 export function UserHeader({sailplane, title, iconComponent, leftSide}) {
   const [myID, setMyID] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -100,27 +111,21 @@ export function UserHeader({sailplane, title, iconComponent, leftSide}) {
       <div style={styles.right}>
         {myID ? (
           <div style={styles.userItem}>
-            <div onClick={() => setMenuOpen(!menuOpen)}>
+            <div
+              onClick={async () => {
+                await navigator.clipboard.writeText(myID);
+                dispatch(
+                  setStatus({
+                    message: 'User ID copied to clipboard',
+                    isInfo: true,
+                  }),
+                );
+                setTimeout(() => dispatch(setStatus({})), 1500);
+              }}
+              style={styles.idContainer}>
+              <div style={styles.myID}>Copy ID</div>
               <Jdenticon value={myID} size={'34'} style={styles.icon} />
             </div>
-            {menuOpen ? (
-              <div style={styles.menu}>
-                <SmallInstanceItem
-                  name={'Copy user ID'}
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(myID);
-                    setMenuOpen(false);
-                    dispatch(
-                      setStatus({
-                        message: 'User ID copied to clipboard',
-                        isInfo: true,
-                      }),
-                    );
-                    setTimeout(() => dispatch(setStatus({})), 1500);
-                  }}
-                />
-              </div>
-            ) : null}
           </div>
         ) : null}
       </div>
