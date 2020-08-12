@@ -17,6 +17,7 @@ import {MobileActionsDialog} from './MobileActionsDialog';
 import {copyToClipboard, hasMouse} from '../utils/Utils';
 import {Pill} from './Pill';
 import LabelDriveDialog from './LabelDriveDialog';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
 export const Instance = ({
   data,
@@ -33,6 +34,7 @@ export const Instance = ({
   const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
   const [isLabelDialogVisible, setIsLabelDialogVisible] = useState(false);
   const isTouchDevice = !hasMouse;
+  const isSmallScreen = useIsSmallScreen();
 
   let backgroundColor = selected ? primary3 : '#FFF';
 
@@ -73,7 +75,7 @@ export const Instance = ({
     },
     name: {
       fontSize: 16,
-      height: 24,
+      height: isSmallScreen ? 38 : 24,
       lineHeight: '19px',
       display: 'flex',
       alignItems: 'center',
@@ -87,8 +89,11 @@ export const Instance = ({
       fontSize: 13,
     },
     label: {
-      marginLeft: 4,
+      marginLeft: isSmallScreen ? 0 : 4,
       fontWeight: 600,
+    },
+    nameHolder: {
+      display: isSmallScreen ? 'block' : 'flex',
     },
   };
 
@@ -184,8 +189,10 @@ export const Instance = ({
               title={isEncrypted ? 'private' : 'public'}
               inverted={selected}
             />
-            {thisDriveName}
-            {label ? <span style={styles.label}> [{label}]</span> : null}
+            <div style={styles.nameHolder}>
+              {thisDriveName}
+              {label ? <div style={styles.label}>[{label}]</div> : null}
+            </div>
             {isHovered && !displayOnly && !isTouchDevice ? (
               <ToolItem
                 iconComponent={FiEdit}
