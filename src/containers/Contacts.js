@@ -3,13 +3,13 @@ import {UserHeader} from '../components/UserHeader';
 import {FaAddressBook} from 'react-icons/fa';
 import {ToolItem} from '../components/ToolItem';
 import {lightBorder, primary15, primary4, primary45} from '../utils/colors';
-import {FiPlusCircle} from 'react-icons/fi/index';
+import {FiPlusCircle} from 'react-icons/fi';
 import Contact from '../components/Contact';
 import {compressKey} from '../utils/Utils';
 import * as sailplaneAccess from '../utils/sailplane-access';
 import AddContactDialog from '../components/AddContactDialog';
 import {useSelector} from 'react-redux';
-import {StatusBar} from "../components/StatusBar";
+import {StatusBar} from '../components/StatusBar';
 
 const styles = {
   container: {
@@ -87,8 +87,8 @@ export function Contacts({sailplane, sharedFS}) {
 
       <div style={styles.contacts}>
         <Contact pubKey={myID} myID={myID} key={'myid'} />
-        {contacts.map((contact) => (
-          <Contact pubKey={contact.pubKey} label={contact.label} />
+        {contacts.map((contact, index) => (
+          <Contact key={index} pubKey={contact.pubKey} label={contact.label} />
         ))}
       </div>
 
@@ -96,6 +96,7 @@ export function Contacts({sailplane, sharedFS}) {
         isVisible={isAddContactDialogVisible}
         onClose={() => setIsAddContactDialogVisible(false)}
       />
+
       <StatusBar />
     </div>
   );

@@ -13,7 +13,14 @@ import useHover from '../hooks/useHover';
 import {copyToClipboard, notify} from '../utils/Utils';
 import {useDispatch} from 'react-redux';
 
-export default function Contact({pubKey, myID, selected, label}) {
+export default function Contact({
+  pubKey,
+  myID,
+  selected,
+  label,
+  hideTools,
+  onClick,
+}) {
   const iconColor = selected ? '#FFF' : primary45;
   const [hoverRef, isHovered] = useHover();
   const dispatch = useDispatch();
@@ -41,6 +48,9 @@ export default function Contact({pubKey, myID, selected, label}) {
       justifyContent: 'flex-start',
       alignItems: 'center',
     },
+    right: {
+      display: hideTools ? 'none' : 'block',
+    },
     iconHolder: {
       marginRight: 8,
     },
@@ -54,8 +64,8 @@ export default function Contact({pubKey, myID, selected, label}) {
   };
 
   return (
-    <div style={styles.outer}>
-      <div style={styles.userBlock} ref={hoverRef}>
+    <div style={styles.outer} ref={hoverRef} onClick={onClick ? onClick : null}>
+      <div style={styles.userBlock}>
         <div style={styles.left}>
           <div style={styles.iconHolder}>
             <Jdenticon value={pubKey} size={'34'} style={styles.icon} />

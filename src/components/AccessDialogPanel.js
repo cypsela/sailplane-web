@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {ToolItem} from './ToolItem';
-import {FiPlusCircle} from 'react-icons/fi/index';
+import {FiPlusCircle} from 'react-icons/fi';
+import {FaRegAddressBook} from 'react-icons/fa';
 import {cleanBorder, primary15, primary4, primary45} from '../utils/colors';
 import UserItem from './UserItem';
 import useTextInput from '../hooks/useTextInput';
 import {capitalize} from '../utils/Utils';
+import ContactModal from './ContactModal';
 
 const styles = {
   adminTools: {
@@ -56,6 +58,7 @@ export default function AccessDialogPanel({
   message,
 }) {
   const [addMode, setAddMode] = useState(false);
+  const [isContactModalVisible, setIsContactModalVisible] = useState(false);
 
   const AddUserInput = useTextInput(
     addMode,
@@ -68,6 +71,8 @@ export default function AccessDialogPanel({
     {
       placeholder: 'user id',
       confirmTitle: `Add ${type}`,
+      inputIconComponent: FaRegAddressBook,
+      onInputIconClick: ()=> setIsContactModalVisible(true)
     },
   );
 
@@ -116,6 +121,10 @@ export default function AccessDialogPanel({
           )}
         </div>
       </div>
+      <ContactModal
+        isVisible={isContactModalVisible}
+        onClose={() => setIsContactModalVisible(false)}
+      />
     </div>
   );
 }
