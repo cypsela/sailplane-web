@@ -43,6 +43,7 @@ export function Dialog({
             color={'#FFF'}
             size={16}
             style={styles.xIcon}
+            className={'dialogClose'}
             onClick={onClose}
           />
         </div>

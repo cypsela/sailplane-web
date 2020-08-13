@@ -46,6 +46,7 @@
     "e2e": "cypress open",
     "coverage": "rm -rf coverage && cypress run && open coverage/lcov-report/index.html",
     "build": "react-app-rewired build",
+    "report": "open coverage/lcov-report/index.html",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "reset-homepage": "json -I -f package.json -e 'this.homepage=\".\"'",
