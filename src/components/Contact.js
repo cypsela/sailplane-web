@@ -13,6 +13,7 @@ import useHover from '../hooks/useHover';
 import {copyToClipboard, notify} from '../utils/Utils';
 import {useDispatch} from 'react-redux';
 import {deleteContact} from '../actions/main';
+import {useIsSmallScreen} from "../hooks/useIsSmallScreen";
 
 export default function Contact({
   pubKey,
@@ -25,6 +26,7 @@ export default function Contact({
   const iconColor = selected ? '#FFF' : primary45;
   const [hoverRef, isHovered] = useHover();
   const dispatch = useDispatch();
+  const isSmallScreen = useIsSmallScreen();
 
   const styles = {
     outer: {
@@ -77,7 +79,7 @@ export default function Contact({
                 {myID === pubKey ? 'You' : label ? label : 'Unnamed'}
               </span>
             </div>
-            <div style={styles.key}>{pubKey} </div>
+            <div style={styles.key}>{isSmallScreen?pubKey.substr(0,20) + '...':pubKey}</div>
           </div>
         </div>
         <div style={styles.right}>
