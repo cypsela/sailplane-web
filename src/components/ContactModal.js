@@ -23,20 +23,21 @@ export default function ContactModal({isVisible, onClose, onSelected}) {
       title={'Contacts'}
       body={
         <div style={styles.container}>
-          {/*<div style={styles.title}>Contacts</div>*/}
-          {contacts
-            ? contacts.map((contact) => (
-                <Contact
-                  onClick={() => {
-                    onSelected(contact.pubKey);
-                    onClose();
-                  }}
-                  label={contact.label}
-                  pubKey={contact.pubKey}
-                  hideTools={true}
-                />
-              ))
-            : null}
+          {contacts?.length ? (
+            contacts.map((contact) => (
+              <Contact
+                onClick={() => {
+                  onSelected(contact.pubKey);
+                  onClose();
+                }}
+                label={contact.label}
+                pubKey={contact.pubKey}
+                hideTools={true}
+              />
+            ))
+          ) : (
+            <div>No contacts!</div>
+          )}
         </div>
       }
     />
