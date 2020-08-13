@@ -15,7 +15,7 @@ export function SmallInstanceItem({data, onClick}) {
       padding: '6px 6px',
       display: 'flex',
       alignItems: 'center',
-      minWidth: name.length * 7.5,
+      minWidth: name.length * 9,
       zIndex: 200,
     },
     icon: {
