@@ -9,6 +9,7 @@ export const main = {
   CLEAR_ENCRYPTION_KEY: 'CLEAR_ENCRYPTION_KEY',
   SET_NEW_USER: 'SET_NEW_USER',
   ADD_CONTACT: 'ADD_CONTACT',
+  DELETE_CONTACT: 'DELETE_CONTACT',
 };
 
 // tempData actions

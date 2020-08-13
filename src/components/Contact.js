@@ -12,6 +12,7 @@ import {ToolItem} from './ToolItem';
 import useHover from '../hooks/useHover';
 import {copyToClipboard, notify} from '../utils/Utils';
 import {useDispatch} from 'react-redux';
+import {deleteContact} from '../actions/main';
 
 export default function Contact({
   pubKey,
@@ -92,15 +93,19 @@ export default function Contact({
               notify('Contact user ID copied!', dispatch);
             }}
           />
-          <ToolItem
-            className={'contactDelete'}
-            defaultColor={iconColor}
-            iconComponent={FiTrash}
-            tooltip={'Delete'}
-            size={15}
-            changeColor={errorColor}
-            // onClick={() => onDelete()}
-          />
+          {myID !== pubKey ? (
+            <ToolItem
+              className={'contactDelete'}
+              defaultColor={iconColor}
+              iconComponent={FiTrash}
+              tooltip={'Delete'}
+              size={15}
+              changeColor={errorColor}
+              onClick={() => {
+                dispatch(deleteContact(pubKey));
+              }}
+            />
+          ) : null}
         </div>
       </div>
     </div>

@@ -72,7 +72,7 @@ export default function AccessDialogPanel({
       placeholder: 'user id',
       confirmTitle: `Add ${type}`,
       inputIconComponent: FaRegAddressBook,
-      onInputIconClick: ()=> setIsContactModalVisible(true)
+      onInputIconClick: () => setIsContactModalVisible(true),
     },
   );
 
@@ -124,6 +124,10 @@ export default function AccessDialogPanel({
       <ContactModal
         isVisible={isContactModalVisible}
         onClose={() => setIsContactModalVisible(false)}
+        onSelected={async (userID) => {
+          await addUser(userID);
+          setAddMode(false);
+        }}
       />
     </div>
   );

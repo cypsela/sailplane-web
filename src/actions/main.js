@@ -19,6 +19,13 @@ export function addContact(pubKey, label) {
   };
 }
 
+export function deleteContact(pubKey) {
+  return {
+    type: main.DELETE_CONTACT,
+    pubKey,
+  };
+}
+
 export function clearEncryptionKey() {
   return {
     type: main.CLEAR_ENCRYPTION_KEY,
