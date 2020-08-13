@@ -178,7 +178,7 @@ export const Instance = ({
             <FiHardDrive
               className={'shareIcon'}
               color={iconColor}
-              size={15}
+              size={18}
               style={styles.icon}
             />
             <Pill
