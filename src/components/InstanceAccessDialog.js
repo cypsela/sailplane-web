@@ -21,46 +21,8 @@ export default function InstanceAccessDialog({
   const [lastUpdate, setLastUpdate] = useState(null);
 
   const styles = {
-    adminTools: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-    },
-    messageText: {
-      color: primary45,
-      textAlign: 'center',
-      marginBottom: 4,
-    },
     body: {
       color: primary45,
-    },
-    panel: {
-      borderRadius: 4,
-      marginBottom: 8,
-      border: cleanBorder,
-      boxSizing: 'border-box',
-    },
-    panelTitle: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      fontSize: 15,
-      lineHeight: '15px',
-      marginBottom: 4,
-      textAlign: 'center',
-      backgroundColor: primary15,
-      color: primary4,
-      padding: 4,
-      height: 20,
-    },
-    panelBody: {
-      padding: 6,
-    },
-    third: {
-      width: '33.3%',
-      display: 'flex',
-      alignItems: 'center',
-      textAlign: 'center',
-      justifyContent: 'center',
     },
   };
 
@@ -138,25 +100,12 @@ export default function InstanceAccessDialog({
           </Well>
           {error ? <Well isError={true}>{error}</Well> : null}
           <div style={styles.panels}>
-            <div style={styles.panel} id={'adminPanel'}>
-              <div style={styles.panelTitle}>
-                <div style={styles.third} />
-                <div style={styles.third}>Admins</div>
-                <div
-                  style={{
-                    ...styles.adminTools,
-                    ...styles.third,
-                    justifyContent: 'flex-end',
-                    width: '30%',
-                  }}
-                />
-              </div>
-              <div style={styles.panelBody}>
-                {admins.map((admin) => (
-                  <UserItem key={admin} pubKey={admin} myID={myID} />
-                ))}
-              </div>
-            </div>
+            <AccessDialogPanel
+              myID={myID}
+              admins={admins}
+              users={admins}
+              type={'admin'}
+            />
 
             <AccessDialogPanel
               myID={myID}

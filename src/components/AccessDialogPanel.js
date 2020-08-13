@@ -86,7 +86,7 @@ export default function AccessDialogPanel({
             justifyContent: 'flex-end',
             width: addMode ? '100%' : '30%',
           }}>
-          {!addMode && admins.includes(myID) ? (
+          {!addMode && admins.includes(myID) && addUser ? (
             <>
               <ToolItem
                 iconComponent={FiPlusCircle}
