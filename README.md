@@ -1,6 +1,6 @@
 ### ⛵✈🕸
 # sailplane-web
-web app for shared folders and files
+Collaborative p2p file sharing in the browser
 
 [![homepage](./imgs/homepage.png?raw=true)](https://cypsela.github.io/sailplane-web/)
 
