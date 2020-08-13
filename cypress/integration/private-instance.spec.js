@@ -85,7 +85,6 @@ describe('Private drive management', () => {
     input.type('notapublickey');
     cy.contains('Add writer').click();
     cy.contains('Invalid user ID!');
-    cy.contains('Cancel').click();
   });
 
   it('should add valid writer key', () => {
@@ -104,7 +103,6 @@ describe('Private drive management', () => {
     input.type('notapublickey');
     cy.contains('Add reader').click();
     cy.contains('Invalid user ID!');
-    cy.contains('Cancel').click();
   });
 
   it('should add valid reader key', () => {
