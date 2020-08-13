@@ -192,6 +192,7 @@ export const Instance = ({
             {isHovered && !displayOnly && !isTouchDevice ? (
               <ToolItem
                 iconComponent={FiEdit}
+                defaultColor={isHovered && selected ? '#FFF' : primary45}
                 changeColor={primary}
                 tooltip={'Set nickname'}
                 onClick={() => setIsLabelDialogVisible(true)}
