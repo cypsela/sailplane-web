@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {driveName} from '../utils/sailplane-util';
 import {Dialog} from './Dialog';
 import * as sailplaneAccess from '../utils/sailplane-access';
-import {cleanBorder, primary15, primary4, primary45} from '../utils/colors';
+import {primary45} from '../utils/colors';
 import {compressKey, decompressKey} from '../utils/Utils';
-import UserItem from './UserItem';
 import Well from './Well';
 import AccessDialogPanel from './AccessDialogPanel';
 
@@ -98,7 +97,9 @@ export default function InstanceAccessDialog({
               ? 'You are a writer on this drive.'
               : 'You have read access only.'}
           </Well>
+
           {error ? <Well isError={true}>{error}</Well> : null}
+
           <div style={styles.panels}>
             <AccessDialogPanel
               myID={myID}
