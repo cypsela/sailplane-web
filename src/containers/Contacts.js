@@ -87,9 +87,15 @@ export function Contacts({sailplane, sharedFS}) {
 
       <div style={styles.contacts}>
         <Contact pubKey={myID} myID={myID} key={'myid'} />
-        {contacts.map((contact, index) => (
-          <Contact key={index} pubKey={contact.pubKey} label={contact.label} />
-        ))}
+        {contacts
+          ? contacts.map((contact, index) => (
+              <Contact
+                key={index}
+                pubKey={contact.pubKey}
+                label={contact.label}
+              />
+            ))
+          : null}
       </div>
 
       <AddContactDialog

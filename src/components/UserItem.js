@@ -5,7 +5,9 @@ import {useSelector} from 'react-redux';
 
 export default function UserItem({pubKey, myID}) {
   const contacts = useSelector((state) => state.main.contacts);
-  const matchingContact = contacts.find((contact) => contact.pubKey === pubKey);
+  const matchingContact = contacts?.find(
+    (contact) => contact.pubKey === pubKey,
+  );
 
   const styles = {
     userBlock: {
@@ -49,7 +51,11 @@ export default function UserItem({pubKey, myID}) {
           <div>
             {pubKey.slice(0, 10)}{' '}
             {myID === pubKey ? <span style={styles.youText}>[You]</span> : ''}
-            {matchingContact?.label ? <span style={styles.youText}>[{matchingContact.label}]</span> : ''}
+            {matchingContact?.label ? (
+              <span style={styles.youText}>[{matchingContact.label}]</span>
+            ) : (
+              ''
+            )}
           </div>
         </div>
       </div>
