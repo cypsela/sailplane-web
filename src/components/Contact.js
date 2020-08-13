@@ -1,18 +1,30 @@
 import Jdenticon from 'react-jdenticon';
 import React from 'react';
-import {errorColor, primary, primary2, primary4, primary45} from '../utils/colors';
+import {
+  errorColor,
+  primary,
+  primary2,
+  primary4,
+  primary45,
+} from '../utils/colors';
 import {FiTrash, FiCopy} from 'react-icons/fi/index';
 import {ToolItem} from './ToolItem';
-import useHover from "../hooks/useHover";
+import useHover from '../hooks/useHover';
+import {copyToClipboard, notify} from '../utils/Utils';
+import {useDispatch} from 'react-redux';
 
 export default function Contact({pubKey, myID, selected, label}) {
   const iconColor = selected ? '#FFF' : primary45;
   const [hoverRef, isHovered] = useHover();
-
+  const dispatch = useDispatch();
 
   const styles = {
+    outer: {
+      paddingTop: 4,
+      paddingBottom: 4,
+    },
     userBlock: {
-      backgroundColor: isHovered? primary2: '#FFF',
+      backgroundColor: isHovered ? primary2 : '#FFF',
       color: primary4,
       fontSize: 18,
       fontFamily: 'Open Sans',
@@ -20,9 +32,9 @@ export default function Contact({pubKey, myID, selected, label}) {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: 4,
+      padding: 8,
       borderRadius: 4,
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     left: {
       display: 'flex',
@@ -42,37 +54,44 @@ export default function Contact({pubKey, myID, selected, label}) {
   };
 
   return (
-    <div style={styles.userBlock} ref={hoverRef}>
-      <div style={styles.left}>
-        <div style={styles.iconHolder}>
-          <Jdenticon value={pubKey} size={'34'} style={styles.icon} />
-        </div>
-        <div style={styles.adminNameHolder}>
-          <div>
-            <span style={styles.youText}>{myID === pubKey ? 'You' : label?label: 'Unnamed'}</span>
+    <div style={styles.outer}>
+      <div style={styles.userBlock} ref={hoverRef}>
+        <div style={styles.left}>
+          <div style={styles.iconHolder}>
+            <Jdenticon value={pubKey} size={'34'} style={styles.icon} />
           </div>
-          <div style={styles.key}>{pubKey} </div>
+          <div style={styles.adminNameHolder}>
+            <div>
+              <span style={styles.youText}>
+                {myID === pubKey ? 'You' : label ? label : 'Unnamed'}
+              </span>
+            </div>
+            <div style={styles.key}>{pubKey} </div>
+          </div>
         </div>
-      </div>
-      <div style={styles.right}>
-        <ToolItem
-          className={'contactCopy'}
-          defaultColor={iconColor}
-          iconComponent={FiCopy}
-          tooltip={'Copy'}
-          size={15}
-          changeColor={primary}
-          // onClick={() => onDelete()}
-        />
-        <ToolItem
-          className={'contactDelete'}
-          defaultColor={iconColor}
-          iconComponent={FiTrash}
-          tooltip={'Delete'}
-          size={15}
-          changeColor={errorColor}
-          // onClick={() => onDelete()}
-        />
+        <div style={styles.right}>
+          <ToolItem
+            className={'contactCopy'}
+            defaultColor={iconColor}
+            iconComponent={FiCopy}
+            tooltip={'Copy'}
+            size={15}
+            changeColor={primary}
+            onClick={() => {
+              copyToClipboard(pubKey);
+              notify('Contact user ID copied!', dispatch);
+            }}
+          />
+          <ToolItem
+            className={'contactDelete'}
+            defaultColor={iconColor}
+            iconComponent={FiTrash}
+            tooltip={'Delete'}
+            size={15}
+            changeColor={errorColor}
+            // onClick={() => onDelete()}
+          />
+        </div>
       </div>
     </div>
   );

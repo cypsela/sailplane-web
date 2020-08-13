@@ -1,15 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {UserHeader} from '../components/UserHeader';
 import {FaAddressBook} from 'react-icons/fa';
 import {ToolItem} from '../components/ToolItem';
 import {lightBorder, primary15, primary4, primary45} from '../utils/colors';
 import {FiPlusCircle} from 'react-icons/fi/index';
 import Contact from '../components/Contact';
-import {compressKey} from "../utils/Utils";
-import * as sailplaneAccess from "../utils/sailplane-access";
+import {compressKey} from '../utils/Utils';
+import * as sailplaneAccess from '../utils/sailplane-access';
+import AddContactDialog from '../components/AddContactDialog';
+import {useSelector} from 'react-redux';
+import {StatusBar} from "../components/StatusBar";
 
 const styles = {
   container: {
+    position: 'relative',
     padding: 10,
     paddingTop: 6,
     backgroundColor: '#FFF',
@@ -44,11 +48,19 @@ const styles = {
   },
   contacts: {
     marginTop: 8,
-  }
+  },
 };
 
 export function Contacts({sailplane, sharedFS}) {
-  let myID = compressKey(sailplaneAccess.localUserPub(sharedFS.current));
+  const contacts = useSelector((state) => state.main.contacts);
+
+  const myID = sharedFS.current?.running
+    ? compressKey(sailplaneAccess.localUserPub(sharedFS.current))
+    : null;
+
+  const [isAddContactDialogVisible, setIsAddContactDialogVisible] = useState(
+    false,
+  );
 
   return (
     <div style={styles.container}>
@@ -67,15 +79,24 @@ export function Contacts({sailplane, sharedFS}) {
               changeColor={primary4}
               iconComponent={FiPlusCircle}
               title={'Add contact'}
-              // onClick={() => setIsCreateDialogVisible(true)}
+              onClick={() => setIsAddContactDialogVisible(true)}
             />
           </>
         </div>
       </div>
 
       <div style={styles.contacts}>
-        <Contact pubKey={myID} myID={myID}/>
+        <Contact pubKey={myID} myID={myID} key={'myid'} />
+        {contacts.map((contact) => (
+          <Contact pubKey={contact.pubKey} label={contact.label} />
+        ))}
       </div>
+
+      <AddContactDialog
+        isVisible={isAddContactDialogVisible}
+        onClose={() => setIsAddContactDialogVisible(false)}
+      />
+      <StatusBar />
     </div>
   );
 }

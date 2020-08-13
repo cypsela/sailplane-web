@@ -3,6 +3,7 @@ import produce from 'immer';
 
 const initialState = {
   instances: [],
+  contacts: [],
   instanceIndex: 0,
   newUser: true,
 };
@@ -20,6 +21,17 @@ export default function main(state = initialState, action) {
       const {index} = action;
       return produce(state, (draftState) => {
         draftState.instanceIndex = Math.max(0, index);
+      });
+    }
+
+    case mainTypes.ADD_CONTACT: {
+      const {label, pubKey} = action;
+      return produce(state, (draftState) => {
+        if (!draftState.contacts) {
+          draftState.contacts = [];
+        }
+
+        draftState.contacts.push({label, pubKey});
       });
     }
 

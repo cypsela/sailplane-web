@@ -11,6 +11,14 @@ export function addInstance(name, address, isImported, isEncrypted, label) {
   };
 }
 
+export function addContact(pubKey, label) {
+  return {
+    type: main.ADD_CONTACT,
+    label,
+    pubKey,
+  };
+}
+
 export function clearEncryptionKey() {
   return {
     type: main.CLEAR_ENCRYPTION_KEY,
@@ -43,5 +51,5 @@ export function setNewUser(bool) {
   return {
     type: main.SET_NEW_USER,
     bool,
-  }
+  };
 }
