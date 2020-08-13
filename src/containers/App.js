@@ -10,6 +10,7 @@ import * as sailplaneUtil from '../utils/sailplane-util';
 import {LoadingRightBlock} from '../components/LoadingRightBlock';
 import {hot} from 'react-hot-loader';
 import {Settings} from './Settings';
+import {Contacts} from './Contacts';
 import {Instances} from './Instances';
 import {useDispatch, useSelector} from 'react-redux';
 import {addInstance, setNewUser} from '../actions/main';
@@ -195,6 +196,8 @@ function App({}) {
       );
     } else if (currentRightPanel === 'settings') {
       return <Settings sharedFS={sharedFS} />;
+    } else if (currentRightPanel === 'contacts') {
+      return <Contacts sharedFS={sharedFS} sailplane={sailplaneRef.current} />;
     } else if (currentRightPanel === 'instances') {
       return (
         <Instances
@@ -207,16 +210,13 @@ function App({}) {
   };
 
   const handleNewUser = () => {
-    dispatch(setNewUser(false))
-    setWasNewUser(true)
-  }
+    dispatch(setNewUser(false));
+    setWasNewUser(true);
+  };
 
   return (
     <div style={styles.container}>
-      <IntroModal
-        isVisible={newUser}
-        onClose={() => handleNewUser()}
-      />
+      <IntroModal isVisible={newUser} onClose={() => handleNewUser()} />
       <LeftPanel
         setCurrentRightPanel={setCurrentRightPanel}
         currentRightPanel={currentRightPanel}

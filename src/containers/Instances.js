@@ -28,6 +28,10 @@ const styles = {
     paddingTop: 6,
     height: '100%',
   },
+  icon: {
+    cursor: 'pointer',
+    marginRight: 4,
+  },
   toolsContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -37,10 +41,6 @@ const styles = {
     marginBottom: 4,
     color: primary45,
     fontSize: 12,
-  },
-  icon: {
-    cursor: 'pointer',
-    marginRight: 4,
   },
   tools: {
     width: '100%',
