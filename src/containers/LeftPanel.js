@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {primary15, primary2, primary45} from '../utils/colors';
 import {
   FaFolderOpen,
-  FaCog,
+  FaAddressBook,
   FaBars,
   FaServer,
   FaTimes,
@@ -139,6 +139,15 @@ export function LeftPanel({
               onClick={() => {
                 setIsMobileOpen(false);
                 setCurrentRightPanel('instances')
+              }}
+            />
+            <PanelItem
+              title={'Contacts'}
+              iconComponent={FaAddressBook}
+              selected={currentRightPanel === 'contacts'}
+              onClick={() => {
+                setIsMobileOpen(false);
+                setCurrentRightPanel('contacts')
               }}
             />
 
