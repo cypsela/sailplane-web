@@ -158,9 +158,10 @@ export default function InstanceAccessDialog({
   return (
     <Dialog
       isVisible={true}
-      title={`User permissions for ${driveName(
-        instanceToModifyAccess.address,
-      )}`}
+      title={`User permissions for ${
+        instanceToModifyAccess.label ||
+        driveName(instanceToModifyAccess.address)
+      }`}
       body={
         <div style={styles.body} ref={dialogDimensionsRef}>
           <Well>

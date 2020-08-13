@@ -191,6 +191,7 @@ export const Instance = ({
             </div>
             {isHovered && !displayOnly && !isTouchDevice ? (
               <ToolItem
+                className={'instanceLabel'}
                 iconComponent={FiEdit}
                 defaultColor={isHovered && selected ? '#FFF' : primary45}
                 changeColor={primary}
