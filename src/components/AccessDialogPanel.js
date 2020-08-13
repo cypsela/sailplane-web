@@ -22,6 +22,7 @@ const styles = {
     marginBottom: 8,
     border: cleanBorder,
     boxSizing: 'border-box',
+    backgroundColor: primary15,
   },
   panelTitle: {
     display: 'flex',
@@ -30,13 +31,13 @@ const styles = {
     lineHeight: '15px',
     marginBottom: 4,
     textAlign: 'center',
-    backgroundColor: primary15,
     color: primary4,
     padding: 4,
     height: 20,
   },
   panelBody: {
     padding: 6,
+    backgroundColor: '#FFF',
   },
   third: {
     width: '33.3%',
