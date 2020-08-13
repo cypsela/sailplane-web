@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import detectIt from 'detect-it';
 import secp256k1 from 'secp256k1';
 import * as copy from 'copy-to-clipboard';
+import {setStatus} from '../actions/tempData';
 
 const bip39 = require('bip39');
 
@@ -349,4 +350,14 @@ export function decompressKey(compressedKey) {
 export async function copyToClipboard(text) {
   copy(text);
   // await navigator.clipboard.writeText(text);
+}
+
+export function notify(text, dispatch) {
+  dispatch(
+    setStatus({
+      message: text,
+      isInfo: true,
+    }),
+  );
+  setTimeout(() => dispatch(setStatus({})), 1500);
 }

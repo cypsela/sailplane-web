@@ -10,11 +10,10 @@ import {
 import {ToolItem} from './ToolItem';
 import {FiCopy, FiHardDrive, FiTrash, FiUsers, FiEdit} from 'react-icons/fi';
 import {useDispatch} from 'react-redux';
-import {setStatus} from '../actions/tempData';
 import useHover from '../hooks/useHover';
 import {driveName} from '../utils/sailplane-util';
 import {MobileActionsDialog} from './MobileActionsDialog';
-import {copyToClipboard, hasMouse} from '../utils/Utils';
+import {copyToClipboard, hasMouse, notify} from '../utils/Utils';
 import {Pill} from './Pill';
 import LabelDriveDialog from './LabelDriveDialog';
 
@@ -102,13 +101,7 @@ export const Instance = ({
 
   const handleAddressCopy = async () => {
     await copyToClipboard(address);
-    dispatch(
-      setStatus({
-        message: 'Drive address copied to clipboard',
-        isInfo: true,
-      }),
-    );
-    setTimeout(() => dispatch(setStatus({})), 1500);
+    notify('Drive address copied to clipboard', dispatch);
   };
 
   const mobileActionItems = [
