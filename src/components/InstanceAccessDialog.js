@@ -22,6 +22,7 @@ export default function InstanceAccessDialog({
   const [addWriterMode, setAddWriterMode] = useState(false);
   const [addReaderMode, setAddReaderMode] = useState(false);
   const [myID, setMyID] = useState(null);
+  const [error, setError] = useState(null);
   const [lastUpdate, setLastUpdate] = useState(null);
   const [dialogDimensionsRef, dialogDimensions] = useDimensions();
 
@@ -101,7 +102,10 @@ export default function InstanceAccessDialog({
   }, [instanceToModifyAccess.address, sharedFS, lastUpdate]);
 
   const addWriter = async (writerID) => {
+    setError(null);
+
     if (!sailplaneAccess.userPubValid(writerID)) {
+      setError('Invalid user ID!');
       return;
     }
 
@@ -113,7 +117,10 @@ export default function InstanceAccessDialog({
   };
 
   const addReader = async (readerID) => {
+    setError(null);
+
     if (!sailplaneAccess.userPubValid(readerID)) {
+      setError('Invalid user ID!');
       return;
     }
 
@@ -163,6 +170,7 @@ export default function InstanceAccessDialog({
               ? 'You are a writer on this drive.'
               : 'You have read access only.'}
           </Well>
+          {error ? <Well isError={true}>{error}</Well> : null}
           <div style={styles.panels}>
             <div style={styles.panel} id={'adminPanel'}>
               <div style={styles.panelTitle}>

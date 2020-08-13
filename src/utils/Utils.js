@@ -352,11 +352,12 @@ export async function copyToClipboard(text) {
   // await navigator.clipboard.writeText(text);
 }
 
-export function notify(text, dispatch) {
+export function notify(text, dispatch, isError) {
   dispatch(
     setStatus({
       message: text,
       isInfo: true,
+      isError,
     }),
   );
   setTimeout(() => dispatch(setStatus({})), 1500);
