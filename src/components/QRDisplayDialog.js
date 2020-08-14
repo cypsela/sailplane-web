@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Dialog} from './Dialog';
-import {primary15} from '../utils/colors';
+import {cleanBorder, primary15} from '../utils/colors';
 import QRCode from 'qrcode.react';
 import {BigButton} from './BigButton';
 import {copyToClipboard} from '../utils/Utils';
@@ -25,6 +25,10 @@ export default function QRDisplayDialog({isVisible, onClose, value, title}) {
     },
     dialog: {
       maxWidth: 360,
+    },
+    qr: {
+      border: cleanBorder,
+      borderRadius: 4,
     }
   };
 
@@ -38,9 +42,9 @@ export default function QRDisplayDialog({isVisible, onClose, value, title}) {
       body={
         <div style={styles.container}>
           <div>
-            <QRCode value={value} size={256} />
+            <QRCode value={value} size={256} includeMargin={true} style={styles.qr}/>
             <div style={styles.copy}>
-              <div style={styles.key}>{value?.substr(0, 10)}</div>
+              <div style={styles.key}>{value?.substr(0, 10)}...</div>
               <div style={styles.buttonHolder}>
                 <BigButton
                   title={copied ? 'Copied!' : 'Copy ID'}
