@@ -82,7 +82,7 @@ describe('Private drive management', () => {
     cy.contains('Add editor').click();
     cy.contains('Add contact').click();
     const inputUser = cy.get('input[type="text"]').first();
-    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b3149a95bcc25c16f25d882...)');
+    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b31...)');
     inputUser.type('notapublickey');
     cy.get('#addContactDialogButton').click();
     cy.contains('Invalid user ID');
@@ -94,7 +94,7 @@ describe('Private drive management', () => {
     cy.contains('Add editor').click();
     cy.contains('Add contact').click();
     const inputUser = cy.get('input[type="text"]').first();
-    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b3149a95bcc25c16f25d882...)');
+    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b31...)');
     inputUser.type('037f957ecde47e2b0dede1665d2478c32f706e66c7cb5aed19c4783eccdf482dda');
 
     cy.get('#addContactDialogButton').click();
@@ -108,7 +108,7 @@ describe('Private drive management', () => {
     cy.contains('Add contact').click();
 
     const inputUser = cy.get('input[type="text"]').first();
-    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b3149a95bcc25c16f25d882...)');
+    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b31...)');
     inputUser.type('0341ff53ed4ed6645e370367172cd36fe5102919cb29512dcbf95d30c64353bd7b');
 
     const inputLabel = cy.get('input[type="text"]').last();
@@ -126,7 +126,7 @@ describe('Private drive management', () => {
     cy.contains('Add viewer').click();
     cy.contains('Add contact').click();
     const inputUser = cy.get('input[type="text"]').first();
-    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b3149a95bcc25c16f25d882...)');
+    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b31...)');
     inputUser.type('notapublickey');
     cy.get('#addContactDialogButton').click();
     cy.contains('Invalid user ID');
@@ -139,7 +139,7 @@ describe('Private drive management', () => {
     cy.contains('Add contact').click();
 
     const inputUser = cy.get('input[type="text"]').first();
-    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b3149a95bcc25c16f25d882...)');
+    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b31...)');
     inputUser.type('033d9c2f2d75ef1e2aff3e720d0304a7ef949c783fb0640d10920cfe3864d79ad8');
 
     const inputLabel = cy.get('input[type="text"]').last();
