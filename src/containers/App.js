@@ -17,12 +17,14 @@ import {addInstance, setNewUser} from '../actions/main';
 import {setStatus} from '../actions/tempData';
 import usePrevious from '../hooks/usePrevious';
 import {ContextMenu} from '../components/ContextMenu';
-import {delay, getPercent} from '../utils/Utils';
+import {compressKey, delay, getPercent} from '../utils/Utils';
 import all from 'it-all';
 import {cleanBorder} from '../utils/colors';
 import {useWindowSize} from '../hooks/useWindowSize';
 import {IntroModal} from '../components/IntroModal';
 import Crypter from '@tabcat/aes-gcm-crypter';
+import * as sailplaneAccess from '../utils/sailplane-access';
+import {driveName} from '../utils/sailplane-util';
 
 function App({}) {
   const isSmallScreen = useIsSmallScreen();
@@ -30,6 +32,7 @@ function App({}) {
   const sailplaneRef = useRef(null);
   const sfsQueue = useRef({});
   const [nodeReady, setNodeReady] = useState(false);
+  const [noAccess, setNoAccess] = useState(false);
   const sharedFS = useRef({});
   const [ipfsError, setIpfsError] = useState(false);
   const ipfsObj = useIPFS((err) => {
@@ -140,6 +143,22 @@ function App({}) {
 
       setInstanceReady(true);
       dispatch(setStatus({}));
+
+      const tmpMyID = compressKey(
+        sailplaneAccess.localUserPub(sharedFS.current),
+      );
+      let tmpAdmins = sailplaneAccess.admin(sharedFS.current);
+      let tmpWriters = sailplaneAccess.writers(sharedFS.current);
+      let tmpReaders = sailplaneAccess.readers(sharedFS.current);
+      tmpAdmins = Array.from(tmpAdmins).map((key) => compressKey(key));
+      tmpWriters = Array.from(tmpWriters).map((key) => compressKey(key));
+      tmpReaders = Array.from(tmpReaders).map((key) => compressKey(key));
+
+      if ([...tmpAdmins, ...tmpWriters, ...tmpReaders].includes(tmpMyID) || !currentInstance.isEncrypted) {
+        setNoAccess(false);
+      } else {
+        setNoAccess(true);
+      }
     };
 
     if (nodeReady) {
@@ -184,6 +203,13 @@ function App({}) {
       const message = !noDrives ? 'Looking for drive...' : 'Create a drive';
       return !instanceReady || noDrives ? (
         <LoadingRightBlock message={message} loading={!noDrives} />
+      ) : noAccess ? (
+        <LoadingRightBlock
+          message={`You do not have access to this drive [${
+            currentInstance.label || driveName(currentInstance.address)
+          }].`}
+          loading={false}
+        />
       ) : (
         <FileBlock
           isEncrypted={currentInstance.isEncrypted}
