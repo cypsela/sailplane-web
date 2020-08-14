@@ -10,6 +10,7 @@ import Well from './Well';
 import {FiLoader} from 'react-icons/fi';
 import {Instance} from './Instance';
 import {BigButton} from './BigButton';
+import OrbitDBAddress from 'orbit-db/src/orbit-db-address';
 
 export default function ImportDriveDialog({
   onClose,
@@ -110,9 +111,9 @@ export default function ImportDriveDialog({
       setError('Invalid address!');
     };
 
-    setIsAddressSet(true);
+    if (OrbitDBAddress.isValid(address)) {
+      setIsAddressSet(true);
 
-    if (await sailplaneUtil.addressValid(sailplane, address)) {
       if (instances.map((s) => s.address).includes(address)) {
         const driveName = sailplaneUtil.driveName(address);
 
