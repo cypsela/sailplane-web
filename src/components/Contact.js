@@ -7,13 +7,13 @@ import {
   primary4,
   primary45,
 } from '../utils/colors';
-import {FiTrash, FiCopy} from 'react-icons/fi/index';
+import {FiTrash, FiCopy} from 'react-icons/fi';
 import {ToolItem} from './ToolItem';
 import useHover from '../hooks/useHover';
 import {copyToClipboard, notify} from '../utils/Utils';
 import {useDispatch} from 'react-redux';
 import {deleteContact} from '../actions/main';
-import {useIsSmallScreen} from "../hooks/useIsSmallScreen";
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
 export default function Contact({
   pubKey,
@@ -79,7 +79,9 @@ export default function Contact({
                 {myID === pubKey ? 'You' : label ? label : 'Unnamed'}
               </span>
             </div>
-            <div style={styles.key}>{isSmallScreen?pubKey.substr(0,20) + '...':pubKey}</div>
+            <div style={styles.key}>
+              {isSmallScreen ? pubKey.substr(0, 20) + '...' : pubKey}
+            </div>
           </div>
         </div>
         <div style={styles.right}>

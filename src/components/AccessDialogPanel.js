@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import {ToolItem} from './ToolItem';
 import {FiPlusCircle} from 'react-icons/fi';
-import {FaRegAddressBook} from 'react-icons/fa';
 import {cleanBorder, primary15, primary4, primary45} from '../utils/colors';
 import UserItem from './UserItem';
-import useTextInput from '../hooks/useTextInput';
 import {capitalize} from '../utils/Utils';
 import ContactModal from './ContactModal';
 
@@ -60,22 +58,6 @@ export default function AccessDialogPanel({
   const [addMode, setAddMode] = useState(false);
   const [isContactModalVisible, setIsContactModalVisible] = useState(false);
 
-  const AddUserInput = useTextInput(
-    addMode,
-    async (userID) => {
-      await addUser(userID);
-      setAddMode(false);
-    },
-    () => setAddMode(false),
-    '',
-    {
-      placeholder: 'user id',
-      confirmTitle: `Add ${type}`,
-      inputIconComponent: FaRegAddressBook,
-      onInputIconClick: () => setIsContactModalVisible(true),
-    },
-  );
-
   return (
     <div style={styles.panel}>
       <div style={styles.panelTitle}>
@@ -92,18 +74,17 @@ export default function AccessDialogPanel({
             justifyContent: 'flex-end',
             width: addMode ? '100%' : '30%',
           }}>
-          {!addMode && admins.includes(myID) && addUser ? (
+          {admins.includes(myID) && addUser ? (
             <>
               <ToolItem
                 iconComponent={FiPlusCircle}
                 title={`Add ${type}`}
                 changeColor={primary4}
                 defaultColor={primary4}
-                onClick={() => setAddMode(true)}
+                onClick={() => setIsContactModalVisible(true)}
               />
             </>
           ) : null}
-          {addMode ? AddUserInput : null}
         </div>
       </div>
       <div style={styles.panelBody}>
