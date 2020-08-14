@@ -10,7 +10,7 @@ import Well from './Well';
 export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
   const dispatch = useDispatch();
 
-  const existingIds = [myID, ...contacts.map((c) => c.pubKey)];
+  const existingIds = contacts ? [myID, ...contacts.map((c) => c.pubKey)] : [];
 
   const [label, setLabel] = useState('');
   const [pubKey, setPubKey] = useState('');
@@ -137,6 +137,7 @@ export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
               onClick={onClose}
             />
             <BigButton
+              id={'addContactDialogButton'}
               title={'Add contact'}
               onClick={createContact}
               inverted={true}
