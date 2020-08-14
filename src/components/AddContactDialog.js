@@ -1,8 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Dialog} from './Dialog';
 import {primary, primary15, primary3, primary45} from '../utils/colors';
-import {driveName} from '../utils/sailplane-util';
-import {addContact, setInstanceLabel} from '../actions/main';
+import {addContact} from '../actions/main';
 import {useDispatch} from 'react-redux';
 import {BigButton} from './BigButton';
 import {userPubValid} from '../utils/sailplane-access';
@@ -11,7 +10,7 @@ import Well from './Well';
 export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
   const dispatch = useDispatch();
 
-  const existingIds = [myID, ...contacts.map(c => c.pubKey)]
+  const existingIds = [myID, ...contacts.map((c) => c.pubKey)];
 
   const [label, setLabel] = useState('');
   const [pubKey, setPubKey] = useState('');
@@ -75,7 +74,7 @@ export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
     if (!userPubValid(pubKey)) {
       setError('Invalid user ID');
     } else if (existingIds.includes(pubKey)) {
-      setError('Contact already exists')
+      setError('Contact already exists');
     } else {
       dispatch(addContact(pubKey, label));
       onClose();

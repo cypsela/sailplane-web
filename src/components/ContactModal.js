@@ -90,6 +90,7 @@ export default function ContactModal({isVisible, onClose, onSelected}) {
           <AddContactDialog
             isVisible={isAddContactDialogVisible}
             onClose={() => setIsAddContactDialogVisible(false)}
+            contacts={contacts}
           />
         </div>
       }
