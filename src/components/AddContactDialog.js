@@ -6,6 +6,10 @@ import {useDispatch} from 'react-redux';
 import {BigButton} from './BigButton';
 import {userPubValid} from '../utils/sailplane-access';
 import Well from './Well';
+import {FaQrcode} from 'react-icons/fa';
+import QRScanDialog from './QRScanDialog';
+import {isCameraSupported} from '../utils/Utils';
+import useIsCameraAvailable from '../hooks/useIsCameraAvailable';
 
 export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
   const dispatch = useDispatch();
@@ -15,6 +19,7 @@ export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
   const [label, setLabel] = useState('');
   const [pubKey, setPubKey] = useState('');
   const [error, setError] = useState(null);
+  const [isQRScanModalVisible, setIsQRScanModalVisible] = useState(false);
 
   const inputRef = useRef(null);
 
@@ -49,7 +54,6 @@ export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
       fontSize: 14,
       fontWeight: 200,
       padding: 4,
-      marginRight: 4,
       display: 'inline-flex',
       width: '100%',
       boxSizing: 'border-box',
@@ -67,6 +71,24 @@ export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
       top: -8,
       left: 4,
       fontSize: 13,
+    },
+    inputIconContainer: {
+
+    },
+    inputIcon: {
+      display: 'flex',
+      alignItems: 'center',
+      // height: '100%',
+      position: 'absolute',
+      right: 8,
+      cursor: 'pointer',
+      backgroundColor: '#FFF',
+    },
+    inputWrapper: {
+      display: 'flex',
+      flexGrow: 2,
+      position: 'relative',
+      alignItems: 'center',
     },
   };
 
@@ -91,21 +113,29 @@ export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
           {error ? <Well isError={true}>{error}</Well> : null}
           <div style={styles.title}>User ID:</div>
 
-          <input
-            ref={inputRef}
-            type={'text'}
-            value={pubKey}
-            onChange={(event) => setPubKey(event.target.value)}
-            autoCorrect={'off'}
-            style={styles.input}
-            placeholder={`(ex: 0356467b3149a95bcc25c16f25d882...)`}
-            className={'textInput'}
-            onKeyPress={(event) => {
-              if (event.key === 'Enter') {
-                createContact();
-              }
-            }}
-          />
+          <div style={styles.inputWrapper}>
+            <input
+              ref={inputRef}
+              type={'text'}
+              value={pubKey}
+              onChange={(event) => setPubKey(event.target.value)}
+              autoCorrect={'off'}
+              style={styles.input}
+              placeholder={`(ex: 0356467b3149a95bcc25c16f25d882...)`}
+              className={'textInput'}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  createContact();
+                }
+              }}
+            />
+            <FaQrcode
+              onClick={() => setIsQRScanModalVisible(true)}
+              color={primary45}
+              size={16}
+              style={styles.inputIcon}
+            />
+          </div>
 
           <div style={{...styles.title, ...styles.labelTitle}}>
             Name
@@ -144,6 +174,14 @@ export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
               customWhiteColor={primary15}
             />
           </div>
+          <QRScanDialog
+            isVisible={isQRScanModalVisible}
+            onClose={() => setIsQRScanModalVisible(false)}
+            onScan={(userID)=>{
+              setPubKey(userID);
+              setIsQRScanModalVisible(false);
+            }}
+          />
         </div>
       }
       onClose={onClose}
