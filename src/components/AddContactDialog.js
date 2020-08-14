@@ -121,7 +121,7 @@ export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
               onChange={(event) => setPubKey(event.target.value)}
               autoCorrect={'off'}
               style={styles.input}
-              placeholder={`(ex: 0356467b3149a95bcc25c16f25d882...)`}
+              placeholder={`(ex: 0356467b31...)`}
               className={'textInput'}
               onKeyPress={(event) => {
                 if (event.key === 'Enter') {
