@@ -73,7 +73,7 @@ export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
 
   const createContact = () => {
     if (!userPubValid(pubKey)) {
-      setError('Invalid user ID!');
+      setError('Invalid user ID');
     } else if (existingIds.includes(pubKey)) {
       setError('Contact already exists')
     } else {

@@ -36,7 +36,7 @@ export default function ContactModal({isVisible, onClose, onSelected}) {
               />
             ))
           ) : (
-            <div>No contacts!</div>
+            <div>No existing contacts</div>
           )}
         </div>
       }
