@@ -101,6 +101,8 @@ export function Contacts({sailplane, sharedFS}) {
       <AddContactDialog
         isVisible={isAddContactDialogVisible}
         onClose={() => setIsAddContactDialogVisible(false)}
+        contacts={contacts}
+        myID={myID}
       />
 
       <StatusBar />
