@@ -23,10 +23,14 @@ export default function QRDisplayDialog({isVisible, onClose, value, title}) {
       marginTop: 12,
       textAlign: 'center',
     },
+    dialog: {
+      maxWidth: 360,
+    }
   };
 
   return (
     <Dialog
+      style={styles.dialog}
       title={title}
       isVisible={isVisible}
       backgroundColor={primary15}

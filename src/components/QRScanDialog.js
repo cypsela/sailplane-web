@@ -11,12 +11,16 @@ export default function QRScanDialog({isVisible, onClose, onScan}) {
       display: 'flex',
       justifyContent: 'center',
     },
+    dialog: {
+      maxWidth: 360,
+    }
   };
 
   const [error, setError] = useState(null);
 
   return (
     <Dialog
+      style={styles.dialog}
       positionTop={1}
       title={'Scan user ID'}
       isVisible={isVisible}
