@@ -24,6 +24,7 @@
     "it-first": "^1.0.2",
     "jszip": "^3.5.0",
     "orbit-db": "^0.24.2",
+    "qrcode.react": "^1.0.0",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-contexify": "^4.1.1",

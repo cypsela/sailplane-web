@@ -8,7 +8,8 @@ import {
   primary4,
   primary45,
 } from '../utils/colors';
-import {compressKey, copyToClipboard} from '../utils/Utils';
+import {compressKey} from '../utils/Utils';
+import QRDisplayDialog from './QRDisplayDialog';
 
 const styles = {
   container: {
@@ -70,7 +71,7 @@ const styles = {
 
 export function UserHeader({sailplane, title, iconComponent, leftSide}) {
   const [myID, setMyID] = useState(null);
-  const [copied, setCopied] = useState(null);
+  const [isQRCodeVisible, setIsQRCodeVisible] = useState(false);
 
   useEffect(() => {
     const getID = () => {
@@ -111,17 +112,20 @@ export function UserHeader({sailplane, title, iconComponent, leftSide}) {
           <div style={styles.userItem}>
             <div
               onClick={async () => {
-                await copyToClipboard(myID);
-                setCopied(true);
-
-                setTimeout(() => setCopied(false), 1500);
+                setIsQRCodeVisible(true);
               }}
               style={styles.idContainer}>
-              <div style={styles.myID}>{copied ? 'Copied!' : 'Copy ID'}</div>
+              <div style={styles.myID}>Show ID</div>
               <Jdenticon value={myID} size={'34'} style={styles.icon} />
             </div>
           </div>
         ) : null}
+        <QRDisplayDialog
+          value={myID}
+          title={'My User ID'}
+          isVisible={isQRCodeVisible}
+          onClose={() => setIsQRCodeVisible(false)}
+        />
       </div>
     </div>
   );
