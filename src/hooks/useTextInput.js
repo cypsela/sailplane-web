@@ -1,6 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {ToolItem} from '../components/ToolItem';
-import {errorColor, goodColor, primary, primary3} from '../colors';
+import {
+  errorColor,
+  goodColor,
+  primary,
+  primary3,
+  primary4,
+} from '../utils/colors';
 
 export default function useTextInput(
   visible,
@@ -23,6 +29,7 @@ export default function useTextInput(
     if (isError) {
       checkIfError();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputString]);
 
   const styles = {
@@ -39,6 +46,15 @@ export default function useTextInput(
       display: 'inline-flex',
       flexGrow: 2,
     },
+    acceptButton: {
+      backgroundColor: primary3,
+      color: '#FFF',
+      fontSize: 12,
+      padding: '4px 5px',
+      borderRadius: 2,
+      cursor: 'pointer',
+      zIndex: 2,
+    },
   };
 
   useEffect(() => {
@@ -48,16 +64,19 @@ export default function useTextInput(
     } else {
       setInputString(initialValue);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
-  const component = (
+  return (
     <>
       <input
         ref={inputRef}
+        className={'textInput'}
         type={isPassword ? 'password' : 'text'}
         placeholder={placeholder}
         style={styles.input}
         value={inputString}
+        onClick={(event) => event.stopPropagation()}
         onChange={(event) => setInputString(event.target.value)}
         onKeyPress={(event) => {
           if (event.key === 'Enter') {
@@ -65,13 +84,21 @@ export default function useTextInput(
           }
         }}
       />
-      <ToolItem
-        title={confirmTitle ? confirmTitle : 'Accept'}
-        onClick={() => handleDone(inputString)}
-      />
-      <ToolItem title={'Cancel'} onClick={() => handleCancel()} />
+      <div
+        onClick={(event) => {
+          event.stopPropagation();
+          handleDone(inputString);
+        }}
+        style={styles.acceptButton}>
+        {confirmTitle ? confirmTitle : 'Accept'}
+      </div>
+      {handleCancel? (
+        <ToolItem
+          title={'Cancel'}
+          onClick={() => handleCancel()}
+          changeColor={primary4}
+        />
+      ) : null}
     </>
   );
-
-  return component;
 }

@@ -28,12 +28,11 @@ export default function useDoubleClick(callback) {
       }
       if (!timerIsPresent) {
         countRef.current = countRef.current + 1;
-        const timer = setTimeout(() => {
+        timerRef.current = setTimeout(() => {
           clearTimeout(timerRef.current);
           timerRef.current = null;
           countRef.current = 0;
         }, 200);
-        timerRef.current = timer;
       }
     }
 

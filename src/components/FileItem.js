@@ -1,21 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import {primary, primary2, primary45, primary5} from '../colors';
+import {
+  lightErrorColor,
+  primary,
+  primary15,
+  primary45,
+  primary5,
+} from '../utils/colors';
 import {FiDownload, FiEdit, FiShare2, FiTrash} from 'react-icons/fi';
+import {FaFolderOpen} from 'react-icons/fa';
 import useHover from '../hooks/useHover';
 import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
 import {
+  getBlobFromPath,
   getBlobFromPathCID,
-  getDraggableStyleHack,
   getFileExtensionFromFilename,
   getFileInfoFromCID,
   getFileTime,
   getIconForPath,
   humanFileSize,
-  isFileExtensionSupported,
+  getPercent,
+  isFileExtensionAudio,
+  hasMouse,
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
-import {Draggable} from 'react-beautiful-dnd';
 import useTextInput from '../hooks/useTextInput';
 import {useDispatch} from 'react-redux';
 import {setShareData, setStatus} from '../actions/tempData';
@@ -25,16 +33,20 @@ import {
   getEncryptionInfoFromFilename,
 } from '../utils/encryption';
 import useDoubleClick from '../hooks/useDoubleClick';
-import {useIsMobile} from '../hooks/useIsMobile';
+import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {contextMenu} from 'react-contexify';
+import {MobileActionsDialog} from './MobileActionsDialog';
 
 export function FileItem({
   data,
   sharedFs,
   setCurrentDirectory,
   ipfs,
-  fileIndex,
   isParent,
+  snapshot,
+  forceIcon,
+  onIconClicked,
+  readOnly,
 }) {
   const {path, type} = data;
   const pathSplit = path.split('/');
@@ -43,15 +55,24 @@ export function FileItem({
   const [CID, setCID] = useState(null);
   const [fileInfo, setFileInfo] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const [enterPasswordMode, setEnterPasswordMode] = useState(false);
   const [doubleClickRef] = useDoubleClick(() => setEditMode(true));
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
-  const isMobile = useIsMobile();
+  const isSmallScreen = useIsSmallScreen();
   const contextID = `menu-id`;
+  const contextNoShareID = `menu-id-no-share`;
+  const exists = sharedFs && sharedFs.current.fs.exists(path);
+  const isTouchDevice = !hasMouse;
+  const isUnsharable = sharedFs?.current.crypting && type === 'dir';
 
   const styles = {
+    paddingContainer: {
+      paddingTop: 3,
+      paddingBottom: 3,
+    },
     outer: {
       borderRadius: 4,
       color: primary5,
@@ -64,7 +85,7 @@ export function FileItem({
     container: {
       display: 'flex',
       flexDirection: 'row',
-      flexWrap: isMobile ? 'wrap' : 'nowrap',
+      flexWrap: isSmallScreen ? 'wrap' : 'nowrap',
       justifyContent: 'space-between',
       cursor: 'pointer',
     },
@@ -75,7 +96,7 @@ export function FileItem({
       justifyContent: 'flex-start',
       alignItems: 'center',
       flexGrow: 2,
-      marginBottom: isMobile ? 10 : 0,
+      marginBottom: isSmallScreen ? 10 : 0,
     },
     icon: {
       marginRight: 4,
@@ -83,11 +104,15 @@ export function FileItem({
       flexShrink: 0,
     },
     tools: {
-      display: 'flex',
+      display: isTouchDevice ? 'none' : 'flex',
       justifyContent: 'flex-end',
       width: '100%',
       opacity:
         (isHovered || fileBlob || enterPasswordMode) && !isParent ? 1 : 0,
+      pointerEvents:
+        (isHovered || fileBlob || enterPasswordMode) && !isParent
+          ? null
+          : 'none',
       fontSize: 14,
       marginLeft: enterPasswordMode ? 8 : 0,
     },
@@ -145,19 +170,28 @@ export function FileItem({
     },
   );
 
-  const iconComponent = getIconForPath(type, isEncrypted);
+  const iconComponent = forceIcon
+    ? forceIcon
+    : getIconForPath(type, isEncrypted, name);
 
   const getCID = async () => {
-    const cid = await sharedFs.current.read(path);
-    const fileInfo = await getFileInfoFromCID(cid, ipfs);
+    let tmpCID;
 
-    setFileInfo(fileInfo);
-    setCID(cid);
-    return cid;
+    if (data.cid) {
+      tmpCID = data.cid;
+    } else if (exists) {
+      tmpCID = await sharedFs.current.read(path);
+    }
+
+    const tmpFileInfo = await getFileInfoFromCID(tmpCID, ipfs);
+
+    setFileInfo(tmpFileInfo);
+    setCID(tmpCID);
+    return tmpCID;
   };
 
   useEffect(() => {
-    if (type !== 'dir') {
+    if (exists && type !== 'dir') {
       getCID();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -180,26 +214,17 @@ export function FileItem({
 
     if (!fileBlob) {
       dispatch(setStatus({message: 'Fetching download'}));
-      let tmpCID = CID;
-
-      if (!CID) {
-        tmpCID = await getCID();
+      const handleUpdate = (currentIndex, totalCount) => {
+        dispatch(
+          setStatus({
+            message: `[${getPercent(
+              currentIndex,
+              totalCount,
+            )}%] Downloading`,
+          }),
+        );
       }
-
-      blob = await getBlobFromPathCID(
-        tmpCID,
-        path,
-        ipfs,
-        (currentIndex, totalCount) => {
-          dispatch(
-            setStatus({
-              message: `[${Math.round(
-                (currentIndex / totalCount) * 100,
-              )}%] Downloading`,
-            }),
-          );
-        },
-      );
+      blob = await getBlobFromPath(sharedFs.current, path, handleUpdate);
       dispatch(setStatus({}));
     } else {
       blob = fileBlob;
@@ -216,6 +241,8 @@ export function FileItem({
   };
 
   const handleShare = () => {
+    setMobileActionsVisible(false);
+
     dispatch(
       setShareData({
         name,
@@ -227,6 +254,8 @@ export function FileItem({
   };
 
   const handleDownload = async () => {
+    setMobileActionsVisible(false);
+
     if (isEncrypted) {
       setEnterPasswordMode(true);
       return;
@@ -237,10 +266,14 @@ export function FileItem({
   };
 
   const handleEdit = async () => {
+    setMobileActionsVisible(false);
+
     setEditMode(true);
   };
 
   const handleDelete = async () => {
+    setMobileActionsVisible(false);
+
     dispatch(
       setStatus({
         message: `Deleting ${type === 'dir' ? 'folder' : 'file'}`,
@@ -250,20 +283,118 @@ export function FileItem({
     dispatch(setStatus({}));
   };
 
-  const getContent = (snapshot) => {
+  const fetchPreview = async () => {
+    // Only fetch for audio on click now
+    if (!fileBlob && isFileExtensionAudio(fileExtension)) {
+      dispatch(setStatus({message: 'Fetching preview'}));
+      const blob = await getBlob();
+      dispatch(setStatus({}));
+      setFileBlob(blob);
+    } else {
+      setFileBlob(null);
+    }
+  };
+
+  const handleClick = async (event) => {
+    event.stopPropagation();
+
+    if (isTouchDevice && type !== 'dir') {
+      setMobileActionsVisible(true);
+
+      return;
+    }
+
+    if (onIconClicked) {
+      onIconClicked();
+      return;
+    }
+
+    if (editMode) {
+      return;
+    }
+
+    if (type === 'dir') {
+      setCurrentDirectory(path);
+    } else {
+      await fetchPreview();
+    }
+  };
+
+  let mobileActionItems = [
+    {
+      title: 'Download',
+      onClick: handleDownload,
+      iconComponent: FiDownload,
+    },
+    {
+      title: 'Rename',
+      onClick: handleEdit,
+      iconComponent: FiEdit,
+    },
+    {
+      title: 'Delete',
+      onClick: handleDelete,
+      iconComponent: FiTrash,
+      forceColor: lightErrorColor,
+    },
+  ];
+
+  if (!isUnsharable) {
+    mobileActionItems.unshift({
+      title: 'Share',
+      onClick: handleShare,
+      iconComponent: FiShare2,
+    });
+  }
+
+  if (type === 'dir') {
+    mobileActionItems.unshift({
+      title: 'Open folder',
+      onClick: () => setCurrentDirectory(path),
+      iconComponent: FaFolderOpen,
+    });
+  } else {
+    if ((!fileBlob && isFileExtensionAudio(fileExtension)) || onIconClicked) {
+      mobileActionItems.unshift({
+        title: 'Open preview',
+        onClick: () => {
+          setMobileActionsVisible(false);
+
+          if (onIconClicked) {
+            onIconClicked();
+          } else {
+            fetchPreview();
+          }
+        },
+        iconComponent: iconComponent,
+      });
+    }
+  }
+
+  const getContent = () => {
     if (!snapshot) {
       snapshot = {};
     }
 
     return (
-      <div>
+      <div
+        ref={hoverRef}
+        style={styles.paddingContainer}
+        className={`fileItem ${isEncrypted ? 'fileItemEncrypted' : null}`}>
+        <MobileActionsDialog
+          isVisible={mobileActionsVisible}
+          name={name}
+          fileIcon={iconComponent}
+          onClose={() => setMobileActionsVisible(false)}
+          items={mobileActionItems}
+        />
         <div
           onContextMenu={(event) => {
             event.preventDefault();
 
             contextMenu.show({
               event,
-              id: contextID,
+              id: isUnsharable ? contextNoShareID : contextID,
               props: {
                 handleDelete,
                 handleDownload,
@@ -274,38 +405,21 @@ export function FileItem({
           }}
           style={{
             ...styles.outer,
-            border:
-              isHovered || fileBlob || snapshot.isDragging
-                ? `1px solid ${primary2}`
-                : '1px solid #FFF',
             backgroundColor:
-              snapshot.combineTargetFor && type === 'dir' ? primary2 : '#FFF',
+              (isHovered ||
+                fileBlob ||
+                snapshot.isDragging ||
+                (snapshot.combineTargetFor && type === 'dir')) &&
+              !isTouchDevice
+                ? primary15
+                : '#FFF',
           }}>
-          <div
-            style={styles.container}
-            ref={hoverRef}
-            onClick={async (event) => {
-              event.stopPropagation();
-
-              if (editMode) {
-                return;
-              }
-
-              if (type === 'dir') {
-                setCurrentDirectory(path);
-              } else {
-                if (!fileBlob && isFileExtensionSupported(fileExtension)) {
-                  dispatch(setStatus({message: 'Fetching preview'}));
-                  const blob = await getBlob();
-                  dispatch(setStatus({}));
-                  setFileBlob(blob);
-                } else {
-                  setFileBlob(null);
-                }
-              }
-            }}>
+          <div style={styles.container} onClick={handleClick}>
             <div
-              style={{...styles.flexItem, maxWidth: isMobile ? null : '25%'}}>
+              style={{
+                ...styles.flexItem,
+                maxWidth: isSmallScreen ? null : '25%',
+              }}>
               <IconComponent color={primary45} size={16} style={styles.icon} />
               {editMode ? (
                 <>{InputComponent}</>
@@ -321,7 +435,7 @@ export function FileItem({
               {type !== 'dir' && fileInfo ? humanFileSize(fileInfo.size) : null}
             </div>
             <div style={{...styles.flexItem, justifyContent: 'flex-end'}}>
-              {type !== 'dir' && fileInfo && fileInfo.mtime
+              {type !== 'dir' && fileInfo?.mtime
                 ? getFileTime(fileInfo.mtime.secs)
                 : null}
             </div>
@@ -329,31 +443,43 @@ export function FileItem({
               {!enterPasswordMode ? (
                 <div>
                   <ToolItem
+                    id={`Share-${type}`}
                     iconComponent={FiShare2}
                     changeColor={primary}
-                    tooltip={'Share'}
+                    tooltip={
+                      isUnsharable
+                        ? 'No encrypted folder sharing yet!'
+                        : 'Share'
+                    }
                     onClick={handleShare}
+                    disabled={isUnsharable}
                   />
 
                   <ToolItem
+                    id={`Download-${type}`}
                     iconComponent={FiDownload}
                     changeColor={primary}
                     tooltip={'Download'}
                     onClick={handleDownload}
                   />
 
-                  <ToolItem
-                    iconComponent={FiEdit}
-                    changeColor={primary}
-                    tooltip={'Rename'}
-                    onClick={handleEdit}
-                  />
-
-                  <ToolItem
-                    iconComponent={FiTrash}
-                    tooltip={'Delete'}
-                    onClick={handleDelete}
-                  />
+                  {!readOnly ? (
+                    <>
+                      <ToolItem
+                        id={`Rename-${type}`}
+                        iconComponent={FiEdit}
+                        changeColor={primary}
+                        tooltip={'Rename'}
+                        onClick={handleEdit}
+                      />
+                      <ToolItem
+                        id={`Delete-${type}`}
+                        iconComponent={FiTrash}
+                        tooltip={'Delete'}
+                        onClick={handleDelete}
+                      />
+                    </>
+                  ) : null}
                 </div>
               ) : (
                 <>{PasswordInputComponent}</>
@@ -370,19 +496,5 @@ export function FileItem({
     );
   };
 
-  return (
-    <Draggable draggableId={path} index={fileIndex}>
-      {({innerRef, draggableProps, dragHandleProps}, snapshot) => {
-        return (
-          <div
-            ref={innerRef}
-            {...draggableProps}
-            {...dragHandleProps}
-            style={getDraggableStyleHack(draggableProps.style, snapshot)}>
-            {getContent(snapshot)}
-          </div>
-        );
-      }}
-    </Draggable>
-  );
+  return <>{getContent()}</>;
 }

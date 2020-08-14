@@ -1,8 +1,6 @@
 import React from 'react';
 import {FaChevronRight} from 'react-icons/fa';
-import {primary45} from '../colors';
-import {useSelector} from 'react-redux';
-import * as PropTypes from 'prop-types';
+import {primary45} from '../utils/colors';
 import {InstanceSelector} from './InstanceSelector';
 
 const styles = {
@@ -11,11 +9,11 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     fontSize: 16,
-    marginBottom: 10,
     color: primary45,
     fontFamily: 'Open Sans',
-    fontWeight: 600,
+    fontWeight: 400,
     userSelect: 'none',
+    flexWrap: 'wrap',
   },
   icon: {
     marginRight: 4,

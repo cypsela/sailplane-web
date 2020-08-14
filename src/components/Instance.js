@@ -1,31 +1,58 @@
-import React from 'react';
-import {errorColor, primary, primary2, primary3, primary45} from '../colors';
-import useHover from '../hooks/useHover';
+import React, {useState} from 'react';
+import {
+  errorColor,
+  lightErrorColor,
+  primary,
+  primary15,
+  primary3,
+  primary45,
+} from '../utils/colors';
 import {ToolItem} from './ToolItem';
-import {FiCopy, FiTrash} from 'react-icons/fi';
-import {setStatus} from '../actions/tempData';
+import {FiCopy, FiHardDrive, FiTrash, FiUsers, FiEdit} from 'react-icons/fi';
 import {useDispatch} from 'react-redux';
-import {useElementCopy} from '../hooks/useElementCopy'
+import useHover from '../hooks/useHover';
+import {driveName} from '../utils/sailplane-util';
+import {MobileActionsDialog} from './MobileActionsDialog';
+import {copyToClipboard, hasMouse, notify} from '../utils/Utils';
+import {Pill} from './Pill';
+import LabelDriveDialog from './LabelDriveDialog';
 
-export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
-  const [hoverRef, isHovered] = useHover();
+export const Instance = ({
+  data,
+  selected,
+  onClick,
+  onDelete,
+  instanceIndex,
+  onAccess,
+  displayOnly,
+}) => {
+  const {address, isEncrypted, label} = data;
   const dispatch = useDispatch();
-  const [elementToCopy, doCopy] = useElementCopy({message: 'Instance address copied'})
+  const [hoverRef, isHovered] = useHover();
+  const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
+  const [isLabelDialogVisible, setIsLabelDialogVisible] = useState(false);
+  const isTouchDevice = !hasMouse;
 
-  const {name, address} = data;
+  let backgroundColor = selected ? primary3 : '#FFF';
 
-  let backgroundColor = selected ? primary3 : primary2;
+  if (isHovered && !selected) {
+    backgroundColor = primary15;
+  }
 
+  const iconColor = selected ? '#FFF' : primary45;
   const styles = {
+    paddingContainer: {
+      paddingTop: 3,
+      paddingBottom: 3,
+    },
     outer: {
-      padding: 8,
       backgroundColor: backgroundColor,
-      border: `1px solid ${isHovered ? primary3 : backgroundColor}`,
-      color: selected ? '#FFF' : primary45,
-      borderRadius: 4,
-      marginBottom: 4,
+      color: iconColor,
+      padding: 6,
+      paddingTop: 6,
       fontFamily: 'Open Sans',
       cursor: 'pointer',
+      borderRadius: 4,
     },
     container: {
       display: 'flex',
@@ -33,80 +60,185 @@ export const Instance = React.memo(({data, selected, onClick, onDelete}) => {
       alignItems: 'center',
     },
     address: {
-      marginLeft: 10,
       fontSize: 14,
       overflow: 'hidden',
+      width: '40%',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
     },
     tools: {
-      display: 'flex',
+      display: displayOnly ? 'none' : 'flex',
       justifyContent: 'flex-end',
-      marginTop: 10,
-    },
-    toolItem: {
-      marginLeft: 10,
     },
     name: {
-      fontSize: 20,
+      fontSize: 16,
+      height: 38,
+      lineHeight: '19px',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    icon: {
+      marginRight: 4,
+      flexShrink: 0,
+    },
+    importedTxt: {
+      marginLeft: 6,
+      fontSize: 13,
+    },
+    label: {
+      fontWeight: 600,
+    },
+    nameHolder: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      lineHeight: '18px',
+      position: 'relative',
+      top: label ? -2 : null,
     },
   };
 
-  const addressId = `instance-${address}`;
-
-  const onCopy = (id) => {
-    const range = document.createRange();
-    range.selectNode(document.getElementById(id));
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
-    setTimeout(() => {
-      window.getSelection().removeRange(range);
-    }, 100);
-
-    dispatch(
-      setStatus({
-        message: 'Instance address copied to clipboard!',
-        isInfo: true,
-      }),
-    );
-    setTimeout(() => {
-      dispatch(setStatus({}));
-    }, 3000);
+  const handleAddressCopy = async () => {
+    await copyToClipboard(address);
+    notify('Drive address copied to clipboard', dispatch);
   };
 
-  return (
-    <div
-      style={styles.outer}
-      ref={hoverRef}
-      onClick={(event) => {
-        event.stopPropagation();
+  const mobileActionItems = [
+    {
+      title: 'Open',
+      onClick: () => {
+        setMobileActionsVisible(false);
         onClick();
-      }}>
-      <div style={styles.container}>
-        <div style={styles.name}>{name}</div>
-        <div id={addressId} style={styles.address} ref={elementToCopy}>
-          {address}
+      },
+      iconComponent: FiHardDrive,
+    },
+    {
+      title: 'Set nickname',
+      onClick: () => {
+        setIsLabelDialogVisible(true);
+        setMobileActionsVisible(false);
+      },
+      iconComponent: FiEdit,
+    },
+    {
+      title: 'Manage users',
+      onClick: () => {
+        onAccess();
+        setMobileActionsVisible(false);
+      },
+      iconComponent: FiUsers,
+    },
+    {
+      title: 'Copy address',
+      onClick: () => {
+        handleAddressCopy();
+        setMobileActionsVisible(false);
+      },
+      iconComponent: FiCopy,
+    },
+    {
+      title: 'Delete',
+      onClick: () => {
+        onDelete();
+        setMobileActionsVisible(false);
+      },
+      iconComponent: FiTrash,
+      forceColor: lightErrorColor,
+    },
+  ];
+
+  const thisDriveName = driveName(address);
+
+  return (
+    <div style={styles.paddingContainer} ref={hoverRef}>
+      <div
+        className={'drive'}
+        style={styles.outer}
+        onClick={(event) => {
+          if (mobileActionsVisible) {
+            return;
+          }
+
+          if (isTouchDevice) {
+            setMobileActionsVisible(true);
+          } else {
+            event.stopPropagation();
+            onClick();
+          }
+        }}>
+        <MobileActionsDialog
+          isVisible={mobileActionsVisible}
+          name={thisDriveName}
+          onClose={() => setMobileActionsVisible(false)}
+          items={mobileActionItems}
+        />
+        <div style={styles.container}>
+          <div style={styles.name}>
+            <FiHardDrive
+              className={'shareIcon'}
+              color={iconColor}
+              size={18}
+              style={styles.icon}
+            />
+            <Pill
+              title={isEncrypted ? 'private' : 'public'}
+              inverted={selected}
+            />
+            <div style={styles.nameHolder}>
+              {thisDriveName}
+              {label ? <div style={styles.label}>[{label}]</div> : null}
+            </div>
+            {isHovered && !displayOnly && !isTouchDevice ? (
+              <ToolItem
+                className={'instanceLabel'}
+                iconComponent={FiEdit}
+                defaultColor={isHovered && selected ? '#FFF' : primary45}
+                changeColor={primary}
+                tooltip={'Set nickname'}
+                onClick={() => setIsLabelDialogVisible(true)}
+              />
+            ) : null}
+          </div>
+          {!isTouchDevice ? (
+            <div style={styles.tools}>
+              <ToolItem
+                className={'instanceAccess'}
+                defaultColor={iconColor}
+                iconComponent={FiUsers}
+                size={15}
+                changeColor={primary}
+                onClick={() => onAccess()}
+                tooltip={'Manage users'}
+              />
+              <ToolItem
+                className={'instanceAddressCopy'}
+                defaultColor={iconColor}
+                iconComponent={FiCopy}
+                size={15}
+                changeColor={primary}
+                tooltip={'Copy'}
+                onClick={handleAddressCopy}
+              />
+              <ToolItem
+                className={'instanceDelete'}
+                defaultColor={iconColor}
+                iconComponent={FiTrash}
+                tooltip={'Delete'}
+                size={15}
+                changeColor={errorColor}
+                onClick={() => onDelete()}
+              />
+            </div>
+          ) : null}
         </div>
       </div>
-      <div style={styles.tools}>
-        <div style={styles.toolItem}>
-          <ToolItem
-            defaultColor={selected ? primary2 : primary45}
-            iconComponent={FiCopy}
-            size={16}
-            changeColor={primary}
-            onClick={doCopy}
-          />
-        </div>
-        <div style={styles.toolItem}>
-          <ToolItem
-            defaultColor={selected ? primary2 : primary45}
-            iconComponent={FiTrash}
-            size={16}
-            changeColor={errorColor}
-            onClick={() => onDelete()}
-          />
-        </div>
-      </div>
+      <LabelDriveDialog
+        isVisible={isLabelDialogVisible}
+        onClose={() => setIsLabelDialogVisible(false)}
+        instance={data}
+        instanceIndex={instanceIndex}
+      />
     </div>
   );
-});
+};

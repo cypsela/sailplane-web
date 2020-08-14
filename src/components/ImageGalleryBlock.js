@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {fileToBlob} from '../utils/Utils';
-import {primary45} from '../colors';
+import {fileToBlob, getPercent} from '../utils/Utils';
+import {primary45} from '../utils/colors';
 
-export function ImageGalleryBlock({file, onLoadURL, fileURLS, fileIndex, onClick}) {
+export function ImageGalleryBlock({file, onLoadURL, fileIndex, onClick}) {
   const [url, setURL] = useState(null);
   const [progress, setProgress] = useState(0);
 
@@ -27,7 +27,7 @@ export function ImageGalleryBlock({file, onLoadURL, fileURLS, fileIndex, onClick
   async function getBlob() {
     try {
       const blob = await fileToBlob(file, (curr, total) => {
-        setProgress(Math.round((curr / total) * 100));
+        setProgress(getPercent(curr, total));
       });
 
       const objURL = window.URL.createObjectURL(blob);
@@ -40,15 +40,15 @@ export function ImageGalleryBlock({file, onLoadURL, fileURLS, fileIndex, onClick
 
   useEffect(() => {
     getBlob();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div style={styles.container}>
-
       <div
+        className={'imageGalleryBlock'}
         style={styles.img}
-        onClick={()=>onClick()}
-        >
+        onClick={() => onClick()}>
         {!url ? <div>{progress}%</div> : null}
       </div>
     </div>

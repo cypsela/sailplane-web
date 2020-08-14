@@ -1,13 +1,17 @@
 body, html {
-    background-color: #FFF;
+    background-color: hsl(237 50% 98% / 1);
     height: 100%;
+}
+
+.textInput::placeholder {
+    color: #97bace;
 }
 
 .link {
     color: hsla(205, 49%, 66%, 1);
 }
 
-.addInstance{
+.addInstance {
     cursor: pointer;
 }
 
@@ -23,18 +27,44 @@ body, html {
     text-decoration: underline;
 }
 
-input:focus, textarea:focus, select:focus, audio:focus, source:focus{
+input:focus, textarea:focus, select:focus, audio:focus, source:focus {
     outline: none;
 }
+
 @keyframes rotating {
-    from{
+    from {
         transform: rotate(0deg);
     }
-    to{
+    to {
         transform: rotate(359deg);
     }
 }
 
 .rotating {
     animation: rotating 2s linear infinite;
+}
+
+@keyframes jumping {
+    0% {
+        bottom: 0;
+        transform: scale(1);
+    }
+    15% {
+        bottom: 12px;
+        transform: scale(1.2);
+    }
+    30% {
+        bottom: 0;
+        transform: scale(1);
+    }
+}
+
+.jumping {
+    position: relative;
+    animation: jumping 2s linear 2s 1;
+}
+
+.jumpingDrop {
+    position: relative;
+    animation: jumping 2s linear 2s infinite;
 }

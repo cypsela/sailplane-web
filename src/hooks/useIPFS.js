@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 
 let ipfs = null;
 
-export default function useIpfsFactory() {
+export default function useIpfsFactory(onError) {
   const [isIpfsReady, setIpfsReady] = useState(Boolean(ipfs));
   const [ipfsInitError, setIpfsInitError] = useState(null);
 
@@ -19,7 +19,7 @@ export default function useIpfsFactory() {
           console.time('IPFS Started');
           ipfs = await Ipfs.create({
             EXPERIMENTAL: {
-              pubsub: true
+              pubsub: true,
             },
             config: {
               Addresses: {
@@ -34,13 +34,14 @@ export default function useIpfsFactory() {
           });
           console.timeEnd('IPFS Started');
         } catch (error) {
-          console.error('IPFS init error:', error);
+          console.error(error)
+          onError(error);
           ipfs = null;
           setIpfsInitError(error);
         }
       }
 
-      window.ipfs = ipfs
+      window.ipfs = ipfs;
 
       setIpfsReady(Boolean(ipfs));
     }
@@ -54,6 +55,7 @@ export default function useIpfsFactory() {
         setIpfsReady(false);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {ipfs, isIpfsReady, ipfsInitError};

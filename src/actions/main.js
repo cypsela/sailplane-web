@@ -1,18 +1,13 @@
 import {main} from './actionTypes';
 
-export function addInstance(name, address) {
+export function addInstance(name, address, isImported, isEncrypted, label) {
   return {
     type: main.ADD_INSTANCE,
     name,
     address,
-  };
-}
-
-export function setEncryptionKey(key, keyType) {
-  return {
-    type: main.SET_ENCRYPTION_KEY,
-    key,
-    keyType,
+    isImported,
+    isEncrypted,
+    label,
   };
 }
 
@@ -29,9 +24,24 @@ export function setInstanceIndex(index) {
   };
 }
 
+export function setInstanceLabel(index, label) {
+  return {
+    type: main.SET_INSTANCE_LABEL,
+    index,
+    label,
+  };
+}
+
 export function removeInstance(index) {
   return {
     type: main.REMOVE_INSTANCE,
     index,
   };
+}
+
+export function setNewUser(bool) {
+  return {
+    type: main.SET_NEW_USER,
+    bool,
+  }
 }

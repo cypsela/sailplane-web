@@ -1,5 +1,5 @@
 import React from 'react';
-import {primary4, primary45, primary46} from '../colors';
+import {primary4, primary45, primary46} from '../utils/colors';
 import useHover from '../hooks/useHover';
 
 export function PanelItem({selected, onClick, title, iconComponent}) {
@@ -18,14 +18,15 @@ export function PanelItem({selected, onClick, title, iconComponent}) {
       padding: 8,
       borderRadius: 4,
       marginBottom: 8,
+      fontFamily: 'Open Sans',
     },
     title: {
       color: selected ? primary4 : '#FFF',
-      userSelect: 'none'
-      // marginRight: 4,
+      userSelect: 'none',
+      fontSize: 15,
     },
     icon: {
-      marginRight: 4,
+      marginRight: 6,
     },
   };
   return (

@@ -4,39 +4,29 @@ import produce from 'immer';
 const initialState = {
   instances: [],
   instanceIndex: 0,
-  encryptionKey: null,
+  newUser: true,
 };
 
 export default function main(state = initialState, action) {
   switch (action.type) {
     case mainTypes.ADD_INSTANCE: {
-      const {name, address} = action;
+      const {name, address, isImported, isEncrypted, label} = action;
       return produce(state, (draftState) => {
-        draftState.instances.push({name, address});
+        draftState.instances.push({name, address, isImported, isEncrypted, label});
       });
     }
 
     case mainTypes.SET_INSTANCE_INDEX: {
       const {index} = action;
       return produce(state, (draftState) => {
-        draftState.instanceIndex = index;
+        draftState.instanceIndex = Math.max(0, index);
       });
     }
 
-    case mainTypes.SET_ENCRYPTION_KEY: {
-      const {key, keyType} = action;
+    case mainTypes.SET_INSTANCE_LABEL: {
+      const {index, label} = action;
       return produce(state, (draftState) => {
-        draftState.encryptionKey = {
-          key,
-          type: keyType,
-        };
-      });
-    }
-
-    case mainTypes.CLEAR_ENCRYPTION_KEY: {
-      const {key, keyType} = action;
-      return produce(state, (draftState) => {
-        draftState.encryptionKey = null;
+        draftState.instances[index].label = label;
       });
     }
 
@@ -51,6 +41,13 @@ export default function main(state = initialState, action) {
           console.log('inner ran');
           draftState.instanceIndex = 0;
         }
+      });
+    }
+
+    case mainTypes.SET_NEW_USER: {
+      const {bool} = action;
+      return produce(state, (draftState) => {
+        draftState.newUser = bool;
       });
     }
   }

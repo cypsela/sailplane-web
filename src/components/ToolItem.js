@@ -1,5 +1,12 @@
 import React from 'react';
-import {errorColor, primary, primary3, primary4} from '../colors';
+import {
+  cleanBorder,
+  errorColor,
+  primary2,
+  primary3,
+  primary35,
+  primary45,
+} from '../utils/colors';
 import useHover from '../hooks/useHover';
 import useDimensions from 'react-use-dimensions';
 
@@ -11,55 +18,76 @@ export function ToolItem({
   tooltip,
   title,
   defaultColor,
+  id,
+  className,
+  disabled,
 }) {
   const [hoverRef, isHovered] = useHover();
-  const [tooltipRef, tooltipDimenstions] = useDimensions();
+  const [fullDimensionsRef, fullDimensions] = useDimensions();
+
+  const [tooltipRef, tooltipDimensions] = useDimensions();
   const IconComponent = iconComponent;
-  const tooltipWidth = tooltipDimenstions.width ? tooltipDimenstions.width : 0;
+  const tooltipWidth = tooltipDimensions.width ? tooltipDimensions.width : 0;
 
   if (!defaultColor) {
-    defaultColor = primary4;
+    defaultColor = primary3;
   }
 
   if (!changeColor) {
     changeColor = errorColor;
   }
 
+  if (disabled) {
+    defaultColor = '#DDD';
+  }
+
   const styles = {
     container: {
       position: 'relative',
-      display: 'inline-block',
+      display: 'inline-flex',
+      alignItems: 'center',
       cursor: 'pointer',
       padding: 4,
       fontSize: 14,
     },
     popover: {
-      position: 'absolute',
-      top: -30,
+      position: 'fixed',
+      top: fullDimensions.y - 40,
+      left: fullDimensions.x - (tooltipWidth / 2 - 8),
       backgroundColor: primary3,
       color: '#FFF',
       padding: '4px 6px',
+      border: cleanBorder,
       borderRadius: 2,
-      left: -(tooltipWidth / 2) + 8,
       fontSize: 14,
       fontWeight: 400,
       zIndex: 1000,
+      pointerEvents: 'none',
     },
     title: {
+      color: isHovered ? changeColor : defaultColor,
+      marginLeft: 4,
       textDecoration: isHovered ? 'underline' : 'none',
       fontSize: 13,
-      color: primary,
+      lineHeight: '16px',
+      whiteSpace: 'nowrap',
     },
   };
 
   return (
     <div
+      id={id}
+      className={className}
       style={styles.container}
       ref={hoverRef}
       onClick={(event) => {
         event.stopPropagation();
-        onClick();
+
+        if (!disabled) {
+          onClick();
+        }
       }}>
+      <div ref={fullDimensionsRef} />
       {iconComponent ? (
         <IconComponent
           color={isHovered ? changeColor : defaultColor}

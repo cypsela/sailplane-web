@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Routes from './Routes';
+import Routes from './containers/Routes';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
