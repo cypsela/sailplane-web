@@ -84,7 +84,7 @@ export default function ContactModal({isVisible, onClose, onSelected}) {
               />
             ))
           ) : (
-            <div style={styles.noContacts}>No contacts!</div>
+            <div style={styles.noContacts}>No existing contacts</div>
           )}
 
           <AddContactDialog

@@ -8,8 +8,10 @@ import {BigButton} from './BigButton';
 import {userPubValid} from '../utils/sailplane-access';
 import Well from './Well';
 
-export default function AddContactDialog({onClose, isVisible}) {
+export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
   const dispatch = useDispatch();
+
+  const existingIds = [myID, ...contacts.map(c => c.pubKey)]
 
   const [label, setLabel] = useState('');
   const [pubKey, setPubKey] = useState('');
@@ -71,7 +73,9 @@ export default function AddContactDialog({onClose, isVisible}) {
 
   const createContact = () => {
     if (!userPubValid(pubKey)) {
-      setError('Invalid user ID!');
+      setError('Invalid user ID');
+    } else if (existingIds.includes(pubKey)) {
+      setError('Contact already exists')
     } else {
       dispatch(addContact(pubKey, label));
       onClose();

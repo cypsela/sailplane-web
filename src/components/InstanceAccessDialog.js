@@ -94,8 +94,8 @@ export default function InstanceAccessDialog({
             {admins.includes(myID)
               ? 'You are an admin of this drive. You have full access.'
               : writers.includes(myID)
-              ? 'You are a writer on this drive.'
-              : 'You have read access only.'}
+              ? 'You are an editor on this drive.'
+              : 'You have view access only.'}
           </Well>
 
           {error ? <Well isError={true}>{error}</Well> : null}
@@ -113,8 +113,8 @@ export default function InstanceAccessDialog({
               addUser={addWriter}
               admins={admins}
               users={writers}
-              type={'writer'}
-              message={'Add users to grant write privileges'}
+              type={'editor'}
+              message={'Add users to editor access'}
             />
 
             {instanceToModifyAccess.isEncrypted ? (
@@ -123,8 +123,8 @@ export default function InstanceAccessDialog({
                 addUser={addReader}
                 admins={admins}
                 users={readers}
-                type={'reader'}
-                message={'Add users to grant read privileges'}
+                type={'viewer'}
+                message={'Add users to view access'}
               />
             ) : null}
           </div>
