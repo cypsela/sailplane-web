@@ -2,7 +2,7 @@ import React from 'react';
 import {primary45} from '../utils/colors';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 
-export function Modal({onClose, children, isVisible, style}) {
+export function Modal({onClose, children, isVisible, style, positionTop}) {
   const isSmallScreen = useIsSmallScreen();
 
   const styles = {
@@ -11,7 +11,7 @@ export function Modal({onClose, children, isVisible, style}) {
       backgroundColor: '#FFF',
       border: `1px solid ${primary45}`,
       borderRadius: 4,
-      top: isSmallScreen ? 60 : 150,
+      top: positionTop ? positionTop : isSmallScreen ? 60 : 150,
       left: '50%',
       transform: 'translateX(-50%)',
       width: '94%',

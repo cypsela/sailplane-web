@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {ToolItem} from './ToolItem';
-import {FiPlusCircle} from 'react-icons/fi/index';
+import {FiPlusCircle} from 'react-icons/fi';
 import {cleanBorder, primary15, primary4, primary45} from '../utils/colors';
 import UserItem from './UserItem';
-import useTextInput from '../hooks/useTextInput';
 import {capitalize} from '../utils/Utils';
+import ContactModal from './ContactModal';
 
 const styles = {
   adminTools: {
@@ -56,20 +56,7 @@ export default function AccessDialogPanel({
   message,
 }) {
   const [addMode, setAddMode] = useState(false);
-
-  const AddUserInput = useTextInput(
-    addMode,
-    async (userID) => {
-      await addUser(userID);
-      setAddMode(false);
-    },
-    () => setAddMode(false),
-    '',
-    {
-      placeholder: 'user id',
-      confirmTitle: `Add ${type}`,
-    },
-  );
+  const [isContactModalVisible, setIsContactModalVisible] = useState(false);
 
   return (
     <div style={styles.panel}>
@@ -87,18 +74,17 @@ export default function AccessDialogPanel({
             justifyContent: 'flex-end',
             width: addMode ? '100%' : '30%',
           }}>
-          {!addMode && admins.includes(myID) && addUser ? (
+          {admins.includes(myID) && addUser ? (
             <>
               <ToolItem
                 iconComponent={FiPlusCircle}
                 title={`Add ${type}`}
                 changeColor={primary4}
                 defaultColor={primary4}
-                onClick={() => setAddMode(true)}
+                onClick={() => setIsContactModalVisible(true)}
               />
             </>
           ) : null}
-          {addMode ? AddUserInput : null}
         </div>
       </div>
       <div style={styles.panelBody}>
@@ -116,6 +102,14 @@ export default function AccessDialogPanel({
           )}
         </div>
       </div>
+      <ContactModal
+        isVisible={isContactModalVisible}
+        onClose={() => setIsContactModalVisible(false)}
+        onSelected={async (userID) => {
+          await addUser(userID);
+          setAddMode(false);
+        }}
+      />
     </div>
   );
 }

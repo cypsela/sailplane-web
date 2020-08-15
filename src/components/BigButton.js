@@ -11,6 +11,7 @@ export function BigButton({
   customWhiteColor,
   style,
   noHover,
+  id,
 }) {
   const [hoverRef, isHovered] = useHover();
 
@@ -49,6 +50,7 @@ export function BigButton({
 
   return (
     <div
+      id={id}
       ref={hoverRef}
       style={{...styles.container, ...style}}
       onClick={onClick}>

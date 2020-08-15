@@ -1,8 +1,14 @@
 import Jdenticon from 'react-jdenticon';
 import React from 'react';
-import {primary4, primary45} from "../utils/colors";
+import {primary4, primary45} from '../utils/colors';
+import {useSelector} from 'react-redux';
 
 export default function UserItem({pubKey, myID}) {
+  const contacts = useSelector((state) => state.main.contacts);
+  const matchingContact = contacts?.find(
+    (contact) => contact.pubKey === pubKey,
+  );
+
   const styles = {
     userBlock: {
       color: primary4,
@@ -31,6 +37,7 @@ export default function UserItem({pubKey, myID}) {
     },
     youText: {
       fontSize: 14,
+      fontWeight: 600,
     },
   };
 
@@ -41,10 +48,14 @@ export default function UserItem({pubKey, myID}) {
           <Jdenticon value={pubKey} size={'34'} style={styles.icon} />
         </div>
         <div style={styles.adminNameHolder}>
-          <div style={styles.adminTitle}></div>
           <div>
             {pubKey.slice(0, 10)}{' '}
             {myID === pubKey ? <span style={styles.youText}>[You]</span> : ''}
+            {matchingContact?.label ? (
+              <span style={styles.youText}>[{matchingContact.label}]</span>
+            ) : (
+              ''
+            )}
           </div>
         </div>
       </div>

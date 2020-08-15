@@ -6,6 +6,7 @@ import {
   primary,
   primary3,
   primary4,
+  primary45,
 } from '../utils/colors';
 
 export default function useTextInput(
@@ -13,11 +14,18 @@ export default function useTextInput(
   handleDone,
   handleCancel,
   initialValue,
-  {placeholder, isPassword, isError, confirmTitle},
+  {
+    placeholder,
+    isPassword,
+    isError,
+    confirmTitle,
+    inputIconComponent,
+    onInputIconClick,
+  },
 ) {
   const [inputString, setInputString] = useState(initialValue);
   const [showRedBorder, setShowRedBorder] = useState(false);
-
+  const IconComponent = inputIconComponent;
   const inputRef = useRef(null);
 
   const checkIfError = async () => {
@@ -46,6 +54,11 @@ export default function useTextInput(
       display: 'inline-flex',
       flexGrow: 2,
     },
+    inputWrapper: {
+      display: 'inline-flex',
+      flexGrow: 2,
+      position: 'relative',
+    },
     acceptButton: {
       backgroundColor: primary3,
       color: '#FFF',
@@ -54,6 +67,14 @@ export default function useTextInput(
       borderRadius: 2,
       cursor: 'pointer',
       zIndex: 2,
+    },
+    inputIcon: {
+      display: 'flex',
+      alignItems: 'center',
+      height: 26,
+      position: 'absolute',
+      right: 8,
+      cursor: 'pointer',
     },
   };
 
@@ -69,21 +90,32 @@ export default function useTextInput(
 
   return (
     <>
-      <input
-        ref={inputRef}
-        className={'textInput'}
-        type={isPassword ? 'password' : 'text'}
-        placeholder={placeholder}
-        style={styles.input}
-        value={inputString}
-        onClick={(event) => event.stopPropagation()}
-        onChange={(event) => setInputString(event.target.value)}
-        onKeyPress={(event) => {
-          if (event.key === 'Enter') {
-            handleDone(inputString);
-          }
-        }}
-      />
+      <div style={styles.inputWrapper}>
+        <input
+          ref={inputRef}
+          className={'textInput'}
+          type={isPassword ? 'password' : 'text'}
+          placeholder={placeholder}
+          style={styles.input}
+          value={inputString}
+          onClick={(event) => event.stopPropagation()}
+          onChange={(event) => setInputString(event.target.value)}
+          onKeyPress={(event) => {
+            if (event.key === 'Enter') {
+              handleDone(inputString);
+            }
+          }}
+        />
+        {inputIconComponent ? (
+          <IconComponent
+            onClick={onInputIconClick}
+            color={primary45}
+            size={16}
+            style={styles.inputIcon}
+          />
+        ) : null}
+      </div>
+
       <div
         onClick={(event) => {
           event.stopPropagation();
@@ -92,7 +124,7 @@ export default function useTextInput(
         style={styles.acceptButton}>
         {confirmTitle ? confirmTitle : 'Accept'}
       </div>
-      {handleCancel? (
+      {handleCancel ? (
         <ToolItem
           title={'Cancel'}
           onClick={() => handleCancel()}

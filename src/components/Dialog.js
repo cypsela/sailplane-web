@@ -10,6 +10,8 @@ export function Dialog({
   title,
   noPadding,
   backgroundColor,
+  positionTop,
+  style,
 }) {
   if (!isVisible) {
     return null;
@@ -35,7 +37,7 @@ export function Dialog({
   };
 
   return (
-    <Modal onClose={onClose} isVisible={isVisible}>
+    <Modal onClose={onClose} isVisible={isVisible} positionTop={positionTop} style={style}>
       <div style={styles.container}>
         <div style={styles.header}>
           <div>{title}</div>

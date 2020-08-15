@@ -78,40 +78,78 @@ describe('Private drive management', () => {
     cy.contains('permissions for Cool folder name');
   });
 
-  it('should error if invalid writer key', () => {
-    cy.contains('Add writer').click();
-    const input = cy.get('input[type="text"]');
-    input.should('have.attr', 'placeholder', 'user id');
-    input.type('notapublickey');
-    cy.contains('Add writer').click();
-    cy.contains('Invalid user ID!');
+  it('Add editor opens contact list add invalid key', () => {
+    cy.contains('Add editor').click();
+    cy.contains('Add contact').click();
+    const inputUser = cy.get('input[type="text"]').first();
+    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b31...)');
+    inputUser.type('notapublickey');
+    cy.get('#addContactDialogButton').click();
+    cy.contains('Invalid user ID');
+    cy.contains('Cancel').click();
+    cy.get('.dialogClose').last().click();
   });
 
-  it('should add valid writer key', () => {
-    cy.contains('Add writer').click();
-    const input = cy.get('input[type="text"]');
-    input.should('have.attr', 'placeholder', 'user id');
-    input.type('037f957ecde47e2b0dede1665d2478c32f706e66c7cb5aed19c4783eccdf482dda');
-    cy.contains('Add writer').click();
-    cy.contains('037f957ecd');
+  it('Add editor opens contact list add valid unnamed key', () => {
+    cy.contains('Add editor').click();
+    cy.contains('Add contact').click();
+    const inputUser = cy.get('input[type="text"]').first();
+    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b31...)');
+    inputUser.type('037f957ecde47e2b0dede1665d2478c32f706e66c7cb5aed19c4783eccdf482dda');
+
+    cy.get('#addContactDialogButton').click();
+    cy.contains('037f957e');
+    cy.contains('Unnamed').click();
+    cy.contains('037f957e');
   });
 
-  it('should error if invalid reader key', () => {
-    cy.contains('Add reader').click();
-    const input = cy.get('input[type="text"]');
-    input.should('have.attr', 'placeholder', 'user id');
-    input.type('notapublickey');
-    cy.contains('Add reader').click();
-    cy.contains('Invalid user ID!');
+  it('Add editor opens contact list add valid named key', () => {
+    cy.contains('Add editor').click();
+    cy.contains('Add contact').click();
+
+    const inputUser = cy.get('input[type="text"]').first();
+    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b31...)');
+    inputUser.type('0341ff53ed4ed6645e370367172cd36fe5102919cb29512dcbf95d30c64353bd7b');
+
+    const inputLabel = cy.get('input[type="text"]').last();
+    inputLabel.should('have.attr', 'placeholder', '(ex: John Richardson)');
+    inputLabel.type('Stevie D');
+
+    cy.get('#addContactDialogButton').click();
+    cy.contains('0341ff53');
+    cy.contains('Stevie D').click();
+    cy.contains('0341ff53');
+    cy.contains('[Stevie D]');
   });
 
-  it('should add valid reader key', () => {
-    cy.contains('Add reader').click();
-    const input = cy.get('input[type="text"]');
-    input.should('have.attr', 'placeholder', 'user id');
-    input.type('03412560381bf152f9b1e1bbd014ed26df8b8512eda2b1a9328cd162d349e1f55b');
-    cy.contains('Add reader').click();
-    cy.contains('0341256');
-    cy.get('.dialogClose').click();
+  it('Add viewer opens contact list add invalid key', () => {
+    cy.contains('Add viewer').click();
+    cy.contains('Add contact').click();
+    const inputUser = cy.get('input[type="text"]').first();
+    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b31...)');
+    inputUser.type('notapublickey');
+    cy.get('#addContactDialogButton').click();
+    cy.contains('Invalid user ID');
+    cy.contains('Cancel').click();
+    cy.get('.dialogClose').last().click();
+  });
+
+  it('Add viewer opens contact list add valid named key', () => {
+    cy.contains('Add viewer').click();
+    cy.contains('Add contact').click();
+
+    const inputUser = cy.get('input[type="text"]').first();
+    inputUser.should('have.attr', 'placeholder', '(ex: 0356467b31...)');
+    inputUser.type('033d9c2f2d75ef1e2aff3e720d0304a7ef949c783fb0640d10920cfe3864d79ad8');
+
+    const inputLabel = cy.get('input[type="text"]').last();
+    inputLabel.should('have.attr', 'placeholder', '(ex: John Richardson)');
+    inputLabel.type('Anders Tabcat');
+
+    cy.get('#addContactDialogButton').click();
+    cy.contains('033d9c');
+    cy.contains('Anders Tabcat').click();
+    cy.contains('033d9c');
+    cy.contains('[Anders Tabcat]');
   });
 });

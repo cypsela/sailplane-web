@@ -110,9 +110,9 @@ export default function ImportDriveDialog({
       setError('Invalid address!');
     };
 
-    if (await sailplaneUtil.addressValid(sailplane, address)) {
-      setIsAddressSet(true);
+    setIsAddressSet(true);
 
+    if (await sailplaneUtil.addressValid(sailplane, address)) {
       if (instances.map((s) => s.address).includes(address)) {
         const driveName = sailplaneUtil.driveName(address);
 
