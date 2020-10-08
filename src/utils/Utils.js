@@ -369,3 +369,25 @@ export function notify(text, dispatch, isError) {
   );
   setTimeout(() => dispatch(setStatus({})), 1500);
 }
+
+export const getEncryptionInfoFromFilename = (filename) => {
+  const extension = getFileExtensionFromFilename(filename);
+
+  if (/encrypted-sailplane/.test(extension)) {
+    const extensionSplit = extension.split('_');
+
+    return {
+      isEncrypted: true,
+      passHash: extensionSplit[1],
+      decryptedFilename: filename.substring(
+        0,
+        filename.length - extension.length - 1,
+      ),
+    };
+  } else {
+    return {
+      isEncrypted: false,
+      decryptedFilename: filename,
+    };
+  }
+};

@@ -13,7 +13,6 @@ import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
 import {
   getBlobFromPath,
-  getBlobFromPathCID,
   getFileExtensionFromFilename,
   getFileInfoFromCID,
   getFileTime,
@@ -21,17 +20,12 @@ import {
   humanFileSize,
   getPercent,
   isFileExtensionAudio,
-  hasMouse,
+  hasMouse, getEncryptionInfoFromFilename,
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import useTextInput from '../hooks/useTextInput';
 import {useDispatch} from 'react-redux';
 import {setShareData, setStatus} from '../actions/tempData';
-import {
-  decryptFile,
-  doesPasswordMatchHash,
-  getEncryptionInfoFromFilename,
-} from '../utils/encryption';
 import useDoubleClick from '../hooks/useDoubleClick';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {contextMenu} from 'react-contexify';
@@ -57,7 +51,6 @@ export function FileItem({
   const [editMode, setEditMode] = useState(false);
   const [mobileActionsVisible, setMobileActionsVisible] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
-  const [enterPasswordMode, setEnterPasswordMode] = useState(false);
   const [doubleClickRef] = useDoubleClick(() => setEditMode(true));
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
   const fileExtension = getFileExtensionFromFilename(name);
@@ -107,14 +100,10 @@ export function FileItem({
       display: isTouchDevice ? 'none' : 'flex',
       justifyContent: 'flex-end',
       width: '100%',
-      opacity:
-        (isHovered || fileBlob || enterPasswordMode) && !isParent ? 1 : 0,
-      pointerEvents:
-        (isHovered || fileBlob || enterPasswordMode) && !isParent
-          ? null
-          : 'none',
+      opacity: (isHovered || fileBlob) && !isParent ? 1 : 0,
+      pointerEvents: (isHovered || fileBlob) && !isParent ? null : 'none',
       fontSize: 14,
-      marginLeft: enterPasswordMode ? 8 : 0,
+      marginLeft: 0,
     },
     filename: {
       textAlign: 'left',
@@ -124,11 +113,7 @@ export function FileItem({
     },
   };
 
-  const {
-    isEncrypted,
-    decryptedFilename,
-    passHash,
-  } = getEncryptionInfoFromFilename(name);
+  const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(name);
 
   const dispatch = useDispatch();
 
@@ -139,34 +124,6 @@ export function FileItem({
     name,
     {
       placeholder: '',
-    },
-  );
-  const setDecryptPassword = async (password) => {
-    let doesNotMatchHash = await doesPasswordFailHashCheck(password);
-    if (!doesNotMatchHash) {
-      setEnterPasswordMode(false);
-
-      let blob = await getBlob();
-      dispatch(setStatus({message: 'Decrypting file'}));
-      blob = await decryptFile(blob, password);
-
-      dispatch(setStatus({}));
-      saveAsFile(blob, decryptedFilename);
-    }
-  };
-  const doesPasswordFailHashCheck = async (text) => {
-    return await doesPasswordMatchHash(text, passHash);
-  };
-
-  const PasswordInputComponent = useTextInput(
-    enterPasswordMode,
-    (password) => setDecryptPassword(password),
-    () => setEnterPasswordMode(false),
-    '',
-    {
-      placeholder: 'password',
-      isPassword: true,
-      isError: doesPasswordFailHashCheck,
     },
   );
 
@@ -217,13 +174,10 @@ export function FileItem({
       const handleUpdate = (currentIndex, totalCount) => {
         dispatch(
           setStatus({
-            message: `[${getPercent(
-              currentIndex,
-              totalCount,
-            )}%] Downloading`,
+            message: `[${getPercent(currentIndex, totalCount)}%] Downloading`,
           }),
         );
-      }
+      };
       blob = await getBlobFromPath(sharedFs.current, path, handleUpdate);
       dispatch(setStatus({}));
     } else {
@@ -255,11 +209,6 @@ export function FileItem({
 
   const handleDownload = async () => {
     setMobileActionsVisible(false);
-
-    if (isEncrypted) {
-      setEnterPasswordMode(true);
-      return;
-    }
 
     const blob = await getBlob();
     saveAsFile(blob, name);
@@ -440,50 +389,44 @@ export function FileItem({
                 : null}
             </div>
             <div style={styles.tools}>
-              {!enterPasswordMode ? (
-                <div>
-                  <ToolItem
-                    id={`Share-${type}`}
-                    iconComponent={FiShare2}
-                    changeColor={primary}
-                    tooltip={
-                      isUnsharable
-                        ? 'No encrypted folder sharing yet!'
-                        : 'Share'
-                    }
-                    onClick={handleShare}
-                    disabled={isUnsharable}
-                  />
+              <div>
+                <ToolItem
+                  id={`Share-${type}`}
+                  iconComponent={FiShare2}
+                  changeColor={primary}
+                  tooltip={
+                    isUnsharable ? 'No encrypted folder sharing yet!' : 'Share'
+                  }
+                  onClick={handleShare}
+                  disabled={isUnsharable}
+                />
 
-                  <ToolItem
-                    id={`Download-${type}`}
-                    iconComponent={FiDownload}
-                    changeColor={primary}
-                    tooltip={'Download'}
-                    onClick={handleDownload}
-                  />
+                <ToolItem
+                  id={`Download-${type}`}
+                  iconComponent={FiDownload}
+                  changeColor={primary}
+                  tooltip={'Download'}
+                  onClick={handleDownload}
+                />
 
-                  {!readOnly ? (
-                    <>
-                      <ToolItem
-                        id={`Rename-${type}`}
-                        iconComponent={FiEdit}
-                        changeColor={primary}
-                        tooltip={'Rename'}
-                        onClick={handleEdit}
-                      />
-                      <ToolItem
-                        id={`Delete-${type}`}
-                        iconComponent={FiTrash}
-                        tooltip={'Delete'}
-                        onClick={handleDelete}
-                      />
-                    </>
-                  ) : null}
-                </div>
-              ) : (
-                <>{PasswordInputComponent}</>
-              )}
+                {!readOnly ? (
+                  <>
+                    <ToolItem
+                      id={`Rename-${type}`}
+                      iconComponent={FiEdit}
+                      changeColor={primary}
+                      tooltip={'Rename'}
+                      onClick={handleEdit}
+                    />
+                    <ToolItem
+                      id={`Delete-${type}`}
+                      iconComponent={FiTrash}
+                      tooltip={'Delete'}
+                      onClick={handleDelete}
+                    />
+                  </>
+                ) : null}
+              </div>
             </div>
           </div>
           {fileBlob ? (
