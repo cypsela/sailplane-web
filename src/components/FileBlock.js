@@ -10,7 +10,6 @@ import {DraggableFileItem} from './DraggableFileItem';
 import {
   filterImageFiles,
   getBlobFromPath,
-  getBlobFromPathCID,
   getFileExtensionFromFilename,
   getPercent,
   isFileExtensionImage,
@@ -21,6 +20,9 @@ import {FileDragBlock} from './FileDragBlock';
 import Lightbox from 'react-image-lightbox';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
+import produce from 'immer';
+
+const loadingURL = 'https://miro.medium.com/max/880/0*H3jZONKqRuAAeHnG.jpg';
 
 const styles = {
   container: {
@@ -82,62 +84,43 @@ export function FileBlock({
 
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [imageURLS, setImageURLS] = useState(new Array(1000));
   const imageFiles = filterImageFiles(fullFileList);
+  const [imageURLS, setImageURLS] = useState(
+    new Array(imageFiles.length).fill(loadingURL),
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setImageURLS(new Array(1000));
-  }, [currentDirectory]);
+    setImageURLS(new Array(imageFiles.length).fill(loadingURL));
+  }, [currentDirectory, imageFiles.length]);
 
-  useEffect(() => {
-    const loadImages = async () => {
-      if (imageURLS[0] || !isImageOpen) {
-        return;
-      }
+  const handleUpdate = (currentIndex, totalCount) => {
+    dispatch(
+      setStatus({
+        message: `[${getPercent(currentIndex, totalCount)}%] Loading previews`,
+      }),
+    );
+  };
 
-      const imageURLSPromises = imageFiles.map(async (file) => {
-        // const cid = await sharedFs.current.read(file.path);
-        // const blob = await getBlobFromPathCID(
-        //   cid,
-        //   file.path,
-        //   ipfs,
-        //   (currentIndex, totalCount) => {
-        //     dispatch(
-        //       setStatus({
-        //         message: `[${getPercent(
-        //           currentIndex,
-        //           totalCount,
-        //         )}%] Loading previews`,
-        //       }),
-        //     );
-        //   },
-        // );
-        const handleUpdate = (currentIndex, totalCount) => {
-          dispatch(
-            setStatus({
-              message: `[${getPercent(
-                currentIndex,
-                totalCount,
-              )}%] Loading previews`,
-            }),
-          );
-        };
-        const blob = await getBlobFromPath(
-          sharedFs.current,
-          file.path,
-          handleUpdate,
-        );
-        dispatch(setStatus({}));
-        return window.URL.createObjectURL(blob);
+  const loadNextImage = async (nextIndex) => {
+    if (imageURLS[nextIndex] === loadingURL) {
+      const blob = await getBlobFromPath(
+        sharedFs.current,
+        fullFileList[nextIndex].path,
+        handleUpdate,
+      );
+
+      dispatch(setStatus({}));
+
+      const newImageURLS = produce(imageURLS, (draft) => {
+        draft[nextIndex] = window.URL.createObjectURL(blob);
       });
+      setImageURLS(newImageURLS);
+    }
 
-      const tmpImageURLS = await Promise.all(imageURLSPromises);
-      setImageURLS(tmpImageURLS);
-    };
-
-    loadImages();
-  }, [imageFiles.length, isImageOpen, currentDirectory]);
+    setCurrentImageIndex(nextIndex);
+  };
 
   return (
     <div style={styles.container}>
@@ -146,8 +129,8 @@ export function FileBlock({
           mainSrc={imageURLS[currentImageIndex]}
           nextSrc={imageURLS[currentImageIndex + 1]}
           prevSrc={imageURLS[currentImageIndex - 1]}
-          onMoveNextRequest={() => setCurrentImageIndex(currentImageIndex + 1)}
-          onMovePrevRequest={() => setCurrentImageIndex(currentImageIndex - 1)}
+          onMoveNextRequest={() => loadNextImage(currentImageIndex + 1)}
+          onMovePrevRequest={() => loadNextImage(currentImageIndex - 1)}
           onCloseRequest={() => setIsImageOpen(false)}
         />
       ) : null}
@@ -253,11 +236,30 @@ export function FileBlock({
                               isFileExtensionImage(
                                 getFileExtensionFromFilename(fileItem.name),
                               )
-                                ? () => {
+                                ? async () => {
                                     const newImageIndex = imageFiles.findIndex(
                                       (imageFile) =>
                                         imageFile.name === fileItem.name,
                                     );
+
+                                    const blob = await getBlobFromPath(
+                                      sharedFs.current,
+                                      fileItem.path,
+                                      handleUpdate,
+                                    );
+
+                                    dispatch(setStatus({}));
+
+                                    const newImageURLS = produce(
+                                      imageURLS,
+                                      (draft) => {
+                                        draft[
+                                          newImageIndex
+                                        ] = window.URL.createObjectURL(blob);
+                                      },
+                                    );
+                                    setImageURLS(newImageURLS);
+
                                     setCurrentImageIndex(newImageIndex);
                                     setIsImageOpen(true);
                                   }
