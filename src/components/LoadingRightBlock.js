@@ -27,16 +27,14 @@ export function LoadingRightBlock({ipfsError, message, loading}) {
     message = 'Loading...';
   }
 
-  const loader = loading === false
-    ? null
-    : (
-      <FiLoader
-        color={primary4}
-        size={16}
-        style={styles.icon}
-        className={'rotating'}
-      />
-    )
+  const loader = (
+    <FiLoader
+      color={primary4}
+      size={16}
+      style={styles.icon}
+      className={'rotating'}
+    />
+  );
 
   const networkFail = <>
     Sailplane failed to start network. Try refreshing. <br/>
@@ -51,7 +49,7 @@ export function LoadingRightBlock({ipfsError, message, loading}) {
     <div style={styles.container}>
       {isWebRTCSupported() && !ipfsError ? (
         <div>
-          {loader}
+          {loading && loader}
           {message}
         </div>
       ) : (

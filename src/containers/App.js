@@ -180,20 +180,29 @@ function App({}) {
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
-      const noDrives = instances.length === 0;
-      const message = !noDrives ? 'Looking for drive...' : 'Create a drive';
-      return !instanceReady || noDrives ? (
-        <LoadingRightBlock message={message} loading={!noDrives} />
-      ) : (
-        <FileBlock
-          isEncrypted={currentInstance.isEncrypted}
-          sharedFs={sharedFS}
-          ipfs={ipfsObj.ipfs}
-          directoryContents={directoryContents}
-          setCurrentDirectory={setCurrentDirectory}
-          currentDirectory={currentDirectory}
-        />
-      );
+      if (instanceReady && sharedFS.current.access.hasRead) {
+        return (
+          <FileBlock
+            isEncrypted={sharedFS.current.encrypted}
+            sharedFs={sharedFS}
+            ipfs={ipfsObj.ipfs}
+            directoryContents={directoryContents}
+            setCurrentDirectory={setCurrentDirectory}
+            currentDirectory={currentDirectory}
+          />
+        );
+      }
+
+      let message, loading;
+      if (!instanceReady) {
+        message = 'Looking for drive...';
+      } else if (instances.length === 0) {
+        message = 'Create a drive';
+        loading = true;
+      } else if (!sharedFS.current.access.hasRead) {
+        message = 'You need permission to view this drive';
+      }
+      return (<LoadingRightBlock message={message} loading={loading} />)
     } else if (currentRightPanel === 'settings') {
       return <Settings sharedFS={sharedFS} />;
     } else if (currentRightPanel === 'contacts') {
