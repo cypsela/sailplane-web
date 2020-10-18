@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {driveName} from '../utils/sailplane-util';
 import {Dialog} from './Dialog';
-import * as sailplaneAccess from '../utils/sailplane-access';
 import {primary45} from '../utils/colors';
-import {compressKey, decompressKey} from '../utils/Utils';
+import {compressKey, decompressKey, publicKeyValid} from '../utils/Utils';
 import Well from './Well';
 import AccessDialogPanel from './AccessDialogPanel';
 
@@ -27,11 +26,10 @@ export default function InstanceAccessDialog({
 
   useEffect(() => {
     const getPerms = () => {
-      let tmpAdmins = sailplaneAccess.admin(sharedFS.current);
-      let tmpWriters = sailplaneAccess.writers(sharedFS.current);
-      let tmpMyID = compressKey(sailplaneAccess.localUserPub(sharedFS.current));
-
-      let tmpReaders = sailplaneAccess.readers(sharedFS.current);
+      let tmpAdmins = sharedFS.current.access.admin;
+      let tmpWriters = sharedFS.current.access.write;
+      let tmpReaders = sharedFS.current.access.read;
+      let tmpMyID = compressKey(sharedFS.current.identity.publicKey);
 
       tmpAdmins = Array.from(tmpAdmins).map((key) => compressKey(key));
       tmpWriters = Array.from(tmpWriters).map((key) => compressKey(key));
@@ -54,13 +52,13 @@ export default function InstanceAccessDialog({
   const addWriter = async (writerID) => {
     setError(null);
 
-    if (!sailplaneAccess.userPubValid(writerID)) {
+    if (!publicKeyValid(writerID)) {
       setError('Invalid user ID!');
       return;
     }
 
-    await sailplaneAccess.grantWrite(sharedFS.current, decompressKey(writerID));
-    await sailplaneAccess.grantRead(sharedFS.current, decompressKey(writerID));
+    await sharedFS.current.access.grantWrite(decompressKey(writerID));
+    await sharedFS.current.access.grantRead(decompressKey(writerID));
 
     setLastUpdate(Date.now());
   };
@@ -68,12 +66,12 @@ export default function InstanceAccessDialog({
   const addReader = async (readerID) => {
     setError(null);
 
-    if (!sailplaneAccess.userPubValid(readerID)) {
+    if (!publicKeyValid(readerID)) {
       setError('Invalid user ID!');
       return;
     }
 
-    await sailplaneAccess.grantRead(sharedFS.current, decompressKey(readerID));
+    await sharedFS.current.access.grantRead(decompressKey(readerID));
     setLastUpdate(Date.now());
   };
 

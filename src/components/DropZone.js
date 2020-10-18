@@ -29,6 +29,7 @@ export function DropZone({children, sharedFs, currentDirectory}, ref) {
       dispatch(setStatus({message: 'Uploading'}));
       const listSource = fileListSource(acceptedFiles, {preserveMtime: true});
       const totalSize = acceptedFiles.reduce((prev, cur) => cur.size + prev, 0);
+      console.log(fileListSource(acceptedFiles, {preserveMtime: true}))
 
       try {
         await sharedFs.current.upload(currentDirectory, listSource, {
@@ -42,6 +43,7 @@ export function DropZone({children, sharedFs, currentDirectory}, ref) {
         });
         dispatch(setStatus({}));
       } catch (e) {
+        console.log(e)
         // will add sharedFs.canWrite method later for richer ux
         dispatch(
           setStatus({

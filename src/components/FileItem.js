@@ -45,6 +45,7 @@ export function FileItem({
   const {path, type} = data;
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
+  const mtime = sharedFs && sharedFs.current.fs.read(path)?.mtime
   const [hoverRef, isHovered] = useHover();
   const [CID, setCID] = useState(null);
   const [fileInfo, setFileInfo] = useState(null);
@@ -59,7 +60,7 @@ export function FileItem({
   const contextNoShareID = `menu-id-no-share`;
   const exists = sharedFs && sharedFs.current.fs.exists(path);
   const isTouchDevice = !hasMouse;
-  const isUnsharable = sharedFs?.current.crypting && type === 'dir';
+  const isUnsharable = sharedFs?.current.encrypted && type === 'dir';
 
   const styles = {
     paddingContainer: {
@@ -384,8 +385,8 @@ export function FileItem({
               {type !== 'dir' && fileInfo ? humanFileSize(fileInfo.size) : null}
             </div>
             <div style={{...styles.flexItem, justifyContent: 'flex-end'}}>
-              {type !== 'dir' && fileInfo?.mtime
-                ? getFileTime(fileInfo.mtime.secs)
+              {type !== 'dir' && (mtime || fileInfo?.mtime)
+                ? getFileTime(mtime?.secs || fileInfo.mtime.secs)
                 : null}
             </div>
             <div style={styles.tools}>

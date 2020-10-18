@@ -12,6 +12,7 @@ import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
 import detectIt from 'detect-it';
 import secp256k1 from 'secp256k1';
+import {Buffer} from 'safe-buffer';
 import * as copy from 'copy-to-clipboard';
 import {setStatus} from '../actions/tempData';
 
@@ -336,15 +337,23 @@ export const jdenticonConfig = {
 export const hasMouse = detectIt.hasMouse === true;
 
 export function compressKey(uncompressedKey) {
-  return secp256k1
-    .publicKeyConvert(Buffer.from(uncompressedKey, 'hex'), true)
-    .toString('hex');
+  return Buffer.from(
+    secp256k1.publicKeyConvert(Buffer.from(uncompressedKey, 'hex'), true)
+  ).toString('hex');
 }
 
 export function decompressKey(compressedKey) {
-  return secp256k1
-    .publicKeyConvert(Buffer.from(compressedKey, 'hex'), false)
-    .toString('hex');
+  return Buffer.from(
+    secp256k1.publicKeyConvert(Buffer.from(compressedKey, 'hex'), false)
+  ).toString('hex');
+}
+
+export function publicKeyValid(publicKey) {
+  try {
+    return secp256k1.publicKeyVerify(Buffer.from(publicKey, 'hex'));
+  } catch (e) {
+    return false;
+  }
 }
 
 export async function copyToClipboard(text) {
