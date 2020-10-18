@@ -42,9 +42,6 @@ export async function determineAddress(sailplane, options = {}) {
     const cryptoKey = options.cryptoKey || await Crypter.generateKey()
     const crypter = await Crypter.create(cryptoKey)
     const drive = await sailplane.mount(address, { crypter, Crypter })
-    console.log(drive)
-    console.log(drive.access.hasRead)
-    console.log(drive.access.read)
     await drive.stop()
   }
   return address;
