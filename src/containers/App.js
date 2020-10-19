@@ -180,7 +180,7 @@ function App({}) {
 
   const getRightPanel = () => {
     if (currentRightPanel === 'files') {
-      if (instanceReady && sharedFS.current.access.hasRead) {
+      if (currentInstance && instanceReady && sharedFS.current.access.hasRead) {
         return (
           <FileBlock
             isEncrypted={sharedFS.current.encrypted}
