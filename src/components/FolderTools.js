@@ -7,6 +7,10 @@ import useTextInput from '../hooks/useTextInput';
 import {useDispatch} from 'react-redux';
 import {setShareData} from '../actions/tempData';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
+import {
+  doesUserHaveWriteInInstance,
+  getInstanceAccessDetails,
+} from '../utils/Utils';
 
 const styles = {
   tools: {
@@ -42,6 +46,7 @@ export function FolderTools({
   const pathSplit = currentDirectory.split('/');
   const folderName = pathSplit[pathSplit.length - 1];
   const isSmallScreen = useIsSmallScreen();
+  const hasWrite = doesUserHaveWriteInInstance(sharedFs.current);
 
   const createFolder = async (newFolderName) => {
     try {
@@ -83,7 +88,7 @@ export function FolderTools({
                   disabled={isEncrypted}
                   iconComponent={FiShare2}
                   size={18}
-                  changeColor={isEncrypted?'#DDD':primary4}
+                  changeColor={isEncrypted ? '#DDD' : primary4}
                   onClick={() => {
                     dispatch(
                       setShareData({
@@ -103,13 +108,15 @@ export function FolderTools({
                   handleOpenUpload();
                 }}
               />
-              <ToolItem
-                id={'addFolder'}
-                iconComponent={FiFolderPlus}
-                size={18}
-                changeColor={primary4}
-                onClick={() => setAddFolderMode(true)}
-              />
+              {hasWrite ? (
+                <ToolItem
+                  id={'addFolder'}
+                  iconComponent={FiFolderPlus}
+                  size={18}
+                  changeColor={primary4}
+                  onClick={() => setAddFolderMode(true)}
+                />
+              ) : null}
             </>
           ) : null}
 

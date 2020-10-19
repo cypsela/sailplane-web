@@ -2,7 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {driveName} from '../utils/sailplane-util';
 import {Dialog} from './Dialog';
 import {primary45} from '../utils/colors';
-import {compressKey, decompressKey, publicKeyValid} from '../utils/Utils';
+import {
+  compressKey,
+  decompressKey,
+  getInstanceAccessDetails,
+  publicKeyValid,
+} from '../utils/Utils';
 import Well from './Well';
 import AccessDialogPanel from './AccessDialogPanel';
 
@@ -26,24 +31,14 @@ export default function InstanceAccessDialog({
 
   useEffect(() => {
     const getPerms = () => {
-      let tmpAdmins = sharedFS.current.access.admin;
-      let tmpWriters = sharedFS.current.access.write;
-      let tmpReaders = sharedFS.current.access.read;
-      let tmpMyID = compressKey(sharedFS.current.identity.publicKey);
+      const {admins, writers, readers, myID} = getInstanceAccessDetails(
+        sharedFS.current,
+      );
 
-      tmpAdmins = Array.from(tmpAdmins).map((key) => compressKey(key));
-      tmpWriters = Array.from(tmpWriters).map((key) => compressKey(key));
-
-      setAdmins(tmpAdmins);
-      setWriters(tmpWriters);
-
-      tmpReaders = Array.from(tmpReaders)
-        .map((key) => compressKey(key))
-        .filter((key) => !tmpAdmins.includes(key))
-        .filter((key) => !tmpWriters.includes(key));
-
-      setReaders(tmpReaders);
-      setMyID(tmpMyID);
+      setAdmins(admins);
+      setWriters(writers);
+      setReaders(readers);
+      setMyID(myID);
     };
 
     getPerms();

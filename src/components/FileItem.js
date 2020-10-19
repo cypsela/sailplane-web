@@ -20,7 +20,9 @@ import {
   humanFileSize,
   getPercent,
   isFileExtensionAudio,
-  hasMouse, getEncryptionInfoFromFilename,
+  hasMouse,
+  getEncryptionInfoFromFilename,
+  doesUserHaveWriteInInstance,
 } from '../utils/Utils';
 import {saveAs} from 'file-saver';
 import useTextInput from '../hooks/useTextInput';
@@ -45,7 +47,7 @@ export function FileItem({
   const {path, type} = data;
   const pathSplit = path.split('/');
   const name = pathSplit[pathSplit.length - 1];
-  const mtime = sharedFs && sharedFs.current.fs.read(path)?.mtime
+  const mtime = sharedFs && sharedFs.current.fs.read(path)?.mtime;
   const [hoverRef, isHovered] = useHover();
   const [CID, setCID] = useState(null);
   const [fileInfo, setFileInfo] = useState(null);
@@ -61,6 +63,7 @@ export function FileItem({
   const exists = sharedFs && sharedFs.current.fs.exists(path);
   const isTouchDevice = !hasMouse;
   const isUnsharable = sharedFs?.current.encrypted && type === 'dir';
+  const hasWrite = doesUserHaveWriteInInstance(sharedFs.current);
 
   const styles = {
     paddingContainer: {
@@ -126,9 +129,7 @@ export function FileItem({
     },
   );
 
-  const iconComponent = forceIcon
-    ? forceIcon
-    : getIconForPath(type, name);
+  const iconComponent = forceIcon ? forceIcon : getIconForPath(type, name);
 
   const getCID = async () => {
     let tmpCID;
@@ -274,18 +275,23 @@ export function FileItem({
       onClick: handleDownload,
       iconComponent: FiDownload,
     },
-    {
-      title: 'Rename',
-      onClick: handleEdit,
-      iconComponent: FiEdit,
-    },
-    {
-      title: 'Delete',
-      onClick: handleDelete,
-      iconComponent: FiTrash,
-      forceColor: lightErrorColor,
-    },
   ];
+
+  if (hasWrite) {
+    mobileActionItems = mobileActionItems.concat([
+      {
+        title: 'Rename',
+        onClick: handleEdit,
+        iconComponent: FiEdit,
+      },
+      {
+        title: 'Delete',
+        onClick: handleDelete,
+        iconComponent: FiTrash,
+        forceColor: lightErrorColor,
+      },
+    ]);
+  }
 
   if (!isUnsharable) {
     mobileActionItems.unshift({
@@ -408,7 +414,7 @@ export function FileItem({
                   onClick={handleDownload}
                 />
 
-                {!readOnly ? (
+                {!readOnly && hasWrite ? (
                   <>
                     <ToolItem
                       id={`Rename-${type}`}

@@ -334,13 +334,13 @@ export const hasMouse = detectIt.hasMouse === true;
 
 export function compressKey(uncompressedKey) {
   return Buffer.from(
-    secp256k1.publicKeyConvert(Buffer.from(uncompressedKey, 'hex'), true)
+    secp256k1.publicKeyConvert(Buffer.from(uncompressedKey, 'hex'), true),
   ).toString('hex');
 }
 
 export function decompressKey(compressedKey) {
   return Buffer.from(
-    secp256k1.publicKeyConvert(Buffer.from(compressedKey, 'hex'), false)
+    secp256k1.publicKeyConvert(Buffer.from(compressedKey, 'hex'), false),
   ).toString('hex');
 }
 
@@ -373,4 +373,32 @@ export function notify(text, dispatch, isError) {
     }),
   );
   setTimeout(() => dispatch(setStatus({})), 1500);
+}
+
+export function doesUserHaveWriteInInstance(sharedFS) {
+  const {writers, admins, myID} = getInstanceAccessDetails(sharedFS);
+
+  return writers.includes(myID) || admins.includes(myID);
+}
+
+export function getInstanceAccessDetails(sharedFS) {
+  let tmpAdmins = sharedFS.access.admin;
+  let tmpWriters = sharedFS.access.write;
+  let tmpReaders = sharedFS.access.read;
+  let tmpMyID = compressKey(sharedFS.identity.publicKey);
+
+  tmpAdmins = Array.from(tmpAdmins).map((key) => compressKey(key));
+  tmpWriters = Array.from(tmpWriters).map((key) => compressKey(key));
+
+  tmpReaders = Array.from(tmpReaders)
+    .map((key) => compressKey(key))
+    .filter((key) => !tmpAdmins.includes(key))
+    .filter((key) => !tmpWriters.includes(key));
+
+  return {
+    admins: tmpAdmins,
+    writers: tmpWriters,
+    readers: tmpReaders,
+    myID: tmpMyID,
+  };
 }
