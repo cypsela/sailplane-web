@@ -72,8 +72,9 @@ export default function ContactModal({isVisible, onClose, onSelected}) {
           </div>
 
           {contacts?.length ? (
-            contacts.map((contact) => (
+            contacts.map((contact, i) => (
               <Contact
+                key={i}
                 onClick={() => {
                   onSelected(contact.pubKey);
                   onClose();
