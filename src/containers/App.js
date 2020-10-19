@@ -194,10 +194,10 @@ function App({}) {
       }
 
       let message, loading;
-      if (!instanceReady) {
-        message = 'Looking for drive...';
-      } else if (instances.length === 0) {
+      if (!instances.length) {
         message = 'Create a drive';
+      } else if (!instanceReady) {
+        message = 'Looking for drive...';
         loading = true;
       } else if (!sharedFS.current.access.hasRead) {
         message = 'You need permission to view this drive';
