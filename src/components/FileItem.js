@@ -114,8 +114,6 @@ export function FileItem({
     },
   };
 
-  const {isEncrypted, decryptedFilename} = getEncryptionInfoFromFilename(name);
-
   const dispatch = useDispatch();
 
   const InputComponent = useTextInput(
@@ -130,7 +128,7 @@ export function FileItem({
 
   const iconComponent = forceIcon
     ? forceIcon
-    : getIconForPath(type, isEncrypted, name);
+    : getIconForPath(type, name);
 
   const getCID = async () => {
     let tmpCID;
@@ -330,7 +328,7 @@ export function FileItem({
       <div
         ref={hoverRef}
         style={styles.paddingContainer}
-        className={`fileItem ${isEncrypted ? 'fileItemEncrypted' : null}`}>
+        className={`fileItem`}>
         <MobileActionsDialog
           isVisible={mobileActionsVisible}
           name={name}
@@ -377,7 +375,7 @@ export function FileItem({
                 '. . /'
               ) : (
                 <span ref={doubleClickRef} style={styles.filename}>
-                  {decryptedFilename}
+                  {name}
                 </span>
               )}
             </div>

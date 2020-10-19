@@ -194,7 +194,7 @@ export function getDraggableStyleHack(style, snapshot) {
   };
 }
 
-export function getIconForPath(type, isEncrypted, filename) {
+export function getIconForPath(type, filename) {
   const ext = getFileExtensionFromFilename(filename);
 
   let iconComponent = FiFile;
@@ -211,10 +211,6 @@ export function getIconForPath(type, isEncrypted, filename) {
 
   if (type === 'dir') {
     iconComponent = FaFolder;
-  }
-
-  if (isEncrypted) {
-    iconComponent = FiLock;
   }
   return iconComponent;
 }
@@ -378,25 +374,3 @@ export function notify(text, dispatch, isError) {
   );
   setTimeout(() => dispatch(setStatus({})), 1500);
 }
-
-export const getEncryptionInfoFromFilename = (filename) => {
-  const extension = getFileExtensionFromFilename(filename);
-
-  if (/encrypted-sailplane/.test(extension)) {
-    const extensionSplit = extension.split('_');
-
-    return {
-      isEncrypted: true,
-      passHash: extensionSplit[1],
-      decryptedFilename: filename.substring(
-        0,
-        filename.length - extension.length - 1,
-      ),
-    };
-  } else {
-    return {
-      isEncrypted: false,
-      decryptedFilename: filename,
-    };
-  }
-};
