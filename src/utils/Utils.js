@@ -289,15 +289,11 @@ export const isWebRTCSupported = () =>
   navigator.msGetUserMedia ||
   window.RTCPeerConnection;
 
+export const alphabetical = (a, b) => a.toLowerCase().localeCompare(b.toLowerCase());
+
 export function sortDirectoryContents(directoryContents) {
   const sortedContents = directoryContents
-    ? directoryContents.sort((a, b) => {
-        if (a.name < b.name) {
-          return -1;
-        } else {
-          return 1;
-        }
-      })
+    ? directoryContents.sort(({ name: a }, { name: b }) => alphabetical(a, b))
     : [];
 
   const directories = sortedContents.filter((item) => item.type === 'dir');
