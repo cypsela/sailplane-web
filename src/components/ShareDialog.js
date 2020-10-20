@@ -87,7 +87,7 @@ export function ShareDialog({sharedFs}) {
     const getCID = async () => {
       const cid = await sharedFs.current.read(path);
 
-      if (sharedFs.current.crypting && pathType !== 'dir') {
+      if (sharedFs.current.encrypted && pathType !== 'dir') {
         const {key, iv} = sharedFs.current.fs.read(path);
 
         setKeys({key, iv});
