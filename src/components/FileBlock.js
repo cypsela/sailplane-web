@@ -10,9 +10,9 @@ import {DraggableFileItem} from './DraggableFileItem';
 import {
   filterImageFiles,
   getBlobFromPath,
-  getFileExtensionFromFilename,
+  filenameExt,
   getPercent,
-  isFileExtensionImage,
+  isImageFileExt,
   sortDirectoryContents,
   delay,
 } from '../utils/Utils';
@@ -233,8 +233,8 @@ export function FileBlock({
                             ipfs={ipfs}
                             setCurrentDirectory={setCurrentDirectory}
                             onIconClicked={
-                              isFileExtensionImage(
-                                getFileExtensionFromFilename(fileItem.name),
+                              isImageFileExt(
+                                filenameExt(fileItem.name),
                               )
                                 ? async () => {
                                     const newImageIndex = imageFiles.findIndex(

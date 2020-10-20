@@ -13,7 +13,7 @@ import {ToolItem} from './ToolItem';
 import {FilePreview} from './FilePreview';
 import {
   getBlobFromPath,
-  getFileExtensionFromFilename,
+  filenameExt,
   getFileInfoFromCID,
   getFileTime,
   getIconForPath,
@@ -56,7 +56,7 @@ export function FileItem({
   const [fileBlob, setFileBlob] = useState(null);
   const [doubleClickRef] = useDoubleClick(() => setEditMode(true));
   const parentPath = pathSplit.slice(0, pathSplit.length - 1).join('/');
-  const fileExtension = getFileExtensionFromFilename(name);
+  const fileExtension = filenameExt(name);
   const isSmallScreen = useIsSmallScreen();
   const contextID = `menu-id`;
   const contextNoShareID = `menu-id-no-share`;

@@ -9,7 +9,7 @@ import {useDispatch} from 'react-redux';
 import {setStatus} from '../actions/tempData';
 import {
   getBlobFromPathCID,
-  getFileExtensionFromFilename,
+  filenameExt,
   getFileInfoFromCID,
   getFilesFromFolderCID,
   isFileExtensionSupported,
@@ -44,7 +44,7 @@ function Download({match}) {
   const pathSplit = cleanPath.split('/');
   const name = pathSplit[pathSplit.length - 1];
   const isSupportedPreviewType = isFileExtensionSupported(
-    getFileExtensionFromFilename(name),
+    filenameExt(name),
   );
 
   useEffect(() => {

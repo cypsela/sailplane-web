@@ -122,7 +122,7 @@ export async function getBlobFromPathCID(cid, path, ipfs, handleUpdate) {
     : fileToBlob(struct[0], handleUpdate);
 }
 
-export function getFileExtensionFromFilename(filename) {
+export function filenameExt(filename) {
   const fileParts = filename.split('.');
   return fileParts[fileParts.length - 1];
 }
@@ -195,11 +195,11 @@ export function getDraggableStyleHack(style, snapshot) {
 }
 
 export function getIconForPath(type, filename) {
-  const ext = getFileExtensionFromFilename(filename);
+  const ext = filenameExt(filename);
 
   let iconComponent = FiFile;
 
-  if (isFileExtensionImage(ext)) {
+  if (isImageFileExt(ext)) {
     iconComponent = FiImage;
   } else if (isFileExtensionAudio(ext)) {
     iconComponent = FiMusic;
@@ -230,7 +230,7 @@ export function isFileExtensionAudio(ext) {
   return ['mp3', 'wav', 'ogg', 'flac'].includes(ext.toLowerCase());
 }
 
-export function isFileExtensionImage(ext) {
+export function isImageFileExt(ext) {
   return ['jpg', 'jpeg', 'png', 'gif'].includes(ext.toLowerCase());
 }
 
@@ -251,13 +251,13 @@ export function getShareTypeFromFolderFiles(files) {
   files.forEach((file) => {
     const pathSplit = file.path.split('/');
     const name = pathSplit[pathSplit.length - 1];
-    const ext = getFileExtensionFromFilename(name);
+    const ext = filenameExt(name);
 
     if (isFileExtensionAudio(ext)) {
       audioCount++;
     }
 
-    if (isFileExtensionImage(ext)) {
+    if (isImageFileExt(ext)) {
       imageCount++;
     }
   });
@@ -308,8 +308,8 @@ export function sortDirectoryContents(directoryContents) {
 export const filterImageFiles = (files) =>
   files
     ? files.filter((file) => {
-        const ext = getFileExtensionFromFilename(file.name);
-        return isFileExtensionImage(ext);
+        const ext = filenameExt(file.name);
+        return isImageFileExt(ext);
       })
     : null;
 
