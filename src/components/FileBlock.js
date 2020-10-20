@@ -9,12 +9,12 @@ import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {DraggableFileItem} from './DraggableFileItem';
 import {
   filterImageFiles,
-  getBlobFromPath,
   filenameExt,
   getPercent,
   isImageFileExt,
   sortDirectoryContents,
   delay,
+  alphabetical,
 } from '../utils/Utils';
 import {FileDragBlock} from './FileDragBlock';
 import Lightbox from 'react-image-lightbox';
@@ -22,7 +22,7 @@ import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
 import produce from 'immer';
 
-const loadingURL = 'https://miro.medium.com/max/880/0*H3jZONKqRuAAeHnG.jpg';
+const emptyImageURL = 'https://i.stack.imgur.com/mwFzF.png';
 
 const styles = {
   container: {
@@ -81,19 +81,12 @@ export function FileBlock({
   const pathSplit = currentDirectory.split('/');
   const parentSplit = pathSplit.slice(0, pathSplit.length - 1);
   const parentPath = parentSplit.join('/');
-
   const [isImageOpen, setIsImageOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const imageFiles = filterImageFiles(fullFileList);
-  const [imageURLS, setImageURLS] = useState(
-    new Array(imageFiles.length).fill(loadingURL),
-  );
+  const [mainSrcURL, setMainSrcURL] = useState(null);
+  const updateTime = useRef({});
+  const imagePath = useRef({});
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    setImageURLS(new Array(imageFiles.length).fill(loadingURL));
-  }, [currentDirectory, imageFiles.length]);
 
   const handleUpdate = (currentIndex, totalCount) => {
     dispatch(
@@ -103,37 +96,49 @@ export function FileBlock({
     );
   };
 
-  const loadNextImage = async (nextIndex) => {
-    if (imageURLS[nextIndex] === loadingURL) {
-      const blob = await getBlobFromPath(
-        sharedFs.current,
-        fullFileList[nextIndex].path,
-        handleUpdate,
-      );
+  const isImageItem = ({ type, name }) => type === 'file' && isImageFileExt(filenameExt(name));
 
-      dispatch(setStatus({}));
+  const neighborImagePaths = (path) => {
+    const imagePaths = fullFileList.filter(isImageItem).map(f => f.path);
+    const neighborhood = [...new Set([...imagePaths, path])].sort(alphabetical);
+    const index = neighborhood.indexOf(path);
 
-      const newImageURLS = produce(imageURLS, (draft) => {
-        draft[nextIndex] = window.URL.createObjectURL(blob);
-      });
-      setImageURLS(newImageURLS);
+    return {
+      prev: neighborhood[(index + neighborhood.length - 1) % neighborhood.length],
+      next: neighborhood[(index + 1) % neighborhood.length],
+    };
+  };
+
+  const loadImagePath = async (path) => {
+    const time = Date.now();
+    imagePath.current = path;
+    updateTime.current = time;
+    setMainSrcURL(null);
+
+    const imageData = await sharedFs.current.cat(path).data({ handleUpdate });
+    if (path === imagePath.current && time === updateTime.current) {
+      setMainSrcURL(window.URL.createObjectURL(new Blob([imageData])));
     }
+  };
 
-    setCurrentImageIndex(nextIndex);
+  const setImageOpen = ({ path } = {}) => {
+    path = path || null;
+    path ? loadImagePath(path) : setMainSrcURL(path)
+    setIsImageOpen(Boolean(path));
   };
 
   return (
     <div style={styles.container}>
-      {isImageOpen && imageURLS[currentImageIndex] ? (
+      {isImageOpen && (
         <Lightbox
-          mainSrc={imageURLS[currentImageIndex]}
-          nextSrc={imageURLS[currentImageIndex + 1]}
-          prevSrc={imageURLS[currentImageIndex - 1]}
-          onMoveNextRequest={() => loadNextImage(currentImageIndex + 1)}
-          onMovePrevRequest={() => loadNextImage(currentImageIndex - 1)}
-          onCloseRequest={() => setIsImageOpen(false)}
+          prevSrc={emptyImageURL}
+          nextSrc={emptyImageURL}
+          mainSrc={mainSrcURL}
+          onMovePrevRequest={() => loadImagePath(neighborImagePaths(imagePath.current)['prev'])}
+          onMoveNextRequest={() => loadImagePath(neighborImagePaths(imagePath.current)['next'])}
+          onCloseRequest={() => setImageOpen(false)}
         />
-      ) : null}
+      )}
       <FolderTools
         currentDirectory={currentDirectory}
         sharedFs={sharedFs}
@@ -233,37 +238,7 @@ export function FileBlock({
                             ipfs={ipfs}
                             setCurrentDirectory={setCurrentDirectory}
                             onIconClicked={
-                              isImageFileExt(
-                                filenameExt(fileItem.name),
-                              )
-                                ? async () => {
-                                    const newImageIndex = imageFiles.findIndex(
-                                      (imageFile) =>
-                                        imageFile.name === fileItem.name,
-                                    );
-
-                                    const blob = await getBlobFromPath(
-                                      sharedFs.current,
-                                      fileItem.path,
-                                      handleUpdate,
-                                    );
-
-                                    dispatch(setStatus({}));
-
-                                    const newImageURLS = produce(
-                                      imageURLS,
-                                      (draft) => {
-                                        draft[
-                                          newImageIndex
-                                        ] = window.URL.createObjectURL(blob);
-                                      },
-                                    );
-                                    setImageURLS(newImageURLS);
-
-                                    setCurrentImageIndex(newImageIndex);
-                                    setIsImageOpen(true);
-                                  }
-                                : null
+                              isImageItem(fileItem) ? () => setImageOpen(fileItem) : null
                             }
                           />
                         ))}
