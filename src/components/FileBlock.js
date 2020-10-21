@@ -9,18 +9,20 @@ import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
 import {DraggableFileItem} from './DraggableFileItem';
 import {
   filterImageFiles,
-  getBlobFromPath,
-  getBlobFromPathCID,
-  getFileExtensionFromFilename,
+  filenameExt,
   getPercent,
-  isFileExtensionImage,
+  isImageFileExt,
   sortDirectoryContents,
   delay,
+  alphabetical,
 } from '../utils/Utils';
 import {FileDragBlock} from './FileDragBlock';
 import Lightbox from 'react-image-lightbox';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
+import produce from 'immer';
+
+const emptyImageURL = 'https://i.stack.imgur.com/mwFzF.png';
 
 const styles = {
   container: {
@@ -79,78 +81,64 @@ export function FileBlock({
   const pathSplit = currentDirectory.split('/');
   const parentSplit = pathSplit.slice(0, pathSplit.length - 1);
   const parentPath = parentSplit.join('/');
-
   const [isImageOpen, setIsImageOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [imageURLS, setImageURLS] = useState(new Array(1000));
-  const imageFiles = filterImageFiles(fullFileList);
+  const [mainSrcURL, setMainSrcURL] = useState(null);
+  const updateTime = useRef({});
+  const imagePath = useRef({});
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    setImageURLS(new Array(1000));
-  }, [currentDirectory]);
+  const handleUpdate = (currentIndex, totalCount) => {
+    dispatch(
+      setStatus({
+        message: `[${getPercent(currentIndex, totalCount)}%] Loading previews`,
+      }),
+    );
+  };
 
-  useEffect(() => {
-    const loadImages = async () => {
-      if (imageURLS[0] || !isImageOpen) {
-        return;
-      }
+  const isImageItem = ({ type, name }) => type === 'file' && isImageFileExt(filenameExt(name));
 
-      const imageURLSPromises = imageFiles.map(async (file) => {
-        // const cid = await sharedFs.current.read(file.path);
-        // const blob = await getBlobFromPathCID(
-        //   cid,
-        //   file.path,
-        //   ipfs,
-        //   (currentIndex, totalCount) => {
-        //     dispatch(
-        //       setStatus({
-        //         message: `[${getPercent(
-        //           currentIndex,
-        //           totalCount,
-        //         )}%] Loading previews`,
-        //       }),
-        //     );
-        //   },
-        // );
-        const handleUpdate = (currentIndex, totalCount) => {
-          dispatch(
-            setStatus({
-              message: `[${getPercent(
-                currentIndex,
-                totalCount,
-              )}%] Loading previews`,
-            }),
-          );
-        };
-        const blob = await getBlobFromPath(
-          sharedFs.current,
-          file.path,
-          handleUpdate,
-        );
-        dispatch(setStatus({}));
-        return window.URL.createObjectURL(blob);
-      });
+  const neighborImagePaths = (path) => {
+    const imagePaths = fullFileList.filter(isImageItem).map(f => f.path);
+    const neighborhood = [...new Set([...imagePaths, path])].sort(alphabetical);
+    const index = neighborhood.indexOf(path);
 
-      const tmpImageURLS = await Promise.all(imageURLSPromises);
-      setImageURLS(tmpImageURLS);
+    return {
+      prev: neighborhood[(index + neighborhood.length - 1) % neighborhood.length],
+      next: neighborhood[(index + 1) % neighborhood.length],
     };
+  };
 
-    loadImages();
-  }, [imageFiles.length, isImageOpen, currentDirectory]);
+  const loadImagePath = async (path) => {
+    const time = Date.now();
+    imagePath.current = path;
+    updateTime.current = time;
+    setMainSrcURL(null);
+
+    const imageData = await sharedFs.current.cat(path).data({ handleUpdate });
+    if (path === imagePath.current && time === updateTime.current) {
+      setMainSrcURL(window.URL.createObjectURL(new Blob([imageData])));
+    }
+  };
+
+  const setImageOpen = ({ path } = {}) => {
+    path = path || null;
+    path ? loadImagePath(path) : setMainSrcURL(path)
+    setIsImageOpen(Boolean(path));
+  };
 
   return (
     <div style={styles.container}>
-      {isImageOpen && imageURLS[currentImageIndex] ? (
+      {isImageOpen && (
         <Lightbox
-          mainSrc={imageURLS[currentImageIndex]}
-          nextSrc={imageURLS[currentImageIndex + 1]}
-          prevSrc={imageURLS[currentImageIndex - 1]}
-          onMoveNextRequest={() => setCurrentImageIndex(currentImageIndex + 1)}
-          onMovePrevRequest={() => setCurrentImageIndex(currentImageIndex - 1)}
-          onCloseRequest={() => setIsImageOpen(false)}
+          prevSrc={emptyImageURL}
+          nextSrc={emptyImageURL}
+          mainSrc={mainSrcURL}
+          onMovePrevRequest={() => loadImagePath(neighborImagePaths(imagePath.current)['prev'])}
+          onMoveNextRequest={() => loadImagePath(neighborImagePaths(imagePath.current)['next'])}
+          onCloseRequest={() => setImageOpen(false)}
         />
-      ) : null}
+      )}
       <FolderTools
         currentDirectory={currentDirectory}
         sharedFs={sharedFs}
@@ -250,18 +238,7 @@ export function FileBlock({
                             ipfs={ipfs}
                             setCurrentDirectory={setCurrentDirectory}
                             onIconClicked={
-                              isFileExtensionImage(
-                                getFileExtensionFromFilename(fileItem.name),
-                              )
-                                ? () => {
-                                    const newImageIndex = imageFiles.findIndex(
-                                      (imageFile) =>
-                                        imageFile.name === fileItem.name,
-                                    );
-                                    setCurrentImageIndex(newImageIndex);
-                                    setIsImageOpen(true);
-                                  }
-                                : null
+                              isImageItem(fileItem) ? () => setImageOpen(fileItem) : null
                             }
                           />
                         ))}

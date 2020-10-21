@@ -4,11 +4,10 @@ import {primary, primary15, primary3, primary45} from '../utils/colors';
 import {addContact} from '../actions/main';
 import {useDispatch} from 'react-redux';
 import {BigButton} from './BigButton';
-import {userPubValid} from '../utils/sailplane-access';
 import Well from './Well';
 import {FaQrcode} from 'react-icons/fa';
 import QRScanDialog from './QRScanDialog';
-import {isCameraSupported} from '../utils/Utils';
+import {isCameraSupported, publicKeyValid} from '../utils/Utils';
 import useIsCameraAvailable from '../hooks/useIsCameraAvailable';
 
 export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
@@ -93,7 +92,7 @@ export default function AddContactDialog({onClose, isVisible, contacts, myID}) {
   };
 
   const createContact = () => {
-    if (!userPubValid(pubKey)) {
+    if (!publicKeyValid(pubKey)) {
       setError('Invalid user ID');
     } else if (existingIds.includes(pubKey)) {
       setError('Contact already exists');

@@ -3,7 +3,7 @@ import {Dialog} from './Dialog';
 import {primary15} from '../utils/colors';
 import QrReader from 'react-qr-reader';
 import Well from './Well';
-import {userPubValid} from '../utils/sailplane-access';
+import {publicKeyValid} from '../utils/Utils';
 
 export default function QRScanDialog({isVisible, onClose, onScan}) {
   const styles = {
@@ -34,7 +34,7 @@ export default function QRScanDialog({isVisible, onClose, onScan}) {
               delay={300}
               onError={(err) => setError(err)}
               onScan={(data) => {
-                if (userPubValid(data)) {
+                if (publicKeyValid(data)) {
                   onScan(data);
                 }
               }}

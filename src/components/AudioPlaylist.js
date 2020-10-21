@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import 'react-image-lightbox/style.css';
 import {
   fileToBlob,
-  getFileExtensionFromFilename,
+  filenameExt,
   getPercent,
   isFileExtensionAudio,
   sortDirectoryContents,
@@ -54,7 +54,7 @@ export default function AudioPlaylist({files, ipfs}) {
 
   const filteredFiles = files
     ? files.filter((file) => {
-        const ext = getFileExtensionFromFilename(file.name);
+        const ext = filenameExt(file.name);
         return isFileExtensionAudio(ext);
       })
     : null;

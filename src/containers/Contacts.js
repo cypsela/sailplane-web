@@ -6,7 +6,6 @@ import {lightBorder, primary15, primary4, primary45} from '../utils/colors';
 import {FiPlusCircle} from 'react-icons/fi';
 import Contact from '../components/Contact';
 import {compressKey} from '../utils/Utils';
-import * as sailplaneAccess from '../utils/sailplane-access';
 import AddContactDialog from '../components/AddContactDialog';
 import {useSelector} from 'react-redux';
 import {StatusBar} from '../components/StatusBar';
@@ -55,7 +54,7 @@ export function Contacts({sailplane, sharedFS}) {
   const contacts = useSelector((state) => state.main.contacts);
 
   const myID = sharedFS.current?.running
-    ? compressKey(sailplaneAccess.localUserPub(sharedFS.current))
+    ? compressKey(sharedFS.current.identity.publicKey)
     : null;
 
   const [isAddContactDialogVisible, setIsAddContactDialogVisible] = useState(

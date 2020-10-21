@@ -65,7 +65,6 @@ export default function main(state = initialState, action) {
         );
 
         if (!draftState.instances[draftState.instanceIndex]) {
-          console.log('inner ran');
           draftState.instanceIndex = 0;
         }
       });

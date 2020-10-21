@@ -12,6 +12,7 @@ import {FaFolder} from 'react-icons/fa';
 import dayjs from 'dayjs';
 import detectIt from 'detect-it';
 import secp256k1 from 'secp256k1';
+import {Buffer} from 'safe-buffer';
 import * as copy from 'copy-to-clipboard';
 import {setStatus} from '../actions/tempData';
 
@@ -121,7 +122,7 @@ export async function getBlobFromPathCID(cid, path, ipfs, handleUpdate) {
     : fileToBlob(struct[0], handleUpdate);
 }
 
-export function getFileExtensionFromFilename(filename) {
+export function filenameExt(filename) {
   const fileParts = filename.split('.');
   return fileParts[fileParts.length - 1];
 }
@@ -193,12 +194,12 @@ export function getDraggableStyleHack(style, snapshot) {
   };
 }
 
-export function getIconForPath(type, isEncrypted, filename) {
-  const ext = getFileExtensionFromFilename(filename);
+export function getIconForPath(type, filename) {
+  const ext = filenameExt(filename);
 
   let iconComponent = FiFile;
 
-  if (isFileExtensionImage(ext)) {
+  if (isImageFileExt(ext)) {
     iconComponent = FiImage;
   } else if (isFileExtensionAudio(ext)) {
     iconComponent = FiMusic;
@@ -210,10 +211,6 @@ export function getIconForPath(type, isEncrypted, filename) {
 
   if (type === 'dir') {
     iconComponent = FaFolder;
-  }
-
-  if (isEncrypted) {
-    iconComponent = FiLock;
   }
   return iconComponent;
 }
@@ -233,7 +230,7 @@ export function isFileExtensionAudio(ext) {
   return ['mp3', 'wav', 'ogg', 'flac'].includes(ext.toLowerCase());
 }
 
-export function isFileExtensionImage(ext) {
+export function isImageFileExt(ext) {
   return ['jpg', 'jpeg', 'png', 'gif'].includes(ext.toLowerCase());
 }
 
@@ -254,13 +251,13 @@ export function getShareTypeFromFolderFiles(files) {
   files.forEach((file) => {
     const pathSplit = file.path.split('/');
     const name = pathSplit[pathSplit.length - 1];
-    const ext = getFileExtensionFromFilename(name);
+    const ext = filenameExt(name);
 
     if (isFileExtensionAudio(ext)) {
       audioCount++;
     }
 
-    if (isFileExtensionImage(ext)) {
+    if (isImageFileExt(ext)) {
       imageCount++;
     }
   });
@@ -292,15 +289,11 @@ export const isWebRTCSupported = () =>
   navigator.msGetUserMedia ||
   window.RTCPeerConnection;
 
+export const alphabetical = (a, b) => a.toLowerCase().localeCompare(b.toLowerCase());
+
 export function sortDirectoryContents(directoryContents) {
   const sortedContents = directoryContents
-    ? directoryContents.sort((a, b) => {
-        if (a.name < b.name) {
-          return -1;
-        } else {
-          return 1;
-        }
-      })
+    ? directoryContents.sort(({ name: a }, { name: b }) => alphabetical(a, b))
     : [];
 
   const directories = sortedContents.filter((item) => item.type === 'dir');
@@ -311,8 +304,8 @@ export function sortDirectoryContents(directoryContents) {
 export const filterImageFiles = (files) =>
   files
     ? files.filter((file) => {
-        const ext = getFileExtensionFromFilename(file.name);
-        return isFileExtensionImage(ext);
+        const ext = filenameExt(file.name);
+        return isImageFileExt(ext);
       })
     : null;
 
@@ -336,15 +329,23 @@ export const jdenticonConfig = {
 export const hasMouse = detectIt.hasMouse === true;
 
 export function compressKey(uncompressedKey) {
-  return secp256k1
-    .publicKeyConvert(Buffer.from(uncompressedKey, 'hex'), true)
-    .toString('hex');
+  return Buffer.from(
+    secp256k1.publicKeyConvert(Buffer.from(uncompressedKey, 'hex'), true),
+  ).toString('hex');
 }
 
 export function decompressKey(compressedKey) {
-  return secp256k1
-    .publicKeyConvert(Buffer.from(compressedKey, 'hex'), false)
-    .toString('hex');
+  return Buffer.from(
+    secp256k1.publicKeyConvert(Buffer.from(compressedKey, 'hex'), false),
+  ).toString('hex');
+}
+
+export function publicKeyValid(publicKey) {
+  try {
+    return secp256k1.publicKeyVerify(Buffer.from(publicKey, 'hex'));
+  } catch (e) {
+    return false;
+  }
 }
 
 export async function copyToClipboard(text) {
@@ -368,4 +369,32 @@ export function notify(text, dispatch, isError) {
     }),
   );
   setTimeout(() => dispatch(setStatus({})), 1500);
+}
+
+export function doesUserHaveWriteInInstance(sharedFS) {
+  const {writers, admins, myID} = getInstanceAccessDetails(sharedFS);
+
+  return writers.includes(myID) || admins.includes(myID);
+}
+
+export function getInstanceAccessDetails(sharedFS) {
+  let tmpAdmins = sharedFS.access.admin;
+  let tmpWriters = sharedFS.access.write;
+  let tmpReaders = sharedFS.access.read;
+  let tmpMyID = compressKey(sharedFS.identity.publicKey);
+
+  tmpAdmins = Array.from(tmpAdmins).map((key) => compressKey(key));
+  tmpWriters = Array.from(tmpWriters).map((key) => compressKey(key));
+
+  tmpReaders = Array.from(tmpReaders)
+    .map((key) => compressKey(key))
+    .filter((key) => !tmpAdmins.includes(key))
+    .filter((key) => !tmpWriters.includes(key));
+
+  return {
+    admins: tmpAdmins,
+    writers: tmpWriters,
+    readers: tmpReaders,
+    myID: tmpMyID,
+  };
 }

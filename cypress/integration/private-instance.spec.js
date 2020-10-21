@@ -33,6 +33,7 @@ describe('Private drive management', () => {
   });
 
   it('eventually shows the drag text', () => {
+    cy.wait(5000)
     cy.contains('Drag files to upload or click here');
   });
 

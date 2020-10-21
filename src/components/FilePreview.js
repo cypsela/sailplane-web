@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  getFileExtensionFromFilename,
+  filenameExt,
   isFileExtensionAudio,
-  isFileExtensionImage,
+  isImageFileExt,
 } from '../utils/Utils';
 
 export const FilePreview = React.memo(({blob, filename, size}) => {
@@ -23,12 +23,12 @@ export const FilePreview = React.memo(({blob, filename, size}) => {
     },
   };
 
-  const ext = getFileExtensionFromFilename(filename);
+  const ext = filenameExt(filename);
   const objURL = window.URL.createObjectURL(blob);
 
   return (
     <div onClick={(event) => event.stopPropagation()} style={styles.container}>
-      {isFileExtensionImage(ext) ? (
+      {isImageFileExt(ext) ? (
         <div>
           <img src={objURL} style={styles.image} />
         </div>
