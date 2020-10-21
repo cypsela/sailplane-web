@@ -82,17 +82,21 @@ export function FileBlock({
   const parentPath = parentSplit.join('/');
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [mainSrcURL, setMainSrcURL] = useState(null);
+  const [imageTitle, setImageTitle] = useState('');
+  const [imageCaption, setImageCaption] = useState('');
   const updateTime = useRef({});
   const imagePath = useRef({});
 
   const dispatch = useDispatch();
 
-  const handleUpdate = (currentIndex, totalCount) => {
-    dispatch(
-      setStatus({
-        message: `[${getPercent(currentIndex, totalCount)}%] Loading previews`,
-      }),
-    );
+  const handleUpdate = (path, time) => (currentIndex, totalCount) => {
+    if (path === imagePath.current && time === updateTime.current) {
+      setImageCaption(
+        currentIndex === totalCount
+          ? ''
+          : `Loading... [${getPercent(currentIndex, totalCount)}%]`
+      );
+    }
   };
 
   const isImageItem = ({ type, name }) => type === 'file' && isImageFileExt(filenameExt(name));
@@ -114,15 +118,17 @@ export function FileBlock({
     updateTime.current = time;
     setMainSrcURL(null);
 
-    const imageData = await sharedFs.current.cat(path).data({ handleUpdate });
+    const options = { handleUpdate: handleUpdate(path, time) }
+    const imageData = await sharedFs.current.cat(path, options).data();
     if (path === imagePath.current && time === updateTime.current) {
       setMainSrcURL(window.URL.createObjectURL(new Blob([imageData])));
+      setImageTitle(sharedFs.current.fs.pathName(path));
     }
   };
 
   const setImageOpen = ({ path } = {}) => {
     path = path || null;
-    path ? loadImagePath(path) : setMainSrcURL(path)
+    path ? loadImagePath(path) : setMainSrcURL(path);
     setIsImageOpen(Boolean(path));
   };
 
@@ -136,6 +142,8 @@ export function FileBlock({
           onMovePrevRequest={() => loadImagePath(neighborImagePaths(imagePath.current)['prev'])}
           onMoveNextRequest={() => loadImagePath(neighborImagePaths(imagePath.current)['next'])}
           onCloseRequest={() => setImageOpen(false)}
+          imageTitle={imageTitle}
+          imageCaption={imageCaption}
         />
       )}
       <FolderTools
