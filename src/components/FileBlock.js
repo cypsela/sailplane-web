@@ -20,7 +20,6 @@ import {FileDragBlock} from './FileDragBlock';
 import Lightbox from 'react-image-lightbox';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
-import produce from 'immer';
 
 const emptyImageURL = 'https://i.stack.imgur.com/mwFzF.png';
 
