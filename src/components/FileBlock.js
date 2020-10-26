@@ -21,7 +21,7 @@ import Lightbox from 'react-image-lightbox';
 import {setStatus} from '../actions/tempData';
 import {useDispatch} from 'react-redux';
 
-const emptyImageURL = 'https://i.stack.imgur.com/mwFzF.png';
+const emptyImageURL = './empty.png';
 
 const styles = {
   container: {
