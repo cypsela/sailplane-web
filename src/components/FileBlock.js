@@ -89,16 +89,6 @@ export function FileBlock({
 
   const dispatch = useDispatch();
 
-  const handleUpdate = (path, time) => (currentIndex, totalCount) => {
-    if (path === imagePath.current && time === updateTime.current) {
-      setImageCaption(
-        currentIndex === totalCount
-          ? ''
-          : `Loading... [${getPercent(currentIndex, totalCount)}%]`
-      );
-    }
-  };
-
   const isImageItem = ({ type, name }) => type === 'file' && isImageFileExt(filenameExt(name));
 
   const neighborImagePaths = (path) => {
@@ -112,18 +102,23 @@ export function FileBlock({
     };
   };
 
+  const executer = (path, time) => (func) =>
+    path === imagePath.current && time === updateTime.current && func();
+
+  const handleUpdate = (exe) => (current, total) =>
+    exe(() => setImageCaption(current === total ? '' : `Loading... [${getPercent(current, total)}%]`));
+
   const loadImagePath = async (path) => {
     const time = Date.now();
     imagePath.current = path;
     updateTime.current = time;
+    const exe = executer(path, time);
     setMainSrcURL(null);
 
-    const options = { handleUpdate: handleUpdate(path, time) }
-    const imageData = await sharedFs.current.cat(path, options).data();
-    if (path === imagePath.current && time === updateTime.current) {
-      setMainSrcURL(window.URL.createObjectURL(new Blob([imageData])));
-      setImageTitle(sharedFs.current.fs.pathName(path));
-    }
+
+    exe(() => setImageTitle(sharedFs.current.fs.pathName(path)));
+    const imageData = await sharedFs.current.cat(path, { handleUpdate: handleUpdate(exe) }).data();
+    exe(() => setMainSrcURL(window.URL.createObjectURL(new Blob([imageData]))));
   };
 
   const setImageOpen = ({ path } = {}) => {
