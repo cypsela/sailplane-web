@@ -63,7 +63,7 @@ export function FileItem({
   const exists = sharedFs && sharedFs.current.fs.exists(path);
   const isTouchDevice = !hasMouse;
   const isUnsharable = sharedFs?.current.encrypted && type === 'dir';
-  const hasWrite = doesUserHaveWriteInInstance(sharedFs.current);
+  const hasWrite = sharedFs && doesUserHaveWriteInInstance(sharedFs.current);
 
   const styles = {
     paddingContainer: {
