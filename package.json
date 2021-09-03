@@ -17,7 +17,7 @@
     "detect-it": "^3.0.5",
     "device-detector-js": "^2.2.1",
     "file-saver": "^2.0.2",
-    "immer": "^7.0.5",
+    "immer": "^9.0.6",
     "ipfs": "^0.52.3",
     "is-touch-device": "^1.0.1",
     "it-all": "^1.0.2",
