@@ -1,7 +1,7 @@
-import Jdenticon from 'react-jdenticon';
 import React from 'react';
 import {primary4, primary45} from '../utils/colors';
 import {useSelector} from 'react-redux';
+import {Identicon} from './Identicon';
 
 export default function UserItem({pubKey, myID}) {
   const contacts = useSelector((state) => state.main.contacts);
@@ -45,7 +45,7 @@ export default function UserItem({pubKey, myID}) {
     <div style={styles.userBlock}>
       <div style={styles.adminLeft}>
         <div style={styles.iconHolder}>
-          <Jdenticon value={pubKey} size={'34'} style={styles.icon} />
+          <Identicon address={pubKey} size={34} style={styles.icon} />
         </div>
         <div style={styles.adminNameHolder}>
           <div>

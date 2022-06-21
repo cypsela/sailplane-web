@@ -1,4 +1,3 @@
-import Jdenticon from 'react-jdenticon';
 import React from 'react';
 import {
   errorColor,
@@ -14,6 +13,7 @@ import {copyToClipboard, notify} from '../utils/Utils';
 import {useDispatch} from 'react-redux';
 import {deleteContact} from '../actions/main';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
+import {Identicon} from './Identicon';
 
 export default function Contact({
   pubKey,
@@ -71,7 +71,7 @@ export default function Contact({
       <div style={styles.userBlock}>
         <div style={styles.left}>
           <div style={styles.iconHolder}>
-            <Jdenticon value={pubKey} size={'34'} style={styles.icon} />
+            <Identicon address={pubKey} size={34} style={styles.icon} />
           </div>
           <div style={styles.adminNameHolder}>
             <div>

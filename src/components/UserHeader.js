@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import Jdenticon from 'react-jdenticon';
 import {
   cleanBorder,
   primary15,
@@ -10,6 +9,7 @@ import {
 } from '../utils/colors';
 import {compressKey} from '../utils/Utils';
 import QRDisplayDialog from './QRDisplayDialog';
+import {Identicon} from './Identicon';
 
 const styles = {
   container: {
@@ -116,7 +116,7 @@ export function UserHeader({sailplane, title, iconComponent, leftSide}) {
               }}
               style={styles.idContainer}>
               <div style={styles.myID}>Show ID</div>
-              <Jdenticon value={myID} size={'34'} style={styles.icon} />
+              <Identicon address={myID} size={34} style={styles.icon} />
             </div>
           </div>
         ) : null}
