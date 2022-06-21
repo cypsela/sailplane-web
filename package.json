@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
+  "config-overrides-path": "node_modules/react-app-rewired/config-overrides.js",
   "dependencies": {
     "@cypress/instrument-cra": "^1.1.1",
     "@cypsela/sailplane-node": "https://github.com/cypsela/sailplane-node#76e33c11018bacc4fc69649799c6e72abf272868",
