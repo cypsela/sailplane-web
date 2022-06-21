@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import {LegacyRef, useCallback, useRef, useState} from 'react';
 
 export default function useHover() {
   const [value, setValue] = useState(false);
@@ -6,10 +6,10 @@ export default function useHover() {
   const handleMouseOver = useCallback(() => setValue(true), []);
   const handleMouseOut = useCallback(() => setValue(false), []);
 
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>();
 
   const callbackRef = useCallback(
-    (node) => {
+    (node: HTMLDivElement)  => {
       if (ref.current) {
         ref.current.removeEventListener('mouseenter', handleMouseOver);
         ref.current.removeEventListener('mouseleave', handleMouseOut);
@@ -23,7 +23,7 @@ export default function useHover() {
       }
     },
     [handleMouseOver, handleMouseOut],
-  );
+  ) as LegacyRef<HTMLDivElement>;
 
   return [callbackRef, value];
 }
