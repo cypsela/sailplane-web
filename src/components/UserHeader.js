@@ -9,7 +9,7 @@ import {
 } from '../utils/colors';
 import {compressKey} from '../utils/Utils';
 import QRDisplayDialog from './QRDisplayDialog';
-import {Identicon} from './Identicon';
+import {Jdenticon} from './Jdenticon';
 
 const styles = {
   container: {
@@ -116,7 +116,7 @@ export function UserHeader({sailplane, title, iconComponent, leftSide}) {
               }}
               style={styles.idContainer}>
               <div style={styles.myID}>Show ID</div>
-              <Identicon address={myID} size={34} style={styles.icon} />
+              <Jdenticon address={myID} size={34} style={styles.icon} />
             </div>
           </div>
         ) : null}

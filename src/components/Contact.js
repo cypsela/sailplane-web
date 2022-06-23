@@ -13,7 +13,7 @@ import {copyToClipboard, notify} from '../utils/Utils';
 import {useDispatch} from 'react-redux';
 import {deleteContact} from '../actions/main';
 import {useIsSmallScreen} from '../hooks/useIsSmallScreen';
-import {Identicon} from './Identicon';
+import {Jdenticon} from './Jdenticon';
 
 export default function Contact({
   pubKey,
@@ -71,7 +71,7 @@ export default function Contact({
       <div style={styles.userBlock}>
         <div style={styles.left}>
           <div style={styles.iconHolder}>
-            <Identicon address={pubKey} size={34} style={styles.icon} />
+            <Jdenticon address={pubKey} size={34} style={styles.icon} />
           </div>
           <div style={styles.adminNameHolder}>
             <div>

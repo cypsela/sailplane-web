@@ -17,7 +17,7 @@ type Props = {
   size: number;
 };
 
-export function Identicon({address, size}: Props) {
+export function Jdenticon({address, size}: Props) {
   const [icon, setIcon] = useState<string | null>(null);
 
   useEffect(() => {
@@ -25,11 +25,12 @@ export function Identicon({address, size}: Props) {
     setIcon(icon);
   }, [address, size]);
 
-  if (!address || !icon) return null;
+  if (!address || !icon) return <Container size={size} />;
 
   return (
     <Container size={size}>
       <img
+        alt={'Identicon'}
         style={{borderRadius: 8}}
         src={`data:image/svg+xml;utf8,${encodeURIComponent(icon)}`}
       />
