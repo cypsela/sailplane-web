@@ -129,7 +129,7 @@ export function LeftPanel({
               selected={currentRightPanel === 'files'}
               onClick={() => {
                 setIsMobileOpen(false);
-                setCurrentRightPanel('files')
+                setCurrentRightPanel('files');
               }}
             />
             <PanelItem
@@ -138,7 +138,7 @@ export function LeftPanel({
               selected={currentRightPanel === 'instances'}
               onClick={() => {
                 setIsMobileOpen(false);
-                setCurrentRightPanel('instances')
+                setCurrentRightPanel('instances');
               }}
             />
             <PanelItem
@@ -147,7 +147,7 @@ export function LeftPanel({
               selected={currentRightPanel === 'contacts'}
               onClick={() => {
                 setIsMobileOpen(false);
-                setCurrentRightPanel('contacts')
+                setCurrentRightPanel('contacts');
               }}
             />
 
@@ -168,7 +168,10 @@ export function LeftPanel({
             <div style={styles.settingsBlock}>
               <PanelItem
                 title={'Home'}
-                onClick={() => (document.location = '/')}
+                onClick={() =>
+                  (document.location =
+                    'https://cypsela.github.io/sailplane-web/#/')
+                }
                 iconComponent={FaHome}
               />
             </div>
