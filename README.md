@@ -1,6 +1,8 @@
+<!--
 ## Archived. Future versions will exist here: https://github.com/cypsela/sailplane.eth
 
 ---
+-->
 
 ### ⛵✈🕸
 # sailplane-web
