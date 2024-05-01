@@ -1,3 +1,7 @@
+## Archived. Future versions will exist here: https://github.com/cypsela/sailplane.eth
+
+---
+
 ### ⛵✈🕸
 # sailplane-web
 Collaborative p2p file sharing in the browser
